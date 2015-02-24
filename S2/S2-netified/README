@@ -37,6 +37,11 @@ Create a file called tkglist.txt which contains the IP and port on  a line each 
 elimited line. 
 The exit_prints.txt file contains the fingerprints of all the privex exits. Make sure you have the latest file. 
 See example files in the directory.
+
+The torrc file needs to have the following two lines added:
+UsePrivex 1
+PrivexPort <the port the DC listens on>
+
 The Tor exit needs to be started after the DC node has come online. If the node fails while Tor is running, it will not cause Tor to fail, but will output error messages to Tor's info.logfile. Simply restart the DC and then restart the Tor exit.
 
 To start the DC up run the following command:
