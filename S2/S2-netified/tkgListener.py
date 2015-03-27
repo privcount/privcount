@@ -4,6 +4,7 @@ from tkgserver import tkgserver
 from twisted.internet import reactor, protocol, task, ssl
 from twisted.protocols import basic
 import ast
+import json
 import argparse
 import time
 
@@ -41,7 +42,8 @@ class tkgStatSend(basic.LineReceiver):
         global should_send
         global a
         if should_send:
-            self.send_data = repr(a.publish())
+	    self.send_data = json.dumps(a.publish())
+#            self.send_data = repr(a.publish())
 #	    print self.send_data
 	    #self.transport.write(self.send_data)    
 #            print "Sending TS this much data:", len(self.send_data)

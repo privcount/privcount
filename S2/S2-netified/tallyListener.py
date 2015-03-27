@@ -4,6 +4,7 @@ from privexUtils import q, resolution, epoch
 from twisted.internet import reactor, protocol, task, ssl
 from twisted.protocols import basic
 import ast
+import json
 import time
 import argparse
 
@@ -24,7 +25,8 @@ class tallyListener(protocol.Protocol):
       global recv_data
       self.buffer += data
       if '\n' in self.buffer:
-        self.data = ast.literal_eval(self.buffer)
+        self.data = json.loads(self.buffer)
+#        self.data = ast.literal_eval(self.buffer)
         self.buffer = ''
         if self.data:
           recv_data.append(self.data)
