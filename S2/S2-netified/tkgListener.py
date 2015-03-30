@@ -1,4 +1,4 @@
-from privexUtils import q, epoch
+from privexUtils import q, epoch, tkg_start_delay
 #from router import router
 from tkgserver import tkgserver
 from twisted.internet import reactor, protocol, task, ssl
@@ -21,11 +21,11 @@ class tkgListener(protocol.Protocol):
 
      def __init__(self):
        self.buffer = ''
-          
+
      def dataReceived(self, data):
 	if not data: return
 	global a
-	self.buffer += data       
+	self.buffer += data
         if '\n' in self.buffer:
 	  got_data = ast.literal_eval(self.buffer)
 	  a.register_router(got_data)
@@ -37,7 +37,7 @@ class tkgStatSend(basic.LineReceiver):
     def __init__(self):
         self.lc = task.LoopingCall(self.send_stats)
         self.lc.start(0.5)
-    
+
     def send_stats(self):
         global should_send
         global a
@@ -45,8 +45,8 @@ class tkgStatSend(basic.LineReceiver):
 	    self.send_data = json.dumps(a.publish())
 #            self.send_data = repr(a.publish())
 #	    print self.send_data
-	    #self.transport.write(self.send_data)    
-#            print "Sending TS this much data:", len(self.send_data)
+	    #self.transport.write(self.send_data)
+            print "TKG: Sending TS our stats!"
 	    self.sendLine(self.send_data)
             should_send = False
             a = None
@@ -60,14 +60,14 @@ if __name__ == "__main__":
 #        for line in f1:
 #            labels.append(line.strip())
 #        labels.append("Other")
-    
+
     with open(args.tally,'r') as f1:
         for tallyline in f1:
             tallyhost, tallyport = tallyline.strip().split()
-    
+
     a = tkgserver(q)
 
-    time.sleep(int(time.time())%epoch + 3)
+    time.sleep((epoch - int(time.time())%epoch) + tkg_start_delay)
     print "TKG starting up..."
     last_epoch_start = int(time.time())/epoch
 
@@ -75,13 +75,14 @@ if __name__ == "__main__":
         global last_epoch_start
         global should_send
         now = int(time.time())/epoch
-        if now > last_epoch_start: 
+        if now > last_epoch_start:
+            print "Epoch change!\n"
             last_epoch_start = now
             should_send = True
-    
+
     def cleanup():
         reactor.stop()
-            
+
     epoch_check = task.LoopingCall(epoch_change)
     epoch_check.start(0.5)
 
@@ -96,5 +97,3 @@ if __name__ == "__main__":
     reactor.listenSSL(int(args.port), listenfactory, ssl.DefaultOpenSSLContextFactory("keys/tks.key", "keys/tks.cert"))
     print "TKG ready!"
     reactor.run()
-                
-

@@ -7,9 +7,16 @@ q = 2**31 - 1
 # A sensible resolution
 resolution = 0.01
 #the time frame of stats collection
-epoch = 30 # in seconds
+epoch = 3600 # in seconds
 #the sigma we want for privacy and utility
 sigma = 240
+
+#some time vairables to deal with clock skews, latency, etc.
+clock_skew = 5
+tkg_start_delay = 3
+dc_start_delay = tkg_start_delay + 5
+dc_reg_delay = dc_start_delay + 5
+ts_pub_delay = clock_skew + 15
 
 def PRF(key, IV):
     return Hash("PRF1|KEY:%s|IV:%s|" % (key, IV)).digest()
@@ -35,5 +42,3 @@ def keys_from_labels(labels, key, pos=True, q=2147483647):
         ## Save the share
         shares.append((l, s0))
     return shares
-
-
