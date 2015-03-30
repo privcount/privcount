@@ -1,6 +1,7 @@
 from privexUtils import *
 from noise import Noise
 from exit_weight import *
+import pprint
 
 class router:
     def __init__(self, q, labels, authorities, fingerprint, consensus):
@@ -27,6 +28,7 @@ class router:
         msg = (sorted(self.data.keys()), (kid, self.keys[kid]), self.q)
         self.keys[kid] = None  # TODO: secure delete
         ## TODO: Encrypt msg to authority here
+	pprint.pprint(msg)
         return msg
 
     def inc(self, label):

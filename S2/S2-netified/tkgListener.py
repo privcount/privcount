@@ -9,7 +9,6 @@ import argparse
 import time
 
 parser = argparse.ArgumentParser(description='')
-#parser.add_argument('-i','--input', help='File containing websites to collect stats for, one on each line',required=True)
 parser.add_argument('-p','--port', help='port to listen on',required=True)
 parser.add_argument('-thp','--tally', help='tallyserver IP and port',required=True)
 
@@ -17,49 +16,37 @@ args = parser.parse_args()
 
 
 class tkgListener(protocol.Protocol):
-#class tkgListener(basic.LineReceiver):
 
      def __init__(self):
        self.buffer = ''
 
      def dataReceived(self, data):
-	if not data: return
-	global a
-	self.buffer += data
-        if '\n' in self.buffer:
-	  got_data = ast.literal_eval(self.buffer)
-	  a.register_router(got_data)
+         if not data: return
+         global a
+         self.buffer += data
+         if '\n' in self.buffer:
+             got_data = ast.literal_eval(self.buffer)
+             a.register_router(got_data)
 
-
-#class tkgStatSend(protocol.Protocol):
 class tkgStatSend(basic.LineReceiver):
 
-    def __init__(self):
-        self.lc = task.LoopingCall(self.send_stats)
-        self.lc.start(0.5)
+    def connectionMade(self):
+        self.send_stats()
+        self.transport.loseConnection()
 
     def send_stats(self):
         global should_send
         global a
-        if should_send:
-	    self.send_data = json.dumps(a.publish())
-#            self.send_data = repr(a.publish())
-#	    print self.send_data
-	    #self.transport.write(self.send_data)
-            print "TKG: Sending TS our stats!"
-	    self.sendLine(self.send_data)
-            should_send = False
-            a = None
-            a = tkgserver(q)
 
+        self.send_data = json.dumps(a.publish())
+
+        print "TKG: Sending TS our stats!"
+        self.sendLine(self.send_data)
+        # Reset for new epoch
+        a = None
+        a = tkgserver(q)
 
 if __name__ == "__main__":
-    should_send = False
-#    labels = []
-#    with open(args.input,'r') as f1:
-#        for line in f1:
-#            labels.append(line.strip())
-#        labels.append("Other")
 
     with open(args.tally,'r') as f1:
         for tallyline in f1:
@@ -78,22 +65,21 @@ if __name__ == "__main__":
         if now > last_epoch_start:
             print "Epoch change!\n"
             last_epoch_start = now
-            should_send = True
+            reactor.connectSSL(tallyhost, int(tallyport), sendtallyfactory, ssl.ClientContextFactory())
+
 
     def cleanup():
         reactor.stop()
 
     epoch_check = task.LoopingCall(epoch_change)
-    epoch_check.start(0.5)
+    epoch_check.start(1)
 
     sendtallyfactory = protocol.ClientFactory()
     sendtallyfactory.protocol = tkgStatSend
-    #reactor.connectTCP("localhost", int(args.tallyport), sendtallyfactory)
-    reactor.connectSSL(tallyhost, int(tallyport), sendtallyfactory, ssl.ClientContextFactory())
 
     listenfactory = protocol.ServerFactory()
     listenfactory.protocol = tkgListener
-    #reactor.listenTCP(int(args.port), listenfactory)
+
     reactor.listenSSL(int(args.port), listenfactory, ssl.DefaultOpenSSLContextFactory("keys/tks.key", "keys/tks.cert"))
     print "TKG ready!"
     reactor.run()

@@ -12,11 +12,11 @@ epoch = 3600 # in seconds
 sigma = 240
 
 #some time vairables to deal with clock skews, latency, etc.
-clock_skew = 5
+clock_skew = 60
 tkg_start_delay = 3
-dc_start_delay = tkg_start_delay + 5
-dc_reg_delay = dc_start_delay + 5
-ts_pub_delay = clock_skew + 15
+dc_start_delay =  5
+dc_reg_delay = dc_start_delay + 3
+ts_pub_delay = clock_skew + 20
 
 def PRF(key, IV):
     return Hash("PRF1|KEY:%s|IV:%s|" % (key, IV)).digest()

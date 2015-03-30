@@ -26,14 +26,12 @@ class tallyListener(protocol.Protocol):
       self.buffer += data
       if '\n' in self.buffer:
         self.data = json.loads(self.buffer)
-#        self.data = ast.literal_eval(self.buffer)
         self.buffer = ''
         if self.data:
           recv_data.append(self.data)
           print "TS: Appended data!"
 
 if __name__ == "__main__":
-    #recv_data = []
     tkg_count = 0
     exit_count = 0
 
@@ -93,7 +91,6 @@ if __name__ == "__main__":
     factory = protocol.ServerFactory()
     factory.protocol = tallyListener
 
-#    reactor.listenTCP(int(args.port), factory)
     reactor.listenSSL(int(args.port), factory, ssl.DefaultOpenSSLContextFactory('keys/tally.key', 'keys/tally.cert'))
     print "TS started!"
     reactor.run()
