@@ -27,10 +27,7 @@ class tkgListener(protocol.Protocol):
          global a
          self.buffer += data
          if '\n' in self.buffer:
-             #pprint.pprint(self.buffer)
-             #got_data = json.loads(self.buffer)
              got_data = ast.literal_eval(self.buffer)
-             #pprint.pprint(got_data)
              a.register_router(got_data)
 
 class tkgStatSend(basic.LineReceiver):
@@ -68,7 +65,7 @@ if __name__ == "__main__":
         global should_send
         now = int(time.time())/epoch
         if now > last_epoch_start:
-            print "Epoch change!\n"
+            print "Epoch Change!\n"
             last_epoch_start = now
             reactor.connectSSL(tallyhost, int(tallyport), sendtallyfactory, ssl.ClientContextFactory())
 

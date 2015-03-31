@@ -15,7 +15,6 @@ args = parser.parse_args()
 recv_data = []
 
 class tallyListener(protocol.Protocol):
-#class tallyListener(basic.LineReceiver):
 
     def __init__(self):
       self.buffer = ''
@@ -38,7 +37,6 @@ if __name__ == "__main__":
     def sumdata(dataset, q):
         totals = {}
         if dataset:
-#            print dataset
             for k in dataset[0]:
                 for data in dataset:
                     totals[k] = (totals.get(k, 0) + data.get(k, 0)) % q
@@ -79,7 +77,6 @@ if __name__ == "__main__":
     def epoch_change():
         global last_epoch_start
         now = int(time.time())/epoch
-        #print last_epoch_start, now
         if now > last_epoch_start:
             print "Epoch change!\n"
             last_epoch_start = now
