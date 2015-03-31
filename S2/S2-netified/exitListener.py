@@ -7,6 +7,7 @@ from twisted.protocols import basic
 import time
 import json
 import argparse
+import pprint
 
 parser = argparse.ArgumentParser(description='')
 parser.add_argument('-i','--input', help='Input website list, one on each line',required=True)
@@ -42,6 +43,8 @@ class exitListener(protocol.Protocol):
                     #print "Other incremented!\n"
 
 class exitRegister(basic.LineReceiver):
+    def __init__(self):
+        self.delimiter = '\n'
 
     def connectionMade(self):
         self.register_exit()
@@ -50,6 +53,10 @@ class exitRegister(basic.LineReceiver):
     def register_exit(self):
         global msg
         print "DC: Registered with a TKG!"
+        #self.sendLine(msg[0])
+        #self.send_msg = json.dumps(msg[0])
+        #pprint.pprint(self.send_msg)
+        #self.sendLine(self.send_msg)
         self.sendLine(repr(msg[0]))
         msg.pop(0)
 

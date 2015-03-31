@@ -7,6 +7,7 @@ import ast
 import json
 import argparse
 import time
+import pprint
 
 parser = argparse.ArgumentParser(description='')
 parser.add_argument('-p','--port', help='port to listen on',required=True)
@@ -19,13 +20,17 @@ class tkgListener(protocol.Protocol):
 
      def __init__(self):
        self.buffer = ''
+       self.delimiter = '\n'
 
      def dataReceived(self, data):
          if not data: return
          global a
          self.buffer += data
          if '\n' in self.buffer:
+             #pprint.pprint(self.buffer)
+             #got_data = json.loads(self.buffer)
              got_data = ast.literal_eval(self.buffer)
+             #pprint.pprint(got_data)
              a.register_router(got_data)
 
 class tkgStatSend(basic.LineReceiver):

@@ -12,7 +12,7 @@ epoch = 3600 # in seconds
 sigma = 240
 
 #some time vairables to deal with clock skews, latency, etc.
-clock_skew = 60
+clock_skew = 30
 tkg_start_delay = 3
 dc_start_delay =  5
 dc_reg_delay = dc_start_delay + 3
