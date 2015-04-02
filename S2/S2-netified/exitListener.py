@@ -22,7 +22,7 @@ args = parser.parse_args()
 class exitListener(protocol.Protocol):
 
     def dataReceived(self, data):
-        action, channelID, circuitID, website = data.split(" ", 4)
+        action, channelID, circuitID, website = data.split(" ", 3)
         action = action.strip()
         channelID = int(channelID.strip())
         circuitID = int(circuitID.strip())
