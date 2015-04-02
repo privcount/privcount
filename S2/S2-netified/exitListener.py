@@ -150,6 +150,6 @@ if __name__ == "__main__":
 
     s_factory = protocol.ServerFactory()
     s_factory.protocol = exitListener
-    reactor.listenTCP(int(args.port), s_factory) # Local Tor connection
+    reactor.listenTCP(int(args.port), s_factory, interface='127.0.0.1') # Local Tor connection
     print "DC ready!"
     reactor.run()
