@@ -28,7 +28,6 @@ class tallyListener(protocol.Protocol):
         self.buffer = ''
         if self.data:
           recv_data.append(self.data)
-	  print(recv_data)
           print "TS: Appended data!"
 
 if __name__ == "__main__":
@@ -64,7 +63,7 @@ if __name__ == "__main__":
         with open('results.txt','a') as f1:
             if data:
                 for i in data:
-                    res_line = str(last_epoch_start)+':'+str(i)+':'+str(data[i])
+                    res_line = str((last_epoch_start*epoch)-epoch)+':'+str(i)+':'+str(data[i])
                     f1.write(res_line)
                     f1.write('\n')
             else:
