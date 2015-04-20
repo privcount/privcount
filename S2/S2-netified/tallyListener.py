@@ -64,7 +64,7 @@ if __name__ == "__main__":
         with open('results.txt','a') as f1:
             if data:
                 for i in data:
-                    res_line = str(i)+':'+str(data[i])
+                    res_line = str(last_epoch_start)+':'+str(i)+':'+str(data[i])
                     f1.write(res_line)
                     f1.write('\n')
             else:
