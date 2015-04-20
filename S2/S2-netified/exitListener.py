@@ -35,12 +35,14 @@ class exitListener(protocol.Protocol):
                 site_seen[channelID][circuitID] = {}
             if website not in site_seen[channelID][circuitID]:
 	        site_seen[channelID][circuitID][website] = 1
-                if website in labels:
-                    r.inc(website)
-                    #print website + " incremented!\n"
-                else:
-                    r.inc("Other")
-                    #print "Other incremented!\n"
+                if website != "Other" and website != "Censored":
+                  if website in labels:
+                      r.inc(website)
+                      r.inc("Censored")
+#                      print website + " incremented exitListener!\n"
+                  else:
+                      r.inc("Other")
+#                      print "Other incremented exitListener!\n"
 
 class exitRegister(basic.LineReceiver):
     def __init__(self):
@@ -106,6 +108,7 @@ if __name__ == "__main__":
         for line in f1:
             labels.append(line.strip())
         labels.append("Other")
+        labels.append("Censored")
 
     with open(args.tally,'r') as f3:
         for tallyline in f3:

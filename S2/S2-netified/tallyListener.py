@@ -28,6 +28,7 @@ class tallyListener(protocol.Protocol):
         self.buffer = ''
         if self.data:
           recv_data.append(self.data)
+	  print(recv_data)
           print "TS: Appended data!"
 
 if __name__ == "__main__":

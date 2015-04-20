@@ -20,10 +20,10 @@ def prob_exit(consensus, fingerprint):
 
     DBW = 0
     EBW = 0
-    
+
     DW = 0
     EW = 0
-    
+
     prob = 0
     myWB = 0
     num_exits = 0
@@ -34,9 +34,9 @@ def prob_exit(consensus, fingerprint):
 	_, id_hex = f.readline().strip().split(" ") # has a nick in front
         id_bin = binascii.a2b_hex(id_hex)
         my_id = b64encode(id_bin).rstrip("=")
-    
+
     with open(priv_exits_fingerprints,'r') as h:
-	for line in h:	
+	for line in h:
 	  exit_id_hex = line.strip()
           exit_id_bin = binascii.a2b_hex(exit_id_hex)
           exit_id = b64encode(exit_id_bin).rstrip("=")
@@ -60,7 +60,7 @@ def prob_exit(consensus, fingerprint):
 	    if line.startswith("r "):
 	      relay_fingerprint = line.strip().split()
 	      relay_fingerprint = relay_fingerprint[2:3]
-            
+
             if line.startswith("r ") and my_id in line:
                 me = 1
             if line.startswith("s ") and "BadExit" not in line and relay_fingerprint[0] in priv_exits:
@@ -70,7 +70,7 @@ def prob_exit(consensus, fingerprint):
                 elif "Exit" in line:
                     e = 1
                     num_exits += 1
-                    
+
             if line.startswith("w "):
                 bandwidth = line.strip()
                 if " Unmeasured" not in line:
@@ -88,9 +88,12 @@ def prob_exit(consensus, fingerprint):
                 ge = e = me = 0
                 if biggest_bw < bandwidth:
                     biggest_bw = bandwidth
-                
+
     TEWBW = DBW*DW + EBW*EW
     prob = myWB/TEWBW
     sum_of_sq = sum_of_sq_bw/(TEWBW**2)
+#    print TEWBW, prob, num_exits, sum_of_sq
     return TEWBW, prob, num_exits, sum_of_sq
 
+if __name__ == '__main__':
+    prob_exit(consensus, fingerprint)
