@@ -28,7 +28,7 @@ class tallyListener(protocol.Protocol):
         self.buffer = ''
         if self.data:
           recv_data.append(self.data)
-          print "TS: Appended data!"
+          print "TS: Appended data from ", self.transport.getPeer().host
 
 if __name__ == "__main__":
     tkg_count = 0

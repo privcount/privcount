@@ -106,7 +106,9 @@ if __name__ == "__main__":
 
     with open(args.input,'r') as f1:
         for line in f1:
-            labels.append(line.strip())
+          site = line.strip()
+          if site not in labels:  
+            labels.append(site)
         labels.append("Other")
         labels.append("Censored")
 
