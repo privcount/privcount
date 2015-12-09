@@ -22,19 +22,18 @@ args = parser.parse_args()
 class exitListener(protocol.Protocol):
 
     def dataReceived(self, data):
-        action, channelID, circuitID, website = data.split(" ", 3)
-        action = action.strip()
-        channelID = int(channelID.strip())
-        circuitID = int(circuitID.strip())
-        website = website.strip()
+        action, data_remaining = [v.strip() for v in data.split(" ", 1)]
 
         if action == "a":
+            channelID, circuitID, website = [v.strip() for v in data_remaining.split(" ", 2)]
+            channelID, circuitID = int(channelID), int(circuitID)
+
             if channelID not in site_seen:
-		site_seen[channelID] = {}
+                site_seen[channelID] = {}
             if circuitID not in site_seen[channelID]:
                 site_seen[channelID][circuitID] = {}
             if website not in site_seen[channelID][circuitID]:
-	        site_seen[channelID][circuitID][website] = 1
+                site_seen[channelID][circuitID][website] = 1
                 if website != "Other" and website != "Censored":
                   if website in labels:
                       r.inc(website)
@@ -43,6 +42,18 @@ class exitListener(protocol.Protocol):
                   else:
                       r.inc("Other")
 #                      print "Other incremented exitListener!\n"
+        elif action == 's':
+            # 's', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd
+            channelID, circuitID, streamID, exitPort, readBW, writeBW, timeStart, timeEnd = [int(v.strip()) for v in data_remaining.split(" ", 7)]
+            # TODO do something
+            pass
+        elif action == 'c':
+            # 'c', ChanID, CircID, ReadBW, WriteBW, TimeStart, TimeEnd, ClientIP
+            items = [v.strip() for v in data_remaining.split(" ", 6)]
+            channelID, circuitID, readBW, writeBW, timeStart, timeEnd = [int(v) for v in items[0:-1]]
+            clientIP = items[-1]
+            # TODO do something
+            pass
 
 class exitRegister(basic.LineReceiver):
     def __init__(self):
