@@ -7,12 +7,12 @@ q = 2**31 - 1
 # A sensible resolution
 resolution = 0.01
 #the time frame of stats collection
-epoch = 3600 # in seconds
+epoch = 60#3600 # in seconds
 #the sigma we want for privacy and utility
-sigma = 240
+sigma = 6 #240
 
 #some time vairables to deal with clock skews, latency, etc.
-clock_skew = 300
+clock_skew = 3 #300
 tkg_start_delay = 3
 dc_start_delay =  5
 dc_reg_delay = dc_start_delay + 3

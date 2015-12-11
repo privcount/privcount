@@ -1,0 +1,538 @@
+network-status-version 3
+vote-status consensus
+consensus-method 21
+valid-after 1970-01-01 00:30:00
+fresh-until 1970-01-01 00:35:00
+valid-until 1970-01-01 00:45:00
+voting-delay 20 20
+client-versions 
+server-versions 
+known-flags Authority Exit Fast Guard HSDir Running Stable V2Dir Valid
+dir-source 4uthority1 06D2B2C73EBA4ABA50909E81512496762B6B36D2 11.0.1.147 11.0.1.147 9112 9111
+contact shadow-support@cs.umn.edu
+vote-digest 7D575DE240AD48CC82C5F3D79D0AE2711EDEDB73
+dir-source 4uthority2 3FF8DECF885C9586D9B29CA25CC8A8BB2B25FC43 11.0.1.146 11.0.1.146 9112 9111
+contact shadow-support@cs.umn.edu
+vote-digest BB3DE7F3269A2E374CAE5499EEF0F9FCD3E461D3
+dir-source 4uthority3 711DCF4D3C17D64F1098F681CA396569672CC013 11.0.1.145 11.0.1.145 9112 9111
+contact shadow-support@cs.umn.edu
+vote-digest 5649560740B0FDBA7859D57FDB5533ED6E93574F
+r relayexit5 BeDqFp1JteAFPbpDFu65C77n+6U j/CDljTSm3W4EsYCHSPswdoIwNU 1970-01-01 00:03:25 192.81.221.162 9111 9112
+s Exit Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=88
+p accept 1-65535
+r relayguard9 Bwt03wSYFyZdmCOvmNwNfjQhk6g lpISfAIS1MjIr2hmWUmyBnBgRuA 1970-01-01 00:02:22 38.229.70.54 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=7160
+p reject 1-65535
+r relaymiddle26 B09tpGeM8LbnQsKbV8V4zgCjicU ZYKLkn3hyZPBoTvzI02J19uvMr8 1970-01-01 00:06:41 193.166.167.75 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=218
+p reject 1-65535
+r relaymiddle16 C7yvwChXSq4USXnEDt36MbSGIy4 aRedTGJ4sB4/0XgkOjqmGFvHb9s 1970-01-01 00:05:38 212.77.226.245 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=503
+p reject 1-65535
+r relayexitguard2 D2/d+E/+WP5DcB7ot+j0r13Oqg0 HUmquZKOAHEHp3aFgcfl4VCgW+M 1970-01-01 00:01:06 77.95.229.12 9111 9112
+s Exit Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=14600
+p accept 1-65535
+r relaymiddle15 EB47Ld1O8GnQXbtpypk1txCuOwQ 7i5tqgKfD9n8CUJh7sKKn8ANpF0 1970-01-01 00:05:32 50.116.50.12 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=540
+p reject 1-65535
+r relaymiddle5 EvdDrYoikKr1JvvTWdg8x6cf9mE LbJA9mGLLBLWucRVArvZawcuzno 1970-01-01 00:04:28 46.227.96.218 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1670
+p reject 1-65535
+r relaymiddle61 E9TEB9qYCL44hFyr0tLDcxqBdUQ McLPG0BOvHuSFVqp3haV16YFMjs 1970-01-01 00:10:22 100.4.154.174 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=4
+p reject 1-65535
+r relayguard8 FCQXqPPorhbirpan80JUY12dZUw MfTQuge1w/QlTtej/wxllo9wDyg 1970-01-01 00:02:16 5.9.39.113 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=8420
+p reject 1-65535
+r relayexit9 FKV+hvUPI+z+EFuX6xMTXekyOwI 0u9GL2sjWEm81sbG7CPovEW8MeY 1970-01-01 00:03:51 216.183.142.238 9111 9112
+s Exit Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=17
+p accept 1-65535
+r relaymiddle37 F8jk+R0sFqj+fVZDMVAkFLsTcdo zXWl5TlrzsMU18qx4rKlxCB9iX8 1970-01-01 00:07:51 130.184.75.118 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=63
+p reject 1-65535
+r relaymiddle50 G7e2SudAOdR7GU8TvaVS7a4uu0Q yIlz/bGNQbU3fOZYiv9Y+6oSTMM 1970-01-01 00:09:13 108.61.182.236 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=20
+p reject 1-65535
+r relayexit8 HwnqbwRlSDB+j1K/AdlFkdjFN9A FeBOiVx2gaxcESm/j0Bt9fVjA04 1970-01-01 00:03:44 162.243.83.31 9111 9112
+s Exit Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=20
+p accept 1-65535
+r relayguard7 ICQBchMLxI8EcQxo1cF4Zh1zOVo E3wir8xxH8dIUUvTSB/2Gnfnz5E 1970-01-01 00:02:09 144.76.100.57 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=9400
+p reject 1-65535
+r relayguard3 IQRoptkfdbuNi0xXqVqPcyVK4mo SgQsjPVZ7KeaEmnUBOCJc+qbCYA 1970-01-01 00:01:44 5.9.151.241 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=21200
+p reject 1-65535
+r relayguard10 IWQXKsdoBGvjjL5+LLpgXCpmRTM QDX+pJGaGBIAzE1d3qB5n9COrpw 1970-01-01 00:02:28 188.165.25.210 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=6070
+p reject 1-65535
+r relaymiddle36 IuV8Imp1T2W/KPJGGGLiipEZsNo ktu45MKEQPHtUrYtP5eI54yf6qk 1970-01-01 00:07:44 94.23.236.187 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=70
+p reject 1-65535
+r relayexit2 JZC6u7Wy1N+tf1kCxh5bvRWR72M 2dMsgnWAJM60YADDZihN0wwnWqY 1970-01-01 00:03:06 192.81.249.31 9111 9112
+s Exit Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1410
+p accept 1-65535
+r relaymiddle57 Jfzx+zl5YA07E0hfz1n+bP+/E9E jIHuwjGiR6J3iBnJaZPn6Go/Im0 1970-01-01 00:09:57 50.250.208.17 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=11
+p reject 1-65535
+r relaymiddle20 J41fXZ14dXs71rba0llmqsrnpNc jGrdYwb9EGVxttxG+3g44tj2WYY 1970-01-01 00:06:03 162.243.62.239 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=382
+p reject 1-65535
+r relaymiddle29 LGQL2fvEYqJNagL+xbVp+nv76bM GMERFjViO8XiUlZFVPOTryyVoQM 1970-01-01 00:07:00 193.166.167.85 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=162
+p reject 1-65535
+r relaymiddle30 MlZyF6gQEp/OWb46q+K/rGn+XIU wan+woAqoDUc5hRAI7WiCL0H7Vc 1970-01-01 00:07:06 87.92.126.59 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=147
+p reject 1-65535
+r relayguard2 MsVb3GqvmqSFEr2eux8S4wyghPE Uk3wZnforncKOmG1xoFHMx8CB74 1970-01-01 00:01:38 77.207.77.178 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=27700
+p reject 1-65535
+r relaymiddle66 NjNiSefaQ9f64lQM/dMS2aN3Hew h02vhe7oqdthudJ477Ho97KoUVc 1970-01-01 00:10:54 211.31.206.202 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1
+p reject 1-65535
+r relayguard5 OJgnUzzIMUGUZrJHAxLaSaqNLUE zr17lecLiBJAj8efLcqqw6vUEf4 1970-01-01 00:01:57 192.99.15.122 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=13300
+p reject 1-65535
+r relaymiddle38 OUJkws7aufs7TTO9/Yeb/rVZeK0 JbFOAHCP3d+malIIxul+JxAQ1wo 1970-01-01 00:07:57 80.81.243.226 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=55
+p reject 1-65535
+r relaymiddle27 PCUHgQNRU5W3Bb6vTwXunUhS3i0 2KD6VPRrasGFjY5Uos5NMAdM8p0 1970-01-01 00:06:47 185.69.55.68 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=200
+p reject 1-65535
+r relaymiddle1 S1rekhzw7ohSCWkViPIR0N4t/cI xISrrOAbKbuPEqFlZivYWdFJk28 1970-01-01 00:04:03 192.99.186.94 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=12400
+p reject 1-65535
+r relayexit1 S1x1LFerIlgTPzt3N4QBdDw3ULo dzvWUQ7SDoJe/AOd3sBboB1SqFE 1970-01-01 00:03:00 46.183.219.156 9111 9112
+s Exit Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=5740
+p accept 1-65535
+r relayexitguard5 TABdIcUKfTDsE+QzwchECguAx2g E7ZJOAVczNJCQxXAVCwzuDXow04 1970-01-01 00:01:25 207.201.223.195 9111 9112
+s Exit Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1840
+p accept 1-65535
+r relaymiddle6 TyFafWsNE9sjKaRPQT7sa0SL7F0 nZ4+8eFrgv/NXH92uPt//VFMDjs 1970-01-01 00:04:35 173.161.3.169 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1480
+p reject 1-65535
+r relaymiddle4 UjeQY8GQtoKyPrt/cGYbCheQPcc 65rfksz40OdirhRPjCH7B3XVtLs 1970-01-01 00:04:22 50.116.32.217 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1910
+p reject 1-65535
+r 4uthority1 Wtb1I2SXbmKHvhilcgV9jD/w990 kdPQNQiecgwno13SFgfTBQI6nkc 1970-01-01 00:15:02 11.0.1.147 9111 9112
+s Authority Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1370
+p reject 1-65535
+r relaymiddle34 ZyPIESo9VTacadqXwJJdWmfqre0 UiT6n9JQrTgGk28hXswWmlyvv7E 1970-01-01 00:07:32 108.34.205.208 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=90
+p reject 1-65535
+r relaymiddle39 Z3yebOuXMHUfKK+OwrQTEWM9Ps0 /58y8k1/+YRT5E/R9gsZU9x3fbA 1970-01-01 00:08:03 83.85.252.91 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=45
+p reject 1-65535
+r relaymiddle60 eaqDtpnt+LFjTFlnCSXFk2ktyTw +WgDaKgsv56wOq0FbEDSQCMOzq0 1970-01-01 00:10:16 80.223.169.64 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=6
+p reject 1-65535
+r relaymiddle19 eqBXFxotvBFnn3k1D3Ezkz1JUts YDXZkBtOKQ3RDVWt3RPkkW00KE8 1970-01-01 00:05:57 217.230.35.229 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=408
+p reject 1-65535
+r relaymiddle3 e+2mql3HfmZlrqCd18w1JdoaKO4 fvV5gtDCF06WUQh0Kz/CRdYH3RM 1970-01-01 00:04:16 184.105.203.133 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=2470
+p reject 1-65535
+r relaymiddle56 fRs3g2GbNZ2GZDxdyM8z7pEyYG4 /NXN6PfBbNTPCP1I8glxzPe8+JM 1970-01-01 00:09:51 83.246.217.133 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=13
+p reject 1-65535
+r relaymiddle7 fakANTKJw1jEFqN5RyLjyJEwgOo a8ghbtzsYc2PU7VJC3TiNUOmmng 1970-01-01 00:04:41 96.31.67.15 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1320
+p reject 1-65535
+r relayguard4 gkx8W7pum4N5rACLmUXDvG7dNnU xRVjhuO5YXbPbqRj5BZnu9cQZ5Q 1970-01-01 00:01:51 148.251.207.36 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=15300
+p reject 1-65535
+r relaymiddle22 g3hK857I65lQAob5Pcjv391faSo umpIIvFwQ3Z7LaOhcQiAVGSFRiA 1970-01-01 00:06:16 198.58.106.245 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=305
+p reject 1-65535
+r relaymiddle44 g9gzJGcrcdXWBPNWEDgiKFBkWMw yxL6PyNscre52VPgFGlVI5twFRc 1970-01-01 00:08:35 95.143.172.212 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=27
+p reject 1-65535
+r relaymiddle54 hyKftlP5BC2Xkekxqz5IBbDdhJc m0qf3iVc2ibOFNNUAl6hyGibcu4 1970-01-01 00:09:38 88.217.48.16 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=17
+p reject 1-65535
+r relaymiddle62 jeXDzIH0FrmqMzvEjpfV+EcXyMA 1Yc1OEJ6vGOiVNKLMZzQBUls6ag 1970-01-01 00:10:28 188.174.217.127 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=3
+p reject 1-65535
+r relaymiddle33 jz/vIQ2H0xrO02yXgLeiK/PDv+c 06DD4+I0hVx1VTkCQUMP6jhHosQ 1970-01-01 00:07:25 31.30.46.68 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=104
+p reject 1-65535
+r 4uthority2 kg0l7lIHbqmknP6icKSa+h1DqZM Gy09NlbXNHIAmmJvKEQPg/aAObE 1970-01-01 00:02:58 11.0.1.146 9111 9112
+s Authority Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1970
+p reject 1-65535
+r relaymiddle55 lclVJK4MiEn3oq38mS9W1lMCB70 oLIqBA5UBpVuv/ovDsg+VQ5sOwQ 1970-01-01 00:09:44 83.6.195.59 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=15
+p reject 1-65535
+r relayguard11 mhsssuC7c2X+3iYQtGMVNHdIirk iVr8rstLPUggwiuUk59iKwTaELs 1970-01-01 00:02:35 178.254.6.21 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=5020
+p reject 1-65535
+r relaymiddle52 oEpgX8T7rHU2V1MoB1EJPBq/qos ZNsmktQTxBDqbprcvv51ZYgsAnE 1970-01-01 00:09:25 88.198.111.119 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=20
+p reject 1-65535
+r relaymiddle10 pS5VoY0JY5ZGJLJnJmj8UP/EpBI LwKFoVub1QUOtcG+sMh1dyiFLMw 1970-01-01 00:05:00 86.161.216.205 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=930
+p reject 1-65535
+r relaymiddle24 p3sNlFVvNcNGXKixjJAfGjoc4Ag AnS1zUTkByzNDQ5fKBwNWzmvHKI 1970-01-01 00:06:28 70.38.31.121 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=262
+p reject 1-65535
+r relayexit4 qEZNhriSz9VDYCghaTRKBRyDNFk mUVJF8CMavm4sAgK5TZOb8QYoiY 1970-01-01 00:03:19 128.199.253.156 9111 9112
+s Exit Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=253
+p accept 1-65535
+r relaymiddle18 qFR9v3HtPFgD8/Y1NS3iVEeMqfM vN2q9V+2cjFBwysUabvQuOZSbYA 1970-01-01 00:05:51 162.243.101.110 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=455
+p reject 1-65535
+r relaymiddle25 qJGJ8reZWjbaKxCg6C9cj9j9ams IWpz360uG0SyADigBqgv7W3WkGM 1970-01-01 00:06:35 74.101.201.249 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=237
+p reject 1-65535
+r relaymiddle48 q2uM/RTAljDyJGa1K916M8ZUC8g 3TqJv/1CH40MQy9kEoQBoXHmV34 1970-01-01 00:09:00 37.187.9.79 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=20
+p reject 1-65535
+r relaymiddle47 sLEtYWi6jDUOPXP1jg7/sCgO/Hk iSZKAIjQdTp3+iM7IpC0yJH7vbE 1970-01-01 00:08:54 108.32.49.20 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=23
+p reject 1-65535
+r relayguard1 s705Y5hygHzLKGu001HDdgOCj5U /aw3hHP9Yhbe989dvQe/dEeoyXs 1970-01-01 00:01:32 212.129.62.232 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=46800
+p reject 1-65535
+r relaymiddle59 tMRnGB50IWdno81g7J3itlMEsw8 RaAMP8Yp2pG/pgsYvsDImdn4FUY 1970-01-01 00:10:09 78.47.186.243 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=7
+p reject 1-65535
+r relaymiddle40 tVF/6scYillorHa9XvyFlo5P6WQ UUi2/4eliFnggKVNvR4NziA1DII 1970-01-01 00:08:09 84.45.76.13 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=38
+p reject 1-65535
+r relayexitguard1 taSEaTo9ZSUHJeV1D64L2ast/pw crOTi3GrL5T/oPXmzYsSKC72v3A 1970-01-01 00:01:00 165.254.255.16 9111 9112
+s Exit Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=43900
+p accept 1-65535
+r relaymiddle12 tlbnTi8Bibz79C9brN/4OvlZRMY ev+5VPMMojl1yow02hw895z/06w 1970-01-01 00:05:13 81.169.255.235 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=715
+p reject 1-65535
+r relaymiddle11 uoV6Zu2KwvMf00DJSD04DoMIIbI dTmMtCo2GZlIJdEZr/ISp2B9G6U 1970-01-01 00:05:06 188.106.25.42 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=790
+p reject 1-65535
+r relaymiddle42 upMUVL7iMYyPHvVWeNUiCumvWZ8 GHNjJa/8UO0LxbhqDy1UJhs8bM0 1970-01-01 00:08:22 95.85.7.90 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=30
+p reject 1-65535
+r relaymiddle21 vG9QwVPValBT/d18z8RrU+dLmOs u28nsU2+q3ETb5nu38twu+yjDAc 1970-01-01 00:06:09 192.252.130.142 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=339
+p reject 1-65535
+r relaymiddle64 votnIsIbndEywVeanHgIseOXhpE aAYc/JRFlX4O9QlY8M6n0pZf9vo 1970-01-01 00:10:41 98.219.222.233 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=2
+p reject 1-65535
+r relaymiddle46 wPzxoK6EN1lS3HLcsP+x2bbuS88 N1WJvMufSIXweVSCaUqXy5l+fPs 1970-01-01 00:08:47 82.161.109.71 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=25
+p reject 1-65535
+r relaymiddle9 wYn0SPCKlFDowEw4NCCt8Etn9yk th1newJopL8PVBcmasZZYJreT90 1970-01-01 00:04:54 168.235.154.96 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1060
+p reject 1-65535
+r relaymiddle8 wj0L7B0FNtElUY4ICHIXNXrHbFY +JXFgRciPv8Gcadyj5jV18GMyQY 1970-01-01 00:04:47 91.209.211.140 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1170
+p reject 1-65535
+r relaymiddle53 wuInp07/B98MHd4eccLdpJc2g6Y WTcthvPG8BmPpnbYorIMR+1mf4Q 1970-01-01 00:09:32 77.12.103.103 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=19
+p reject 1-65535
+r relayexitguard4 w+vjB9WxojiSdOnarU9ilLNz/P4 qyrP9kLZyohx5pHpOdT46f7MUls 1970-01-01 00:01:19 176.10.99.209 9111 9112
+s Exit Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=4360
+p accept 1-65535
+r relayexit6 xsyxZtVeznVdvui4+VrawC/ob/A U2hviAeBR6zEexwy8A8tdZC2lNM 1970-01-01 00:03:32 193.90.12.90 9111 9112
+s Exit Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=27
+p accept 1-65535
+r relaymiddle58 x8Mm0UmVAT5HKgJ+y6IYp57ZdlQ lubEq/HpKFexYwcV3gIkY8n3NNA 1970-01-01 00:10:03 37.190.213.10 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=9
+p reject 1-65535
+r relaymiddle13 yFto3mdE38Bz95Rhv8kxetm0Wak CFjRmOZtUSIJvpc6Vd7cexo5yOo 1970-01-01 00:05:19 72.14.179.163 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=651
+p reject 1-65535
+r relaymiddle51 zHAuZDaJgEdLFgETK1Lx0VpytiA FnfGXiCJW4bNvhIc3olHrRIpqws 1970-01-01 00:09:19 37.187.246.221 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=20
+p reject 1-65535
+r relaymiddle28 zSZB5BqDK+fOKCDbav+174NI5wQ 7geEYpr4q6rvzIDqi3FolGDiAwY 1970-01-01 00:06:54 104.236.50.62 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=180
+p reject 1-65535
+r relaymiddle45 zZi1JaobtxL51f854Mp6ZgH7Jzg 14qO8pZyySAU06S+eYv0nl4+xzc 1970-01-01 00:08:41 82.221.101.26 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=26
+p reject 1-65535
+r relayexit10 zlJzHG8q7rpatetJIj5kfTIk0II TLmd8a5Ye4oqAop6ZyrXcv7ql84 1970-01-01 00:03:57 59.177.71.249 9111 9112
+s Exit Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=2
+p accept 1-65535
+r relayguard12 zzW7LraAgAM5pcETKxSsjQ8sx1s AmtsuW9xLT60MWQINtSOCH7d25s 1970-01-01 00:02:41 85.31.186.253 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=4080
+p reject 1-65535
+r relaymiddle35 z8cPnZ/cPMBWT9syvWh3s2jmiUs K2K5eVFC55SyTmqGbYBgaXS2jXs 1970-01-01 00:07:38 72.69.248.99 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=77
+p reject 1-65535
+r relaymiddle17 0IX8Dltw1pTcMOcOVpHCFeJj66Q zY00Ot9EIY9ZZKRqThaxQfRJ988 1970-01-01 00:05:44 212.112.242.159 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=483
+p reject 1-65535
+r relayguard13 1f7MNBGKxVin8HyEr1IndOCqAY8 vEb76qj9XbgdM6nvMdDg5Ttd0Ww 1970-01-01 00:02:47 104.200.20.142 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=3180
+p reject 1-65535
+r relayguard14 1oQaLHFwnsDEG3RsyVgadgB5fKk IRHvXJYznE577eIYKL9V1L4hnJw 1970-01-01 00:02:54 5.9.110.236 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=2730
+p reject 1-65535
+r relayexit7 13mRuKlaFhR51ArFbzYONRBjOFY wBkJmrOvkoMc1rw0hx6wlLGE/9I 1970-01-01 00:03:38 176.38.140.16 9111 9112
+s Exit Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=20
+p accept 1-65535
+r relaymiddle63 15bsd7ks9XKBUjY31Xt/NK29EHg 7QqYtbFHfqat7P5njFdLtleT+AA 1970-01-01 00:10:35 46.246.94.174 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=3
+p reject 1-65535
+r relaymiddle23 2NVjMcsuQd6dYgvpAtap8Qu1mpA m0hxxZQLu/7pATPP5OHlXGltWmE 1970-01-01 00:06:22 85.23.145.26 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=280
+p reject 1-65535
+r relayguard6 3LIqZY9/4ACAY7z7k229Ch8UssY loicozVntVfvaTuCktJT8GCIACs 1970-01-01 00:02:03 195.154.103.117 9111 9112
+s Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=11400
+p reject 1-65535
+r relaymiddle32 3W8I/I/HWYgx6rjs+JZ9roRFEBg 5nwHQb/chtBZ3FIxqIHQuHxQCXc 1970-01-01 00:07:19 185.5.53.93 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=113
+p reject 1-65535
+r relaymiddle2 4ChcrCWe/rNlkWwt/phrW3PRVIw 0PR1s4T8uz9gRxZTbukffNRRJL8 1970-01-01 00:04:09 140.180.190.191 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=4610
+p reject 1-65535
+r relaymiddle31 6XreA65HFZz4iy3ZtZAtmr/JUv4 3pSc5YgF2z79x6xeyjK4gQluD7g 1970-01-01 00:07:13 106.187.94.69 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=128
+p reject 1-65535
+r relayexit3 7dMAa/LSAlRwFyWRHWALDg6DZQQ K6bhS3NYX4/aP7nglXILCavm0J4 1970-01-01 00:03:13 81.89.0.199 9111 9112
+s Exit Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=539
+p accept 1-65535
+r relaymiddle41 7u0YqU38p2u+btITqHL2KAXEcco +GOqNvmjx4XLGBTJ/QbRJV4PTH8 1970-01-01 00:08:16 107.170.93.117 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=34
+p reject 1-65535
+r relaymiddle49 7/34lBYne2xLXg8WuwygF9my0co 0xTgCBk9XHBSSGRNLapb6uLj34I 1970-01-01 00:09:06 5.39.122.66 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=20
+p reject 1-65535
+r relaymiddle65 9f+pRA1j8MYEO4yNCeYW7L9kTz8 QHLgYgTM+/KARQa0AY0qY6+wCK8 1970-01-01 00:10:47 91.18.3.238 9111 9112
+s Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=1
+p reject 1-65535
+r relayexitguard3 94Sj77dARmFiQAd8WBX9oP1DQ9M mFx6D6ZgvTia5zcfCGRBq3dOu0w 1970-01-01 00:01:13 209.159.138.19 9111 9112
+s Exit Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=9080
+p accept 1-65535
+r relaymiddle14 +X0kPTZ8saAbWaLCDV74naAzljo YbP6sKi5js93h4dXicBQpHpaY28 1970-01-01 00:05:25 108.20.171.7 9111 9112
+s Fast HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=600
+p reject 1-65535
+r 4uthority3 +4SKusC9eBHUxSMc6lrPhZqQA4A AEsgMwFxW+b5Lk4vJvXmBpoR4+U 1970-01-01 00:15:02 11.0.1.145 9111 9112
+s Authority Fast Guard HSDir Running Stable V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=2390
+p reject 1-65535
+r relaymiddle43 /mll1B1jT9WNdNo9roan82QYOGM HADqdQZbGBI2ikIUBOE5NSUhtuY 1970-01-01 00:08:28 80.219.2.68 9111 9112
+s Fast Running V2Dir Valid
+v Tor 0.2.7.5
+w Bandwidth=28
+p reject 1-65535
+directory-footer
+bandwidth-weights Wbd=1 Wbe=1 Wbg=3984 Wbm=10000 Wdb=10000 Web=10000 Wed=10000 Wee=10000 Weg=10000 Wem=10000 Wgb=10000 Wgd=1 Wgg=6016 Wgm=6016 Wmb=10000 Wmd=1 Wme=1 Wmg=3984 Wmm=10000
+directory-signature 06D2B2C73EBA4ABA50909E81512496762B6B36D2 AA27CAE44E8293EA71AAAA0A3D3D82BAF2A03113
+-----BEGIN SIGNATURE-----
+RCQg17pjHcTsiHGdHTkL6AECpMcGtcqirDd9waav70UEHdTDeGDrTtMSJORIDqOF
+nrh5aW+e8MqdN93M3n6bP7uYdbr46Usmf/kKCP6KtdVhVs4aR6Ju8wB5xPgBisVf
+u52ElRrRn5d29jaYFPF+VxWnvSTOazRpwTGyK3pf0fArCSNpzMIC4bDSx0llewO9
+SxMnqhorgQhBLILVj/o0HwmlcDkyydC8ilWKZ6uIZJXputguvrG/l7P9zr5fAtVh
+tXqRCDtuQBnSyf0+2pVaTkcSPzmtk+a9zrGfQtvf9A/1BQ1RVP5wmtbjwM8NeC34
+Cvs/QovciiRO5Sp+Tod1Hw==
+-----END SIGNATURE-----
+directory-signature 3FF8DECF885C9586D9B29CA25CC8A8BB2B25FC43 42881D61B493DA9F0367BD3F94D4FFA31C702B0C
+-----BEGIN SIGNATURE-----
+qkCOXkZrShgCmDSiwcRGlbPQv+MjT05VhPW/HL2SwH4y6logfimm2xpWsGrf1xS+
+zLtmbENBOmRfbX+7XUor5bFCvDNGFnTf4UOCgDJTOR/wNKvlzIcUMpsmG7Lrod81
+J1OV4Qt7dQcIEe+gMfNu1sOTeoUMUDEu/ESRu6fjYWj3Q9oUNw02zLRjo5hpL7Uv
+zqK25mXrTAeYAQv6Plno8fZjx5KTpmrRW9OCpGSvtgtmO9wW3b5iZrJ8vjh0aXq9
+Ell6BvIcObSubg2jwaxbnnf7Jj5AUcBN3YLstKwuijc27NhHitKZFuM2ySTOKyfK
+x6B3hxwC4r4dnOIkwEZGUA==
+-----END SIGNATURE-----
+directory-signature 711DCF4D3C17D64F1098F681CA396569672CC013 17F2F712149C2BB4DA0C24AB18D0DE06434C0693
+-----BEGIN SIGNATURE-----
+gk+necigFzkCX5+PqQ9/RBb5/K368z/PiY6+6Xm2fYyfuOOpUeAmzzWqFl8Ki9S8
+zTW5oTM9IEHgBYhshNli8zR04clznLbSPLnYnn0TMkBISQIg0J0hARyLBgBGqCje
+fY/2tWpg7dFf0OpUUsFq2p7zEkeq2MKpLYwUvDO0Gz7+IOmtF1G4fjpDhcpslg/z
+WcPgpB3q9rjGXk/XEAz1SgeUdqAjrzrQfrMwsM75hYDsEtuGlDmGVes12Os3DpAJ
+71od7r9ze7y5EMvbtSLTpsbk/CL8ETH+paSn8Yx+g57bwlUJb+ueaHSgDPDdNXND
+eKzIY3J5mkUVLbqzAcNrFQ==
+-----END SIGNATURE-----

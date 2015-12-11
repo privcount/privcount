@@ -79,6 +79,7 @@ def prob_exit(consensus, fingerprint):
 			_, bandwidth, _ = bandwidth.split("=")
 			bandwidth , _ = bandwidth.split(" ")
                 bandwidth = float(bandwidth)
+                #print ge, e
                 DBW += bandwidth*ge
                 sum_of_sq_bw += (bandwidth*ge)**2
                 EBW += bandwidth*e

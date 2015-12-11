@@ -19,10 +19,11 @@ parser.add_argument('-c','--consensus', help='consensus file of exit',required=T
 
 args = parser.parse_args()
 
-class exitListener(protocol.Protocol):
+class exitListener(basic.LineReceiver):
+    delimiter = '\n' # change the default ('\r\n')
 
-    def dataReceived(self, data):
-        action, data_remaining = [v.strip() for v in data.split(" ", 1)]
+    def lineReceived(self, line):
+        action, data_remaining = [v.strip('\n') for v in line.split(" ", 1)]
 
         if action == "a":
             channelID, circuitID, website = [v.strip() for v in data_remaining.split(" ", 2)]
@@ -44,16 +45,19 @@ class exitListener(protocol.Protocol):
 #                      print "Other incremented exitListener!\n"
         elif action == 's':
             # 's', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd
-            channelID, circuitID, streamID, exitPort, readBW, writeBW, timeStart, timeEnd = [int(v.strip()) for v in data_remaining.split(" ", 7)]
+            items = [v.strip('\n') for v in data_remaining.split(" ", 7)]
+            channelID, circuitID, streamID, exitPort, readBW, writeBW  = [int(v) for v in items[0:-2]]
+            timeStart, timeEnd = float(items[-2]), float(items[-1])
             # TODO do something
-            pass
+            print "found stream: {0} {1} {2} {3} {4} {5} {6} {7}".format(channelID, circuitID, streamID, exitPort, readBW, writeBW, timeStart, timeEnd)
         elif action == 'c':
             # 'c', ChanID, CircID, ReadBW, WriteBW, TimeStart, TimeEnd, ClientIP
-            items = [v.strip() for v in data_remaining.split(" ", 6)]
-            channelID, circuitID, readBW, writeBW, timeStart, timeEnd = [int(v) for v in items[0:-1]]
+            items = [v.strip('\n') for v in data_remaining.split(" ", 6)]
+            channelID, circuitID, readBW, writeBW = [int(v) for v in items[0:-3]]
+            timeStart, timeEnd = float(items[-3]),  float(items[-2])
             clientIP = items[-1]
             # TODO do something
-            pass
+            print "found circuit: {0} {1} {2} {3} {4} {5} {6}".format(channelID, circuitID, readBW, writeBW, timeStart, timeEnd, clientIP)
 
 class exitRegister(basic.LineReceiver):
     def __init__(self):
