@@ -43,21 +43,23 @@ class exitListener(basic.LineReceiver):
                   else:
                       r.inc("Other")
 #                      print "Other incremented exitListener!\n"
+
         elif action == 's':
             # 's', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd
             items = [v.strip('\n') for v in data_remaining.split(" ", 7)]
             channelID, circuitID, streamID, exitPort, readBW, writeBW  = [int(v) for v in items[0:-2]]
             timeStart, timeEnd = float(items[-2]), float(items[-1])
-            # TODO do something
-            print "found stream: {0} {1} {2} {3} {4} {5} {6} {7}".format(channelID, circuitID, streamID, exitPort, readBW, writeBW, timeStart, timeEnd)
+            stream_data = {'port':exitPort, 'readbw':readBW, 'writebw':writeBW, 'start':timeStart, 'end':timeEnd}
+            exit_streams.setdefault(channelID, {}).setdefault(circuitID, {}).setdefault(streamID, stream_data)
+
         elif action == 'c':
             # 'c', ChanID, CircID, ReadBW, WriteBW, TimeStart, TimeEnd, ClientIP
             items = [v.strip('\n') for v in data_remaining.split(" ", 6)]
             channelID, circuitID, readBW, writeBW = [int(v) for v in items[0:-3]]
             timeStart, timeEnd = float(items[-3]),  float(items[-2])
             clientIP = items[-1]
-            # TODO do something
-            print "found circuit: {0} {1} {2} {3} {4} {5} {6}".format(channelID, circuitID, readBW, writeBW, timeStart, timeEnd, clientIP)
+            circuit_data = {'readbw':readBW, 'writebw':writeBW, 'start':timeStart, 'end':timeEnd}
+            client_circuits.setdefault(channelID, {}).setdefault(circuitID, circuit_data)
 
 class exitRegister(basic.LineReceiver):
     def __init__(self):
@@ -77,6 +79,14 @@ class exitRegister(basic.LineReceiver):
         self.sendLine(repr(msg[0]))
         msg.pop(0)
 
+def count_streams_per_circuit(streamd):
+    l = []
+    for chanid in streamd:
+        for circid in streamd[chanid]:
+            n_streams = len(streamd[chanid][circid])
+            l.append(n_streams)
+    return max(l)
+
 class exitStatSend(basic.LineReceiver):
 
     def connectionMade(self):
@@ -89,6 +99,16 @@ class exitStatSend(basic.LineReceiver):
 
         global msg
         global site_seen
+        global exit_streams
+        global client_circuits
+
+        # count up stream infos
+        count = count_streams_per_circuit(exit_streams)
+        for i in xrange(count):
+            r.inc("StreamsPerCircuit")
+
+        # count up circ infos
+
 
         self.send_data = json.dumps(r.publish())
 
@@ -97,6 +117,9 @@ class exitStatSend(basic.LineReceiver):
 
         #clean up objects and refresh
         site_seen.clear()
+        exit_streams.clear()
+        client_circuits.clear()
+
         r = None
         msg = []
         r = router(q, labels, tkgs, args.fingerprint, args.consensus)
@@ -114,6 +137,8 @@ if __name__ == "__main__":
     labels = []
     tkgs = []
     site_seen = {}
+    exit_streams = {}
+    client_circuits = {}
     r = None
 
     tkg_info = []
@@ -126,6 +151,7 @@ if __name__ == "__main__":
             labels.append(site)
         labels.append("Other")
         labels.append("Censored")
+        labels.append("StreamsPerCircuit")
 
     with open(args.tally,'r') as f3:
         for tallyline in f3:
