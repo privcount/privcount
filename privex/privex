@@ -1,0 +1,108 @@
+#!/usr/bin/env python
+
+import sys, os, logging
+import ConfigParser
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, ArgumentTypeError
+
+class CustomHelpFormatter(ArgumentDefaultsHelpFormatter):
+    # adds the 'RawDescriptionHelpFormatter' to the ArgsDefault one
+    def _fill_text(self, text, width, indent):
+        return ''.join([indent + line for line in text.splitlines(True)])
+
+def main():
+    # argparse.RawDescriptionHelpFormatter, RawTextHelpFormatter, RawDescriptionHelpFormatter
+    help_formatter = CustomHelpFormatter
+
+    # construct the options
+    main_parser = ArgumentParser(description="Run a privex entity", formatter_class=help_formatter)
+
+    main_parser.add_argument(# '-c', '--config',
+        help="""a file path to a privex config file, may be '-' for STDIN""",
+        metavar="CONFIG_PATH", type=type_str_path_in,
+        action="store", dest="configpath")
+
+    main_parser.add_argument('-l', '--log',
+        help="""a file path to log output, may be '-' for STDOUT""",
+        metavar="LOG_PATH", type=type_str_path_out,
+        action="store", dest="logpath",
+        default="-")
+
+    sub_parser = main_parser.add_subparsers(help="")
+
+    # tally server
+    ts_parser = sub_parser.add_parser('ts', help="run a privex tally server", formatter_class=help_formatter)
+    ts_parser.set_defaults(mode='ts', func=data_collector, formatter_class=help_formatter)
+
+    # tally key server
+    tks_parser = sub_parser.add_parser('tks', help="run a privex tally key server", formatter_class=help_formatter)
+    tks_parser.set_defaults(mode='tks', func=data_collector, formatter_class=help_formatter)
+
+    # data collector
+    dc_parser = sub_parser.add_parser('dc', help="run a privex data collector", formatter_class=help_formatter)
+    dc_parser.set_defaults(mode='dc', func=data_collector, formatter_class=help_formatter)
+
+    # get args and call the command handler for the chosen mode
+    args = main_parser.parse_args()
+
+    logfile_path = None if args.logpath == '-' else args.logpath
+    logging.basicConfig(filename=logfile_path, level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S',
+        format='%(asctime)s %(created)f [privex-{0}] [%(levelname)s] %(message)s'.format(args.mode))
+
+    if logfile_path is not None:
+        print "privex: output redirected to '{0}'".format(logfile_path)
+
+    if args.configpath == '-':
+        with open('privex.tmp.cfg', 'wb') as fout:
+            for line in sys.stdin:
+                print >> fout, line,
+        args.configpath = os.path.abspath('privex.tmp.cfg')
+
+    logging.info("using config file at '{0}'".format(args.configpath))
+
+    try:
+        args.func(args)
+    except ConfigParser.Error:
+        logging.critical("config file format is malformed or missing required values for selected command")
+
+def data_collector(args):
+    logging.info("running data_collector")
+    from data_collector import DataCollectorManager
+    dc = DataCollectorManager(args.configpath)
+    dc.start()
+    dc.join()
+
+def tally_server(args):
+    logging.info("running tally_server")
+    from tally_server import TallyServerManager
+    ts = TallyServerManager(args.configpath)
+    ts.start()
+    ts.join()
+
+def tally_key_server(args):
+    logging.info("running tally_key_server")
+    from tally_key_server import TallyKeyServerManager
+    tks = TallyKeyServerManager(args.configpath)
+    tks.start()
+    tks.join()
+
+def type_str_path_out(value):
+    s = str(value)
+    if s == "-":
+        return s
+    p = os.path.abspath(os.path.expanduser(s))
+    d = os.path.dirname(p)
+    if not os.path.exists(d):
+        os.makedirs(d)
+    return p
+
+def type_str_path_in(value):
+    s = str(value)
+    if s == "-":
+        return s
+    p = os.path.abspath(os.path.expanduser(s))
+    if not os.path.exists(p):
+        raise ArgumentTypeError("path %s does not exist" % s)
+    return p
+
+if __name__ == "__main__":
+    sys.exit(main())
