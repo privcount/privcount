@@ -1,0 +1,40 @@
+# everybody needs these configs
+global:
+    q: 2147483647 # ((2**31)-1) 2^31 - 1 happens to be a prime
+    resolution: 0.01 # a sensible resolution
+    epoch: 60 # (3600s) the time frame of stats collection
+    sigma: 1 # (240) the sigma for noise we want for privacy and utility
+    clock_skew: 3 # (300s) # deal with clock skews and latency
+
+# only the tally server needs these
+tally_server:
+    publish_delay: 23 # clock_skew + 20 seconds
+    listen_port: 20001 # open port on which to listen for remote connections from TKSes
+    key: 'keys/tally.key' # path to the key file
+    cert: 'keys/tally.cert' # path to the certificate file
+    results: 'results.txt' # path to file where the results will be stored
+
+# only the tally key servers needs these
+tally_key_server:
+    start_delay: 3 # seconds
+    listen_port: 20002 # open port on which to listen for remote connections from DCs
+    key: 'keys/tks.key' # path to the key file
+    cert: 'keys/tks.cert' # path to the certificate file
+    tally_server_info: # where the tally server is located
+        ip: 127.0.0.1
+        port: 20001
+
+# only the data collectors needs these
+data_collector:
+    start_delay: 5 # seconds
+    register_delay: 8 # start_delay + 3 seconds
+    listen_port: 20003 # local port on which to listen for local connections from Tor
+    fingerprint: 'fingerprint' # path to Tor's live fingerprint file
+    consensus: 'cached-consensus' # path to Tor's live consensus file
+    tally_server_info: # where the tally server is located
+        ip: 127.0.0.1
+        port: 20001
+    tally_key_server_infos: # where the tally key servers are located
+        -
+            ip: 127.0.0.1
+            port: 20002

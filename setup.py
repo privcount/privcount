@@ -13,5 +13,5 @@ setup(name='Privex',
       description='Safely gather and aggregate Tor statistics',
       author='Rob Jansen',
       packages=['privex'],
-      scripts=['privex/privex'],
+      scripts=['privex/tools/privex', 'privex/tools/privex-inject'],
      )

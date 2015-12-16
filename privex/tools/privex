@@ -1,7 +1,12 @@
 #!/usr/bin/env python
+'''
+Created on Dec 12, 2015
 
-import sys, os, logging
-import ConfigParser
+@author: rob
+'''
+import sys
+import os
+import logging
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, ArgumentTypeError
 
 class CustomHelpFormatter(ArgumentDefaultsHelpFormatter):
@@ -31,11 +36,11 @@ def main():
 
     # tally server
     ts_parser = sub_parser.add_parser('ts', help="run a privex tally server", formatter_class=help_formatter)
-    ts_parser.set_defaults(mode='ts', func=data_collector, formatter_class=help_formatter)
+    ts_parser.set_defaults(mode='ts', func=tally_server, formatter_class=help_formatter)
 
     # tally key server
     tks_parser = sub_parser.add_parser('tks', help="run a privex tally key server", formatter_class=help_formatter)
-    tks_parser.set_defaults(mode='tks', func=data_collector, formatter_class=help_formatter)
+    tks_parser.set_defaults(mode='tks', func=tally_key_server, formatter_class=help_formatter)
 
     # data collector
     dc_parser = sub_parser.add_parser('dc', help="run a privex data collector", formatter_class=help_formatter)
@@ -57,52 +62,42 @@ def main():
                 print >> fout, line,
         args.configpath = os.path.abspath('privex.tmp.cfg')
 
-    logging.info("using config file at '{0}'".format(args.configpath))
-
-    try:
-        args.func(args)
-    except ConfigParser.Error:
-        logging.critical("config file format is malformed or missing required values for selected command")
+    logging.info("using config file at '%s'", args.configpath)
+    args.func(args)
 
 def data_collector(args):
     logging.info("running data_collector")
-    from data_collector import DataCollectorManager
-    dc = DataCollectorManager(args.configpath)
-    dc.start()
-    dc.join()
+    from privex.data_collector import DataCollectorManager
+    DataCollectorManager(args.configpath).run()
 
 def tally_server(args):
     logging.info("running tally_server")
-    from tally_server import TallyServerManager
-    ts = TallyServerManager(args.configpath)
-    ts.start()
-    ts.join()
+    from privex.tally_server import TallyServerManager
+    TallyServerManager(args.configpath).run()
 
 def tally_key_server(args):
     logging.info("running tally_key_server")
-    from tally_key_server import TallyKeyServerManager
-    tks = TallyKeyServerManager(args.configpath)
-    tks.start()
-    tks.join()
+    from privex.tally_key_server import TallyKeyServerManager
+    TallyKeyServerManager(args.configpath).run()
 
 def type_str_path_out(value):
-    s = str(value)
-    if s == "-":
-        return s
-    p = os.path.abspath(os.path.expanduser(s))
-    d = os.path.dirname(p)
-    if not os.path.exists(d):
-        os.makedirs(d)
-    return p
+    val_str = str(value)
+    if val_str == "-":
+        return val_str
+    path = os.path.abspath(os.path.expanduser(val_str))
+    dirname = os.path.dirname(path)
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+    return path
 
 def type_str_path_in(value):
-    s = str(value)
-    if s == "-":
-        return s
-    p = os.path.abspath(os.path.expanduser(s))
-    if not os.path.exists(p):
-        raise ArgumentTypeError("path %s does not exist" % s)
-    return p
+    val_str = str(value)
+    if val_str == "-":
+        return val_str
+    path = os.path.abspath(os.path.expanduser(val_str))
+    if not os.path.exists(path):
+        raise ArgumentTypeError("path %s does not exist" % val_str)
+    return path
 
 if __name__ == "__main__":
     sys.exit(main())

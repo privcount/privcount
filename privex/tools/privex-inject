@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+'''
+Created on Dec 12, 2015
+
+@author: rob
+'''
+import sys
+import argparse
+
+from twisted.internet import reactor
+from twisted.internet.protocol import ClientFactory
+from twisted.protocols.basic import LineOnlyReceiver
+
+class PrivexDataInjector(LineOnlyReceiver):
+
+    def __init__(self, factory, logpath):
+        self.factory = factory
+        self.logpath = logpath
+
+    def connectionMade(self):
+        print "Injecting data"
+        loc = sys.stdin if self.logpath == '-' else self.logpath
+        with open(loc, 'r') as fin:
+            for line in fin:
+                self.sendLine(line.strip())
+        self.transport.loseConnection()
+
+class PrivexDataInjectorFactory(ClientFactory):
+    protocol = PrivexDataInjector # not really needed, since we build our own protocol below
+
+    def __init__(self, logpath):
+        self.logpath = logpath
+
+    def buildProtocol(self, addr):
+        return PrivexDataInjector(self, self.logpath)
+
+    def clientConnectionFailed(self, connector, reason):
+        print "Connection to DC failed - goodbye!"
+        reactor.stop() # pylint: disable=E1101
+
+    def clientConnectionLost(self, connector, reason):
+        print "Connection to DC lost - goodbye!"
+        reactor.stop() # pylint: disable=E1101
+
+def main():
+    ap = argparse.ArgumentParser(description="Injects Tor events into a listening privex DC")
+    ap.add_argument('-p', '--port', help="port of privex DC to inject data to", required=True)
+    ap.add_argument('-l', '--log', help="a file PATH to a privex event log file, may be '-' for STDIN", required=True, default='-')
+    args = ap.parse_args()
+
+    # pylint: disable=E1101
+    reactor.connectTCP("127.0.0.1", int(args.port), PrivexDataInjectorFactory(args.log))
+    reactor.run()
+
+if __name__ == "__main__":
+    sys.exit(main())
