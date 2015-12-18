@@ -5,6 +5,9 @@ global:
     sigma: 1 # (240) the sigma for noise we want for privacy and utility
     resolution: 0.01 # a sensible resolution
     q: 2147483647 # ((2**31)-1) 2^31 - 1 happens to be a prime
+    relay_fingerprints: # all relays collecting data for our PrivEx instance
+        - 'B5A484693A3D65250725E5750FAE0BD9AB2DFE9C'
+        - 'B5A484693A3D65250725E5750FAE0BD9AB2DFE9C'
 
 # only the tally server needs these
 tally_server:
@@ -29,8 +32,8 @@ data_collector:
     start_delay: 5 # seconds
     register_delay: 8 # start_delay + 3 seconds
     listen_port: 20003 # local port on which to listen for local connections from Tor
-    fingerprint: 'fingerprint' # path to Tor's live fingerprint file
-    consensus: 'cached-consensus' # path to Tor's live consensus file
+    fingerprint: 'B5A484693A3D65250725E5750FAE0BD9AB2DFE9C' # from Tor's datadir/fingerprint file
+    consensus: 'cached-consensus' # path to Tor's live consensus file, datadir/cached-consensus
     tally_server_info: # where the tally server is located
         ip: 127.0.0.1
         port: 20001

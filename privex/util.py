@@ -13,11 +13,10 @@ from random import gauss
 from math import sqrt
 
 from hashlib import sha256 as Hash
-import binascii
-from base64 import b64encode
 
 from twisted.protocols.basic import LineOnlyReceiver
 from twisted.internet.protocol import ClientFactory, ServerFactory
+from stem.descriptor import parse_file, DocumentHandler
 
 import yaml
 
@@ -52,47 +51,50 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
         assert conf['global']['sigma'] > 0
         assert conf['global']['clock_skew'] > 0
 
+        assert len(conf['global']['relay_fingerprints']) > 0
+
         if ts:
             # check the tally server specific vals
             expanded_path = os.path.expanduser(conf['tally_server']['key'])
             conf['tally_server']['key'] = os.path.abspath(expanded_path)
+            assert os.path.exists(conf['tally_server']['key'])
+
             expanded_path = os.path.expanduser(conf['tally_server']['cert'])
             conf['tally_server']['cert'] = os.path.abspath(expanded_path)
+            assert os.path.exists(conf['tally_server']['cert'])
+            
             expanded_path = os.path.expanduser(conf['tally_server']['results'])
             conf['tally_server']['results'] = os.path.abspath(expanded_path)
+            assert os.path.exists(os.path.dirname(conf['tally_server']['results']))
 
             assert conf['tally_server']['publish_delay'] >= 0
             assert conf['tally_server']['listen_port'] > 0
-            assert os.path.exists(conf['tally_server']['key'])
-            assert os.path.exists(conf['tally_server']['cert'])
-            assert os.path.exists(os.path.dirname(conf['tally_server']['results']))
 
         if tks:
             # check the tally key server specific vals
             expanded_path = os.path.expanduser(conf['tally_key_server']['key'])
             conf['tally_key_server']['key'] = os.path.abspath(expanded_path)
+            assert os.path.exists(conf['tally_key_server']['key'])
+
             expanded_path = os.path.expanduser(conf['tally_key_server']['cert'])
             conf['tally_key_server']['cert'] = os.path.abspath(expanded_path)
+            assert os.path.exists(conf['tally_key_server']['cert'])
 
             assert conf['tally_key_server']['start_delay'] >= 0
             assert conf['tally_key_server']['listen_port'] > 0
             assert conf['tally_key_server']['tally_server_info']['ip'] is not None
             assert conf['tally_key_server']['tally_server_info']['port'] > 0
-            assert os.path.exists(conf['tally_key_server']['key'])
-            assert os.path.exists(conf['tally_key_server']['cert'])
 
         if dc:
             # check the data collector specific vals
-            expanded_path = os.path.expanduser(conf['data_collector']['fingerprint'])
-            conf['data_collector']['fingerprint'] = os.path.abspath(expanded_path)
             expanded_path = os.path.expanduser(conf['data_collector']['consensus'])
             conf['data_collector']['consensus'] = os.path.abspath(expanded_path)
+            assert os.path.exists(conf['data_collector']['consensus'])
 
+            assert conf['data_collector']['fingerprint'] is not None
             assert conf['data_collector']['start_delay'] >= 0
             assert conf['data_collector']['register_delay'] >= 0
             assert conf['data_collector']['listen_port'] > 0
-            assert os.path.exists(conf['data_collector']['fingerprint'])
-            assert os.path.exists(conf['data_collector']['consensus'])
             assert conf['data_collector']['tally_server_info']['ip'] is not None
             assert conf['data_collector']['tally_server_info']['port'] > 0
             for item in conf['data_collector']['tally_key_server_infos']:
@@ -144,138 +146,35 @@ def keys_from_labels(labels, key, pos=True, q=2147483647):
         shares.append((l, s0))
     return shares
 
-def prob_exit(consensus, fingerprint):
-    priv_exits = []
-    weights = []
+def prob_exit(consensus_path, my_fingerprint, all_privex_fingerprints=None):
+    if all_privex_fingerprints == None:
+        all_privex_fingerprints = [my_fingerprint]
 
-    DBW = 0
-    EBW = 0
+    net_status = next(parse_file(consensus_path, document_handler='DOCUMENT', validate=False))
+    DW = float(net_status.bandwidth_weights['Wed'])/10000
+    EW = float(net_status.bandwidth_weights['Wed'])/10000
 
-    DW = 0
-    EW = 0
+    my_bandwidth, DBW, EBW, sum_of_sq_bw = 0, 0, 0, 0
 
-    prob = 0
-    myWB = 0
-    num_exits = 0
-    biggest_bw = 0
-    sum_of_sq_bw = 0
+    if my_fingerprint in net_status.routers:
+        my_bandwidth = net_status.routers[my_fingerprint].bandwidth
 
-    with open(fingerprint,'r') as f:
-        _, id_hex = f.readline().strip().split(" ") # has a nick in front
-        id_bin = binascii.a2b_hex(id_hex)
-        my_id = b64encode(id_bin).rstrip("=")
+    for (fingerprint, router_entry) in net_status.routers.items():
+        if fingerprint not in all_privex_fingerprints or 'BadExit' in router_entry.flags:
+            continue
 
-    with open("exit_prints.txt",'r') as h:
-        for line in h:
-            exit_id_hex = line.strip()
-            exit_id_bin = binascii.a2b_hex(exit_id_hex)
-            exit_id = b64encode(exit_id_bin).rstrip("=")
-            priv_exits.append(exit_id)
+        if 'Guard' in router_entry.flags and 'Exit' in router_entry.flags:
+            DBW += router_entry.bandwidth
+            sum_of_sq_bw += router_entry.bandwidth**2
 
-    with open(consensus,'r') as g:
-        for line in g:
-            if "bandwidth-weights" in line:
-                sline = line.split()
-                sline = sline[7:9] ## only the exit weights that matter
-                for i in sline:
-                    weights.append(i.split("="))
-                DW = float(weights[0][1])/10000
-                EW = float(weights[1][1])/10000
-    with open(consensus,'r') as f:
-        ge = 0
-        e = 0
-        me = 0
-        relay_fingerprint = ''
-        for line in f:
-            if line.startswith("r "):
-                relay_fingerprint = line.strip().split()
-                relay_fingerprint = relay_fingerprint[2:3]
-
-            if line.startswith("r ") and my_id in line:
-                me = 1
-            if line.startswith("s ") and "BadExit" not in line and relay_fingerprint[0] in priv_exits:
-                if "Guard" in line and "Exit" in line:
-                    ge = 1
-                    num_exits += 1
-                elif "Exit" in line:
-                    e = 1
-                    num_exits += 1
-
-            if line.startswith("w "):
-                bandwidth = line.strip()
-                if " Unmeasured" not in line:
-                    _, bandwidth = bandwidth.split("=")
-                else:
-                    _, bandwidth, _ = bandwidth.split("=")
-                    bandwidth , _ = bandwidth.split(" ")
-                bandwidth = float(bandwidth)
-                #print ge, e
-                DBW += bandwidth*ge
-                sum_of_sq_bw += (bandwidth*ge)**2
-                EBW += bandwidth*e
-                sum_of_sq_bw += (bandwidth*e)**2
-                if me == 1:
-                    myWB = bandwidth*ge + bandwidth*e
-                ge = e = me = 0
-                if biggest_bw < bandwidth:
-                    biggest_bw = bandwidth
+        elif 'Exit' in router_entry.flags:
+            EBW += router_entry.bandwidth
+            sum_of_sq_bw += router_entry.bandwidth**2
 
     TEWBW = DBW*DW + EBW*EW
-    prob = myWB/TEWBW
+    prob = my_bandwidth/TEWBW
     sum_of_sq = sum_of_sq_bw/(TEWBW**2)
-#    print TEWBW, prob, num_exits, sum_of_sq
     return prob, sum_of_sq
-
-class MessageReceiver(LineOnlyReceiver):
-    '''
-    send incoming messages to the given message handling queue
-    '''
-
-    def __init__(self, factory, handler_queue):
-        self.factory = factory
-        assert handler_queue
-        self.handler_queue = handler_queue
-
-    def lineReceived(self, line):
-        self.handler_queue.put(('message', [line, self.transport.getPeer().host]))
-
-class MessageReceiverFactory(ServerFactory):
-    '''
-    builds message receivers with the given queue
-    '''
-    protocol = MessageReceiver # not really needed, since we build our own protocol below
-
-    def __init__(self, handler_queue):
-        assert handler_queue
-        self.handler_queue = handler_queue
-
-    def buildProtocol(self, addr):
-        return MessageReceiver(self, self.handler_queue)
-
-class MessageSender(LineOnlyReceiver):
-    '''
-    send a message and close
-    '''
-
-    def __init__(self, factory, message):
-        self.factory = factory
-        self.message = message
-
-    def connectionMade(self):
-        self.sendLine(self.message)
-        self.transport.loseConnection()
-
-class MessageSenderFactory(ClientFactory):
-    '''
-    builds message senders with the given message
-    '''
-    protocol = MessageSender # not really needed, since we build our own protocol below
-
-    def __init__(self, message):
-        self.message = message
-
-    def buildProtocol(self, addr):
-        return MessageSender(self, self.message)
 
 class CounterStore(object):
     '''
@@ -285,7 +184,7 @@ class CounterStore(object):
     the blinding factors are sent to the TKSes and the full counts to the TS
     '''
 
-    def __init__(self, q, resolution, sigma, labels, num_tkses, fingerprint, consensus):
+    def __init__(self, q, resolution, sigma, labels, num_tkses, fingerprint_hex, consensus_path, relay_fingerprints):
         self.data = {l:0 for l in labels}
         self.q = q
         self.resolution = resolution
@@ -299,7 +198,7 @@ class CounterStore(object):
                 self.data[l] = (self.data[l] + int(s0/self.resolution)) % self.q
 
 	    # Add noise for each website independently
-        p_exit, sum_of_sq = prob_exit(consensus, fingerprint)
+        p_exit, sum_of_sq = prob_exit(consensus_path, fingerprint_hex, relay_fingerprints)
         for label in self.data:
             noise_gen = noise(sigma, fingerprint, sum_of_sq, p_exit)
             self.data[label] = (self.data[label] + int(noise_gen/self.resolution)) % self.q
@@ -357,3 +256,54 @@ class KeyStore(object):
         self.data = None
         self.keyIDs = None
         return data
+
+class MessageReceiver(LineOnlyReceiver):
+    '''
+    send incoming messages to the given message handling queue
+    '''
+
+    def __init__(self, factory, handler_queue):
+        self.factory = factory
+        assert handler_queue
+        self.handler_queue = handler_queue
+
+    def lineReceived(self, line):
+        self.handler_queue.put(('message', [line, self.transport.getPeer().host]))
+
+class MessageReceiverFactory(ServerFactory):
+    '''
+    builds message receivers with the given queue
+    '''
+    protocol = MessageReceiver # not really needed, since we build our own protocol below
+
+    def __init__(self, handler_queue):
+        assert handler_queue
+        self.handler_queue = handler_queue
+
+    def buildProtocol(self, addr):
+        return MessageReceiver(self, self.handler_queue)
+
+class MessageSender(LineOnlyReceiver):
+    '''
+    send a message and close
+    '''
+
+    def __init__(self, factory, message):
+        self.factory = factory
+        self.message = message
+
+    def connectionMade(self):
+        self.sendLine(self.message)
+        self.transport.loseConnection()
+
+class MessageSenderFactory(ClientFactory):
+    '''
+    builds message senders with the given message
+    '''
+    protocol = MessageSender # not really needed, since we build our own protocol below
+
+    def __init__(self, message):
+        self.message = message
+
+    def buildProtocol(self, addr):
+        return MessageSender(self, self.message)
