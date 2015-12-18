@@ -22,10 +22,24 @@ You can replace the `pip install ...` above with the following to mirror my dev 
 
     pip install -r requirements.txt
 
+During Privex development, include your latest development changes by forcing a reinstall:
+
+    pip install -I .
+
 # running
 
 To run privex, simply activate the virtual environment that you created earlier and then run
 privex as normal. For example:
 
-    virtualenv venv
+    source venv/bin/activate # enter the virtual environment
     privex --help
+    ...
+    deactivate # exit the virtual environment
+
+# setting up privex entities
+
+## tally server
+
+## tally key server
+
+## data collector

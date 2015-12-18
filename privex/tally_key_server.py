@@ -13,20 +13,20 @@ from Queue import Queue
 
 from twisted.internet import reactor, task, ssl
 
-from util import MessageReceiverFactory, MessageSenderFactory, get_valid_config, tkgserver
+from util import MessageReceiverFactory, MessageSenderFactory, KeyStore, get_valid_config
 
-class ShareKeeper(Thread):
+class KeyShareKeeper(Thread):
     '''
-    receive stats share data from the DC message receiver
+    receive key share data from the DC message receiver
     keep the shares during collection epoch
     send the shares to the TS at end of epoch
     '''
 
     def __init__(self, input_queue, prime_q, resolution):
-        super(ShareKeeper, self).__init__()
+        super(KeyShareKeeper, self).__init__()
         assert input_queue
         self.input_queue = input_queue
-        self.tkg = tkgserver(prime_q, resolution)
+        self.keystore = KeyStore(prime_q, resolution)
 
     def run(self):
         keep_running = True
@@ -46,17 +46,19 @@ class ShareKeeper(Thread):
 
     def _handle_message_event(self, items):
         msg, host = items[0], items[1]
-        logging.info("received share from DC on host %s", host)
-        got_data = ast.literal_eval(msg)
-        self.tkg.register_router(got_data)
+        logging.info("received key share from DC on host %s", host)
+
+        # TODO: decrypt msg from DC here
+        labels, (kid, K), q = ast.literal_eval(msg)
+        self.keystore.register_keyshare(labels, kid, K, q)
 
     def _handle_publish_event(self, items):
         ts_ip, ts_port, prime_q, resolution = items
-        msg = json.dumps(self.tkg.publish())
+        msg = json.dumps(self.keystore.get_combined_shares())
         reactor.connectSSL(ts_ip, ts_port, MessageSenderFactory(msg), ssl.ClientContextFactory()) # pylint: disable=E1101
 
-        del self.tkg
-        self.tkg = tkgserver(prime_q, resolution)
+        del self.keystore
+        self.keystore = KeyStore(prime_q, resolution)
 
 class TallyKeyServerManager(object):
 
@@ -85,7 +87,7 @@ class TallyKeyServerManager(object):
 
         # start the stats keeper thread
         self.cmd_queue = Queue()
-        self.share_keeper = ShareKeeper(self.cmd_queue, prime_q, resolution)
+        self.share_keeper = KeyShareKeeper(self.cmd_queue, prime_q, resolution)
         self.share_keeper.start()
 
         # check for epoch change every second

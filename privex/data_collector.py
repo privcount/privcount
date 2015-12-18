@@ -3,6 +3,7 @@ Created on Dec 12, 2015
 
 @author: rob
 '''
+import os
 import logging
 import time
 import json
@@ -12,7 +13,7 @@ from Queue import Queue
 
 from twisted.internet import reactor, task, ssl
 
-from util import MessageReceiverFactory, MessageSenderFactory, get_valid_config, router
+from util import MessageReceiverFactory, MessageSenderFactory, get_valid_config, CounterStore
 
 class DataAggregator(Thread):
     '''
@@ -93,15 +94,16 @@ class DataAggregator(Thread):
             del self.counter
             self.counter = None
 
-        self.counter = router(prime_q, resolution, sigma, self.labels, len(tks_infos), fingerprint_path, consensus_path)
+        self.counter = CounterStore(prime_q, resolution, sigma, self.labels, len(tks_infos), fingerprint_path, consensus_path)
 
         for key, tks_info in zip(self.counter.keys, tks_infos):
-            msg = repr(self.counter.authority_msg(key))
-            server_factory = MessageSenderFactory(msg)
+            msg = repr(self.counter.get_blinding_factor(key))
+            # TODO: Encrypt msg to TKS here
+            sender_factory = MessageSenderFactory(msg)
 
             tks_ip, tks_port = tks_info['ip'], tks_info['port']
             # pylint: disable=E1101
-            reactor.connectSSL(tks_ip, tks_port, server_factory, ssl.ClientContextFactory())
+            reactor.connectSSL(tks_ip, tks_port, sender_factory, ssl.ClientContextFactory())
             logging.info("registered with TKS at %s:%d", tks_ip, tks_port)
 
     def _handle_publish_event(self, items):
@@ -110,9 +112,9 @@ class DataAggregator(Thread):
         count = self._count_streams_per_circuit()
         logging.info("StreamsPerCircuit_Max = %d", count)
         for _ in xrange(count):
-            self.counter.inc("StreamsPerCircuit")
+            self.counter.increment("StreamsPerCircuit")
 
-        msg = json.dumps(self.counter.publish())
+        msg = json.dumps(self.counter.get_blinded_noisy_counts())
         server_factory = MessageSenderFactory(msg)
 
         # pylint: disable=E1101

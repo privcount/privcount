@@ -1,10 +1,10 @@
 # everybody needs these configs
 global:
-    q: 2147483647 # ((2**31)-1) 2^31 - 1 happens to be a prime
-    resolution: 0.01 # a sensible resolution
     epoch: 60 # (3600s) the time frame of stats collection
-    sigma: 1 # (240) the sigma for noise we want for privacy and utility
     clock_skew: 3 # (300s) # deal with clock skews and latency
+    sigma: 1 # (240) the sigma for noise we want for privacy and utility
+    resolution: 0.01 # a sensible resolution
+    q: 2147483647 # ((2**31)-1) 2^31 - 1 happens to be a prime
 
 # only the tally server needs these
 tally_server:

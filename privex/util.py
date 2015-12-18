@@ -61,17 +61,43 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
             expanded_path = os.path.expanduser(conf['tally_server']['results'])
             conf['tally_server']['results'] = os.path.abspath(expanded_path)
 
-            assert conf['tally_server']['publish_delay'] > 0
+            assert conf['tally_server']['publish_delay'] >= 0
             assert conf['tally_server']['listen_port'] > 0
             assert os.path.exists(conf['tally_server']['key'])
             assert os.path.exists(conf['tally_server']['cert'])
             assert os.path.exists(os.path.dirname(conf['tally_server']['results']))
 
         if tks:
-            pass
+            # check the tally key server specific vals
+            expanded_path = os.path.expanduser(conf['tally_key_server']['key'])
+            conf['tally_key_server']['key'] = os.path.abspath(expanded_path)
+            expanded_path = os.path.expanduser(conf['tally_key_server']['cert'])
+            conf['tally_key_server']['cert'] = os.path.abspath(expanded_path)
+
+            assert conf['tally_key_server']['start_delay'] >= 0
+            assert conf['tally_key_server']['listen_port'] > 0
+            assert conf['tally_key_server']['tally_server_info']['ip'] is not None
+            assert conf['tally_key_server']['tally_server_info']['port'] > 0
+            assert os.path.exists(conf['tally_key_server']['key'])
+            assert os.path.exists(conf['tally_key_server']['cert'])
 
         if dc:
-            pass
+            # check the data collector specific vals
+            expanded_path = os.path.expanduser(conf['data_collector']['fingerprint'])
+            conf['data_collector']['fingerprint'] = os.path.abspath(expanded_path)
+            expanded_path = os.path.expanduser(conf['data_collector']['consensus'])
+            conf['data_collector']['consensus'] = os.path.abspath(expanded_path)
+
+            assert conf['data_collector']['start_delay'] >= 0
+            assert conf['data_collector']['register_delay'] >= 0
+            assert conf['data_collector']['listen_port'] > 0
+            assert os.path.exists(conf['data_collector']['fingerprint'])
+            assert os.path.exists(conf['data_collector']['consensus'])
+            assert conf['data_collector']['tally_server_info']['ip'] is not None
+            assert conf['data_collector']['tally_server_info']['port'] > 0
+            for item in conf['data_collector']['tally_key_server_infos']:
+                assert item['ip'] is not None
+                assert item['port'] >= 0
 
         config = {'global': conf['global']}
         if ts:
@@ -105,7 +131,6 @@ def sample(s, q):
             break
         s = Hash(s).digest()
     return v
-
 
 def keys_from_labels(labels, key, pos=True, q=2147483647):
     shares = []
@@ -199,7 +224,7 @@ def prob_exit(consensus, fingerprint):
     prob = myWB/TEWBW
     sum_of_sq = sum_of_sq_bw/(TEWBW**2)
 #    print TEWBW, prob, num_exits, sum_of_sq
-    return TEWBW, prob, num_exits, sum_of_sq
+    return prob, sum_of_sq
 
 class MessageReceiver(LineOnlyReceiver):
     '''
@@ -252,16 +277,66 @@ class MessageSenderFactory(ClientFactory):
     def buildProtocol(self, addr):
         return MessageSender(self, self.message)
 
-class tkgserver:
+class CounterStore(object):
+    '''
+    this is used at the data collector to keep counts of statistics
+    the counts start out random (blinded) and with noise
+    the counts are incremented during collection
+    the blinding factors are sent to the TKSes and the full counts to the TS
+    '''
+
+    def __init__(self, q, resolution, sigma, labels, num_tkses, fingerprint, consensus):
+        self.data = {l:0 for l in labels}
+        self.q = q
+        self.resolution = resolution
+
+        self.keys = [os.urandom(20) for _ in xrange(num_tkses)]
+        self.keys = dict([(PRF(K, "KEYID"), K) for K in self.keys])
+
+        for _, K in self.keys.iteritems():
+            shares = keys_from_labels(labels, K, True, q)
+            for (l, s0) in shares:
+                self.data[l] = (self.data[l] + int(s0/self.resolution)) % self.q
+
+	    # Add noise for each website independently
+        p_exit, sum_of_sq = prob_exit(consensus, fingerprint)
+        for label in self.data:
+            noise_gen = noise(sigma, fingerprint, sum_of_sq, p_exit)
+            self.data[label] = (self.data[label] + int(noise_gen/self.resolution)) % self.q
+
+    def get_blinding_factor(self, kid):
+        assert kid in self.keys and self.keys[kid] is not None
+        msg = (sorted(self.data.keys()), (kid, self.keys[kid]), self.q)
+
+        # TODO: secure delete
+        del self.keys[kid]
+        self.keys[kid] = None
+
+        return msg
+
+    def increment(self, label):
+        if label in self.data:
+            self.data[label] = (self.data[label] + int(1/self.resolution)) % self.q
+
+    def get_blinded_noisy_counts(self):
+        data = self.data
+        ## Ensure we can only do this once!
+        self.data = None
+        self.keys = None
+        return data
+
+class KeyStore(object):
+    '''
+    this is used at the TKS nodes to store the blinding factor received from the DC nodes
+    '''
+
     def __init__(self, q, resolution):
         self.data = {}
         self.keyIDs = {}
         self.q = q
         self.resolution = resolution
 
-    def register_router(self, msg):
-        ## TODO: decrypt the msg
-        labels, (kid, K), q = msg
+    def register_keyshare(self, labels, kid, K, q):
         assert q == self.q
 
         ## We have already registered this key
@@ -272,60 +347,13 @@ class tkgserver:
         shares = keys_from_labels(labels, K, False, q)
         for (l, s0) in shares:
             self.data[l] = (self.data.get(l, 0) + int(s0/self.resolution)) % self.q
-            #print "tkgserver share:", l, int(s0/resolution)%self.q
-	    #print "self.data[l] ", self.data[l]
-#        print "TKG Initialized database:", repr(self.data)
+
         self.keyIDs[kid] = None  # TODO: registed client info
         return kid
 
-    def publish(self):
+    def get_combined_shares(self):
         data = self.data
         ## Ensure we can only do this once!
         self.data = None
         self.keyIDs = None
-        return data
-
-class router:
-    def __init__(self, q, resolution, sigma, labels, num_tkses, fingerprint, consensus):
-        self.data = {}
-        self.q = q
-        self.resolution = resolution
-        for l in labels:
-            self.data[l] = 0
-
-        twbw, p_exit, num_exits, sum_of_sq = prob_exit(consensus, fingerprint)
-        self.keys = [os.urandom(20) for _ in xrange(num_tkses)]
-        self.keys = dict([(PRF(K, "KEYID"), K) for K in self.keys])
-        for _, K in self.keys.iteritems():
-            shares = keys_from_labels(labels, K, True, q)
-            for (l, s0) in shares:
-#        	 noise = Noise(sigma, fingerprint, sum_of_sq, p_exit)
-#                self.data[l] = (self.data[l] + int((s0+noise)/resolution)) % self.q
-                self.data[l] = (self.data[l] + int(s0/self.resolution)) % self.q
-	    # Add noise for each website independently
-        for label in self.data:
-            noise_gen = noise(sigma, fingerprint, sum_of_sq, p_exit)
-            self.data[label] = (self.data[label] + int(noise_gen/self.resolution)) % self.q
-
-    def authority_msg(self, kid):
-        assert kid in self.keys and self.keys[kid] is not None
-        msg = (sorted(self.data.keys()), (kid, self.keys[kid]), self.q)
-        self.keys[kid] = None  # TODO: secure delete
-        ## TODO: Encrypt msg to authority here
-        #pprint.pprint(msg)
-        return msg
-
-    def inc(self, label):
-        if label in self.data:
-            self.data[label] = (self.data[label] + int(1/self.resolution)) % self.q
-#	    print 'inside router.inc: ', label
-#            self.data['Censored'] = (self.data['Censored'] + int(1/resolution)) % self.q
-#        else:
-#            self.data['Other'] = (self.data['Other'] + int(1/resolution)) % self.q
-
-    def publish(self):
-        data = self.data
-        ## Ensure we can only do this once!
-        self.data = None
-        self.keys = None
         return data

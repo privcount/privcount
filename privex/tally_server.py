@@ -16,7 +16,7 @@ from util import MessageReceiverFactory, get_valid_config, write_results
 
 class StatsKeeper(Thread):
     '''
-    receive stats data from the TKS receiver
+    receive blinded stats from the DCs
     keep the stats during collection epoch
     sum stats at end of epoch
     publish the final results to a file
@@ -48,7 +48,7 @@ class StatsKeeper(Thread):
         logging.debug("collected new stats event")
         msg, host = items[0], items[1]
         stats = json.loads(msg)
-        logging.info("received stats from TKS on host {0}".format(host)) # pylint: disable=W1202
+        logging.info("received stats from TKS on host %s", host)
         self.stats.append(stats)
 
     def _handle_publish_event(self, items):
