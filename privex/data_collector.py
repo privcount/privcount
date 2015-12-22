@@ -86,7 +86,7 @@ class DataAggregator(Thread):
         self.cli_circs.setdefault(chanid, {}).setdefault(circid, dat)
 
     def _handle_register_event(self, items):
-        register_delay, tks_infos, prime_q, resolution, sigma, fingerprint_hex, consensus_path, relay_fingerprints = items
+        register_delay, tks_infos, prime_q, sigma, fingerprint_hex, consensus_path, relay_fingerprints = items
         logging.info("delaying epoch registration by %d seconds", register_delay)
         time.sleep(register_delay)
 
@@ -94,7 +94,7 @@ class DataAggregator(Thread):
             del self.counter
             self.counter = None
 
-        self.counter = CounterStore(prime_q, resolution, sigma, self.labels, len(tks_infos), fingerprint_hex, consensus_path, relay_fingerprints)
+        self.counter = CounterStore(prime_q, sigma, self.labels, len(tks_infos), fingerprint_hex, consensus_path, relay_fingerprints)
 
         for key, tks_info in zip(self.counter.keys, tks_infos):
             msg = repr(self.counter.get_blinding_factor(key))
@@ -206,11 +206,10 @@ class DataCollectorManager(object):
         fp_hex = self.config['data_collector']['fingerprint']
         cons_path = self.config['data_collector']['consensus']
         prime_q = self.config['global']['q']
-        resolution = self.config['global']['resolution']
         sigma = self.config['global']['sigma']
         tks_infos = self.config['data_collector']['tally_key_server_infos']
-        relay_fingerprints = sigma = self.config['global']['relay_fingerprints']
-        items = [reg_delay, tks_infos, prime_q, resolution, sigma, fp_hex, cons_path, relay_fingerprints]
+        relay_fingerprints = self.config['global']['relay_fingerprints']
+        items = [reg_delay, tks_infos, prime_q, sigma, fp_hex, cons_path, relay_fingerprints]
         self.cmd_queue.put(('register', items))
 
     def _refresh_config(self):

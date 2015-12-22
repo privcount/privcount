@@ -46,7 +46,6 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
 
         # make sure we have the required global vals
         assert conf['global']['q'] > 0
-        assert conf['global']['resolution'] > 0
         assert conf['global']['epoch'] > 0
         assert conf['global']['sigma'] > 0
         assert conf['global']['clock_skew'] > 0
@@ -62,7 +61,7 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
             expanded_path = os.path.expanduser(conf['tally_server']['cert'])
             conf['tally_server']['cert'] = os.path.abspath(expanded_path)
             assert os.path.exists(conf['tally_server']['cert'])
-            
+
             expanded_path = os.path.expanduser(conf['tally_server']['results'])
             conf['tally_server']['results'] = os.path.abspath(expanded_path)
             assert os.path.exists(os.path.dirname(conf['tally_server']['results']))
@@ -117,7 +116,8 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
 
     return config
 
-def noise(sigma, fingerprint, sum_of_sq, p_exit):
+def noise(sigma, sum_of_sq, p_exit):
+    print p_exit, sigma, sum_of_sq
     sigma_i = p_exit * sigma / sqrt(sum_of_sq)
     random_sample = gauss(0, sigma_i)
     return random_sample
@@ -184,10 +184,9 @@ class CounterStore(object):
     the blinding factors are sent to the TKSes and the full counts to the TS
     '''
 
-    def __init__(self, q, resolution, sigma, labels, num_tkses, fingerprint_hex, consensus_path, relay_fingerprints):
+    def __init__(self, q, sigma, labels, num_tkses, fingerprint_hex, consensus_path, relay_fingerprints):
         self.data = {l:0 for l in labels}
         self.q = q
-        self.resolution = resolution
 
         self.keys = [os.urandom(20) for _ in xrange(num_tkses)]
         self.keys = dict([(PRF(K, "KEYID"), K) for K in self.keys])
@@ -195,13 +194,13 @@ class CounterStore(object):
         for _, K in self.keys.iteritems():
             shares = keys_from_labels(labels, K, True, q)
             for (l, s0) in shares:
-                self.data[l] = (self.data[l] + int(s0/self.resolution)) % self.q
+                self.data[l] = (self.data[l] + int(s0)) % self.q
 
 	    # Add noise for each website independently
         p_exit, sum_of_sq = prob_exit(consensus_path, fingerprint_hex, relay_fingerprints)
         for label in self.data:
-            noise_gen = noise(sigma, fingerprint, sum_of_sq, p_exit)
-            self.data[label] = (self.data[label] + int(noise_gen/self.resolution)) % self.q
+            noise_gen = noise(sigma, sum_of_sq, p_exit)
+            self.data[label] = (self.data[label] + int(noise_gen)) % self.q
 
     def get_blinding_factor(self, kid):
         assert kid in self.keys and self.keys[kid] is not None
@@ -215,7 +214,7 @@ class CounterStore(object):
 
     def increment(self, label):
         if label in self.data:
-            self.data[label] = (self.data[label] + int(1/self.resolution)) % self.q
+            self.data[label] = (self.data[label] + int(1)) % self.q
 
     def get_blinded_noisy_counts(self):
         data = self.data
@@ -229,11 +228,10 @@ class KeyStore(object):
     this is used at the TKS nodes to store the blinding factor received from the DC nodes
     '''
 
-    def __init__(self, q, resolution):
+    def __init__(self, q):
         self.data = {}
         self.keyIDs = {}
         self.q = q
-        self.resolution = resolution
 
     def register_keyshare(self, labels, kid, K, q):
         assert q == self.q
@@ -245,7 +243,7 @@ class KeyStore(object):
         ## Add shares
         shares = keys_from_labels(labels, K, False, q)
         for (l, s0) in shares:
-            self.data[l] = (self.data.get(l, 0) + int(s0/self.resolution)) % self.q
+            self.data[l] = (self.data.get(l, 0) + int(s0)) % self.q
 
         self.keyIDs[kid] = None  # TODO: registed client info
         return kid

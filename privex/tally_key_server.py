@@ -22,11 +22,11 @@ class KeyShareKeeper(Thread):
     send the shares to the TS at end of epoch
     '''
 
-    def __init__(self, input_queue, prime_q, resolution):
+    def __init__(self, input_queue, prime_q):
         super(KeyShareKeeper, self).__init__()
         assert input_queue
         self.input_queue = input_queue
-        self.keystore = KeyStore(prime_q, resolution)
+        self.keystore = KeyStore(prime_q)
 
     def run(self):
         keep_running = True
@@ -53,12 +53,12 @@ class KeyShareKeeper(Thread):
         self.keystore.register_keyshare(labels, kid, K, q)
 
     def _handle_publish_event(self, items):
-        ts_ip, ts_port, prime_q, resolution = items
+        ts_ip, ts_port, prime_q = items
         msg = json.dumps(self.keystore.get_combined_shares())
         reactor.connectSSL(ts_ip, ts_port, MessageSenderFactory(msg), ssl.ClientContextFactory()) # pylint: disable=E1101
 
         del self.keystore
-        self.keystore = KeyStore(prime_q, resolution)
+        self.keystore = KeyStore(prime_q)
 
 class TallyKeyServerManager(object):
 
@@ -83,11 +83,10 @@ class TallyKeyServerManager(object):
         logging.info("initializing server components...")
 
         prime_q = self.config['global']['q']
-        resolution = self.config['global']['resolution']
 
         # start the stats keeper thread
         self.cmd_queue = Queue()
-        self.share_keeper = KeyShareKeeper(self.cmd_queue, prime_q, resolution)
+        self.share_keeper = KeyShareKeeper(self.cmd_queue, prime_q)
         self.share_keeper.start()
 
         # check for epoch change every second
@@ -129,8 +128,7 @@ class TallyKeyServerManager(object):
         ts_ip = self.config['tally_key_server']['tally_server_info']['ip']
         ts_port = self.config['tally_key_server']['tally_server_info']['port']
         prime_q = self.config['global']['q']
-        resolution = self.config['global']['resolution']
-        self.cmd_queue.put(('publish', [ts_ip, ts_port, prime_q, resolution]))
+        self.cmd_queue.put(('publish', [ts_ip, ts_port, prime_q]))
 
     def _refresh_config(self):
         # re-read config and process any changes

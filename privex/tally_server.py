@@ -52,10 +52,10 @@ class StatsKeeper(Thread):
         self.stats.append(stats)
 
     def _handle_publish_event(self, items):
-        prime_q, resolution, ts_start, ts_end, filename = items[0:5]
+        prime_q, ts_start, ts_end, filename = items[0:4]
 
         if len(self.stats) > 0:
-            totals = self._sum_stats(prime_q, resolution)
+            totals = self._sum_stats(prime_q)
             write_results(filename, ts_start, ts_end, totals)
             del totals
             totals = {}
@@ -66,16 +66,16 @@ class StatsKeeper(Thread):
 
         logging.info("published results for epoch from %d to %d to file '%s'", ts_start, ts_end, filename)
 
-    def _sum_stats(self, prime_q, resolution):
+    def _sum_stats(self, prime_q):
         totals = {}
 
         for k in self.stats[0]:
             for data in self.stats:
                 totals[k] = (totals.get(k, 0) + data.get(k, 0)) % prime_q
             if totals[k] <= prime_q/2:
-                totals[k] = totals[k]*resolution
+                totals[k] = totals[k]
             else:
-                totals[k] = (totals[k]-prime_q)*resolution
+                totals[k] = (totals[k]-prime_q)
 
         return totals
 
@@ -140,10 +140,9 @@ class TallyServerManager(object):
     def _send_publish_command(self, ts_start, ts_end):
         # set up a publish event
         prime_q = self.config['global']['q']
-        resolution = self.config['global']['resolution']
         results_path = self.config['tally_server']['results']
 
-        items = [prime_q, resolution, ts_start, ts_end, results_path]
+        items = [prime_q, ts_start, ts_end, results_path]
 
         delay_seconds = self.config['tally_server']['publish_delay']
         reactor.callLater(delay_seconds, self._trigger_publish_event, items) # pylint: disable=E1101
