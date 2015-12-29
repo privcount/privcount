@@ -1,12 +1,8 @@
 # everybody needs these configs
 global:
-    epoch: 60 # (3600s) the time frame of stats collection
+    epoch: 60 # the safe time frame of stats collection for all stats
     clock_skew: 3 # (300s) # deal with clock skews and latency
-    sigma: 1 # (240) the sigma for noise we want for privacy and utility
     q: 2147483647 # ((2**31)-1) 2^31 - 1 happens to be a prime
-    relay_fingerprints: # all relays collecting data for our PrivEx instance
-        - 'B5A484693A3D65250725E5750FAE0BD9AB2DFE9C'
-        - 'B5A484693A3D65250725E5750FAE0BD9AB2DFE9C'
 
 # only the tally server needs these
 tally_server:
@@ -31,8 +27,6 @@ data_collector:
     start_delay: 5 # seconds
     register_delay: 8 # start_delay + 3 seconds
     listen_port: 20003 # local port on which to listen for local connections from Tor
-    fingerprint: 'B5A484693A3D65250725E5750FAE0BD9AB2DFE9C' # from Tor's datadir/fingerprint file
-    consensus: 'cached-consensus' # path to Tor's live consensus file, datadir/cached-consensus
     tally_server_info: # where the tally server is located
         ip: 127.0.0.1
         port: 20001
@@ -40,3 +34,76 @@ data_collector:
         -
             ip: 127.0.0.1
             port: 20002
+    diversity_weight: 1.0 # distribute noise among all machines used to run all data collectors
+    consensus: 'cached-consensus' # path to Tor's live consensus file, datadir/cached-consensus
+    fingerprint: 'B5A484693A3D65250725E5750FAE0BD9AB2DFE9C' # from Tor's datadir/fingerprint file
+    colocated_fingerprints: # relays running on the same machine as this one
+        - 'B5A484693A3D65250725E5750FAE0BD9AB2DFE9C'
+    statistics:
+        ################
+        # exit traffic #
+        ################
+        -
+            # at least one stream completed on the circuit
+            type: 'Circuits_Count' # the key for this stat
+            sigma: 1.0 # the sigma for the global noise we want for privacy for this stat
+        -
+            # no streams completed on the circuit
+            type: 'InactiveCircuits_Count'
+            sigma: 1.0
+        -
+            # completed streams per active circuit
+            type: 'StreamsPerCircuit_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # bytes sent to server per completed stream
+            type: 'BytesSentPerStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # bytes received from server per completed stream
+            type: 'BytesReceivedPerStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # time between create and destroy per completed stream
+            type: 'StreamLifeTime_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # time between creation of consecutive streams
+            type: 'StreamIntercreationTime_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        #################
+        # entry traffic #
+        #################
+        -
+            # number of OR connections to clients
+            type: 'Connections_Count'
+            sigma: 1.0
+        -
+            # special probabilistic counter
+            type: 'UniqueClients_PCount'
+            sigma: 1.0
+        -
+            # number of circuits with at least 4096 bytes of transferred data on client OR connections
+            type: 'CircuitsPerConnection_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # number of circuits with less than 4096 bytes of transferred data on client OR connections
+            type: 'InactiveCircuitsPerConnection_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # bytes sent to client per circuit on client OR connections
+            type: 'BytesSentPerCircuit_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # bytes received from client per circuit on client OR connections
+            type: 'BytesReceivedPerCircuit_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'

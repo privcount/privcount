@@ -3,17 +3,17 @@ Created on Dec 12, 2015
 
 @author: rob
 '''
-import os
 import logging
 import time
 import json
 
 from threading import Thread
 from Queue import Queue
+from copy import deepcopy
 
 from twisted.internet import reactor, task, ssl
 
-from util import MessageReceiverFactory, MessageSenderFactory, get_valid_config, CounterStore
+from util import MessageReceiverFactory, MessageSenderFactory, CounterStore, get_valid_config, get_noise_weight
 
 class DataAggregator(Thread):
     '''
@@ -28,7 +28,7 @@ class DataAggregator(Thread):
         super(DataAggregator, self).__init__()
         assert input_queue
         self.input_queue = input_queue
-        self.labels = ["StreamsPerCircuit"]
+        self.stats = None
         self.counter = None
         self.ext_strms = {}
         self.cli_circs = {}
@@ -86,15 +86,29 @@ class DataAggregator(Thread):
         self.cli_circs.setdefault(chanid, {}).setdefault(circid, dat)
 
     def _handle_register_event(self, items):
-        register_delay, tks_infos, prime_q, sigma, fingerprint_hex, consensus_path, relay_fingerprints = items
-        logging.info("delaying epoch registration by %d seconds", register_delay)
-        time.sleep(register_delay)
+        conf = items
+        dconf = conf['data_collector']
 
+        logging.info("delaying epoch registration by %d seconds", dconf['register_delay'])
+        time.sleep(dconf['register_delay'])
+
+        tks_infos = dconf['tally_key_server_infos']
+
+        prime_q = conf['global']['q']
+        num_tkses = len(tks_infos)
+        noise_weight = get_noise_weight(dconf['diversity_weight'], dconf['consensus'], dconf['fingerprint'], dconf['colocated_fingerprints'])
+
+        if self.stats is not None:
+            del self.stats
+            self.stats = None
         if self.counter is not None:
             del self.counter
             self.counter = None
 
-        self.counter = CounterStore(prime_q, sigma, self.labels, len(tks_infos), fingerprint_hex, consensus_path, relay_fingerprints)
+        self.stats = self.get_all_counter_labels(dconf['statistics'])
+        self.counter = CounterStore(prime_q, num_tkses, noise_weight, self.stats)
+
+        logging.info("enabling stats counters for labels: %s", str(sorted(self.stats.keys())))
 
         for key, tks_info in zip(self.counter.keys, tks_infos):
             msg = repr(self.counter.get_blinding_factor(key))
@@ -106,13 +120,36 @@ class DataAggregator(Thread):
             reactor.connectSSL(tks_ip, tks_port, sender_factory, ssl.ClientContextFactory())
             logging.info("registered with TKS at %s:%d", tks_ip, tks_port)
 
+    def get_all_counter_labels(self, stats_list):
+        labels = {}
+        for stat in stats_list:
+            if 'Histogram' in stat['type']:
+                bins = [int(i.strip()) for i in stat['bins'].split(',')]
+                if len(bins) == 1:
+                    # we only have one key to add
+                    stat_type = "{0}_{1}_+".format(stat['type'], bins[0])
+                    labels[stat_type] = stat['sigma']
+                elif len(bins) > 1:
+                    for i in xrange(len(bins)-1): # first add all but the last
+                        stat_type = "{0}_{1}_{2}".format(stat['type'], bins[i], bins[i+1])
+                        labels[stat_type] = stat['sigma']
+                    # now add the last
+                    stat_type = "{0}_{1}_+".format(stat['type'], bins[-1])
+                    labels[stat_type] = stat['sigma']
+            else:
+                labels[stat['type']] = stat['sigma']
+        return labels
+
     def _handle_publish_event(self, items):
         ts_ip, ts_port = items
 
-        count = self._count_streams_per_circuit()
-        logging.info("StreamsPerCircuit_Max = %d", count)
-        for _ in xrange(count):
-            self.counter.increment("StreamsPerCircuit")
+        #count = self._count_streams_per_circuit()
+        #logging.info("StreamsPerCircuit_Max = %d", count)
+        #for _ in xrange(count):
+        #    self.counter.increment("StreamsPerCircuit")
+
+        for key in self.stats:
+            self.counter.increment(key)
 
         msg = json.dumps(self.counter.get_blinded_noisy_counts())
         server_factory = MessageSenderFactory(msg)
@@ -161,11 +198,11 @@ class DataCollectorManager(object):
         self.data_aggregator = DataAggregator(self.cmd_queue)
         self.data_aggregator.start()
 
-        # check for epoch change every second
-        task.LoopingCall(self._trigger_epoch_check).start(1)
-
         # register with TKSes
         self._send_register_command()
+
+        # check for epoch change every second
+        task.LoopingCall(self._trigger_epoch_check).start(1)
 
         # set up our tcp server for receiving data from Tor on localhost only
         listen_port = self.config['data_collector']['listen_port']
@@ -202,15 +239,7 @@ class DataCollectorManager(object):
 
     def _send_register_command(self):
         # setup event to register with the TKSes in the new round
-        reg_delay = self.config['data_collector']['register_delay']
-        fp_hex = self.config['data_collector']['fingerprint']
-        cons_path = self.config['data_collector']['consensus']
-        prime_q = self.config['global']['q']
-        sigma = self.config['global']['sigma']
-        tks_infos = self.config['data_collector']['tally_key_server_infos']
-        relay_fingerprints = self.config['global']['relay_fingerprints']
-        items = [reg_delay, tks_infos, prime_q, sigma, fp_hex, cons_path, relay_fingerprints]
-        self.cmd_queue.put(('register', items))
+        self.cmd_queue.put(('register', deepcopy(self.config)))
 
     def _refresh_config(self):
         # re-read config and process any changes

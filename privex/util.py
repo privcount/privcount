@@ -16,7 +16,7 @@ from hashlib import sha256 as Hash
 
 from twisted.protocols.basic import LineOnlyReceiver
 from twisted.internet.protocol import ClientFactory, ServerFactory
-from stem.descriptor import parse_file, DocumentHandler
+from stem.descriptor import parse_file
 
 import yaml
 
@@ -30,7 +30,7 @@ def log_error():
 def write_results(filename, ts_start, ts_end, totals):
     with open(filename, 'a') as fout:
         if totals:
-            for i in totals:
+            for i in sorted(totals.keys()):
                 fout.write("{} {} {}:{}\n".format(ts_start, ts_end, i, totals[i]))
         else:
             fout.write("{} {} None\n".format(ts_start, ts_end))
@@ -45,12 +45,9 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
             conf = yaml.load(fin)
 
         # make sure we have the required global vals
-        assert conf['global']['q'] > 0
         assert conf['global']['epoch'] > 0
-        assert conf['global']['sigma'] > 0
         assert conf['global']['clock_skew'] > 0
-
-        assert len(conf['global']['relay_fingerprints']) > 0
+        assert conf['global']['q'] > 0
 
         if ts:
             # check the tally server specific vals
@@ -91,6 +88,8 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
             assert os.path.exists(conf['data_collector']['consensus'])
 
             assert conf['data_collector']['fingerprint'] is not None
+            assert len(conf['data_collector']['colocated_fingerprints']) > 0
+            assert conf['data_collector']['diversity_weight'] > 0.0
             assert conf['data_collector']['start_delay'] >= 0
             assert conf['data_collector']['register_delay'] >= 0
             assert conf['data_collector']['listen_port'] > 0
@@ -117,7 +116,6 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
     return config
 
 def noise(sigma, sum_of_sq, p_exit):
-    print p_exit, sigma, sum_of_sq
     sigma_i = p_exit * sigma / sqrt(sum_of_sq)
     random_sample = gauss(0, sigma_i)
     return random_sample
@@ -146,9 +144,9 @@ def keys_from_labels(labels, key, pos=True, q=2147483647):
         shares.append((l, s0))
     return shares
 
-def prob_exit(consensus_path, my_fingerprint, all_privex_fingerprints=None):
-    if all_privex_fingerprints == None:
-        all_privex_fingerprints = [my_fingerprint]
+def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):
+    if fingerprint_pool == None:
+        fingerprint_pool = [my_fingerprint]
 
     net_status = next(parse_file(consensus_path, document_handler='DOCUMENT', validate=False))
     DW = float(net_status.bandwidth_weights['Wed'])/10000
@@ -160,7 +158,7 @@ def prob_exit(consensus_path, my_fingerprint, all_privex_fingerprints=None):
         my_bandwidth = net_status.routers[my_fingerprint].bandwidth
 
     for (fingerprint, router_entry) in net_status.routers.items():
-        if fingerprint not in all_privex_fingerprints or 'BadExit' in router_entry.flags:
+        if fingerprint not in fingerprint_pool or 'BadExit' in router_entry.flags:
             continue
 
         if 'Guard' in router_entry.flags and 'Exit' in router_entry.flags:
@@ -176,6 +174,12 @@ def prob_exit(consensus_path, my_fingerprint, all_privex_fingerprints=None):
     sum_of_sq = sum_of_sq_bw/(TEWBW**2)
     return prob, sum_of_sq
 
+def get_noise_weight(diversity_weight, consensus_path, my_fingerprint, fingerprint_pool=None):
+    # the weight of this relay relative to others running on the same machine
+    my_weight, _ = prob_exit(consensus_path, my_fingerprint, fingerprint_pool)
+    # the fraction of the weight allocated to this machine that this relay's stats are weighted
+    return my_weight * diversity_weight
+
 class CounterStore(object):
     '''
     this is used at the data collector to keep counts of statistics
@@ -184,7 +188,8 @@ class CounterStore(object):
     the blinding factors are sent to the TKSes and the full counts to the TS
     '''
 
-    def __init__(self, q, sigma, labels, num_tkses, fingerprint_hex, consensus_path, relay_fingerprints):
+    def __init__(self, q, num_tkses, noise_weight, stats):
+        labels = stats.keys()
         self.data = {l:0 for l in labels}
         self.q = q
 
@@ -196,10 +201,11 @@ class CounterStore(object):
             for (l, s0) in shares:
                 self.data[l] = (self.data[l] + int(s0)) % self.q
 
-	    # Add noise for each website independently
-        p_exit, sum_of_sq = prob_exit(consensus_path, fingerprint_hex, relay_fingerprints)
-        for label in self.data:
-            noise_gen = noise(sigma, sum_of_sq, p_exit)
+	    # Add noise for each stat independently
+        for label in stats:
+            sigma = stats[label]
+            noise_gen = noise(sigma, 1, noise_weight)
+            assert label in self.data
             self.data[label] = (self.data[label] + int(noise_gen)) % self.q
 
     def get_blinding_factor(self, kid):
