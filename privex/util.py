@@ -83,16 +83,10 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
 
         if dc:
             # check the data collector specific vals
-            expanded_path = os.path.expanduser(conf['data_collector']['consensus'])
-            conf['data_collector']['consensus'] = os.path.abspath(expanded_path)
-            assert os.path.exists(conf['data_collector']['consensus'])
-
-            assert conf['data_collector']['fingerprint'] is not None
-            assert len(conf['data_collector']['colocated_fingerprints']) > 0
-            assert conf['data_collector']['diversity_weight'] > 0.0
             assert conf['data_collector']['start_delay'] >= 0
             assert conf['data_collector']['register_delay'] >= 0
             assert conf['data_collector']['listen_port'] > 0
+            assert conf['data_collector']['noise_weight'] > 0.0
             assert conf['data_collector']['tally_server_info']['ip'] is not None
             assert conf['data_collector']['tally_server_info']['port'] > 0
             for item in conf['data_collector']['tally_key_server_infos']:
@@ -145,6 +139,7 @@ def keys_from_labels(labels, key, pos=True, q=2147483647):
     return shares
 
 def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):
+    '''this func is currently unused'''
     if fingerprint_pool == None:
         fingerprint_pool = [my_fingerprint]
 
@@ -173,12 +168,6 @@ def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):
     prob = my_bandwidth/TEWBW
     sum_of_sq = sum_of_sq_bw/(TEWBW**2)
     return prob, sum_of_sq
-
-def get_noise_weight(diversity_weight, consensus_path, my_fingerprint, fingerprint_pool=None):
-    # the weight of this relay relative to others running on the same machine
-    my_weight, _ = prob_exit(consensus_path, my_fingerprint, fingerprint_pool)
-    # the fraction of the weight allocated to this machine that this relay's stats are weighted
-    return my_weight * diversity_weight
 
 class CounterStore(object):
     '''

@@ -13,7 +13,7 @@ from copy import deepcopy
 
 from twisted.internet import reactor, task, ssl
 
-from util import MessageReceiverFactory, MessageSenderFactory, CounterStore, get_valid_config, get_noise_weight
+from util import MessageReceiverFactory, MessageSenderFactory, CounterStore, get_valid_config
 
 class DataAggregator(Thread):
     '''
@@ -145,7 +145,7 @@ class DataAggregator(Thread):
 
         prime_q = conf['global']['q']
         num_tkses = len(tks_infos)
-        noise_weight = get_noise_weight(dconf['diversity_weight'], dconf['consensus'], dconf['fingerprint'], dconf['colocated_fingerprints'])
+        noise_weight = dconf['noise_weight']
 
         if self.stats is not None:
             del self.stats
