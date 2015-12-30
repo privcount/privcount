@@ -30,8 +30,8 @@ class DataAggregator(Thread):
         self.input_queue = input_queue
         self.stats = None
         self.counter = None
-        self.ext_strms = {}
-        self.cli_circs = {}
+        self.ext_circs = {}
+        self.cli_conns = {}
 
     def run(self):
         keep_running = True
@@ -74,16 +74,65 @@ class DataAggregator(Thread):
         chanid, circid, strmid, port, readbw, writebw = [int(v) for v in items[0:6]]
         start, end = float(items[6]), float(items[7])
 
-        dat = {'port':port, 'readbw':readbw, 'writebw':writebw, 'start':start, 'end':end}
-        self.ext_strms.setdefault(chanid, {}).setdefault(circid, {}).setdefault(strmid, dat)
+        self._increment_matching_labels("BytesReceivedPerStream", readbw)
+        self._increment_matching_labels("BytesSentPerStream", writebw)
+        self._increment_matching_labels("StreamLifeTime", end - start)
+
+        self.ext_circs.setdefault(circid, {"strm_count":0, "strm_create":[]})
+        self.ext_circs[circid]["strm_count"] += 1
+        self.ext_circs[circid]["strm_create"].append(start)
+
+        # TODO classify port
+
+    def _finish_exit_circuit(self, circid):
+        strm_count = 0
+        if circid in self.ext_circs:
+            strm_count = self.ext_circs[circid]["strm_count"]
+            self._increment_matching_labels("StreamsPerCircuit", strm_count)
+
+            strm_create = sorted(self.ext_circs[circid]["strm_create"])
+            for i in xrange(0, len(strm_create)-1):
+                time_between_creates = strm_create[i+1] - strm_create[i]
+                self._increment_matching_labels("StreamIntercreationTime", time_between_creates)
+
+        if strm_count > 0:
+            self._increment_matching_labels("Circuits_Count", 1)
+        else:
+            self._increment_matching_labels("InactiveCircuits_Count", 1)
+
+        if circid in self.ext_circs:
+            self.ext_circs.pop(circid, None)
 
     def _handle_circuit_event(self, items):
         chanid, circid, readbw, writebw = [int(v) for v in items[0:4]]
         start, end = float(items[4]), float(items[5])
-        clientip = items[6]
+        clientip = items[6] # TODO probabilistic counter
 
-        dat = {'readbw':readbw, 'writebw':writebw, 'start':start, 'end':end}
-        self.cli_circs.setdefault(chanid, {}).setdefault(circid, dat)
+        if False: # TODO our Tor needs to change to emit circuits on exits
+            self._finish_exit_circuit(circid)
+            return
+
+        # this is a circuit on an OR conn to client
+        self._increment_matching_labels("BytesReceivedPerCircuit", readbw)
+        self._increment_matching_labels("BytesSentPerCircuit", writebw)
+
+        self.cli_conns.setdefault(chanid, {"circ_count_active":0, "circ_count_inactive":0})
+        if readbw + writebw > 4096:
+            self.cli_conns[chanid]['circ_count_active'] += 1
+        else:
+            self.cli_conns[chanid]['circ_count_inactive'] += 1
+
+    def _finish_client_connection(self, chanid):
+        if chanid in self.cli_conns:
+            self._increment_matching_labels("Connections_Count", 1)
+
+            active_count = self.cli_conns[chanid]['circ_count_active']
+            self._increment_matching_labels("CircuitsPerConnection", active_count)
+
+            inactive_count = self.cli_conns[chanid]['circ_count_inactive']
+            self._increment_matching_labels("InactiveCircuitsPerConnection", inactive_count)
+
+            self.cli_conns.pop(chanid, None)
 
     def _handle_register_event(self, items):
         conf = items
@@ -105,7 +154,7 @@ class DataAggregator(Thread):
             del self.counter
             self.counter = None
 
-        self.stats = self.get_all_counter_labels(dconf['statistics'])
+        self.stats = self._get_all_counter_labels(dconf['statistics'])
         self.counter = CounterStore(prime_q, num_tkses, noise_weight, self.stats)
 
         logging.info("enabling stats counters for labels: %s", str(sorted(self.stats.keys())))
@@ -120,7 +169,23 @@ class DataAggregator(Thread):
             reactor.connectSSL(tks_ip, tks_port, sender_factory, ssl.ClientContextFactory())
             logging.info("registered with TKS at %s:%d", tks_ip, tks_port)
 
-    def get_all_counter_labels(self, stats_list):
+    def _handle_publish_event(self, items):
+        ts_ip, ts_port = items
+
+        for circid in sorted(self.ext_circs.keys()): # avoid iteration error by using list of keys
+            self._finish_exit_circuit(circid)
+
+        for chanid in sorted(self.cli_conns.keys()): # avoid iteration error by using list of keys
+            self._finish_client_connection(chanid)
+
+        msg = json.dumps(self.counter.get_blinded_noisy_counts())
+        server_factory = MessageSenderFactory(msg)
+
+        # pylint: disable=E1101
+        reactor.connectSSL(ts_ip, ts_port, server_factory, ssl.ClientContextFactory())
+        logging.info("sent stats to TS at %s:%d", ts_ip, ts_port)
+
+    def _get_all_counter_labels(self, stats_list):
         labels = {}
         for stat in stats_list:
             if 'Histogram' in stat['type']:
@@ -140,32 +205,24 @@ class DataAggregator(Thread):
                 labels[stat['type']] = stat['sigma']
         return labels
 
-    def _handle_publish_event(self, items):
-        ts_ip, ts_port = items
+    def _get_matching_labels(self, prefix):
+        matches = []
+        for label in sorted(self.stats.keys()):
+            if label.startswith(prefix):
+                matches.append(label)
+        return matches
 
-        #count = self._count_streams_per_circuit()
-        #logging.info("StreamsPerCircuit_Max = %d", count)
-        #for _ in xrange(count):
-        #    self.counter.increment("StreamsPerCircuit")
-
-        for key in self.stats:
-            self.counter.increment(key)
-
-        msg = json.dumps(self.counter.get_blinded_noisy_counts())
-        server_factory = MessageSenderFactory(msg)
-
-        # pylint: disable=E1101
-        reactor.connectSSL(ts_ip, ts_port, server_factory, ssl.ClientContextFactory())
-        logging.info("sent stats to TS at %s:%d", ts_ip, ts_port)
-
-    def _count_streams_per_circuit(self):
-        data = self.ext_strms
-        counts = []
-        for chanid in data:
-            for circid in data[chanid]:
-                n_streams = len(data[chanid][circid])
-                counts.append(n_streams)
-        return max(counts) if len(counts) > 0 else 0
+    def _increment_matching_labels(self, key, val):
+        labels = self._get_matching_labels(key)
+        for label in labels:
+            parts = label.split('_')
+            if len(parts) < 4:
+                # single counter, eg Circuits_Count
+                self.counter.increment(label)
+            else:
+                # histogram counter, eg StreamsPerCircuit_Histogram_0_2 or StreamsPerCircuit_Histogram_2_+
+                if val >= int(parts[2]) and (parts[3] == '+' or val < int(parts[3])):
+                    self.counter.increment(label)
 
 class DataCollectorManager(object):
     '''

@@ -72,7 +72,7 @@ data_collector:
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # time between creation of consecutive streams
+            # time between creation of consecutive streams on the same circuit
             type: 'StreamIntercreationTime_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
