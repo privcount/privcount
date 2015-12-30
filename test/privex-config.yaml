@@ -63,6 +63,11 @@ data_collector:
             sigma: 1.0
             bins: '0, 2, 4'
         -
+            # ratio of bytes sent to bytes received from server per completed stream
+            type: 'BytesSentReceivedRatioPerStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
             # time between create and destroy per completed stream
             type: 'StreamLifeTime_Histogram'
             sigma: 1.0
@@ -102,5 +107,10 @@ data_collector:
         -
             # bytes received from client per circuit on client OR connections
             type: 'BytesReceivedPerCircuit_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # ratio of bytes sent to bytes received per circuit on client OR connections
+            type: 'BytesSentReceivedRatioPerCircuit_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'

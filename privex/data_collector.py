@@ -76,6 +76,7 @@ class DataAggregator(Thread):
 
         self._increment_matching_labels("BytesReceivedPerStream", readbw)
         self._increment_matching_labels("BytesSentPerStream", writebw)
+        self._increment_matching_labels("BytesSentReceivedRatioPerStream", float(writebw)/float(readbw))
         self._increment_matching_labels("StreamLifeTime", end - start)
 
         self.ext_circs.setdefault(circid, {"strm_count":0, "strm_create":[]})
@@ -115,6 +116,7 @@ class DataAggregator(Thread):
         # this is a circuit on an OR conn to client
         self._increment_matching_labels("BytesReceivedPerCircuit", readbw)
         self._increment_matching_labels("BytesSentPerCircuit", writebw)
+        self._increment_matching_labels("BytesSentReceivedRatioPerCircuit", float(writebw)/float(readbw))
 
         self.cli_conns.setdefault(chanid, {"circ_count_active":0, "circ_count_inactive":0})
         if readbw + writebw > 4096:
