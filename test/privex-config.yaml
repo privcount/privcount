@@ -35,6 +35,7 @@ data_collector:
         -
             ip: 127.0.0.1
             port: 20002
+
     statistics:
         ################
         # exit traffic #
@@ -82,23 +83,28 @@ data_collector:
         #################
         -
             # number of OR connections to clients
+            # to help understand churn - do unique clients come and go or do they stick around long 
             type: 'Connections_Count'
             sigma: 1.0
         -
-            # special probabilistic counter
-            type: 'UniqueClients_PCount'
+            # count over 20 minute intervals, then add to histogram counter
+            type: 'UniqueClientIPs_Histogram'
             sigma: 1.0
         -
-            # CountMinSketch, frequency table for a mutliset count
-            # number of circuits with at least 4096 bytes of transferred data on client OR connections
-            type: 'CircuitsPerConnection_Histogram'
+            # count over same 20 min intervals as client ips
+            # number of circuits with at least 4096 bytes of transferred data per client IP
+            type: 'CircuitsPerClientIP_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
         -
             # number of circuits with less than 4096 bytes of transferred data on client OR connections
-            type: 'InactiveCircuitsPerConnection_Histogram'
+            type: 'InactiveCircuitsPerClientIP_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
+        -
+            # count number of circuits that were around for longer than the 20 minute collection period
+            type: 'LongLivedCircuitsPerClientIP_Count'
+            sigma: 1.0
         -
             # bytes sent to client per circuit on client OR connections
             type: 'BytesSentPerCircuit_Histogram'
