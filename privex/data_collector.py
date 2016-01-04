@@ -65,10 +65,16 @@ class DataAggregator(Thread):
                 self._handle_stream_event(items[0:8])
 
         elif event == 'c':
-            # 'c', ChanID, CircID, ReadBW, WriteBW, TimeStart, TimeEnd, ClientIP
-            items = [v.strip('\n') for v in line_remaining.split(' ', 7)]
-            if len(items) == 7:
-                self._handle_circuit_event(items[0:7])
+            # 'c', ChanID, CircID, ReadBW, WriteBW, TimeStart, TimeEnd, ClientIP, isEntry, isExit
+            items = [v.strip('\n') for v in line_remaining.split(' ', 9)]
+            if len(items) == 9:
+                self._handle_circuit_event(items[0:9])
+
+        elif event == 't':
+            # 't', ChanID, TimeStart, TimeEnd, isEntry, ClientIP
+            items = [v.strip('\n') for v in line_remaining.split(' ', 5)]
+            if len(items) == 5:
+                self._handle_connection_event(items[0:5])
 
     def _handle_stream_event(self, items):
         chanid, circid, strmid, port, readbw, writebw = [int(v) for v in items[0:6]]
@@ -108,6 +114,7 @@ class DataAggregator(Thread):
         chanid, circid, readbw, writebw = [int(v) for v in items[0:4]]
         start, end = float(items[4]), float(items[5])
         clientip = items[6] # TODO probabilistic counter
+        isentry, isexit = int(items[7]), int(items[8])
 
         if False: # TODO our Tor needs to change to emit circuits on exits
             self._finish_exit_circuit(circid)
@@ -135,6 +142,12 @@ class DataAggregator(Thread):
             self._increment_matching_labels("InactiveCircuitsPerConnection", inactive_count)
 
             self.cli_conns.pop(chanid, None)
+
+    def _handle_connection_event(self, items):
+        chanid = int(items[0])
+        start, end = float(items[1]), float(items[2])
+        isentry = int(items[3])
+        clientip = items[4]
 
     def _handle_register_event(self, items):
         conf = items
