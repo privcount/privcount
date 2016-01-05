@@ -1,7 +1,6 @@
 # everybody needs these configs
 global:
-    ### epoch: 1 week
-    epoch: 60 # the safe time frame of stats collection for all stats
+    epoch: 60 # (1 week = 604800 seconds) the safe time frame of stats collection for all stats
     clock_skew: 3 # (300s) # deal with clock skews and latency
     q: 2147483647 # ((2**31)-1) 2^31 - 1 happens to be a prime
 
@@ -58,63 +57,15 @@ data_collector:
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # completed streams per active circuit
             type: 'InteractiveStreamsPerCircuit_Histogram' ## combine irc and ssh too!
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # completed streams per active circuit
             type: 'P2PStreamsPerCircuit_Histogram' ## bittorrent! classify port >= 10000 as BT.
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # completed streams per active circuit
             type: 'OtherStreamsPerCircuit_Histogram' ## classify port < 10000 and no other class.
-            sigma: 1.0
-            bins: '0, 2, 4'
-        - ####### add an other category for everything else
-            # bytes sent to server per completed stream
-            type: 'WebBytesSentPerStream_Histogram'
-            sigma: 1.0
-            bins: '0, 2, 4'
-        -
-            # bytes sent to server per completed stream
-            type: 'InteractiveBytesSentPerStream_Histogram'
-            sigma: 1.0
-            bins: '0, 2, 4'
-        -
-            # bytes sent to server per completed stream
-            type: 'P2PBytesSentPerStream_Histogram'
-            sigma: 1.0
-            bins: '0, 2, 4'
-        -
-            # bytes received from server per completed stream
-            type: 'WebBytesReceivedPerStream_Histogram'
-            sigma: 1.0
-            bins: '0, 2, 4'
-        -
-            # bytes received from server per completed stream
-            type: 'InteractiveBytesReceivedPerStream_Histogram'
-            sigma: 1.0
-            bins: '0, 2, 4'
-        -
-            # bytes received from server per completed stream
-            type: 'P2PBytesReceivedPerStream_Histogram'
-            sigma: 1.0
-            bins: '0, 2, 4'
-        -
-            # ratio of bytes sent to bytes received from server per completed stream
-            type: 'WebBytesSentReceivedRatioPerStream_Histogram'
-            sigma: 1.0
-            bins: '0, 2, 4'
-        -
-            # ratio of bytes sent to bytes received from server per completed stream
-            type: 'InteractiveBytesSentReceivedRatioPerStream_Histogram'
-            sigma: 1.0
-            bins: '0, 2, 4'
-        -
-            # ratio of bytes sent to bytes received from server per completed stream
-            type: 'P2PBytesSentReceivedRatioPerStream_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
         -
@@ -123,46 +74,84 @@ data_collector:
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # time between create and destroy per completed stream
             type: 'InteractiveStreamLifeTime_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # time between create and destroy per completed stream
             type: 'P2PStreamLifeTime_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # time between creation of consecutive streams on the same circuit
-            type: 'WebStreamIntercreationTime_Histogram'
+            type: 'OtherStreamLifeTime_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # time between creation of consecutive streams on the same circuit
-            type: 'InteractiveStreamIntercreationTime_Histogram'
+            # bytes sent to server per completed stream
+            type: 'BytesSentPerWebStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            type: 'BytesSentPerInteractiveStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            type: 'BytesSentPerP2PStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            type: 'BytesSentPerOtherStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # bytes received from server per completed stream
+            type: 'BytesReceivedPerWebStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            type: 'BytesReceivedPerInteractiveStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            type: 'BytesReceivedPerP2PStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            type: 'BytesReceivedPerOtherStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            # ratio of bytes sent to bytes received from server per completed stream
+            type: 'BytesSentReceivedRatioPerWebStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            type: 'BytesSentReceivedRatioPerInteractiveStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            type: 'BytesSentReceivedRatioPerP2PStream_Histogram'
+            sigma: 1.0
+            bins: '0, 2, 4'
+        -
+            type: 'BytesSentReceivedRatioPerOtherStream_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
         #################
         # entry traffic #
         #################
-        # 10 minutes colleciton thing:
-        # keep 2 dicts: prev 10 mins and current 10 mins
-        # when a circ ends, if its lifetime is more than 10 minutes, add it to longedlive count
-        # if less than 10 mins:
-        #   add to current if it started in the current interval
-        #   add it to prev if it started in the previous interval
         -
-            # count over 10 minute intervals, then add to histogram counter
+            # count over 10 mins, add to histogram counter after an additional 10 min wait period
             type: 'UniqueClientIPs_Histogram'
             sigma: 1.0
+            bins: '0, 2, 4'
         -
             # count over same 10 min intervals as client ips
-            # number of circuits with at least 4096 bytes of transferred data per client IP
+            # number of circuits with at least 8 cells transferred per client IP
             type: 'CircuitsPerClientIP_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # number of circuits with less than 4096 bytes of transferred data on client OR connections
+            # number of circuits with less than 8 cells transferred
             type: 'InactiveCircuitsPerClientIP_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
@@ -172,22 +161,22 @@ data_collector:
             type: 'Connections_Count'
             sigma: 1.0
         -
-            # count number of circuits that were around for longer than the 10 minute collection period
+            # circuit times
             type: 'CircuitLifeTime_Histogram'
             sigma: 1.0
-            bins: '0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20'
+            bins: '0, 2, 8, 10, 12, 20'
         -
-            # bytes sent to client per circuit on client OR connections
-            type: 'BytesSentPerCircuit_Histogram'
+            # cells sent 'in' to client per circuit on client OR connections
+            type: 'CellsInPerCircuit_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # bytes received from client per circuit on client OR connections
-            type: 'BytesReceivedPerCircuit_Histogram'
+            # cells sent 'out' from client per circuit on client OR connections
+            type: 'CellsOutPerCircuit_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'
         -
-            # ratio of bytes sent to bytes received per circuit on client OR connections
-            type: 'BytesSentReceivedRatioPerCircuit_Histogram'
+            # ratio of cells in to cells out per circuit on client OR connections
+            type: 'CellsInOutRatioPerCircuit_Histogram'
             sigma: 1.0
             bins: '0, 2, 4'

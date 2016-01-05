@@ -30,8 +30,11 @@ class DataAggregator(Thread):
         self.input_queue = input_queue
         self.stats = None
         self.counter = None
-        self.ext_circs = {}
-        self.cli_conns = {}
+
+        self.n_streams_per_circ = {}
+        self.cli_ips_rotated = time.time()
+        self.cli_ips_current = {}
+        self.cli_ips_previous = {}
 
     def run(self):
         keep_running = True
@@ -43,6 +46,9 @@ class DataAggregator(Thread):
 
             elif event == 'register':
                 self._handle_register_event(items)
+
+            elif event == 'rotate':
+                self._handle_rotate_event(items)
 
             elif event == 'publish':
                 self._handle_publish_event(items)
@@ -59,95 +65,129 @@ class DataAggregator(Thread):
 
         # hand valid events off to the aggregator
         if event == 's':
-            # 's', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd
-            items = [v.strip() for v in line_remaining.split(' ', 8)]
-            if len(items) == 8:
-                self._handle_stream_event(items[0:8])
+            # 's', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
+            items = [v.strip() for v in line_remaining.split(' ', 10)]
+            if len(items) == 10:
+                self._handle_stream_event(items[0:10])
 
         elif event == 'c':
-            # 'c', ChanID, CircID, ReadBW, WriteBW, TimeStart, TimeEnd, ClientIP, isEntry, isExit
-            items = [v.strip('\n') for v in line_remaining.split(' ', 9)]
-            if len(items) == 9:
-                self._handle_circuit_event(items[0:9])
+            # 'c', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
+            items = [v.strip('\n') for v in line_remaining.split(' ', 16)]
+            if len(items) == 16:
+                self._handle_circuit_event(items[0:16])
 
         elif event == 't':
-            # 't', ChanID, TimeStart, TimeEnd, isEntry, ClientIP
-            items = [v.strip('\n') for v in line_remaining.split(' ', 5)]
-            if len(items) == 5:
-                self._handle_connection_event(items[0:5])
+            # 't', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
+            items = [v.strip('\n') for v in line_remaining.split(' ', 6)]
+            if len(items) == 6:
+                self._handle_connection_event(items[0:6])
 
     def _handle_stream_event(self, items):
         chanid, circid, strmid, port, readbw, writebw = [int(v) for v in items[0:6]]
         start, end = float(items[6]), float(items[7])
+        is_dns = True if int(items[8]) == 1 else False
+        is_dir = True if int(items[9]) == 1 else False
 
-        self._increment_matching_labels("BytesReceivedPerStream", readbw)
-        self._increment_matching_labels("BytesSentPerStream", writebw)
-        self._increment_matching_labels("BytesSentReceivedRatioPerStream", float(writebw)/float(readbw))
-        self._increment_matching_labels("StreamLifeTime", end - start)
+        self._increment_matching_labels("Streams_Count", 1)
 
-        self.ext_circs.setdefault(circid, {"strm_count":0, "strm_create":[]})
-        self.ext_circs[circid]["strm_count"] += 1
-        self.ext_circs[circid]["strm_create"].append(start)
+        stream_class = self.classify_port(port)
+        self.n_streams_per_circ.setdefault(chanid, {}).setdefault(circid, {'interactive':0, 'web':0, 'p2p':0, 'other':0})
+        self.n_streams_per_circ[chanid][circid][stream_class] += 1
 
-        # TODO classify port
+        if stream_class == 'web':
+            self._increment_matching_labels("WebStreamLifeTime", end-start)
+            self._increment_matching_labels("BytesSentPerWebStream", writebw)
+            self._increment_matching_labels("BytesReceivedPerWebStream", readbw)
+            self._increment_matching_labels("BytesSentReceivedRatioPerWebStream", float(writebw)/float(readbw))
+        elif stream_class == 'interactive':
+            self._increment_matching_labels("InteractiveStreamLifeTime", end-start)
+            self._increment_matching_labels("BytesSentPerInteractiveStream", writebw)
+            self._increment_matching_labels("BytesReceivedPerInteractiveStream", readbw)
+            self._increment_matching_labels("BytesSentReceivedRatioPerInteractiveStream", float(writebw)/float(readbw))
+        elif stream_class == 'p2p':
+            self._increment_matching_labels("P2PStreamLifeTime", end-start)
+            self._increment_matching_labels("BytesSentPerP2PStream", writebw)
+            self._increment_matching_labels("BytesReceivedPerP2PStream", readbw)
+            self._increment_matching_labels("BytesSentReceivedRatioPerP2PStream", float(writebw)/float(readbw))
+        elif stream_class == 'other':
+            self._increment_matching_labels("OtherStreamLifeTime", end-start)
+            self._increment_matching_labels("BytesSentPerOtherStream", writebw)
+            self._increment_matching_labels("BytesReceivedPerOtherStream", readbw)
+            self._increment_matching_labels("BytesSentReceivedRatioPerOtherStream", float(writebw)/float(readbw))
 
-    def _finish_exit_circuit(self, circid):
-        strm_count = 0
-        if circid in self.ext_circs:
-            strm_count = self.ext_circs[circid]["strm_count"]
-            self._increment_matching_labels("StreamsPerCircuit", strm_count)
-
-            strm_create = sorted(self.ext_circs[circid]["strm_create"])
-            for i in xrange(0, len(strm_create)-1):
-                time_between_creates = strm_create[i+1] - strm_create[i]
-                self._increment_matching_labels("StreamIntercreationTime", time_between_creates)
-
-        if strm_count > 0:
-            self._increment_matching_labels("Circuits_Count", 1)
+    def classify_port(self, port):
+        if port == 22 or (port >= 6660 and port <= 6669) or port == 6697 or port == 7000:
+            return 'interactive'
+        elif port == 80 or port == 443:
+            return 'web'
+        elif (port >= 6881 and port <= 6889) or port == 6969 or port >= 10000:
+            return 'p2p'
         else:
-            self._increment_matching_labels("InactiveCircuits_Count", 1)
-
-        if circid in self.ext_circs:
-            self.ext_circs.pop(circid, None)
+            return 'other'
 
     def _handle_circuit_event(self, items):
-        chanid, circid, readbw, writebw = [int(v) for v in items[0:4]]
-        start, end = float(items[4]), float(items[5])
-        clientip = items[6] # TODO probabilistic counter
-        isentry, isexit = int(items[7]), int(items[8])
+        chanid, circid, ncellsin, ncellsout, readbwdns, writebwdns, readbwexit, writebwexit = [int(v) for v in items[0:8]]
+        start, end = float(items[8]), float(items[9])
+        previp = items[10]
+        prevIsClient = True if int(items[11]) > 0 else False
+        prevIsRelay = True if int(items[12]) > 0 else False
+        nextip = items[13]
+        nextIsClient = True if int(items[14]) > 0 else False
+        nextIsRelay = True if int(items[15]) > 0 else False
 
-        if False: # TODO our Tor needs to change to emit circuits on exits
-            self._finish_exit_circuit(circid)
-            return
+        # we get circuit events on both exits and entries
+        # stream bw info is only avail on exits
+        # isclient is based on CREATE_FAST and I'm not sure that is always used by clients
+        if not prevIsRelay:
+            # previous hop is unkown
+            self._increment_matching_labels("CircuitLifeTime", end - start)
+            self._increment_matching_labels("CellsInPerCircuit", ncellsin)
+            self._increment_matching_labels("CellsOutPerCircuit", ncellsout)
+            self._increment_matching_labels("CellsInOutRatioPerCircuit", float(ncellsin)/float(ncellsout))
 
-        # this is a circuit on an OR conn to client
-        self._increment_matching_labels("BytesReceivedPerCircuit", readbw)
-        self._increment_matching_labels("BytesSentPerCircuit", writebw)
-        self._increment_matching_labels("BytesSentReceivedRatioPerCircuit", float(writebw)/float(readbw))
+            active_key = 'active' if ncellsin + ncellsout >= 8 else 'inactive'
+            if start >= self.cli_ips_rotated:
+                self.cli_ips_current.setdefault(previp, {'active':0, 'inactive':0})[active_key] += 1
+            elif start >= self.cli_ips_rotated-600.0:
+                self.cli_ips_previous.setdefault(previp, {'active':0, 'inactive':0})[active_key] += 1
 
-        self.cli_conns.setdefault(chanid, {"circ_count_active":0, "circ_count_inactive":0})
-        if readbw + writebw > 4096:
-            self.cli_conns[chanid]['circ_count_active'] += 1
-        else:
-            self.cli_conns[chanid]['circ_count_inactive'] += 1
+        elif not nextIsRelay:
+            # prev hop is known relay but next is not
 
-    def _finish_client_connection(self, chanid):
-        if chanid in self.cli_conns:
-            self._increment_matching_labels("Connections_Count", 1)
+            if chanid in self.n_streams_per_circ and circid in self.n_streams_per_circ[chanid]:
+                counts = self.n_streams_per_circ[chanid][circid]
+                n_streams_total = sum(counts.values())
+                if n_streams_total > 0:
+                    self._increment_matching_labels("Circuits_Count", 1)
+                    self._increment_matching_labels("WebStreamsPerCircuit", counts['web'])
+                    self._increment_matching_labels("InteractiveStreamsPerCircuit", counts['interactive'])
+                    self._increment_matching_labels("P2PStreamsPerCircuit_", counts['p2p'])
+                    self._increment_matching_labels("OtherStreamsPerCircuit", counts['other'])
+                else:
+                    self._increment_matching_labels("InactiveCircuits_Count", 1)
 
-            active_count = self.cli_conns[chanid]['circ_count_active']
-            self._increment_matching_labels("CircuitsPerConnection", active_count)
-
-            inactive_count = self.cli_conns[chanid]['circ_count_inactive']
-            self._increment_matching_labels("InactiveCircuitsPerConnection", inactive_count)
-
-            self.cli_conns.pop(chanid, None)
+                # cleanup
+                self.n_streams_per_circ[chanid].pop(circid, None)
+                if len(self.n_streams_per_circ[chanid]) == 0:
+                    self.n_streams_per_circ.pop(chanid, None)
 
     def _handle_connection_event(self, items):
         chanid = int(items[0])
         start, end = float(items[1]), float(items[2])
-        isentry = int(items[3])
-        clientip = items[4]
+        ip = items[3]
+        isclient = True if int(items[4]) > 0 else False
+        isrelay = True if int(items[5]) > 0 else False
+        if not isrelay:
+            self._increment_matching_labels("Connections_Count", 1)
+
+    def _handle_rotate_event(self, items):
+        self._increment_matching_labels("UniqueClientIPs", len(self.cli_ips_previous))
+        for ip in self.cli_ips_previous:
+            self._increment_matching_labels("CircuitsPerClientIP", self.cli_ips_previous[ip]['active'])
+            self._increment_matching_labels("InactiveCircuitsPerClientIP", self.cli_ips_previous[ip]['inactive'])
+        self.cli_ips_previous = self.cli_ips_current
+        self.cli_ips_current = {}
+        self.cli_ips_rotated = time.time()
 
     def _handle_register_event(self, items):
         conf = items
@@ -186,12 +226,6 @@ class DataAggregator(Thread):
 
     def _handle_publish_event(self, items):
         ts_ip, ts_port = items
-
-        for circid in sorted(self.ext_circs.keys()): # avoid iteration error by using list of keys
-            self._finish_exit_circuit(circid)
-
-        for chanid in sorted(self.cli_conns.keys()): # avoid iteration error by using list of keys
-            self._finish_client_connection(chanid)
 
         msg = json.dumps(self.counter.get_blinded_noisy_counts())
         server_factory = MessageSenderFactory(msg)
@@ -276,6 +310,9 @@ class DataCollectorManager(object):
         # check for epoch change every second
         task.LoopingCall(self._trigger_epoch_check).start(1)
 
+        # rotate IP counter every 10 minutes
+        task.LoopingCall(self._send_rotate_command).start(600)
+
         # set up our tcp server for receiving data from Tor on localhost only
         listen_port = self.config['data_collector']['listen_port']
         server_factory = MessageReceiverFactory(self.cmd_queue)
@@ -312,6 +349,10 @@ class DataCollectorManager(object):
     def _send_register_command(self):
         # setup event to register with the TKSes in the new round
         self.cmd_queue.put(('register', deepcopy(self.config)))
+
+    def _send_rotate_command(self):
+        # setup event to register with the TKSes in the new round
+        self.cmd_queue.put(('rotate', None))
 
     def _refresh_config(self):
         # re-read config and process any changes
