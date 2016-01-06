@@ -13,7 +13,7 @@ from copy import deepcopy
 
 from twisted.internet import reactor, task, ssl
 
-from util import MessageReceiverFactory, MessageSenderFactory, CounterStore, get_valid_config
+from util import MessageReceiverFactory, MessageSenderFactory, CounterStore, get_valid_config, wait_epoch_change, get_epoch_info
 
 class DataAggregator(Thread):
     '''
@@ -207,11 +207,11 @@ class DataAggregator(Thread):
 
     def _handle_register_event(self, items):
         conf = items
+        # make sure the other servers are up, which they will be by the end of the clock_skew period
+        logging.info("delaying epoch registration by %d seconds", conf['global']['clock_skew'])
+        time.sleep(conf['global']['clock_skew'])
+
         dconf = conf['data_collector']
-
-        logging.info("delaying epoch registration by %d seconds", dconf['register_delay'])
-        time.sleep(dconf['register_delay'])
-
         tks_infos = dconf['tally_key_server_infos']
 
         prime_q = conf['global']['q']
@@ -309,8 +309,8 @@ class DataCollectorManager(object):
             return
 
         # sync on configured epoch
-        self._wait_epoch_change()
-        self.last_epoch = int(time.time()) / self.config['global']['epoch']
+        wait_epoch_change(self.config['global']['start_time'], self.config['global']['epoch'])
+        self.last_epoch, _, _ = get_epoch_info(self.config['global']['start_time'], self.config['global']['epoch'])
         self._wait_start_delay()
 
         logging.info("initializing server components...")
@@ -345,14 +345,8 @@ class DataCollectorManager(object):
             self.cmd_queue.join()
             self.data_aggregator.join()
 
-    def _wait_epoch_change(self):
-        epoch = self.config['global']['epoch']
-        seconds = epoch - int(time.time()) % epoch
-        logging.info("waiting for %d seconds until the start of the next epoch...", seconds)
-        time.sleep(seconds)
-
     def _wait_start_delay(self):
-        seconds = self.config['data_collector']['start_delay']
+        seconds = self.config['global']['clock_skew']
         logging.info("delaying start by %d seconds", seconds)
         time.sleep(seconds)
 
@@ -380,15 +374,11 @@ class DataCollectorManager(object):
             logging.info("using config = %s", str(self.config))
 
     def _trigger_epoch_check(self):
-        epoch_period = self.config['global']['epoch']
-        this_epoch = int(time.time()) / epoch_period
+        epoch_num, ts_epoch_start, ts_epoch_end = get_epoch_info(self.config['global']['start_time'], self.config['global']['epoch'])
 
-        if this_epoch > self.last_epoch:
-            self.last_epoch = this_epoch
-            ts_end = this_epoch * epoch_period
-            ts_start = ts_end - epoch_period
-            logging.info("the epoch from %d to %d just ended", ts_start, ts_end)
-
+        if epoch_num > self.last_epoch:
+            logging.info("the epoch from %d to %d just ended", ts_epoch_start, ts_epoch_end)
+            self.last_epoch = epoch_num
             self._send_publish_command()
             self._refresh_config()
             self._send_register_command()

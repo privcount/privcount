@@ -12,7 +12,7 @@ from Queue import Queue
 
 from twisted.internet import reactor, task, ssl
 
-from util import MessageReceiverFactory, get_valid_config, write_results
+from util import MessageReceiverFactory, get_valid_config, write_results, wait_epoch_change, get_epoch_info
 
 class StatsKeeper(Thread):
     '''
@@ -98,8 +98,8 @@ class TallyServerManager(object):
             return
 
         # sync on configured epoch
-        self._wait_epoch_change()
-        self.last_epoch = int(time.time()) / self.config['global']['epoch']
+        wait_epoch_change(self.config['global']['start_time'], self.config['global']['epoch'])
+        self.last_epoch, _, _ = get_epoch_info(self.config['global']['start_time'], self.config['global']['epoch'])
 
         logging.info("initializing server components...")
 
@@ -131,21 +131,15 @@ class TallyServerManager(object):
             self.cmd_queue.join()
             self.stats_keeper.join()
 
-    def _wait_epoch_change(self):
-        epoch = self.config['global']['epoch']
-        seconds = epoch - int(time.time()) % epoch
-        logging.info("waiting for %d seconds until the start of the next epoch...", seconds)
-        time.sleep(seconds)
-
-    def _send_publish_command(self, ts_start, ts_end):
+    def _schedule_publish_command(self, ts_start, ts_end):
         # set up a publish event
         prime_q = self.config['global']['q']
         results_path = self.config['tally_server']['results']
 
         items = [prime_q, ts_start, ts_end, results_path]
 
-        delay_seconds = self.config['tally_server']['publish_delay']
-        reactor.callLater(delay_seconds, self._trigger_publish_event, items) # pylint: disable=E1101
+        delay_seconds = self.config['global']['clock_skew']
+        reactor.callLater(delay_seconds, self._send_publish_command, items) # pylint: disable=E1101
 
     def _refresh_config(self):
         # re-read config and process any changes
@@ -153,19 +147,16 @@ class TallyServerManager(object):
         if new_config is not None:
             # NOTE this wont apply listen_port or key/cert changes
             self.config = new_config
+            logging.info("using config = %s", str(self.config))
 
     def _trigger_epoch_check(self):
-        epoch_period = self.config['global']['epoch']
-        this_epoch = int(time.time()) / epoch_period
+        epoch_num, ts_epoch_start, ts_epoch_end = get_epoch_info(self.config['global']['start_time'], self.config['global']['epoch'])
 
-        if this_epoch > self.last_epoch:
-            self.last_epoch = this_epoch
-            ts_end = this_epoch * epoch_period
-            ts_start = ts_end - epoch_period
-            logging.info("the epoch from %d to %d just ended", ts_start, ts_end)
-
-            self._send_publish_command(ts_start, ts_end)
+        if epoch_num > self.last_epoch:
+            logging.info("the epoch from %d to %d just ended", ts_epoch_start, ts_epoch_end)
+            self.last_epoch = epoch_num
+            self._schedule_publish_command(ts_epoch_start, ts_epoch_end)
             self._refresh_config()
 
-    def _trigger_publish_event(self, items):
+    def _send_publish_command(self, items):
         self.cmd_queue.put(('publish', items))

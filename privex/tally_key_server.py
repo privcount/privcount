@@ -13,7 +13,7 @@ from Queue import Queue
 
 from twisted.internet import reactor, task, ssl
 
-from util import MessageReceiverFactory, MessageSenderFactory, KeyStore, get_valid_config
+from util import MessageReceiverFactory, MessageSenderFactory, KeyStore, get_valid_config, wait_epoch_change, get_epoch_info
 
 class KeyShareKeeper(Thread):
     '''
@@ -76,9 +76,8 @@ class TallyKeyServerManager(object):
             return
 
         # sync on configured epoch
-        self._wait_epoch_change()
-        self.last_epoch = int(time.time()) / self.config['global']['epoch']
-        self._wait_start_delay()
+        wait_epoch_change(self.config['global']['start_time'], self.config['global']['epoch'])
+        self.last_epoch, _, _ = get_epoch_info(self.config['global']['start_time'], self.config['global']['epoch'])
 
         logging.info("initializing server components...")
 
@@ -112,17 +111,6 @@ class TallyKeyServerManager(object):
             self.cmd_queue.join()
             self.share_keeper.join()
 
-    def _wait_epoch_change(self):
-        epoch = self.config['global']['epoch']
-        seconds = epoch - int(time.time()) % epoch
-        logging.info("waiting for %d seconds until the start of the next epoch...", seconds)
-        time.sleep(seconds)
-
-    def _wait_start_delay(self):
-        seconds = self.config['tally_key_server']['start_delay']
-        logging.info("delaying start by %d seconds", seconds)
-        time.sleep(seconds)
-
     def _send_publish_command(self):
         # set up a publish event
         ts_ip = self.config['tally_key_server']['tally_server_info']['ip']
@@ -136,16 +124,13 @@ class TallyKeyServerManager(object):
         if new_config is not None:
             # NOTE this wont apply listen_port or key/cert changes
             self.config = new_config
+            logging.info("using config = %s", str(self.config))
 
     def _trigger_epoch_check(self):
-        epoch_period = self.config['global']['epoch']
-        this_epoch = int(time.time()) / epoch_period
+        epoch_num, ts_epoch_start, ts_epoch_end = get_epoch_info(self.config['global']['start_time'], self.config['global']['epoch'])
 
-        if this_epoch > self.last_epoch:
-            self.last_epoch = this_epoch
-            ts_end = this_epoch * epoch_period
-            ts_start = ts_end - epoch_period
-            logging.info("the epoch from %d to %d just ended", ts_start, ts_end)
-
+        if epoch_num > self.last_epoch:
+            logging.info("the epoch from %d to %d just ended", ts_epoch_start, ts_epoch_end)
+            self.last_epoch = epoch_num
             self._send_publish_command()
             self._refresh_config()

@@ -8,6 +8,7 @@ import os
 import struct
 import traceback
 import logging
+import time
 
 from random import gauss
 from math import sqrt
@@ -35,6 +36,25 @@ def write_results(filename, ts_start, ts_end, totals):
         else:
             fout.write("{} {} None\n".format(ts_start, ts_end))
 
+def get_epoch_info(start_time_seconds, epoch_length_seconds):
+    num = (int(time.time()) - start_time_seconds) / epoch_length_seconds
+    ts_start = start_time_seconds + (num * epoch_length_seconds)
+    ts_end = ts_start + epoch_length_seconds
+    return num, ts_start, ts_end
+
+def wait_epoch_change(start_time_seconds, epoch_length_seconds):
+    now = int(time.time())
+
+    wait_time_seconds = 0
+    if now < start_time_seconds:
+        wait_time_seconds = start_time_seconds - now
+    else:
+        seconds_past_last_epoch = (now - start_time_seconds) % epoch_length_seconds
+        wait_time_seconds = epoch_length_seconds - seconds_past_last_epoch
+
+    logging.info("waiting for %d seconds until the start of the next epoch...", wait_time_seconds)
+    time.sleep(wait_time_seconds)
+
 def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
     config = None
     try:
@@ -45,8 +65,9 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
             conf = yaml.load(fin)
 
         # make sure we have the required global vals
+        assert conf['global']['start_time'] > 0
         assert conf['global']['epoch'] > 0
-        assert conf['global']['clock_skew'] > 0
+        assert conf['global']['clock_skew'] >= 0
         assert conf['global']['q'] > 0
 
         if ts:
@@ -63,7 +84,6 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
             conf['tally_server']['results'] = os.path.abspath(expanded_path)
             assert os.path.exists(os.path.dirname(conf['tally_server']['results']))
 
-            assert conf['tally_server']['publish_delay'] >= 0
             assert conf['tally_server']['listen_port'] > 0
 
         if tks:
@@ -76,15 +96,12 @@ def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
             conf['tally_key_server']['cert'] = os.path.abspath(expanded_path)
             assert os.path.exists(conf['tally_key_server']['cert'])
 
-            assert conf['tally_key_server']['start_delay'] >= 0
             assert conf['tally_key_server']['listen_port'] > 0
             assert conf['tally_key_server']['tally_server_info']['ip'] is not None
             assert conf['tally_key_server']['tally_server_info']['port'] > 0
 
         if dc:
             # check the data collector specific vals
-            assert conf['data_collector']['start_delay'] >= 0
-            assert conf['data_collector']['register_delay'] >= 0
             assert conf['data_collector']['listen_port'] > 0
             assert conf['data_collector']['noise_weight'] > 0.0
             assert conf['data_collector']['tally_server_info']['ip'] is not None
