@@ -19,10 +19,10 @@ def main():
     help_formatter = CustomHelpFormatter
 
     # construct the options
-    main_parser = ArgumentParser(description="Run a privex entity", formatter_class=help_formatter)
+    main_parser = ArgumentParser(description="Run a PrivCount entity", formatter_class=help_formatter)
 
     main_parser.add_argument(# '-c', '--config',
-        help="""a file path to a privex config file, may be '-' for STDIN""",
+        help="""a file path to a PrivCount config file, may be '-' for STDIN""",
         metavar="CONFIG_PATH", type=type_str_path_in,
         action="store", dest="configpath")
 
@@ -35,15 +35,15 @@ def main():
     sub_parser = main_parser.add_subparsers(help="")
 
     # tally server
-    ts_parser = sub_parser.add_parser('ts', help="run a privex tally server", formatter_class=help_formatter)
+    ts_parser = sub_parser.add_parser('ts', help="run a PrivCount tally server", formatter_class=help_formatter)
     ts_parser.set_defaults(mode='ts', func=tally_server, formatter_class=help_formatter)
 
     # tally key server
-    tks_parser = sub_parser.add_parser('tks', help="run a privex tally key server", formatter_class=help_formatter)
+    tks_parser = sub_parser.add_parser('tks', help="run a PrivCount tally key server", formatter_class=help_formatter)
     tks_parser.set_defaults(mode='tks', func=tally_key_server, formatter_class=help_formatter)
 
     # data collector
-    dc_parser = sub_parser.add_parser('dc', help="run a privex data collector", formatter_class=help_formatter)
+    dc_parser = sub_parser.add_parser('dc', help="run a PrivCount data collector", formatter_class=help_formatter)
     dc_parser.set_defaults(mode='dc', func=data_collector, formatter_class=help_formatter)
 
     # get args and call the command handler for the chosen mode
@@ -51,33 +51,33 @@ def main():
 
     logfile_path = None if args.logpath == '-' else args.logpath
     logging.basicConfig(filename=logfile_path, level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S',
-        format='%(asctime)s %(created)f [privex-{0}] [%(levelname)s] %(message)s'.format(args.mode))
+        format='%(asctime)s %(created)f [privcount-{0}] [%(levelname)s] %(message)s'.format(args.mode))
 
     if logfile_path is not None:
-        print "privex: output redirected to '{0}'".format(logfile_path)
+        print "privcount: output redirected to '{0}'".format(logfile_path)
 
     if args.configpath == '-':
-        with open('privex.tmp.cfg', 'wb') as fout:
+        with open('privcount.tmp.cfg', 'wb') as fout:
             for line in sys.stdin:
                 print >> fout, line,
-        args.configpath = os.path.abspath('privex.tmp.cfg')
+        args.configpath = os.path.abspath('privcount.tmp.cfg')
 
     logging.info("using config file at '%s'", args.configpath)
     args.func(args)
 
 def data_collector(args):
     logging.info("running data_collector")
-    from privex.data_collector import DataCollectorManager
+    from privcount.data_collector import DataCollectorManager
     DataCollectorManager(args.configpath).run()
 
 def tally_server(args):
     logging.info("running tally_server")
-    from privex.tally_server import TallyServerManager
+    from privcount.tally_server import TallyServerManager
     TallyServerManager(args.configpath).run()
 
 def tally_key_server(args):
     logging.info("running tally_key_server")
-    from privex.tally_key_server import TallyKeyServerManager
+    from privcount.tally_key_server import TallyKeyServerManager
     TallyKeyServerManager(args.configpath).run()
 
 def type_str_path_out(value):

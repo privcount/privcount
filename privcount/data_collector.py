@@ -292,7 +292,7 @@ class DataAggregator(Thread):
 class DataCollectorManager(object):
     '''
     run a data collector to gather and aggregate data from Tor, add noise,
-    and send it off to the privex tally key servers
+    and send it off to the PrivCount tally key servers
     '''
 
     def __init__(self, config_filepath):

@@ -1,59 +1,13 @@
-Notes:
-    system libs: libssl libssl-dev cffi
-    python deps: pyyaml, stem, twisted, pyopenssl, service-identity
-
-
-# setup
-
-    pip install virtualenv
-    virtualenv --no-site-packages venv
-    source venv/bin/activate
-    pip install pyyaml stem twisted pyopenssl service-identity
-    deactivate
-
-You can replace the `pip install ...` above with the following to mirror my dev environment:
-
-    pip install -r requirements.txt
-
-# running
-
-----
-(If you are looking to set up and run Privex, then please read S2/S2-netified/README.)
-
-There are two PrivEx schemes. One uses secret sharing (found in the S2 directory) and the other uses distributed decryption (found in the D2 directory).
-
-Required libraries:
-libssl-dev, libssl, and cffi are needed.
-
-Setup:
-Noise generation requires that we know the amount of traffic that will be seen by the DC. In the Tor example from the paper we can use the Tor consensus to figure this out. We will thus need two files: consensus and fingerprint. Example files have been included but you can download fresher consensuses from the metrics.torproject.org.
-
-consensus: This Tor consensus file is used to find the probability traffic will flow through a DC.
-
-fingerprint: This is contains the DC's Tor relay fingerprint. We provide a utility that extracts fingerprints from a consensus file. It is in the util directory and is called fingerprint_extract. Just pick a fingerprint from the output of this tool and store it in this file.
-
-Parameters:
-PrivEx depends on certain parameters that set the operational performance and security envelope. These can be found at the top of S2-core.py and D2-core.py.
-
-num_DC: the number of data collectors.
-num_TKS: the number of tally key servers.
-num_websites: the number of websites to collect stats for.
-sigma: the standard deviation of the Gaussian probability distribution for use in generating the noise.
-
-N.B. resolution should not need changing, but if it is increased, then in the D2 variant the size of the lookup table needs to be increased to accommodate the potentially larger message size.
-
-Execution:
-Simply run ./S2-core or ./D2-core.py to see the implementation be run through the code base. The output of each is a table listing of visitor counts per website.
-
-
-----------
+======================
+old setup notes
+======================
 
 This README provides instructions on how to set up Privex, with its various types of nodes.
 
 0. GENERAL
 There are three types of nodes: Tally Server (TS), Tally Key Server(TKS), and Data Collector (DC).
 There should be at least 2 TKSs and 1 Taller Server, and any number of Data Collectors.
-The TKSs should be operated by independant entities that do not share coercible relationships. The TS and one DC can be operated by the same entity.
+The TKSs should be operated by independent entities that do not share coercible relationships. The TS and one DC can be operated by the same entity.
 
 1. SETUP
 We now descibe the setup and operation of each of the node types. The order of setup is to start the TS, then the TKSs, and finally the DCs.
@@ -98,3 +52,52 @@ To start the DC up run the following command:
 python exitListener.py -i websites.txt -tkg tkglist.txt -p <port> -f <fingerprint_file> -c <consensus_file> -thp thp.txt &
 
 Where websites.txt is the file containing the domain names that we want to collect statistics for (use the example file websites.txt by default), <port> is the port listening to Tor connections on localhost, <fingerprint_file> is the Tor fingerprint file in the Tor data directory, and <consensus> is the Tor consensus file in the Tor data directory.
+
+
+======================
+old deploy notes
+======================
+
+Dependencies (non-exhaustive):
+  1. twisted
+  2. libevent
+  3. openssl
+  4. python openssl
+  5. libffi
+
+Steps used to deploy PrivEx:
+
+1. Clone PrivEx: git clone git://git-crysp.uwaterloo.ca/privex
+
+2. Build PrivEx Tor branch:
+  a. git clone git://git-crysp.uwaterloo.ca/tor privex-tor.git
+  b. cd privex-tor.git
+  c. git checkout -b privex-0.2.6.7 origin/privex-0.2.6.7
+  d. ./autogen.sh && ./configure && make
+
+3. Clone PrivEx deployment repository: git clone https://bitbucket.org/ohmygodel/privex-deploy.git privex-deploy.git
+
+4. Copy input files from privex repo to deployment repo
+  a. cp privex.git/S2/S2-netified/thp.txt thp.txt
+  b. cp privex.git/S2/S2-netified/tkglist.txt tkglist.txt
+  c. cp privex.git/S2/S2-netified/exit_prints.txt exit_prints.txt
+  d. cp privex.git/S2/S2-netified/websites-20150509.txt websites-20150509.txt
+
+5. Create keys for TKS:
+  a. Generate keys: openssl genrsa -out tks.key 1024
+  b. Create self-signed certificate: openssl req -new -x509 -key tks.key -out tks.cert -days 1825
+  c. Move to keys directory: mkdir keys; mv tks.* keys
+
+4. Run Tally Key Server: [in screen] /usr/local/bin/python2.7 privex.git/S2/S2-netified/tkgListener.py -p 10000 -thp thp.txt
+
+5. Add new TKS line to tkglist.txt: 198.58.94.206 10000
+
+6. Add new exit fingerprint to exit_prints.txt: D53793315E290D250E9AFC431A4C9068A1E53C98
+
+7. Add PrivEx lines to torrc:
+  a. UsePrivex 1
+  b. PrivexPort 9005
+
+8. Run Data Collector: [in screen] /usr/local/bin/python2.7 privex.git/S2/S2-netified/exitListener.py -i websites-20150509.txt -tkg tkglist.txt -p 9005 -f ../privex-tor/data/fingerprint -c ../privex-tor/data/cached-consensus -thp thp.txt
+
+9. Run Tor: ../privex-tor/bin/tor -f ../privex-tor/etc/tor/torrc

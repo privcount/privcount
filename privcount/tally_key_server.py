@@ -3,7 +3,7 @@ Created on Dec 12, 2015
 
 @author: rob
 '''
-import time
+import ast
 import json
 import logging
 
@@ -12,21 +12,20 @@ from Queue import Queue
 
 from twisted.internet import reactor, task, ssl
 
-from util import MessageReceiverFactory, get_valid_config, write_results, wait_epoch_change, get_epoch_info
+from util import MessageReceiverFactory, MessageSenderFactory, KeyStore, get_valid_config, wait_epoch_change, get_epoch_info
 
-class StatsKeeper(Thread):
+class KeyShareKeeper(Thread):
     '''
-    receive blinded stats from the DCs
-    keep the stats during collection epoch
-    sum stats at end of epoch
-    publish the final results to a file
+    receive key share data from the DC message receiver
+    keep the shares during collection epoch
+    send the shares to the TS at end of epoch
     '''
 
-    def __init__(self, input_queue):
-        super(StatsKeeper, self).__init__()
+    def __init__(self, input_queue, prime_q):
+        super(KeyShareKeeper, self).__init__()
         assert input_queue
         self.input_queue = input_queue
-        self.stats = []
+        self.keystore = KeyStore(prime_q)
 
     def run(self):
         keep_running = True
@@ -45,50 +44,28 @@ class StatsKeeper(Thread):
             self.input_queue.task_done()
 
     def _handle_message_event(self, items):
-        logging.debug("collected new stats event")
         msg, host = items[0], items[1]
-        stats = json.loads(msg)
-        logging.info("received stats from TKS on host %s", host)
-        self.stats.append(stats)
+        logging.info("received key share from DC on host %s", host)
+
+        # TODO: decrypt msg from DC here
+        labels, (kid, K), q = ast.literal_eval(msg)
+        self.keystore.register_keyshare(labels, kid, K, q)
 
     def _handle_publish_event(self, items):
-        prime_q, ts_start, ts_end, filename = items[0:4]
+        ts_ip, ts_port, prime_q = items
+        msg = json.dumps(self.keystore.get_combined_shares())
+        reactor.connectSSL(ts_ip, ts_port, MessageSenderFactory(msg), ssl.ClientContextFactory()) # pylint: disable=E1101
 
-        if len(self.stats) > 0:
-            totals = self._sum_stats(prime_q)
-            write_results(filename, ts_start, ts_end, totals)
-            del totals
-            totals = {}
-            del self.stats
-            self.stats = []
-        else:
-            write_results(filename, ts_start, ts_end, None)
+        del self.keystore
+        self.keystore = KeyStore(prime_q)
 
-        logging.info("published results for epoch from %d to %d to file '%s'", ts_start, ts_end, filename)
-
-    def _sum_stats(self, prime_q):
-        totals = {}
-
-        for k in self.stats[0]:
-            for data in self.stats:
-                totals[k] = (totals.get(k, 0) + data.get(k, 0)) % prime_q
-            if totals[k] <= prime_q/2:
-                totals[k] = totals[k]
-            else:
-                totals[k] = (totals[k]-prime_q)
-
-        return totals
-
-class TallyServerManager(object):
-    '''
-    run a tally server to receive and sum data from the tally key servers and write results to disk
-    '''
+class TallyKeyServerManager(object):
 
     def __init__(self, config_filepath):
         self.config_filepath = config_filepath
         self.config = None
         self.last_epoch = 0
-        self.stats_keeper = None
+        self.share_keeper = None
         self.cmd_queue = None
 
     def run(self):
@@ -103,19 +80,21 @@ class TallyServerManager(object):
 
         logging.info("initializing server components...")
 
+        prime_q = self.config['global']['q']
+
         # start the stats keeper thread
         self.cmd_queue = Queue()
-        self.stats_keeper = StatsKeeper(self.cmd_queue)
-        self.stats_keeper.start()
+        self.share_keeper = KeyShareKeeper(self.cmd_queue, prime_q)
+        self.share_keeper.start()
 
         # check for epoch change every second
         task.LoopingCall(self._trigger_epoch_check).start(1)
 
-        # setup server for receiving data from the DC nodes and key shares from the TKS nodes
-        listen_port = self.config['tally_server']['listen_port']
+        # set up our tcp server for receiving data from the DC nodes
+        listen_port = self.config['tally_key_server']['listen_port']
         server_factory = MessageReceiverFactory(self.cmd_queue)
-        key_path = self.config['tally_server']['key']
-        cert_path = self.config['tally_server']['cert']
+        key_path = self.config['tally_key_server']['key']
+        cert_path = self.config['tally_key_server']['cert']
         ssl_context = ssl.DefaultOpenSSLContextFactory(key_path, cert_path)
 
         # pylint: disable=E1101
@@ -129,21 +108,18 @@ class TallyServerManager(object):
         finally:
             self.cmd_queue.put(('stop', []))
             self.cmd_queue.join()
-            self.stats_keeper.join()
+            self.share_keeper.join()
 
-    def _schedule_publish_command(self, ts_start, ts_end):
+    def _send_publish_command(self):
         # set up a publish event
+        ts_ip = self.config['tally_key_server']['tally_server_info']['ip']
+        ts_port = self.config['tally_key_server']['tally_server_info']['port']
         prime_q = self.config['global']['q']
-        results_path = self.config['tally_server']['results']
-
-        items = [prime_q, ts_start, ts_end, results_path]
-
-        delay_seconds = self.config['global']['clock_skew']
-        reactor.callLater(delay_seconds, self._send_publish_command, items) # pylint: disable=E1101
+        self.cmd_queue.put(('publish', [ts_ip, ts_port, prime_q]))
 
     def _refresh_config(self):
         # re-read config and process any changes
-        new_config = get_valid_config(self.config_filepath, ts=True)
+        new_config = get_valid_config(self.config_filepath, tks=True)
         if new_config is not None:
             # NOTE this wont apply listen_port or key/cert changes
             self.config = new_config
@@ -155,8 +131,5 @@ class TallyServerManager(object):
         if epoch_num > self.last_epoch:
             logging.info("the epoch from %d to %d just ended", ts_epoch_start, ts_epoch_end)
             self.last_epoch = epoch_num
-            self._schedule_publish_command(ts_epoch_start, ts_epoch_end)
+            self._send_publish_command()
             self._refresh_config()
-
-    def _send_publish_command(self, items):
-        self.cmd_queue.put(('publish', items))
