@@ -94,26 +94,33 @@ class DataAggregator(Thread):
         self.n_streams_per_circ.setdefault(chanid, {}).setdefault(circid, {'interactive':0, 'web':0, 'p2p':0, 'other':0})
         self.n_streams_per_circ[chanid][circid][stream_class] += 1
 
+        # only count bytes ratio on streams with legitimate transfers
+        ratio = float(writebw)/float(readbw) if readbw > 0 and writebw > 0 else 0.0
+
         if stream_class == 'web':
             self._increment_matching_labels("WebStreamLifeTime", end-start)
             self._increment_matching_labels("BytesSentPerWebStream", writebw)
             self._increment_matching_labels("BytesReceivedPerWebStream", readbw)
-            self._increment_matching_labels("BytesSentReceivedRatioPerWebStream", float(writebw)/float(readbw))
+            if ratio > 0.0:
+                self._increment_matching_labels("BytesSentReceivedRatioPerWebStream", ratio)
         elif stream_class == 'interactive':
             self._increment_matching_labels("InteractiveStreamLifeTime", end-start)
             self._increment_matching_labels("BytesSentPerInteractiveStream", writebw)
             self._increment_matching_labels("BytesReceivedPerInteractiveStream", readbw)
-            self._increment_matching_labels("BytesSentReceivedRatioPerInteractiveStream", float(writebw)/float(readbw))
+            if ratio > 0.0:
+                self._increment_matching_labels("BytesSentReceivedRatioPerInteractiveStream", ratio)
         elif stream_class == 'p2p':
             self._increment_matching_labels("P2PStreamLifeTime", end-start)
             self._increment_matching_labels("BytesSentPerP2PStream", writebw)
             self._increment_matching_labels("BytesReceivedPerP2PStream", readbw)
-            self._increment_matching_labels("BytesSentReceivedRatioPerP2PStream", float(writebw)/float(readbw))
+            if ratio > 0.0:
+                self._increment_matching_labels("BytesSentReceivedRatioPerP2PStream", ratio)
         elif stream_class == 'other':
             self._increment_matching_labels("OtherStreamLifeTime", end-start)
             self._increment_matching_labels("BytesSentPerOtherStream", writebw)
             self._increment_matching_labels("BytesReceivedPerOtherStream", readbw)
-            self._increment_matching_labels("BytesSentReceivedRatioPerOtherStream", float(writebw)/float(readbw))
+            if ratio > 0.0:
+                self._increment_matching_labels("BytesSentReceivedRatioPerOtherStream", ratio)
 
     def classify_port(self, port):
         if port == 22 or (port >= 6660 and port <= 6669) or port == 6697 or port == 7000:
@@ -139,35 +146,44 @@ class DataAggregator(Thread):
         # stream bw info is only avail on exits
         # isclient is based on CREATE_FAST and I'm not sure that is always used by clients
         if not prevIsRelay:
-            # previous hop is unkown
+            # previous hop is unkown, we are entry
             self._increment_matching_labels("CircuitLifeTime", end - start)
-            self._increment_matching_labels("CellsInPerCircuit", ncellsin)
-            self._increment_matching_labels("CellsOutPerCircuit", ncellsout)
-            self._increment_matching_labels("CellsInOutRatioPerCircuit", float(ncellsin)/float(ncellsout))
 
+            # only count cells ratio on active circuits with legitimate transfers
             active_key = 'active' if ncellsin + ncellsout >= 8 else 'inactive'
+            if active_key == 'active':
+                self._increment_matching_labels("CellsInPerCircuit", ncellsin)
+                self._increment_matching_labels("CellsOutPerCircuit", ncellsout)
+                if ncellsin > 0 and ncellsout > 0:
+                    self._increment_matching_labels("CellsInOutRatioPerCircuit", float(ncellsin)/float(ncellsout))
+
+            # count unique client ips
             if start >= self.cli_ips_rotated:
                 self.cli_ips_current.setdefault(previp, {'active':0, 'inactive':0})[active_key] += 1
             elif start >= self.cli_ips_rotated-600.0:
                 self.cli_ips_previous.setdefault(previp, {'active':0, 'inactive':0})[active_key] += 1
 
         elif not nextIsRelay:
-            # prev hop is known relay but next is not
+            # prev hop is known relay but next is not, we are exit
+            is_circ_known = chanid in self.n_streams_per_circ and circid in self.n_streams_per_circ[chanid]
 
-            if chanid in self.n_streams_per_circ and circid in self.n_streams_per_circ[chanid]:
+            if is_circ_known and sum(self.n_streams_per_circ[chanid][circid].values()) > 0:
+                # we have circuit info and at least one stream ended on it
                 counts = self.n_streams_per_circ[chanid][circid]
-                n_streams_total = sum(counts.values())
-                if n_streams_total > 0:
-                    self._increment_matching_labels("Circuits_Count", 1)
-                    self._increment_matching_labels("WebStreamsPerCircuit", counts['web'])
-                    self._increment_matching_labels("InteractiveStreamsPerCircuit", counts['interactive'])
-                    self._increment_matching_labels("P2PStreamsPerCircuit_", counts['p2p'])
-                    self._increment_matching_labels("OtherStreamsPerCircuit", counts['other'])
-                else:
-                    self._increment_matching_labels("InactiveCircuits_Count", 1)
+                self._increment_matching_labels("Circuits_Count", 1)
+                self._increment_matching_labels("WebStreamsPerCircuit", counts['web'])
+                self._increment_matching_labels("InteractiveStreamsPerCircuit", counts['interactive'])
+                self._increment_matching_labels("P2PStreamsPerCircuit_", counts['p2p'])
+                self._increment_matching_labels("OtherStreamsPerCircuit", counts['other'])
+            else:
+                # we dont know circ or no streams ended on it
+                self._increment_matching_labels("InactiveCircuits_Count", 1)
 
-                # cleanup
+            # cleanup
+            if is_circ_known:
+                # remove circ from channel
                 self.n_streams_per_circ[chanid].pop(circid, None)
+                # if that was the last circuit on channel, remove the channel too
                 if len(self.n_streams_per_circ[chanid]) == 0:
                     self.n_streams_per_circ.pop(chanid, None)
 
@@ -238,7 +254,7 @@ class DataAggregator(Thread):
         labels = {}
         for stat in stats_list:
             if 'Histogram' in stat['type']:
-                bins = [int(i.strip()) for i in stat['bins'].split(',')]
+                bins = [float(i.strip()) for i in stat['bins'].split(',')]
                 if len(bins) == 1:
                     # we only have one key to add
                     stat_type = "{0}_{1}_+".format(stat['type'], bins[0])
@@ -270,7 +286,7 @@ class DataAggregator(Thread):
                 self.counter.increment(label)
             else:
                 # histogram counter, eg StreamsPerCircuit_Histogram_0_2 or StreamsPerCircuit_Histogram_2_+
-                if val >= int(parts[2]) and (parts[3] == '+' or val < int(parts[3])):
+                if val >= float(parts[2]) and (parts[3] == '+' or val < float(parts[3])):
                     self.counter.increment(label)
 
 class DataCollectorManager(object):

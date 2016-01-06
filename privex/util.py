@@ -179,8 +179,8 @@ class CounterStore(object):
 
     def __init__(self, q, num_tkses, noise_weight, stats):
         labels = stats.keys()
-        self.data = {l:0 for l in labels}
-        self.q = q
+        self.data = {l:0.0 for l in labels}
+        self.q = float(q)
 
         self.keys = [os.urandom(20) for _ in xrange(num_tkses)]
         self.keys = dict([(PRF(K, "KEYID"), K) for K in self.keys])
@@ -188,14 +188,14 @@ class CounterStore(object):
         for _, K in self.keys.iteritems():
             shares = keys_from_labels(labels, K, True, q)
             for (l, s0) in shares:
-                self.data[l] = (self.data[l] + int(s0)) % self.q
+                self.data[l] = (self.data[l] + float(s0)) % self.q
 
 	    # Add noise for each stat independently
         for label in stats:
             sigma = stats[label]
             noise_gen = noise(sigma, 1, noise_weight)
             assert label in self.data
-            self.data[label] = (self.data[label] + int(noise_gen)) % self.q
+            self.data[label] = (self.data[label] + float(noise_gen)) % self.q
 
     def get_blinding_factor(self, kid):
         assert kid in self.keys and self.keys[kid] is not None
@@ -209,7 +209,7 @@ class CounterStore(object):
 
     def increment(self, label):
         if label in self.data:
-            self.data[label] = (self.data[label] + int(1)) % self.q
+            self.data[label] = (self.data[label] + float(1)) % self.q
 
     def get_blinded_noisy_counts(self):
         data = self.data
@@ -226,7 +226,7 @@ class KeyStore(object):
     def __init__(self, q):
         self.data = {}
         self.keyIDs = {}
-        self.q = q
+        self.q = float(q)
 
     def register_keyshare(self, labels, kid, K, q):
         assert q == self.q
@@ -238,7 +238,7 @@ class KeyStore(object):
         ## Add shares
         shares = keys_from_labels(labels, K, False, q)
         for (l, s0) in shares:
-            self.data[l] = (self.data.get(l, 0) + int(s0)) % self.q
+            self.data[l] = (self.data.get(l, 0) + float(s0)) % self.q
 
         self.keyIDs[kid] = None  # TODO: registed client info
         return kid
