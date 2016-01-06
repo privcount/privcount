@@ -30,6 +30,7 @@ class DataAggregator(Thread):
         self.input_queue = input_queue
         self.stats = None
         self.counter = None
+        self.last_event_time = 0
 
         self.n_streams_per_circ = {}
         self.cli_ips_rotated = time.time()
@@ -61,7 +62,8 @@ class DataAggregator(Thread):
     def _handle_message_event(self, items):
         msg, host = items[0], items[1]
         event, line_remaining = [v.strip() for v in msg.split(' ', 1)]
-        logging.info("collected new event '%s' from %s", event, host)
+        logging.debug("collected new event '%s' from %s", event, host)
+        self.last_event_time = time.time()
 
         # hand valid events off to the aggregator
         if event == 's':
@@ -197,6 +199,7 @@ class DataAggregator(Thread):
             self._increment_matching_labels("Connections_Count", 1)
 
     def _handle_rotate_event(self, items):
+        logging.info("rotating circuit window now, last event received from Tor was %s seconds ago", str(time.time() - self.last_event_time))
         self._increment_matching_labels("UniqueClientIPs", len(self.cli_ips_previous))
         for ip in self.cli_ips_previous:
             self._increment_matching_labels("CircuitsPerClientIP", self.cli_ips_previous[ip]['active'])
