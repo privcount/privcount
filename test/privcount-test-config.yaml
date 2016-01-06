@@ -8,8 +8,8 @@ global:
 # only the tally server needs these
 tally_server:
     listen_port: 20001 # open port on which to listen for remote connections from TKSes
-    key: 'keys/tally.key' # path to the key file
-    cert: 'keys/tally.cert' # path to the certificate file
+    key: 'keys/ts.key' # path to the key file
+    cert: 'keys/ts.cert' # path to the certificate file
     results: 'results.txt' # path to file where the results will be stored
 
 # only the tally key servers needs these
