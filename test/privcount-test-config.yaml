@@ -1,8 +1,8 @@
 # everybody needs these configs
 global:
-    start_time: 1452111600 # 1452520800 : 2016-01-11 at 2pm UTC
-    epoch: 60 # 604800 : (1 week = 604800 seconds) the safe time frame of stats collection for all stats
-    clock_skew: 3 #300 # seconds - to deal with clock skews and latency
+    start_time: 1 # 1452520800 # 2016-01-11 at 2pm UTC
+    epoch: 60 # 604800 # (1 week = 604800 seconds) the safe time frame of stats collection for all stats
+    clock_skew: 3 # 300 # seconds - to deal with clock skews and latency
     q: 2147483647 # ((2**31)-1) 2^31 - 1 happens to be a prime
 
 # only the tally server needs these

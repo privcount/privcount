@@ -13,15 +13,15 @@ paths to those scripts.
 
 Start the tally server and wait for it to cycle an epoch:
 
-    privcount privcount-test-config.yml ts
+    privcount privcount-test-config.yaml ts
 
  Start the tally key server and wait for it to cycle an epoch:
 
-    privcount privcount-test-config.yml tks
+    privcount privcount-test-config.yaml tks
 
  Start the data collector and wait for it to report that it has registered with the TKS:
 
-    privcount privcount-test-config.yml dc
+    privcount privcount-test-config.yaml dc
 
 Finally, inject some test data into the data collector:
 
