@@ -53,7 +53,7 @@ PrivCount as normal. For example:
 
 See `test/README.markdown` for notes about testing PrivCount with a private local deployment.
 
-# setting up PrivCount entities
+# deploying PrivCount entities
 
 Example of the global section for a `privcount-config.yml` file, which all nodes need:
 
@@ -93,7 +93,7 @@ Generate key and create self signed cert in a new base directory:
     mkdir privcount_tks
     cd privcount_tks
     touch privcount-config.yml # add above global config in here
-    openssl genrsa -out ts.key 1024
+    openssl genrsa -out tks.key 1024
     openssl req -new -x509 -key tks.key -out tks.cert -days 1825
 
 Choose an address W2.X2.Y2.Z2 port P2 that is accessible on the Internet, and append the
