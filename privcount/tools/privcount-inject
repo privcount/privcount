@@ -6,6 +6,7 @@ Created on Dec 12, 2015
 '''
 import sys
 import argparse
+from time import sleep
 
 from twisted.internet import reactor
 from twisted.internet.protocol import ClientFactory
@@ -13,26 +14,49 @@ from twisted.protocols.basic import LineOnlyReceiver
 
 class PrivCountDataInjector(LineOnlyReceiver):
 
-    def __init__(self, factory, logpath):
+    def __init__(self, factory, logpath, do_pause):
         self.factory = factory
         self.logpath = logpath
+        self.do_pause = do_pause
 
     def connectionMade(self):
         print "Injecting data"
         loc = sys.stdin if self.logpath == '-' else self.logpath
+
+        if self.do_pause:
+            print "We will pause between the injection of each event to simulate actual event inter-arrival times, so this may take a while"
+
+        last_time, this_time = 0.0, 0.0
         with open(loc, 'r') as fin:
             for line in fin:
-                self.sendLine(line.strip())
+                msg = line.strip()
+                if self.do_pause:
+                    this_time = self._get_event_time(msg)
+                    if last_time != 0.0 and this_time-last_time > 0.0:
+                        sleep(this_time-last_time)
+                    last_time = this_time
+                self.sendLine(msg)
         self.transport.loseConnection()
+
+    def _get_event_time(self, msg):
+        parts = msg.split()
+        if parts[0] == 'c' and len(parts) > 10:
+            return float(parts[10])
+        elif parts[0] == 's' and len(parts) > 8:
+            return float(parts[8])
+        elif parts[0] == 't' and len(parts) > 3:
+            return float(parts[3])
+        return 0.0
 
 class PrivCountDataInjectorFactory(ClientFactory):
     protocol = PrivCountDataInjector # not really needed, since we build our own protocol below
 
-    def __init__(self, logpath):
+    def __init__(self, logpath, do_pause):
         self.logpath = logpath
+        self.do_pause = do_pause
 
     def buildProtocol(self, addr):
-        return PrivCountDataInjector(self, self.logpath)
+        return PrivCountDataInjector(self, self.logpath, self.do_pause)
 
     def clientConnectionFailed(self, connector, reason):
         print "Connection to DC failed - goodbye!"
@@ -46,10 +70,11 @@ def main():
     ap = argparse.ArgumentParser(description="Injects Tor events into a listening PrivCount DC")
     ap.add_argument('-p', '--port', help="port of PrivCount DC to inject data to", required=True)
     ap.add_argument('-l', '--log', help="a file PATH to a PrivCount event log file, may be '-' for STDIN", required=True, default='-')
+    ap.add_argument('-s', '--simulate', action='store_true', help="add pauses between each event injection to simulate the inter-arrival times from the source data")
     args = ap.parse_args()
 
     # pylint: disable=E1101
-    reactor.connectTCP("127.0.0.1", int(args.port), PrivCountDataInjectorFactory(args.log))
+    reactor.connectTCP("127.0.0.1", int(args.port), PrivCountDataInjectorFactory(args.log, args.simulate))
     reactor.run()
 
 if __name__ == "__main__":
