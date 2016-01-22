@@ -38,6 +38,9 @@ data_collector:
         # exit traffic #
         ################
         -
+            type: 'SanityCheck_Count' # used only to make sure aggregation was correct
+            sigma: 0.0
+        -
             type: 'Streams_Count'
             sigma: 1.0
         -
