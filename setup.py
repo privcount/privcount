@@ -13,5 +13,5 @@ setup(name='PrivCount',
       description='Safely gather and aggregate Tor statistics',
       author='Rob Jansen',
       packages=['privcount'],
-      scripts=['privcount/tools/privcount', 'privcount/tools/privcount-inject'],
+      scripts=['privcount/tools/privcount', 'privcount/tools/privcount-inject', 'privcount/tools/privcount-plot'],
      )
