@@ -6,7 +6,7 @@ Created on Dec 12, 2015
 '''
 import sys
 import argparse
-from time import sleep
+from time import sleep, time
 
 from twisted.internet import reactor
 from twisted.internet.protocol import ClientFactory
@@ -28,29 +28,43 @@ class PrivCountDataInjector(LineOnlyReceiver):
         if self.do_pause:
             print "We will pause between the injection of each event to simulate actual event inter-arrival times, so this may take a while"
 
-        last_time, this_time = 0.0, 0.0
+        last_time_end, this_time_end = 0.0, 0.0
         with open(loc, 'r') as fin:
             for line in fin:
                 msg = line.strip()
-                this_time = self._get_event_time(msg)
-                if this_time < self.prune_before or this_time > self.prune_after:
+                this_time_start, this_time_end = self._get_event_times(msg)
+                if this_time_end < self.prune_before or this_time_end > self.prune_after:
                     continue
                 if self.do_pause:
-                    if last_time != 0.0 and this_time-last_time > 0.0:
-                        sleep(this_time-last_time)
-                    last_time = this_time
-                self.sendLine(msg)
+                    if last_time_end != 0.0 and this_time_end-last_time_end > 0.0:
+                        sleep(this_time_end-last_time_end)
+                    last_time_end = this_time_end
+                # update event times so the data seems fresh to privcount
+                now = time()
+                alive = this_time_end - this_time_start
+                msg_adjusted_times = self._set_event_times(msg, now-alive, now)
+                self.sendLine(msg_adjusted_times)
         self.transport.loseConnection()
 
-    def _get_event_time(self, msg):
+    def _get_event_times(self, msg):
         parts = msg.split()
         if parts[0] == 'c' and len(parts) > 10:
-            return float(parts[10])
+            return float(parts[9]), float(parts[10])
         elif parts[0] == 's' and len(parts) > 8:
-            return float(parts[8])
+            return float(parts[7]), float(parts[8])
         elif parts[0] == 't' and len(parts) > 3:
-            return float(parts[3])
-        return 0.0
+            return float(parts[2]), float(parts[3])
+        return 0.0, 0.0
+
+    def _set_event_times(self, msg, start_time, end_time):
+        parts = msg.split()
+        if parts[0] == 'c' and len(parts) > 10:
+            parts[9], parts[10] = start_time, end_time
+        elif parts[0] == 's' and len(parts) > 8:
+            parts[7], parts[8] = start_time, end_time
+        elif parts[0] == 't' and len(parts) > 3:
+            parts[2], parts[3] = start_time, end_time
+        return ' '.join([str(p) for p in parts])
 
 class PrivCountDataInjectorFactory(ClientFactory):
     protocol = PrivCountDataInjector # not really needed, since we build our own protocol below
