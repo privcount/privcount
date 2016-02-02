@@ -6,7 +6,7 @@ Created on Dec 12, 2015
 '''
 import sys
 import argparse
-from time import sleep, time
+from time import time
 
 from twisted.internet import reactor
 from twisted.internet.protocol import ClientFactory
@@ -20,6 +20,61 @@ class PrivCountDataInjector(LineOnlyReceiver):
         self.do_pause = do_pause
         self.prune_before = prune_before
         self.prune_after = prune_after
+        loc = sys.stdin if self.logpath == '-' else self.logpath
+        self.event_file = open(loc, 'r')
+        self.last_time_end = 0.0
+
+    def get_line(self):
+        if self.event_file == None:
+            return None
+        line = self.event_file.readline()
+        if line == '':
+            self.event_file.close()
+            self.event_file = None
+            return None
+        else:
+            return line
+
+    def flush_now(self, msg):
+        # update event times so the data seems fresh to privcount
+        this_time_start, this_time_end = self._get_event_times(msg)
+        now = time()
+        alive = this_time_end - this_time_start
+        msg_adjusted_times = self._set_event_times(msg, now-alive, now)
+        print "sending event '{}'".format(msg_adjusted_times)
+        self.sendLine(msg_adjusted_times)
+
+    def flush_later(self, msg):
+        self.flush_now(msg)
+        self.inject_events()
+
+    def inject_events(self):
+        while True:
+            line = self.get_line()
+            if line is None:
+                self.transport.loseConnection()
+                return
+
+            msg = line.strip()
+            this_time_start, this_time_end = self._get_event_times(msg)
+
+            # make sure this event is in our 'valid' event window
+            if this_time_end < self.prune_before or this_time_end > self.prune_after:
+                continue
+
+            # if we need to simulate event inter-arrival times
+            do_wait, wait_time = False, 0.0
+            if self.do_pause:
+                wait_time = this_time_end - self.last_time_end
+                do_wait = True if self.last_time_end != 0.0 and wait_time > 0.0 else False
+                self.last_time_end = this_time_end
+
+            if do_wait:
+                # we cant sleep or twisted wont work correctly, we must use callLater instead
+                reactor.callLater(wait_time, self.flush_later, msg) # pylint: disable=E1101
+                return
+            else:
+                self.flush_now(msg)
 
     def connectionMade(self):
         print "Injecting data"
@@ -28,23 +83,7 @@ class PrivCountDataInjector(LineOnlyReceiver):
         if self.do_pause:
             print "We will pause between the injection of each event to simulate actual event inter-arrival times, so this may take a while"
 
-        last_time_end, this_time_end = 0.0, 0.0
-        with open(loc, 'r') as fin:
-            for line in fin:
-                msg = line.strip()
-                this_time_start, this_time_end = self._get_event_times(msg)
-                if this_time_end < self.prune_before or this_time_end > self.prune_after:
-                    continue
-                if self.do_pause:
-                    if last_time_end != 0.0 and this_time_end-last_time_end > 0.0:
-                        sleep(this_time_end-last_time_end)
-                    last_time_end = this_time_end
-                # update event times so the data seems fresh to privcount
-                now = time()
-                alive = this_time_end - this_time_start
-                msg_adjusted_times = self._set_event_times(msg, now-alive, now)
-                self.sendLine(msg_adjusted_times)
-        self.transport.loseConnection()
+        self.inject_events()
 
     def _get_event_times(self, msg):
         parts = msg.split()

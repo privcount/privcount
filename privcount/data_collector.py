@@ -74,13 +74,13 @@ class DataAggregator(Thread):
 
         elif event == 'c':
             # 'c', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
-            items = [v.strip('\n') for v in line_remaining.split(' ', 16)]
+            items = [v.strip() for v in line_remaining.split(' ', 16)]
             if len(items) == 16:
                 self._handle_circuit_event(items[0:16])
 
         elif event == 't':
             # 't', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
-            items = [v.strip('\n') for v in line_remaining.split(' ', 6)]
+            items = [v.strip() for v in line_remaining.split(' ', 6)]
             if len(items) == 6:
                 self._handle_connection_event(items[0:6])
 
