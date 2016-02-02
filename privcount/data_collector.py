@@ -330,7 +330,7 @@ class DataCollectorManager(object):
         task.LoopingCall(self._trigger_epoch_check).start(1)
 
         # rotate IP counter every 10 minutes
-        task.LoopingCall(self._send_rotate_command).start(600)
+        task.LoopingCall(self._send_rotate_command, now=False).start(600)
 
         # set up our tcp server for receiving data from Tor on localhost only
         listen_port = self.config['data_collector']['listen_port']
