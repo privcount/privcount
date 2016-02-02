@@ -33,6 +33,7 @@ class DataAggregator(Thread):
         self.last_event_time = 0
 
         self.n_streams_per_circ = {}
+        self.num_rotations = 0
         self.cli_ips_rotated = time.time()
         self.cli_ips_current = {}
         self.cli_ips_previous = {}
@@ -200,13 +201,20 @@ class DataAggregator(Thread):
 
     def _handle_rotate_event(self, items):
         logging.info("rotating circuit window now, last event received from Tor was %s seconds ago", str(time.time() - self.last_event_time))
-        self._increment_matching_labels("UniqueClientIPs", len(self.cli_ips_previous))
-        for ip in self.cli_ips_previous:
-            self._increment_matching_labels("CircuitsPerClientIP", self.cli_ips_previous[ip]['active'])
-            self._increment_matching_labels("InactiveCircuitsPerClientIP", self.cli_ips_previous[ip]['inactive'])
+
+        # dont count anything in the first rotation period, since events that ended up in the
+        # previous list will be skewed torward longer lived circuits
+        if self.num_rotations > 0:
+            self._increment_matching_labels("UniqueClientIPs", len(self.cli_ips_previous))
+            for ip in self.cli_ips_previous:
+                self._increment_matching_labels("CircuitsPerClientIP", self.cli_ips_previous[ip]['active'])
+                self._increment_matching_labels("InactiveCircuitsPerClientIP", self.cli_ips_previous[ip]['inactive'])
+
+        # reset for next interval
         self.cli_ips_previous = self.cli_ips_current
         self.cli_ips_current = {}
         self.cli_ips_rotated = time.time()
+        self.num_rotations += 1
 
     def _handle_register_event(self, items):
         conf = items
