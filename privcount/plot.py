@@ -1,55 +1,15 @@
 #!/usr/bin/python
 
-import matplotlib; matplotlib.use('Agg') # for systems without X11
-from matplotlib.backends.backend_pdf import PdfPages
-import sys, os, argparse, pylab
+import sys, os, argparse, json
 from itertools import cycle
+# NOTE see plotting imports below in import_plotting()
 
 """
-python privcount-plot.py --help
+python plot.py --help
 
 compare output from multiple privcount results files. run like:
-python privcount/tools/privcount-plot -d results1.txt test1 -d results2.txt test2 ...
+python privcount/plot.py -d results1.txt test1 -d results2.txt test2 ...
 """
-
-pylab.rcParams.update({
-    'backend': 'PDF',
-    'font.size': 16,
-    'figure.figsize': (6,4.5),
-    'figure.dpi': 100.0,
-    'figure.subplot.left': 0.15,
-    'figure.subplot.right': 0.95,
-    'figure.subplot.bottom': 0.15,
-    'figure.subplot.top': 0.95,
-    'grid.color': '0.1',
-    'axes.grid' : True,
-    'axes.titlesize' : 'small',
-    'axes.labelsize' : 'small',
-    'axes.formatter.limits': (-4,4),
-    'xtick.labelsize' : 'small',
-    'ytick.labelsize' : 'small',
-    'lines.linewidth' : 2.0,
-    'lines.markeredgewidth' : 0.5,
-    'lines.markersize' : 10,
-    'legend.fontsize' : 'x-small',
-    'legend.fancybox' : False,
-    'legend.shadow' : False,
-    'legend.borderaxespad' : 0.5,
-    'legend.numpoints' : 1,
-    'legend.handletextpad' : 0.5,
-    'legend.handlelength' : 1.6,
-    'legend.labelspacing' : .75,
-    'legend.markerscale' : 1.0,
-    # turn on the following to embedd fonts; requires latex
-    #'ps.useafm' : True,
-    #'pdf.use14corefonts' : True,
-    #'text.usetex' : True,
-})
-
-try: pylab.rcParams.update({'figure.max_num_figures':50})
-except: pylab.rcParams.update({'figure.max_open_warning':50})
-try: pylab.rcParams.update({'legend.ncol':1.0})
-except: pass
 
 LINEFORMATS="k,r,b,g,c,m,y"
 
@@ -71,9 +31,13 @@ class PlotDataAction(argparse.Action):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Utility to help plot results from the Shadow simulator',
+        description='Utility to help plot results from PrivCount',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    add_plot_args(parser)
+    args = parser.parse_args()
+    run_plot(args)
 
+def add_plot_args(parser):
     parser.add_argument('-d', '--data',
         help="""Append a PATH to a privcount results.txt file,
                 and the LABEL we should use for the graph legend for this
@@ -96,10 +60,56 @@ def main():
         action="store", dest="lineformats",
         default=LINEFORMATS)
 
-    args = parser.parse_args()
-    run(args)
+def import_plotting():
+    global matplotlib
+    import matplotlib; matplotlib.use('Agg') # for systems without X11
+    global PdfPages
+    from matplotlib.backends.backend_pdf import PdfPages
+    global pylab
+    import pylab
 
-def run(args):
+    pylab.rcParams.update({
+        'backend': 'PDF',
+        'font.size': 16,
+        'figure.figsize': (6,4.5),
+        'figure.dpi': 100.0,
+        'figure.subplot.left': 0.15,
+        'figure.subplot.right': 0.95,
+        'figure.subplot.bottom': 0.15,
+        'figure.subplot.top': 0.95,
+        'grid.color': '0.1',
+        'axes.grid' : True,
+        'axes.titlesize' : 'small',
+        'axes.labelsize' : 'small',
+        'axes.formatter.limits': (-4,4),
+        'xtick.labelsize' : 'small',
+        'ytick.labelsize' : 'small',
+        'lines.linewidth' : 2.0,
+        'lines.markeredgewidth' : 0.5,
+        'lines.markersize' : 10,
+        'legend.fontsize' : 'x-small',
+        'legend.fancybox' : False,
+        'legend.shadow' : False,
+        'legend.borderaxespad' : 0.5,
+        'legend.numpoints' : 1,
+        'legend.handletextpad' : 0.5,
+        'legend.handlelength' : 1.6,
+        'legend.labelspacing' : .75,
+        'legend.markerscale' : 1.0,
+        # turn on the following to embedd fonts; requires latex
+        #'ps.useafm' : True,
+        #'pdf.use14corefonts' : True,
+        #'text.usetex' : True,
+    })
+
+    try: pylab.rcParams.update({'figure.max_num_figures':50})
+    except: pylab.rcParams.update({'figure.max_open_warning':50})
+    try: pylab.rcParams.update({'legend.ncol':1.0})
+    except: pass
+
+def run_plot(args):
+    import_plotting()
+
     lflist = args.lineformats.strip().split(",")
     lfcycle = cycle(lflist)
 
@@ -107,29 +117,23 @@ def run(args):
     for (path, label) in args.experiments:
         dataset_color = lfcycle.next()
         dataset_label = label
-        histograms, counts = get_data(path)
+        fin = open(path, 'r')
+        histograms = json.load(fin)
+        fin.close()
 
-        for name in counts.keys()+histograms.keys():
+        for name in histograms.keys():
             plot_info.setdefault(name, {'datasets':[], 'dataset_colors':[], 'dataset_labels':[], 'bin_labels':[]})
             plot_info[name]['dataset_colors'].append(dataset_color)
             plot_info[name]['dataset_labels'].append(dataset_label)
 
-        for name in counts:
-            value = counts[name]
-            dataset = [value]
-            plot_info[name]['datasets'].append(dataset)
-            if len(plot_info[name]['bin_labels']) == 0:
-                plot_info[name]['bin_labels'].append("[0,{})".format(r'$\infty$'))
-
-        for name in histograms:
             dataset = []
             bin_labels = []
-            for (left, right, val) in histograms[name]:
+            for (left, right, val) in histograms[name]['bins']:
                 if 'Ratio' not in name:
                     left = int(left/1024.0) if 'Bytes' in name else int(left)
-                    if right != '+':
+                    if right != float('inf'):
                         right = int(right/1024.0) if 'Bytes' in name else int(right)
-                if right == '+':
+                if right == float('inf'):
                     right = '{}'.format(r'$\infty$')
                 bin_labels.append("[{},{})".format(left, right))
                 dataset.append(val)
@@ -189,33 +193,5 @@ def plot_bar_chart(page, datasets, dataset_labels, dataset_colors, x_group_label
     axis.legend([bar[0] for bar in bars], dataset_labels)
     page.savefig()
     pylab.close()
-
-def get_data(path):
-    epochstart, epochend = None, None
-    histograms, counts = {}, {}
-    with open(path, 'r') as f:
-        for line in f:
-            parts = line.strip().split()
-
-            # only look at stats in the same epoch
-            start, end = int(parts[0]), int(parts[1])
-            if epochstart is None or epochend is None:
-                epochstart, epochend = start, end
-            if start != epochstart or end != epochend:
-                continue
-
-            key, val = parts[2].split(':')
-            keyparts = key.split('_')
-            name, flag = keyparts[0], keyparts[1]
-
-            if 'Histogram' == flag:
-                left, right = keyparts[2], keyparts[3]
-                histograms.setdefault(name, []).append((float(left), right if right == '+' else float(right), float(val)))
-            else:
-                counts.setdefault(name, float(val))
-
-    for k in histograms:
-        histograms[k].sort(key=lambda tup: tup[0])
-    return histograms, counts
 
 if __name__ == '__main__': sys.exit(main())

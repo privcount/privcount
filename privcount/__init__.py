@@ -1,6 +1,9 @@
 __all__ = [
    'data_collector',
-   'tally_key_server',
+   'inject',
+   'plot',
+   'protocol',
+   'share_keeper',
    'tally_server',
    'util',
 ]

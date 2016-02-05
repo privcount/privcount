@@ -4,22 +4,121 @@ Created on Dec 15, 2015
 @author: rob
 '''
 import sys
-import os
 import struct
 import traceback
 import logging
-import time
+import socket
+import datetime
+import uuid
 
-from random import gauss
+from random import gauss, randint
+from os import urandom
 from math import sqrt
+from copy import deepcopy
+from base64 import b64encode, b64decode
 
 from hashlib import sha256 as Hash
 
-from twisted.protocols.basic import LineOnlyReceiver
-from twisted.internet.protocol import ClientFactory, ServerFactory
-from stem.descriptor import parse_file
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
 
-import yaml
+def load_private_key_string(key_string):
+    return serialization.load_pem_private_key(key_string, password=None, backend=default_backend())
+
+def load_private_key_file(key_file_path):
+    with open(key_file_path, 'rb') as key_file:
+        private_key = load_private_key_string(key_file.read())
+    return private_key
+
+def load_public_key_string(key_string):
+    return serialization.load_pem_public_key(key_string, backend=default_backend())
+
+def load_public_key_file(key_file_path):
+    with open(key_file_path, 'rb') as key_file:
+        public_key = load_public_key_string(key_file.read())
+    return public_key
+
+def get_public_bytes(key_string, is_private_key=True):
+    if is_private_key:
+        private_key = load_private_key_string(key_string)
+        public_key = private_key.public_key()
+    else:
+        public_key = load_public_key_string(key_string)
+    return public_key.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo)
+
+def get_public_digest_string(key_string, is_private_key=True):
+    return Hash(get_public_bytes(key_string, is_private_key)).hexdigest()
+
+def get_public_digest(key_path, is_private_key=True):
+    with open(key_path, 'rb') as key_file:
+        digest = get_public_digest_string(key_file.read(), is_private_key)
+    return digest
+
+def get_serialized_public_key(key_path, is_private_key=True):
+    with open(key_path, 'rb') as key_file:
+        data = get_public_bytes(key_file.read(), is_private_key)
+    return data
+
+def encrypt(pub_key, plaintext):
+    ciphertext = pub_key.encrypt(
+        plaintext,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA1()),
+            algorithm=hashes.SHA1(),
+            label=None
+        )
+    )
+    return b64encode(ciphertext)
+
+def decrypt(priv_key, ciphertext):
+    plaintext = priv_key.decrypt(
+        b64decode(ciphertext),
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA1()),
+            algorithm=hashes.SHA1(),
+            label=None
+        )
+    )
+    return plaintext
+
+def generate_keypair(key_out_path):
+    private_key = rsa.generate_private_key(public_exponent=65537, key_size=4096, backend=default_backend())
+    pem = private_key.private_bytes(encoding=serialization.Encoding.PEM, format=serialization.PrivateFormat.PKCS8, encryption_algorithm=serialization.NoEncryption())
+    with open(key_out_path, 'wb') as outf:
+        print >>outf, pem
+
+def generate_cert(key_path, cert_out_path):
+    private_key = load_private_key_file(key_path)
+    public_key = private_key.public_key()
+
+    builder = x509.CertificateBuilder()
+    builder = builder.subject_name(x509.Name([
+        x509.NameAttribute(x509.OID_COMMON_NAME, u'PrivCount User'),
+    ]))
+    builder = builder.issuer_name(x509.Name([
+        x509.NameAttribute(x509.OID_COMMON_NAME, u'PrivCount Authority'),
+    ]))
+    builder = builder.not_valid_before(datetime.datetime.today() - datetime.timedelta(days=1))
+    builder = builder.not_valid_after(datetime.datetime(2020, 1, 1))
+    builder = builder.serial_number(int(uuid.uuid4()))
+    builder = builder.public_key(public_key)
+    builder = builder.add_extension(x509.BasicConstraints(ca=False, path_length=None), critical=True)
+
+    certificate = builder.sign(private_key=private_key, algorithm=hashes.SHA256(), backend=default_backend())
+
+    with open(cert_out_path, 'wb') as outf:
+        print >>outf, certificate.public_bytes(encoding=serialization.Encoding.PEM)
+
+def get_random_free_port():
+    while True:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        port = randint(10000, 60000)
+        rc = s.connect_ex(('127.0.0.1', port))
+        s.close()
+        if rc != 0: # error connecting, port is available
+            return port
 
 def log_error():
     _, _, tb = sys.exc_info()
@@ -27,104 +126,6 @@ def log_error():
     tb_info = traceback.extract_tb(tb)
     filename, line, func, text = tb_info[-1]
     logging.warning("An error occurred in file '%s', at line %d, in func %s, in statement '%s'", filename, line, func, text)
-
-def write_results(filename, ts_start, ts_end, totals):
-    with open(filename, 'a') as fout:
-        if totals:
-            for i in sorted(totals.keys()):
-                fout.write("{} {} {}:{}\n".format(ts_start, ts_end, i, totals[i]))
-        else:
-            fout.write("{} {} None\n".format(ts_start, ts_end))
-
-def get_epoch_info(start_time_seconds, epoch_length_seconds):
-    num = (int(time.time()) - start_time_seconds) / epoch_length_seconds
-    ts_start = start_time_seconds + (num * epoch_length_seconds)
-    ts_end = ts_start + epoch_length_seconds
-    return num, ts_start, ts_end
-
-def wait_epoch_change(start_time_seconds, epoch_length_seconds):
-    now = int(time.time())
-
-    wait_time_seconds = 0
-    if now < start_time_seconds:
-        wait_time_seconds = start_time_seconds - now
-    else:
-        seconds_past_last_epoch = (now - start_time_seconds) % epoch_length_seconds
-        wait_time_seconds = epoch_length_seconds - seconds_past_last_epoch
-
-    logging.info("waiting for %d seconds until the start of the next epoch...", wait_time_seconds)
-    time.sleep(wait_time_seconds)
-
-def get_valid_config(config_filepath, ts=False, tks=False, dc=False):
-    config = None
-    try:
-        logging.info("reading config file from '%s'", config_filepath)
-
-        # read in the config from the given path
-        with open(config_filepath, 'r') as fin:
-            conf = yaml.load(fin)
-
-        # make sure we have the required global vals
-        assert conf['global']['start_time'] > 0
-        assert conf['global']['epoch'] > 0
-        assert conf['global']['clock_skew'] >= 0
-        assert conf['global']['q'] > 0
-
-        if ts:
-            # check the tally server specific vals
-            expanded_path = os.path.expanduser(conf['tally_server']['key'])
-            conf['tally_server']['key'] = os.path.abspath(expanded_path)
-            assert os.path.exists(conf['tally_server']['key'])
-
-            expanded_path = os.path.expanduser(conf['tally_server']['cert'])
-            conf['tally_server']['cert'] = os.path.abspath(expanded_path)
-            assert os.path.exists(conf['tally_server']['cert'])
-
-            expanded_path = os.path.expanduser(conf['tally_server']['results'])
-            conf['tally_server']['results'] = os.path.abspath(expanded_path)
-            assert os.path.exists(os.path.dirname(conf['tally_server']['results']))
-
-            assert conf['tally_server']['listen_port'] > 0
-
-        if tks:
-            # check the tally key server specific vals
-            expanded_path = os.path.expanduser(conf['tally_key_server']['key'])
-            conf['tally_key_server']['key'] = os.path.abspath(expanded_path)
-            assert os.path.exists(conf['tally_key_server']['key'])
-
-            expanded_path = os.path.expanduser(conf['tally_key_server']['cert'])
-            conf['tally_key_server']['cert'] = os.path.abspath(expanded_path)
-            assert os.path.exists(conf['tally_key_server']['cert'])
-
-            assert conf['tally_key_server']['listen_port'] > 0
-            assert conf['tally_key_server']['tally_server_info']['ip'] is not None
-            assert conf['tally_key_server']['tally_server_info']['port'] > 0
-
-        if dc:
-            # check the data collector specific vals
-            assert conf['data_collector']['listen_port'] > 0
-            assert conf['data_collector']['noise_weight'] > 0.0
-            assert conf['data_collector']['tally_server_info']['ip'] is not None
-            assert conf['data_collector']['tally_server_info']['port'] > 0
-            for item in conf['data_collector']['tally_key_server_infos']:
-                assert item['ip'] is not None
-                assert item['port'] >= 0
-
-        config = {'global': conf['global']}
-        if ts:
-            config['tally_server'] = conf['tally_server']
-        if tks:
-            config['tally_key_server'] = conf['tally_key_server']
-        if dc:
-            config['data_collector'] = conf['data_collector']
-    except AssertionError:
-        logging.warning("problem reading config file: invalid data")
-        log_error()
-    except KeyError:
-        logging.warning("problem reading config file: missing required keys")
-        log_error()
-
-    return config
 
 def noise(sigma, sum_of_sq, p_exit):
     sigma_i = p_exit * sigma / sqrt(sum_of_sq)
@@ -143,20 +144,181 @@ def sample(s, q):
         s = Hash(s).digest()
     return v
 
-def keys_from_labels(labels, key, pos=True, q=2147483647):
-    shares = []
-    for l in labels:
-        ## Keyed share derivation
-        s = PRF(key, l)
-        v = sample(s, q)
-        s0 = v if pos else q - v
+def derive_blinding_factor(label, secret, q, positive=True):
+    ## Keyed share derivation
+    s = PRF(secret, label)
+    v = sample(s, q)
+    s0 = v if positive else q - v
+    return s0
 
-        ## Save the share
-        shares.append((l, s0))
-    return shares
+class SecureCounters(object):
+    '''
+    securely count any number of labels
+    counters should be in the form like this:
+    {
+      'CircuitCellsInOutRatio': {
+        'bins':
+        [
+          [0.0, 0.1],
+          [0.1, 0.25],
+          [0.25, 0.5],
+          [0.5, 0.75],
+          [0.75, 0.9],
+          [0.9, 1.0],
+          [1.0, float('inf')],
+        ],
+        'sigma': 2090007.68996
+      },
+      'CircuitCellsIn': {
+        'bins':
+        [
+          [0.0, 512.0],
+          [512.0, 1024.0],
+          [1024.0, 2048.0],
+          [2048.0, 4096.0],
+          [4096.0, float('inf')],
+        ],
+        'sigma': 2090007.68996
+      }
+    }
+    All of data collectors, share keepers, and tally server use this to store counters
+    it is used approximately like this:
 
+    data collector:
+    init(), generate(), detach_blinding_shares(), increment()[repeated], detach_counts()
+    the blinding shares are sent to each share keeper
+    the counts are sent to the tally server at the end
+
+    share keeper:
+    init(), import_blinding_share()[repeated], detach_counts()
+    import..() uses the shares from each data collector
+    the counts are sent to the tally server at the end
+
+    tally server:
+    init(), tally_counters(), detach_counts()
+    tally..() uses the counts received from all of the data collectors and share keepers
+    this produces the final, unblinded, noisy counts of the privcount process
+
+    see privcount/test/test_counters.py for a test case
+    '''
+
+    def __init__(self, counters, q):
+        self.counters = deepcopy(counters)
+        self.q = q
+        self.shares = None
+
+        # initialize all counters to 0
+        for key in self.counters:
+            if 'bins' not in self.counters[key]:
+                return None
+            for item in self.counters[key]['bins']:
+                assert len(item) == 2
+                item.append(0.0) # bin is now, e.g.: [0.0, 512.0, 0.0] for bin_left, bin_right, count
+
+    def _derive_all_counters(self, secret, positive):
+        for key in self.counters:
+            for item in self.counters[key]['bins']:
+                label = "{}_{}_{}".format(key, item[0], item[1])
+                blinding_factor = derive_blinding_factor(label, secret, self.q, positive=positive)
+                item[2] = (item[2] + blinding_factor) % self.q
+
+    def _blind(self, secret):
+        self._derive_all_counters(secret, True)
+
+    def _unblind(self, secret):
+        self._derive_all_counters(secret, False)
+
+    def generate(self, uids, noise_weight):
+        self.shares = {}
+        for uid in uids:
+            secret = urandom(20)
+            hash_id = PRF(secret, "KEYID")
+            self.shares[uid] = {'secret': secret, 'hash_id': hash_id}
+            # add blinding factors to all of the counters
+            self._blind(secret)
+
+	    # Add noise for each counter independently
+        for key in self.counters:
+            for item in self.counters[key]['bins']:
+                sigma = self.counters[key]['sigma']
+                sampled_noise = noise(sigma, 1, noise_weight)
+                noise_val = int(round(sampled_noise))
+                item[2] = (item[2] + noise_val) % self.q
+
+    def detach_blinding_shares(self):
+        shares = self.shares
+        # TODO: secure delete
+        del self.shares
+        self.shares = None
+        for uid in shares:
+            shares[uid]['secret'] = b64encode(shares[uid]['secret'])
+            shares[uid]['hash_id'] = b64encode(shares[uid]['hash_id'])
+        return shares
+
+    def import_blinding_share(self, share):
+        # reverse blinding factors for all of the counters
+        self._unblind(b64decode(share['secret']))
+
+    def increment(self, counter_key, counter_value):
+        if self.counters is not None and counter_key in self.counters:
+            for item in self.counters[counter_key]['bins']:
+                if counter_value >= item[0] and counter_value < item[1]:
+                    item[2] = (item[2] + 1.0) % self.q
+
+    def _tally_counter(self, counter):
+        if self.counters == None:
+            return False
+
+        # validate that the counters match
+        for key in self.counters:
+            if key not in counter:
+                return False
+            if 'bins' not in counter[key]:
+                return False
+            num_bins = len(self.counters[key]['bins'])
+            if num_bins != len(counter[key]['bins']):
+                return False
+            for i in xrange(num_bins):
+                tally_item = counter[key]['bins'][i]
+                if len(tally_item) != 3:
+                    return False
+
+        # ok, the counters match
+        for key in self.counters:
+            num_bins = len(self.counters[key]['bins'])
+            for i in xrange(num_bins):
+                tally_bin = self.counters[key]['bins'][i]
+                tally_bin[2] = (tally_bin[2] + counter[key]['bins'][i][2]) % self.q
+
+        # success
+        return True
+
+    def tally_counters(self, counters):
+        # first add up all of the counters together
+        for counter in counters:
+            if not self._tally_counter(counter):
+                return False
+        # now adjust so our tally can register negative counts
+        # (negative counts are possible if noise is negative)
+        for key in self.counters:
+            for tally_bin in self.counters[key]['bins']:
+                if tally_bin[2] > (self.q / 2):
+                    tally_bin[2] -= self.q
+        return True
+
+    def detach_counts(self):
+        counts = self.counters
+        self.counters = None
+        return counts
+
+"""
 def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):
-    '''this func is currently unused'''
+    '''
+    this func is currently unused
+    if it becomes used later, we must add stem as a required python library
+    '''
+    from stem.descriptor import parse_file
+
     if fingerprint_pool == None:
         fingerprint_pool = [my_fingerprint]
 
@@ -185,135 +347,4 @@ def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):
     prob = my_bandwidth/TEWBW
     sum_of_sq = sum_of_sq_bw/(TEWBW**2)
     return prob, sum_of_sq
-
-class CounterStore(object):
-    '''
-    this is used at the data collector to keep counts of statistics
-    the counts start out random (blinded) and with noise
-    the counts are incremented during collection
-    the blinding factors are sent to the TKSes and the full counts to the TS
-    '''
-
-    def __init__(self, q, num_tkses, noise_weight, stats):
-        labels = stats.keys()
-        self.data = {l:0.0 for l in labels}
-        self.q = float(q)
-
-        self.keys = [os.urandom(20) for _ in xrange(num_tkses)]
-        self.keys = dict([(PRF(K, "KEYID"), K) for K in self.keys])
-
-        for _, K in self.keys.iteritems():
-            shares = keys_from_labels(labels, K, True, q)
-            for (l, s0) in shares:
-                self.data[l] = (self.data[l] + float(s0)) % self.q
-
-	    # Add noise for each stat independently
-        for label in stats:
-            sigma = stats[label]
-            noise_gen = noise(sigma, 1, noise_weight)
-            assert label in self.data
-            self.data[label] = (self.data[label] + float(noise_gen)) % self.q
-
-    def get_blinding_factor(self, kid):
-        assert kid in self.keys and self.keys[kid] is not None
-        msg = (sorted(self.data.keys()), (kid, self.keys[kid]), self.q)
-
-        # TODO: secure delete
-        del self.keys[kid]
-        self.keys[kid] = None
-
-        return msg
-
-    def increment(self, label):
-        if label in self.data:
-            self.data[label] = (self.data[label] + float(1)) % self.q
-
-    def get_blinded_noisy_counts(self):
-        data = self.data
-        ## Ensure we can only do this once!
-        self.data = None
-        self.keys = None
-        return data
-
-class KeyStore(object):
-    '''
-    this is used at the TKS nodes to store the blinding factor received from the DC nodes
-    '''
-
-    def __init__(self, q):
-        self.data = {}
-        self.keyIDs = {}
-        self.q = float(q)
-
-    def register_keyshare(self, labels, kid, K, q):
-        assert q == self.q
-
-        ## We have already registered this key
-        if kid in self.keyIDs:
-            return None
-
-        ## Add shares
-        shares = keys_from_labels(labels, K, False, q)
-        for (l, s0) in shares:
-            self.data[l] = (self.data.get(l, 0) + float(s0)) % self.q
-
-        self.keyIDs[kid] = None  # TODO: registed client info
-        return kid
-
-    def get_combined_shares(self):
-        data = self.data
-        ## Ensure we can only do this once!
-        self.data = None
-        self.keyIDs = None
-        return data
-
-class MessageReceiver(LineOnlyReceiver):
-    '''
-    send incoming messages to the given message handling queue
-    '''
-
-    def __init__(self, factory, handler_queue):
-        self.factory = factory
-        assert handler_queue
-        self.handler_queue = handler_queue
-
-    def lineReceived(self, line):
-        self.handler_queue.put(('message', [line, self.transport.getPeer().host]))
-
-class MessageReceiverFactory(ServerFactory):
-    '''
-    builds message receivers with the given queue
-    '''
-    protocol = MessageReceiver # not really needed, since we build our own protocol below
-
-    def __init__(self, handler_queue):
-        assert handler_queue
-        self.handler_queue = handler_queue
-
-    def buildProtocol(self, addr):
-        return MessageReceiver(self, self.handler_queue)
-
-class MessageSender(LineOnlyReceiver):
-    '''
-    send a message and close
-    '''
-
-    def __init__(self, factory, message):
-        self.factory = factory
-        self.message = message
-
-    def connectionMade(self):
-        self.sendLine(self.message)
-        self.transport.loseConnection()
-
-class MessageSenderFactory(ClientFactory):
-    '''
-    builds message senders with the given message
-    '''
-    protocol = MessageSender # not really needed, since we build our own protocol below
-
-    def __init__(self, message):
-        self.message = message
-
-    def buildProtocol(self, addr):
-        return MessageSender(self, self.message)
+"""

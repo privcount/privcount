@@ -1,0 +1,306 @@
+# sigma values define the global noise we want for privacy for each stat
+# histograms represent a collection of counters that together define a histogram
+counters:
+    # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
+    CircuitCellsInOutRatio:
+        bins:
+        - [0.0, 0.1]
+        - [0.1, 0.25]
+        - [0.25, 0.5]
+        - [0.5, 0.75]
+        - [0.75, 0.9]
+        - [0.9, 1.0]
+        - [1.0, .inf]
+        sigma: 0.0
+    # ENTRY - cells sent 'in' to client per active circuit on client OR connections
+    CircuitCellsIn:
+        bins:
+        - [0.0, 512.0]
+        - [512.0, 1024.0]
+        - [1024.0, 2048.0]
+        - [2048.0, 4096.0]
+        - [4096.0, .inf]
+        sigma: 0.0
+    # ENTRY - cells sent 'out' from client per active circuit on client OR connections
+    CircuitCellsOut:
+        bins:
+        - [0.0, 64.0]
+        - [64.0, 128.0]
+        - [128.0, 256.0]
+        - [256.0, 2048.0]
+        - [2048.0, 4096.0]
+        - [4096.0, .inf]
+        sigma: 0.0
+    # ENTRY - circuit times in seconds for active and inactive circuits
+    CircuitLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1200.0]
+        - [1200.0, .inf]
+        sigma: 0.0
+    # EXIT - completed streams per active circuit for IRC/SSH
+    CircuitStreamsInteractive:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 2.0]
+        - [2.0, 4.0]
+        - [4.0, 6.0]
+        - [6.0, 8.0]
+        - [8.0, 10.0]
+        - [10.0, .inf]
+        sigma: 0.0
+    # EXIT - completed streams per active circuit for port>=10000 and no other class
+    CircuitStreamsOther:
+        bins:
+        - [0.0, 4.0]
+        - [4.0, 8.0]
+        - [8.0, 16.0]
+        - [16.0, 32.0]
+        - [32.0, .inf]
+        sigma: 0.0
+    # EXIT - completed streams per active circuit for BitTorrent or port>=10000
+    CircuitStreamsP2P:
+        bins:
+        - [0.0, 4.0]
+        - [4.0, 8.0]
+        - [8.0, 16.0]
+        - [16.0, 32.0]
+        - [32.0, .inf]
+        sigma: 0.0
+    # EXIT - completed streams per active circuit for HTTP/HTTPS
+    CircuitStreamsWeb:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 10.0]
+        - [10.0, 20.0]
+        - [20.0, 30.0]
+        - [30.0, 50.0]
+        - [50.0, 100.0]
+        - [100.0, .inf]
+        sigma: 0.0
+    # EXIT - number of circuits with at least one stream completed
+    CircuitsActive:
+        bins:
+        - [0.0, .inf]
+        sigma: 0.0
+    # EXIT - number of circuits with no streams completed
+    CircuitsInactive:
+        bins:
+        - [0.0, .inf]
+        sigma: 0.0
+    # ENTRY - circuits per client IP with at least 8 cells transferred (10 min rotation)
+    ClientIPCircuitsActive:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 5.0]
+        - [5.0, 10.0]
+        - [10.0, 20.0]
+        - [20.0, .inf]
+        sigma: 0.0
+    # ENTRY - circuits per client IP with less than 8 cells transferred (10 min rotation)
+    ClientIPCircuitsInactive:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 5.0]
+        - [5.0, 10.0]
+        - [10.0, 20.0]
+        - [20.0, .inf]
+        sigma: 0.0
+    # ENTRY - unique client IPs seen (10 min rotation)
+    ClientIPsUnique:
+        bins:
+        - [0.0, 100.0]
+        - [100.0, 250.0]
+        - [250.0, 500.0]
+        - [500.0, 1000.0]
+        - [1000.0, .inf]
+        sigma: 0.0
+    # ENTRY - number of OR connections to clients
+    ConnectionsAll:
+        bins:
+        - [0.0, .inf]
+        sigma: 0.0
+    # not counted - used only to make sure aggregation was performed correctly
+    SanityCheck:
+        bins:
+        - [0.0, .inf]
+        sigma: 0.0
+    # EXIT - bytes received from server per completed stream
+    StreamBytesReceivedInteractive:
+        bins:
+        - [0.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, .inf]
+        sigma: 0.0
+    # EXIT - bytes received from server per completed stream
+    StreamBytesReceivedOther:
+        bins:
+        - [0.0, 131072.0]
+        - [131072.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, .inf]
+        sigma: 0.0
+    # EXIT - bytes received from server per completed stream
+    StreamBytesReceivedP2P:
+        bins:
+        - [0.0, 131072.0]
+        - [131072.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, .inf]
+        sigma: 0.0
+    # EXIT - bytes received from server per completed stream
+    StreamBytesReceivedWeb:
+        bins:
+        - [0.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, .inf]
+        sigma: 0.0
+    # EXIT - bytes sent to server per completed stream
+    StreamBytesSentInteractive:
+        bins:
+        - [0.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, .inf]
+        sigma: 0.0
+    # EXIT - bytes sent to server per completed stream
+    StreamBytesSentOther:
+        bins:
+        - [0.0, 131072.0]
+        - [131072.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, .inf]
+        sigma: 0.0
+    # EXIT - bytes sent to server per completed stream
+    StreamBytesSentP2P:
+        bins:
+        - [0.0, 131072.0]
+        - [131072.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, .inf]
+        sigma: 0.0
+    # EXIT - bytes sent to server per completed stream
+    StreamBytesSentWeb:
+        bins:
+        - [0.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, .inf]
+        sigma: 0.0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream
+    StreamBytesSentReceivedRatioInteractive:
+        bins:
+        - [0.0, 0.1]
+        - [0.1, 0.25]
+        - [0.25, 0.5]
+        - [0.5, 0.75]
+        - [0.75, 0.9]
+        - [0.9, 1.0]
+        - [1.0, .inf]
+        sigma: 0.0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream
+    StreamBytesSentReceivedRatioOther:
+        bins:
+        - [0.0, 0.1]
+        - [0.1, 0.25]
+        - [0.25, 0.5]
+        - [0.5, 0.75]
+        - [0.75, 0.9]
+        - [0.9, 1.0]
+        - [1.0, .inf]
+        sigma: 0.0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream
+    StreamBytesSentReceivedRatioP2P:
+        bins:
+        - [0.0, 0.1]
+        - [0.1, 0.25]
+        - [0.25, 0.5]
+        - [0.5, 0.75]
+        - [0.75, 0.9]
+        - [0.9, 1.0]
+        - [1.0, .inf]
+        sigma: 0.0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream
+    StreamBytesSentReceivedRatioWeb:
+        bins:
+        - [0.0, 0.1]
+        - [0.1, 0.25]
+        - [0.25, 0.5]
+        - [0.5, 0.75]
+        - [0.75, 0.9]
+        - [0.9, 1.0]
+        - [1.0, .inf]
+        sigma: 0.0
+    # EXIT - time in seconds between create and destroy per completed stream
+    StreamLifeTimeInteractive:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 60.0]
+        - [60.0, 120.0]
+        - [120.0, 300.0]
+        - [300.0, 600.0]
+        - [600.0, 1200.0]
+        - [1200.0, .inf]
+        sigma: 0.0
+    # EXIT - time in seconds between create and destroy per completed stream
+    StreamLifeTimeOther:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 15.0]
+        - [15.0, 30.0]
+        - [30.0, 60.0]
+        - [60.0, 300.0]
+        - [300.0, 600.0]
+        - [600.0, 1200.0]
+        - [1200.0, .inf]
+        sigma: 0.0
+    # EXIT - time in seconds between create and destroy per completed stream
+    StreamLifeTimeP2P:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 15.0]
+        - [15.0, 30.0]
+        - [30.0, 60.0]
+        - [60.0, 300.0]
+        - [300.0, 600.0]
+        - [600.0, 1200.0]
+        - [1200.0, .inf]
+        sigma: 0.0
+    # EXIT - time in seconds between create and destroy per completed stream
+    StreamLifeTimeWeb:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 2.0]
+        - [2.0, 3.0]
+        - [3.0, 4.0]
+        - [4.0, 8.0]
+        - [8.0, 16.0]
+        - [16.0, 32.0]
+        - [32.0, .inf]
+        sigma: 0.0
+    # EXIT - number of streams to servers
+    StreamsAll:
+        bins:
+        - [0.0, .inf]
+        sigma: 0.0

@@ -9,6 +9,9 @@ import os
 import logging
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, ArgumentTypeError
 
+from privcount.plot import add_plot_args
+from privcount.inject import add_inject_args
+
 class CustomHelpFormatter(ArgumentDefaultsHelpFormatter):
     # adds the 'RawDescriptionHelpFormatter' to the ArgsDefault one
     def _fill_text(self, text, width, indent):
@@ -21,64 +24,97 @@ def main():
     # construct the options
     main_parser = ArgumentParser(description="Run a PrivCount entity", formatter_class=help_formatter)
 
-    main_parser.add_argument(# '-c', '--config',
-        help="""a file path to a PrivCount config file, may be '-' for STDIN""",
-        metavar="CONFIG_PATH", type=type_str_path_in,
-        action="store", dest="configpath")
-
     main_parser.add_argument('-l', '--log',
         help="""a file path to log output, may be '-' for STDOUT""",
         metavar="LOG_PATH", type=type_str_path_out,
         action="store", dest="logpath",
         default="-")
 
+    main_parser.add_argument('-v', '--debug',
+        help="""configure debug log level for verbose output""",
+        action="store_true", dest="verbose")
+
     sub_parser = main_parser.add_subparsers(help="")
 
     # tally server
     ts_parser = sub_parser.add_parser('ts', help="run a PrivCount tally server", formatter_class=help_formatter)
     ts_parser.set_defaults(mode='ts', func=tally_server, formatter_class=help_formatter)
+    ts_parser.add_argument(# '-c', '--config',
+        help="""a file path to a PrivCount config file, may be '-' for STDIN""",
+        metavar="CONFIG_PATH", type=type_str_path_in,
+        action="store", dest="configpath")
 
     # tally key server
-    tks_parser = sub_parser.add_parser('tks', help="run a PrivCount tally key server", formatter_class=help_formatter)
-    tks_parser.set_defaults(mode='tks', func=tally_key_server, formatter_class=help_formatter)
+    sk_parser = sub_parser.add_parser('sk', help="run a PrivCount share keeper", formatter_class=help_formatter)
+    sk_parser.set_defaults(mode='sk', func=share_keeper, formatter_class=help_formatter)
+    sk_parser.add_argument(# '-c', '--config',
+        help="""a file path to a PrivCount config file, may be '-' for STDIN""",
+        metavar="CONFIG_PATH", type=type_str_path_in,
+        action="store", dest="configpath")
 
     # data collector
     dc_parser = sub_parser.add_parser('dc', help="run a PrivCount data collector", formatter_class=help_formatter)
     dc_parser.set_defaults(mode='dc', func=data_collector, formatter_class=help_formatter)
+    dc_parser.add_argument(# '-c', '--config',
+        help="""a file path to a PrivCount config file, may be '-' for STDIN""",
+        metavar="CONFIG_PATH", type=type_str_path_in,
+        action="store", dest="configpath")
+
+    # inject events
+    inject_parser = sub_parser.add_parser('inject', help="run a server that emulates the Tor control protocol to inject events into a runnning PrivCount data collector", formatter_class=help_formatter)
+    inject_parser.set_defaults(mode='inject', func=inject, formatter_class=help_formatter)
+    add_inject_args(inject_parser)
+
+    # plot results
+    plot_parser = sub_parser.add_parser('plot', help="create graphs from PrivCount results files", formatter_class=help_formatter)
+    plot_parser.set_defaults(mode='plot', func=plot, formatter_class=help_formatter)
+    add_plot_args(plot_parser)
 
     # get args and call the command handler for the chosen mode
     args = main_parser.parse_args()
 
     logfile_path = None if args.logpath == '-' else args.logpath
-    logging.basicConfig(filename=logfile_path, level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S',
+    loglevel = logging.DEBUG if args.verbose else logging.INFO
+    logging.basicConfig(filename=logfile_path, level=loglevel, datefmt='%Y-%m-%d %H:%M:%S',
         format='%(asctime)s %(created)f [privcount-{0}] [%(levelname)s] %(message)s'.format(args.mode))
 
     if logfile_path is not None:
         print "privcount: output redirected to '{0}'".format(logfile_path)
 
-    if args.configpath == '-':
+    if 'configpath' in args and args.configpath == '-':
         with open('privcount.tmp.cfg', 'wb') as fout:
             for line in sys.stdin:
                 print >> fout, line,
         args.configpath = os.path.abspath('privcount.tmp.cfg')
 
-    logging.info("using config file at '%s'", args.configpath)
+    if 'configpath' in args:
+        logging.info("using config file at '%s'", args.configpath)
     args.func(args)
 
 def data_collector(args):
     logging.info("running data_collector")
-    from privcount.data_collector import DataCollectorManager
-    DataCollectorManager(args.configpath).run()
+    from privcount.data_collector import DataCollector
+    DataCollector(args.configpath).run()
 
 def tally_server(args):
     logging.info("running tally_server")
-    from privcount.tally_server import TallyServerManager
-    TallyServerManager(args.configpath).run()
+    from privcount.tally_server import TallyServer
+    TallyServer(args.configpath).run()
 
-def tally_key_server(args):
-    logging.info("running tally_key_server")
-    from privcount.tally_key_server import TallyKeyServerManager
-    TallyKeyServerManager(args.configpath).run()
+def share_keeper(args):
+    logging.info("running share_keeper")
+    from privcount.share_keeper import ShareKeeper
+    ShareKeeper(args.configpath).run()
+
+def inject(args):
+    logging.info("running inject")
+    from privcount.inject import run_inject
+    run_inject(args)
+
+def plot(args):
+    logging.info("running plot")
+    from privcount.plot import run_plot
+    run_plot(args)
 
 def type_str_path_out(value):
     val_str = str(value)

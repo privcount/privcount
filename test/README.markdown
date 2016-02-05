@@ -6,25 +6,26 @@ its ability to correctly gather statistics using safe test data.
 ## Prerequisites
 
 You should have followed the main README to setup and install PrivCount. You should have your
-PYTHONPATH setup properly so that you can call `privcount` and `privcount-inject` without providing full
-paths to those scripts.
+PYTHONPATH setup properly so that you can call `privcount` without providing a full paths to it.
 
 ## Running the test
 
-Start the tally server and wait for it to cycle an epoch:
+Start the event server that will supply events to the data collector:
 
-    privcount privcount-test-config.yaml ts
+    privcount inject --port 20003 --log events.txt
 
- Start the tally key server and wait for it to cycle an epoch:
+Start the PrivCount components:
 
-    privcount privcount-test-config.yaml tks
+    privcount ts config.yaml
+    privcount sk config.yaml
+    privcount dc config.yaml
 
- Start the data collector and wait for it to report that it has registered with the TKS:
+Now wait until the end of the epoch and check the tally results json file published by the
+tally server. The results for the 'SanityCheck' counter should indicate a zero count for the
+bin representing counts in the range [0, Infinity).
 
-    privcount privcount-test-config.yaml dc
+If you have matplotlib installed, you can then visualize the results:
 
-Finally, inject some test data into the data collector:
+    privcount plot -d <results.json> test
 
-    privcount-inject --port 20003 --log tor-test-events.txt
-
-Now wait until the end of the epoch and check the results published by the tally server (in `results.txt`).
+and open the PDF file that was created.
