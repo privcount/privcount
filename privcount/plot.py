@@ -150,7 +150,7 @@ def run_plot(args):
     bar_xlabels = ['[0,128)', '[128,256)', '[256,512)', '[512,1024)', '[1024,\n2048)']
     plot_bar_chart(page, datasets, dataset_labels, dataset_colors, bar_xlabels, title="test", xlabel="test_x", ylabel="test_y")
     '''
-    for name in plot_info:
+    for name in sorted(plot_info.keys()):
         dat = plot_info[name]
         plot_bar_chart(page, dat['datasets'], dat['dataset_labels'], dat['dataset_colors'], dat['bin_labels'], title=name)
     page.close()

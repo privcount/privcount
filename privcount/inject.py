@@ -6,12 +6,15 @@ Created on Dec 12, 2015
 '''
 import sys
 import argparse
+import logging
 from time import time
 
 from twisted.internet import reactor
 from twisted.internet.protocol import ServerFactory
 
 from privcount.protocol import TorControlServerProtocol
+
+listener = None
 
 class PrivCountDataInjector(ServerFactory):
 
@@ -38,6 +41,9 @@ class PrivCountDataInjector(ServerFactory):
         return self.protocol
 
     def start_injecting(self):
+        if listener is not None:
+            logging.info("Injector is no longer listening")
+            listener.stopListening()
         if self.do_pause:
             logging.info("We will pause between the injection of each event to simulate actual event inter-arrival times, so this may take a while")
 
@@ -48,6 +54,7 @@ class PrivCountDataInjector(ServerFactory):
     def stop_injecting(self):
         if self.event_file is not None:
             self.event_file.close()
+            self.event_file = None
 
     def _get_line(self):
         if self.event_file == None:
@@ -61,14 +68,15 @@ class PrivCountDataInjector(ServerFactory):
             return line
 
     def _flush_now(self, msg):
-        # update event times so the data seems fresh to privcount
-        this_time_start, this_time_end = self._get_event_times(msg)
-        now = time()
-        alive = this_time_end - this_time_start
-        msg_adjusted_times = self._set_event_times(msg, now-alive, now)
-        event = "650 PRIVCOUNT {}".format(msg_adjusted_times)
-        logging.info("sending event '{}'".format(event))
-        self.protocol.sendLine(event)
+        if self.protocol is not None and self.protocol.transport is not None and self.protocol.transport.connected:
+            # update event times so the data seems fresh to privcount
+            this_time_start, this_time_end = self._get_event_times(msg)
+            now = time()
+            alive = this_time_end - this_time_start
+            msg_adjusted_times = self._set_event_times(msg, now-alive, now)
+            event = "650 PRIVCOUNT {}".format(msg_adjusted_times)
+            logging.info("sending event '{}'".format(event))
+            self.protocol.sendLine(event)
 
     def _flush_later(self, msg):
         self._flush_now(msg)
@@ -78,7 +86,11 @@ class PrivCountDataInjector(ServerFactory):
         while True:
             line = self._get_line()
             if line is None:
-                #self.protocol.transport.loseConnection()
+                # close the connection from our server side
+                if self.protocol is not None and self.protocol.transport is not None:
+                    self.protocol.transport.loseConnection()
+                # we should no longer be listening, so the reactor should end here
+                reactor.stop()
                 return
 
             msg = line.strip()
@@ -131,7 +143,7 @@ def main():
 def run_inject(args):
     # pylint: disable=E1101
     injector = PrivCountDataInjector(args.log, args.simulate, int(args.prune_before), int(args.prune_after))
-    reactor.listenTCP(int(args.port), injector, interface="127.0.0.1")
+    listener = reactor.listenTCP(int(args.port), injector, interface="127.0.0.1")
     reactor.run()
 
 def add_inject_args(parser):

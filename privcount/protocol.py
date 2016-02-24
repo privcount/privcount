@@ -20,6 +20,13 @@ class PrivCountProtocol(LineOnlyReceiver):
         self.client_cookie = None
         self.server_cookie = None
 
+        '''here we use the LineOnlyReceiver's MAX_LENGTH to drop the connection
+        if we receive too much data before the handshake validates it
+        the handshake process itself transfers very little, so we can get
+        away with a small buffer - after the handshake suceeds, we allow lines
+        of longer length'''
+        self.MAX_LENGTH = 256
+
     def connectionMade(self): # overrides twisted function
         peer = self.transport.getPeer()
         logging.debug("Connection with {}:{}:{} was made".format(peer.type, peer.host, peer.port))
@@ -32,6 +39,21 @@ class PrivCountProtocol(LineOnlyReceiver):
             event_type = parts[0]
             event_payload = parts[1] if len(parts) > 1 else ''
             self.process_event(event_type, event_payload)
+
+    def sendLine(self, line): # overrides twisted function
+        peer = self.transport.getPeer()
+        logging.debug("Sending line '{}' to {}:{}:{}".format(line, peer.type, peer.host, peer.port))
+        return LineOnlyReceiver.sendLine(self, line)
+
+    def lineLengthExceeded(self, line): # overrides twisted function
+        if self.is_valid_connection:
+            # process the line anyway, since it may in fact be valid share data if many DCs are used
+            self.lineReceived(line)
+            return None
+        else:
+            peer = self.transport.getPeer()
+            logging.warning("Incomming line of length {} exceeded MAX_LENGTH of {}, dropping unvalidated connection to {}:{}:{}".format(len(line), self.MAX_LENGTH, peer.type, peer.host, peer.port))
+            return LineOnlyReceiver.lineLengthExceeded(self, line)
 
     def process_event(self, event_type, event_payload):
         if event_type.startswith('HANDSHAKE'):
@@ -382,6 +404,7 @@ class TorControlServerProtocol(LineOnlyReceiver):
                 else:
                     self.sendLine('552 Unrecognized event ""')
             elif parts[0] == "QUIT":
+                self.factory.stop_injecting()
                 self.sendLine("250 closing connection")
                 self.transport.loseConnection()
             else:

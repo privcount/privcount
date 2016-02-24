@@ -434,6 +434,7 @@ class CollectionPhase(object):
 
                 # mark that we got another one
                 self.need_shares.remove(client_uid)
+                logging.info("need shares from {} more data collectors".format(len(self.need_shares)))
                 if len(self.need_shares) == 0:
                     # ok, we got all of the shares for all SKs, now start the SKs
                     for sk_uid in self.sk_uids:
