@@ -46,14 +46,9 @@ class PrivCountProtocol(LineOnlyReceiver):
         return LineOnlyReceiver.sendLine(self, line)
 
     def lineLengthExceeded(self, line): # overrides twisted function
-        if self.is_valid_connection:
-            # process the line anyway, since it may in fact be valid share data if many DCs are used
-            self.lineReceived(line)
-            return None
-        else:
-            peer = self.transport.getPeer()
-            logging.warning("Incomming line of length {} exceeded MAX_LENGTH of {}, dropping unvalidated connection to {}:{}:{}".format(len(line), self.MAX_LENGTH, peer.type, peer.host, peer.port))
-            return LineOnlyReceiver.lineLengthExceeded(self, line)
+        peer = self.transport.getPeer()
+        logging.warning("Incomming line of length {} exceeded MAX_LENGTH of {}, dropping unvalidated connection to {}:{}:{}".format(len(line), self.MAX_LENGTH, peer.type, peer.host, peer.port))
+        return LineOnlyReceiver.lineLengthExceeded(self, line)
 
     def process_event(self, event_type, event_payload):
         if event_type.startswith('HANDSHAKE'):
@@ -81,6 +76,7 @@ class PrivCountProtocol(LineOnlyReceiver):
         peer = self.transport.getPeer()
         logging.debug("Handshake with {}:{}:{} was successful".format(peer.type, peer.host, peer.port))
         self.is_valid_connection = True
+        self.MAX_LENGTH = 512*1024 # now allow longer lines
 
     def handshake_failed(self):
         peer = self.transport.getPeer()
