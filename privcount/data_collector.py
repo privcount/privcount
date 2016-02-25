@@ -1,5 +1,6 @@
 import os
 import logging
+import math
 import cPickle as pickle
 
 from time import time
@@ -97,7 +98,13 @@ class DataCollector(ReconnectingClientFactory):
         # we allow the tally server to update only the bin widths for each counter
         for key in ts_counters:
             if key in dc_counters and 'bins' in ts_counters[key]:
-                dc_counters[key]['bins'] = ts_counters[key]['bins']
+                dc_counters[key]['bins'] = deepcopy(ts_counters[key]['bins'])
+
+        # we cant count keys for which we don't have configured bins
+        for key in dc_counters:
+            if 'bins' not in dc_counters[key]:
+                logging.warning("skipping counter '{}' because we do not have any bins configured".format(key))
+                dc_counters.pop(key, None)
 
         # we require that only the configured share keepers be used in the collection phase
         # because we must be able to encrypt messages to them
@@ -334,33 +341,33 @@ class Aggregator(ReconnectingClientFactory):
         self.n_streams_per_circ.setdefault(chanid, {}).setdefault(circid, {'interactive':0, 'web':0, 'p2p':0, 'other':0})
         self.n_streams_per_circ[chanid][circid][stream_class] += 1
 
-        # only count bytes ratio on streams with legitimate transfers
-        ratio = float(writebw)/float(readbw) if readbw > 0 and writebw > 0 else 0.0
+        # only count bytes on streams with legitimate transfers
+        if readbw+writebw > 0:
+            # the amount we read from the stream is bound for the client
+            # the amount we write to the stream is bound to the server
+            ratio = self._encode_ratio(readbw, writebw)
+            lifetime = end-start
 
-        if stream_class == 'web':
-            self.secure_counters.increment("StreamLifeTimeWeb", end-start)
-            self.secure_counters.increment("StreamBytesSentWeb", writebw)
-            self.secure_counters.increment("StreamBytesReceivedWeb", readbw)
-            if ratio > 0.0:
-                self.secure_counters.increment("StreamBytesSentReceivedRatioWeb", ratio)
-        elif stream_class == 'interactive':
-            self.secure_counters.increment("StreamLifeTimeInteractive", end-start)
-            self.secure_counters.increment("StreamBytesSentInteractive", writebw)
-            self.secure_counters.increment("StreamBytesReceivedInteractive", readbw)
-            if ratio > 0.0:
-                self.secure_counters.increment("StreamBytesSentReceivedRatioInteractive", ratio)
-        elif stream_class == 'p2p':
-            self.secure_counters.increment("StreamLifeTimeP2P", end-start)
-            self.secure_counters.increment("StreamBytesSentP2P", writebw)
-            self.secure_counters.increment("StreamBytesReceivedP2P", readbw)
-            if ratio > 0.0:
-                self.secure_counters.increment("StreamBytesSentReceivedRatioP2P", ratio)
-        elif stream_class == 'other':
-            self.secure_counters.increment("StreamLifeTimeOther", end-start)
-            self.secure_counters.increment("StreamBytesSentOther", writebw)
-            self.secure_counters.increment("StreamBytesReceivedOther", readbw)
-            if ratio > 0.0:
-                self.secure_counters.increment("StreamBytesSentReceivedRatioOther", ratio)
+            if stream_class == 'web':
+                self.secure_counters.increment("StreamLifeTimeWeb", lifetime)
+                self.secure_counters.increment("StreamBytesOutWeb", writebw)
+                self.secure_counters.increment("StreamBytesInWeb", readbw)
+                self.secure_counters.increment("StreamBytesRatioWeb", ratio)
+            elif stream_class == 'interactive':
+                self.secure_counters.increment("StreamLifeTimeInteractive", lifetime)
+                self.secure_counters.increment("StreamBytesOutInteractive", writebw)
+                self.secure_counters.increment("StreamBytesInInteractive", readbw)
+                self.secure_counters.increment("StreamBytesRatioInteractive", ratio)
+            elif stream_class == 'p2p':
+                self.secure_counters.increment("StreamLifeTimeP2P", lifetime)
+                self.secure_counters.increment("StreamBytesOutP2P", writebw)
+                self.secure_counters.increment("StreamBytesInP2P", readbw)
+                self.secure_counters.increment("StreamBytesRatioP2P", ratio)
+            elif stream_class == 'other':
+                self.secure_counters.increment("StreamLifeTimeOther", lifetime)
+                self.secure_counters.increment("StreamBytesOutOther", writebw)
+                self.secure_counters.increment("StreamBytesInOther", readbw)
+                self.secure_counters.increment("StreamBytesRatioOther", ratio)
 
     def _classify_port(self, port):
         if port == 22 or (port >= 6660 and port <= 6669) or port == 6697 or port == 7000:
@@ -371,6 +378,16 @@ class Aggregator(ReconnectingClientFactory):
             return 'p2p'
         else:
             return 'other'
+
+    def _encode_ratio(self, inval, outval):
+        if inval == outval:
+            return 0.0
+        elif inval == 0.0:
+            return float('inf')
+        elif outval == 0.0:
+            return float('-inf')
+        else:
+            return math.log(float(outval)/float(inval), 2) # log base 2
 
     def _handle_circuit_event(self, items):
         chanid, circid, ncellsin, ncellsout, readbwdns, writebwdns, readbwexit, writebwexit = [int(v) for v in items[0:8]]
@@ -394,8 +411,7 @@ class Aggregator(ReconnectingClientFactory):
             if active_key == 'active':
                 self.secure_counters.increment("CircuitCellsIn", ncellsin)
                 self.secure_counters.increment("CircuitCellsOut", ncellsout)
-                if ncellsin > 0 and ncellsout > 0:
-                    self.secure_counters.increment("CircuitCellsInOutRatio", float(ncellsin)/float(ncellsout))
+                self.secure_counters.increment("CircuitCellsRatio", self._encode_ratio(ncellsin, ncellsout))
 
             # count unique client ips
             if start >= self.cli_ips_rotated:
@@ -409,12 +425,17 @@ class Aggregator(ReconnectingClientFactory):
 
             if is_circ_known and sum(self.n_streams_per_circ[chanid][circid].values()) > 0:
                 # we have circuit info and at least one stream ended on it
-                counts = self.n_streams_per_circ[chanid][circid]
                 self.secure_counters.increment("CircuitsActive", 1)
-                self.secure_counters.increment("CircuitStreamsWeb", counts['web'])
-                self.secure_counters.increment("CircuitStreamsInteractive", counts['interactive'])
-                self.secure_counters.increment("CircuitStreamsP2P", counts['p2p'])
-                self.secure_counters.increment("CircuitStreamsOther", counts['other'])
+                # only increment the protocols that have positive counts
+                counts = self.n_streams_per_circ[chanid][circid]
+                if counts['web'] > 0:
+                    self.secure_counters.increment("CircuitStreamsWeb", counts['web'])
+                if counts['interactive'] > 0:
+                    self.secure_counters.increment("CircuitStreamsInteractive", counts['interactive'])
+                if counts['p2p'] > 0:
+                    self.secure_counters.increment("CircuitStreamsP2P", counts['p2p'])
+                if counts['other'] > 0:
+                    self.secure_counters.increment("CircuitStreamsOther", counts['other'])
             else:
                 # either we dont know circ, or no streams ended on it
                 self.secure_counters.increment("CircuitsInactive", 1)

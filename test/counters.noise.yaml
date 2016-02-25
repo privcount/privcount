@@ -1,0 +1,100 @@
+# sigma values define the global noise we want for privacy for each stat
+# THESE NOISE CONFIGURATIONS OFFER ABSOLUTELEY NO PRIVACY AND SHOULD ONLY BE USED
+# FOR TESTING PURPOSES IN LOCAL PRIVATE NON-DEPLOYMENT SCENARIOS
+counters:
+    # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
+    CircuitCellsRatio:
+        sigma: 0.0
+    # ENTRY - cells sent 'in' to client per active circuit on client OR connections
+    CircuitCellsIn:
+        sigma: 0.0
+    # ENTRY - cells sent 'out' from client per active circuit on client OR connections
+    CircuitCellsOut:
+        sigma: 0.0
+    # ENTRY - circuit times in seconds for active and inactive circuits
+    CircuitLifeTime:
+        sigma: 0.0
+    # EXIT - completed streams per active circuit for IRC/SSH
+    CircuitStreamsInteractive:
+        sigma: 0.0
+    # EXIT - completed streams per active circuit for port>=10000 and no other class
+    CircuitStreamsOther:
+        sigma: 0.0
+    # EXIT - completed streams per active circuit for BitTorrent or port>=10000
+    CircuitStreamsP2P:
+        sigma: 0.0
+    # EXIT - completed streams per active circuit for HTTP/HTTPS
+    CircuitStreamsWeb:
+        sigma: 0.0
+    # EXIT - number of circuits with at least one stream completed
+    CircuitsActive:
+        sigma: 0.0
+    # EXIT - number of circuits with no streams completed
+    CircuitsInactive:
+        sigma: 0.0
+    # ENTRY - circuits per client IP with at least 8 cells transferred (10 min rotation)
+    ClientIPCircuitsActive:
+        sigma: 0.0
+    # ENTRY - circuits per client IP with less than 8 cells transferred (10 min rotation)
+    ClientIPCircuitsInactive:
+        sigma: 0.0
+    # ENTRY - unique client IPs seen (10 min rotation)
+    ClientIPsUnique:
+        sigma: 0.0
+    # ENTRY - number of OR connections to clients
+    ConnectionsAll:
+        sigma: 0.0
+    # not counted - used only to make sure aggregation was performed correctly
+    SanityCheck:
+        sigma: 0.0
+    # EXIT - bytes received from server per completed stream
+    StreamBytesInInteractive:
+        sigma: 0.0
+    # EXIT - bytes received from server per completed stream
+    StreamBytesInOther:
+        sigma: 0.0
+    # EXIT - bytes received from server per completed stream
+    StreamBytesInP2P:
+        sigma: 0.0
+    # EXIT - bytes received from server per completed stream
+    StreamBytesInWeb:
+        sigma: 0.0
+    # EXIT - bytes sent to server per completed stream
+    StreamBytesOutInteractive:
+        sigma: 0.0
+    # EXIT - bytes sent to server per completed stream
+    StreamBytesOutOther:
+        sigma: 0.0
+    # EXIT - bytes sent to server per completed stream
+    StreamBytesOutP2P:
+        sigma: 0.0
+    # EXIT - bytes sent to server per completed stream
+    StreamBytesOutWeb:
+        sigma: 0.0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream
+    StreamBytesRatioInteractive:
+        sigma: 0.0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream
+    StreamBytesRatioOther:
+        sigma: 0.0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream
+    StreamBytesRatioP2P:
+        sigma: 0.0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream
+    StreamBytesRatioWeb:
+        sigma: 0.0
+    # EXIT - time in seconds between create and destroy per completed stream
+    StreamLifeTimeInteractive:
+        sigma: 0.0
+    # EXIT - time in seconds between create and destroy per completed stream
+    StreamLifeTimeOther:
+        sigma: 0.0
+    # EXIT - time in seconds between create and destroy per completed stream
+    StreamLifeTimeP2P:
+        sigma: 0.0
+    # EXIT - time in seconds between create and destroy per completed stream
+    StreamLifeTimeWeb:
+        sigma: 0.0
+    # EXIT - number of streams to servers
+    StreamsAll:
+        sigma: 0.0

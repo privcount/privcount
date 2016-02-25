@@ -135,6 +135,8 @@ def run_plot(args):
                         right = int(right/1024.0) if 'Bytes' in name else int(right)
                 if right == float('inf'):
                     right = '{}'.format(r'$\infty$')
+                if left == float('-inf'):
+                    left = '{}'.format(r'$-\infty$')
                 bin_labels.append("[{},{})".format(left, right))
                 dataset.append(val)
             plot_info[name]['datasets'].append(dataset)
