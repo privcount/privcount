@@ -47,8 +47,10 @@ class PrivCountDataInjector(ServerFactory):
         if self.do_pause:
             logging.info("We will pause between the injection of each event to simulate actual event inter-arrival times, so this may take a while")
 
-        loc = sys.stdin if self.logpath == '-' else self.logpath
-        self.event_file = open(loc, 'r')
+        if self.logpath == '-':
+            self.event_file = sys.stdin
+        else:
+            self.event_file = open(self.logpath, 'r')
         self._inject_events()
 
     def stop_injecting(self):
