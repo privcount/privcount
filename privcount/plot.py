@@ -39,7 +39,7 @@ def main():
 
 def add_plot_args(parser):
     parser.add_argument('-d', '--data',
-        help="""Append a PATH to a privcount results.txt file,
+        help="""Append a PATH to a privcount tallies.json file,
                 and the LABEL we should use for the graph legend for this
                 set of experimental results""",
         metavar=("PATH", "LABEL"),
