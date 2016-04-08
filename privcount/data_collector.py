@@ -473,8 +473,8 @@ class Aggregator(ReconnectingClientFactory):
         # dont count anything in the first rotation period, since events that ended up in the
         # previous list will be skewed torward longer lived circuits
         if True:#self.num_rotations > 0:
-            self.secure_counters.increment("ClientIPsUnique", len(self.cli_ips_previous))
             for ip in self.cli_ips_previous:
+                self.secure_counters.increment("ClientIPsUnique", 1)
                 self.secure_counters.increment("ClientIPCircuitsActive", self.cli_ips_previous[ip]['active'])
                 self.secure_counters.increment("ClientIPCircuitsInactive", self.cli_ips_previous[ip]['inactive'])
 
