@@ -129,14 +129,14 @@ def run_plot(args):
             dataset = []
             bin_labels = []
             for (left, right, val) in histograms[name]['bins']:
-                if 'Ratio' not in name:
-                    left = int(left/1024.0) if 'Bytes' in name else int(left)
-                    if right != float('inf'):
-                        right = int(right/1024.0) if 'Bytes' in name else int(right)
                 if right == float('inf'):
                     right = '{}'.format(r'$\infty$')
+                elif 'Ratio' not in name:
+                    right = int(right)
                 if left == float('-inf'):
                     left = '{}'.format(r'$-\infty$')
+                elif 'Ratio' not in name:
+                    left = int(left)
                 bin_labels.append("[{},{})".format(left, right))
                 dataset.append(val)
             plot_info[name]['datasets'].append(dataset)
@@ -176,8 +176,6 @@ def plot_bar_chart(page, datasets, dataset_labels, dataset_colors, x_group_label
         bars.append(bar)
 
     if title is not None:
-        if 'Bytes' in title and 'Ratio' not in title:
-            title = title.replace('Bytes', 'KibiBytes')
         axis.set_title(title)
     if ylabel is not None:
         axis.set_ylabel(ylabel)
