@@ -410,7 +410,6 @@ class Aggregator(ReconnectingClientFactory):
         # isclient is based on CREATE_FAST and I'm not sure that is always used by clients
         if not prevIsRelay:
             # previous hop is unkown, we are entry
-            self.secure_counters.increment("CircuitLifeTime", end - start)
 
             # only count cells ratio on active circuits with legitimate transfers
             active_key = 'active' if ncellsin + ncellsout >= 8 else 'inactive'
@@ -432,6 +431,8 @@ class Aggregator(ReconnectingClientFactory):
             if is_circ_known and sum(self.n_streams_per_circ[chanid][circid].values()) > 0:
                 # we have circuit info and at least one stream ended on it
                 self.secure_counters.increment("CircuitsActive", 1)
+                self.secure_counters.increment("CircuitLifeTime", end - start)
+
                 # only increment the protocols that have positive counts
                 counts = self.n_streams_per_circ[chanid][circid]
                 if counts['web'] > 0:
