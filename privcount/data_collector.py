@@ -340,9 +340,10 @@ class Aggregator(ReconnectingClientFactory):
             return
 
         self.secure_counters.increment("StreamsAll", 1)
+        self.secure_counters.increment("StreamsBytesAll", 1, readbw+writebw)
 
         stream_class = self._classify_port(port)
-        self.n_streams_per_circ.setdefault(chanid, {}).setdefault(circid, {'interactive':0, 'web':0, 'p2p':0, 'other':0})
+        self.n_streams_per_circ.setdefault(chanid, {}).setdefault(circid, {'interactive':0, 'web':0, 'other':0})
         self.n_streams_per_circ[chanid][circid][stream_class] += 1
 
         # the amount we read from the stream is bound for the client
@@ -352,36 +353,31 @@ class Aggregator(ReconnectingClientFactory):
 
         if stream_class == 'web':
             self.secure_counters.increment("StreamsWeb", 1)
+            self.secure_counters.increment("StreamsBytesWeb", 1, readbw+writebw)
             self.secure_counters.increment("StreamLifeTimeWeb", lifetime)
             self.secure_counters.increment("StreamBytesOutWeb", writebw)
             self.secure_counters.increment("StreamBytesInWeb", readbw)
             self.secure_counters.increment("StreamBytesRatioWeb", ratio)
         elif stream_class == 'interactive':
             self.secure_counters.increment("StreamsInteractive", 1)
+            self.secure_counters.increment("StreamsBytesInteractive", 1, readbw+writebw)
             self.secure_counters.increment("StreamLifeTimeInteractive", lifetime)
             self.secure_counters.increment("StreamBytesOutInteractive", writebw)
             self.secure_counters.increment("StreamBytesInInteractive", readbw)
             self.secure_counters.increment("StreamBytesRatioInteractive", ratio)
-        elif stream_class == 'p2p':
-            self.secure_counters.increment("StreamsP2P", 1)
-            self.secure_counters.increment("StreamLifeTimeP2P", lifetime)
-            self.secure_counters.increment("StreamBytesOutP2P", writebw)
-            self.secure_counters.increment("StreamBytesInP2P", readbw)
-            self.secure_counters.increment("StreamBytesRatioP2P", ratio)
         elif stream_class == 'other':
             self.secure_counters.increment("StreamsOther", 1)
+            self.secure_counters.increment("StreamsBytesOther", 1, readbw+writebw)
             self.secure_counters.increment("StreamLifeTimeOther", lifetime)
             self.secure_counters.increment("StreamBytesOutOther", writebw)
             self.secure_counters.increment("StreamBytesInOther", readbw)
             self.secure_counters.increment("StreamBytesRatioOther", ratio)
 
     def _classify_port(self, port):
-        if port == 22 or (port >= 6660 and port <= 6669) or port == 6697 or port == 7000:
-            return 'interactive'
-        elif port == 80 or port == 443:
+        if port in [80, 443]:
             return 'web'
-        elif (port >= 6881 and port <= 6889) or port == 6969 or port >= 10000:
-            return 'p2p'
+        elif port in [22, 194, 994, 6660, 6661, 6662, 6663, 6664, 6665, 6666, 6667, 6668, 6669, 6670, 6679, 6697, 7000]:
+            return 'interactive'
         else:
             return 'other'
 
@@ -441,9 +437,6 @@ class Aggregator(ReconnectingClientFactory):
                 if counts['interactive'] > 0:
                     self.secure_counters.increment("CircuitsInteractive", 1)
                     self.secure_counters.increment("CircuitStreamsInteractive", counts['interactive'])
-                if counts['p2p'] > 0:
-                    self.secure_counters.increment("CircuitsP2P", 1)
-                    self.secure_counters.increment("CircuitStreamsP2P", counts['p2p'])
                 if counts['other'] > 0:
                     self.secure_counters.increment("CircuitsOther", 1)
                     self.secure_counters.increment("CircuitStreamsOther", counts['other'])

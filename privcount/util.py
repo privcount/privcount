@@ -259,11 +259,11 @@ class SecureCounters(object):
         # reverse blinding factors for all of the counters
         self._unblind(b64decode(share['secret']))
 
-    def increment(self, counter_key, counter_value):
+    def increment(self, counter_key, bin_value, num_increments=1.0):
         if self.counters is not None and counter_key in self.counters:
             for item in self.counters[counter_key]['bins']:
-                if counter_value >= item[0] and counter_value < item[1]:
-                    item[2] = (item[2] + 1.0) % self.q
+                if bin_value >= item[0] and bin_value < item[1]:
+                    item[2] = (item[2] + num_increments) % self.q
 
     def _tally_counter(self, counter):
         if self.counters == None:
