@@ -336,11 +336,12 @@ class Aggregator(ReconnectingClientFactory):
         is_dir = True if int(items[9]) == 1 else False
 
         # only count streams with legitimate transfers
-        if readbw+writebw <= 0:
+        totalbw = readbw+writebw
+        if totalbw <= 0:
             return
 
         self.secure_counters.increment("StreamsAll", 1)
-        self.secure_counters.increment("StreamsBytesAll", 1, readbw+writebw)
+        self.secure_counters.increment("StreamBytesAll", 1, totalbw)
 
         stream_class = self._classify_port(port)
         self.n_streams_per_circ.setdefault(chanid, {}).setdefault(circid, {'interactive':0, 'web':0, 'other':0})
@@ -353,25 +354,25 @@ class Aggregator(ReconnectingClientFactory):
 
         if stream_class == 'web':
             self.secure_counters.increment("StreamsWeb", 1)
-            self.secure_counters.increment("StreamsBytesWeb", 1, readbw+writebw)
-            self.secure_counters.increment("StreamLifeTimeWeb", lifetime)
+            self.secure_counters.increment("StreamBytesWeb", 1, totalbw)
             self.secure_counters.increment("StreamBytesOutWeb", writebw)
             self.secure_counters.increment("StreamBytesInWeb", readbw)
             self.secure_counters.increment("StreamBytesRatioWeb", ratio)
+            self.secure_counters.increment("StreamLifeTimeWeb", lifetime)
         elif stream_class == 'interactive':
             self.secure_counters.increment("StreamsInteractive", 1)
-            self.secure_counters.increment("StreamsBytesInteractive", 1, readbw+writebw)
-            self.secure_counters.increment("StreamLifeTimeInteractive", lifetime)
+            self.secure_counters.increment("StreamBytesInteractive", 1, totalbw)
             self.secure_counters.increment("StreamBytesOutInteractive", writebw)
             self.secure_counters.increment("StreamBytesInInteractive", readbw)
             self.secure_counters.increment("StreamBytesRatioInteractive", ratio)
+            self.secure_counters.increment("StreamLifeTimeInteractive", lifetime)
         elif stream_class == 'other':
             self.secure_counters.increment("StreamsOther", 1)
-            self.secure_counters.increment("StreamsBytesOther", 1, readbw+writebw)
-            self.secure_counters.increment("StreamLifeTimeOther", lifetime)
+            self.secure_counters.increment("StreamBytesOther", 1, totalbw)
             self.secure_counters.increment("StreamBytesOutOther", writebw)
             self.secure_counters.increment("StreamBytesInOther", readbw)
             self.secure_counters.increment("StreamBytesRatioOther", ratio)
+            self.secure_counters.increment("StreamLifeTimeOther", lifetime)
 
     def _classify_port(self, port):
         if port in [80, 443]:
