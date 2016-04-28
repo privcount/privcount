@@ -339,6 +339,7 @@ class Aggregator(ReconnectingClientFactory):
         totalbw = readbw+writebw
         if totalbw <= 0:
             return
+        totalbw = int(round(totalbw/1024.0)) # temporary until we fix float/long issue in counter
 
         self.secure_counters.increment("StreamsAll", 1)
         self.secure_counters.increment("StreamBytesAll", 1, totalbw)
