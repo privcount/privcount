@@ -258,7 +258,7 @@ class Aggregator(ReconnectingClientFactory):
 
         self.last_event_time = 0
         self.num_rotations = 0
-        self.n_streams_per_circ = {}
+        self.circ_info = {}
         self.cli_ips_rotated = time()
         self.cli_ips_current = {}
         self.cli_ips_previous = {}
@@ -339,14 +339,16 @@ class Aggregator(ReconnectingClientFactory):
         totalbw = readbw+writebw
         if totalbw <= 0:
             return
-        totalbw = int(round(totalbw/1024.0)) # temporary until we fix float/long issue in counter
+        totalbw = int(round(totalbw/1024.0)) # XXX temporary until we fix float/long issue in counter
 
         self.secure_counters.increment("StreamsAll", 1)
         self.secure_counters.increment("StreamBytesAll", 1, totalbw)
 
+        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0, 'web':0, 'other':0}, 'stream_starttimes': {'interactive':[], 'web':[], 'other':[]}})
+
         stream_class = self._classify_port(port)
-        self.n_streams_per_circ.setdefault(chanid, {}).setdefault(circid, {'interactive':0, 'web':0, 'other':0})
-        self.n_streams_per_circ[chanid][circid][stream_class] += 1
+        self.circ_info[chanid][circid]['num_streams'][stream_class] += 1
+        self.circ_info[chanid][circid]['stream_starttimes'][stream_class].append(start)
 
         # the amount we read from the stream is bound for the client
         # the amount we write to the stream is bound to the server
@@ -393,6 +395,14 @@ class Aggregator(ReconnectingClientFactory):
         else:
             return math.log(float(outval)/float(inval), 2) # log base 2
 
+    def _compute_interstream_creation_times(self, l):
+        l.sort()
+        times = []
+        for i in xrange(len(l)):
+            if i == 0: continue
+            times.append(l[i] - l[i-1])
+        return times
+
     def _handle_circuit_event(self, items):
         chanid, circid, ncellsin, ncellsout, readbwdns, writebwdns, readbwexit, writebwexit = [int(v) for v in items[0:8]]
         start, end = float(items[8]), float(items[9])
@@ -424,35 +434,55 @@ class Aggregator(ReconnectingClientFactory):
 
         elif not nextIsRelay:
             # prev hop is known relay but next is not, we are exit
-            is_circ_known = chanid in self.n_streams_per_circ and circid in self.n_streams_per_circ[chanid]
 
-            if is_circ_known and sum(self.n_streams_per_circ[chanid][circid].values()) > 0:
+            # check if we have any stream info in this circuit
+            circ_is_known, has_completed_stream = False, False
+            if chanid in self.circ_info and circid in self.circ_info[chanid]:
+                circ_is_known = True
+                if sum(self.circ_info[chanid][circid]['num_streams'].values()) > 0:
+                    has_completed_stream = True
+
+            if circ_is_known and has_completed_stream:
                 # we have circuit info and at least one stream ended on it
                 self.secure_counters.increment("CircuitsActive", 1)
                 self.secure_counters.increment("CircuitLifeTime", end - start)
 
-                # only increment the protocols that have positive counts
-                counts = self.n_streams_per_circ[chanid][circid]
+                # convenience
+                counts = self.circ_info[chanid][circid]['num_streams']
+                times = self.circ_info[chanid][circid]['stream_starttimes']
+
+                # first increment general counter
+                for isct in self._compute_interstream_creation_times(times['web'] + times['interactive'] + times['other']):
+                    self.secure_counters.increment("CircuitInterStreamCreationTime", isct)
+
+                # now only increment the classes that have positive counts
                 if counts['web'] > 0:
                     self.secure_counters.increment("CircuitsWeb", 1)
                     self.secure_counters.increment("CircuitStreamsWeb", counts['web'])
+                    for isct in self._compute_interstream_creation_times(times['web']):
+                        self.secure_counters.increment("CircuitInterStreamCreationTimeWeb", isct)
                 if counts['interactive'] > 0:
                     self.secure_counters.increment("CircuitsInteractive", 1)
                     self.secure_counters.increment("CircuitStreamsInteractive", counts['interactive'])
+                    for isct in self._compute_interstream_creation_times(times['interactive']):
+                        self.secure_counters.increment("CircuitInterStreamCreationTimeInteractive", isct)
                 if counts['other'] > 0:
                     self.secure_counters.increment("CircuitsOther", 1)
                     self.secure_counters.increment("CircuitStreamsOther", counts['other'])
+                    for isct in self._compute_interstream_creation_times(times['other']):
+                        self.secure_counters.increment("CircuitInterStreamCreationTimeOther", isct)
+
             else:
                 # either we dont know circ, or no streams ended on it
                 self.secure_counters.increment("CircuitsInactive", 1)
 
             # cleanup
-            if is_circ_known:
+            if circ_is_known:
                 # remove circ from channel
-                self.n_streams_per_circ[chanid].pop(circid, None)
+                self.circ_info[chanid].pop(circid, None)
                 # if that was the last circuit on channel, remove the channel too
-                if len(self.n_streams_per_circ[chanid]) == 0:
-                    self.n_streams_per_circ.pop(chanid, None)
+                if len(self.circ_info[chanid]) == 0:
+                    self.circ_info.pop(chanid, None)
 
     def _handle_connection_event(self, items):
         chanid = int(items[0])

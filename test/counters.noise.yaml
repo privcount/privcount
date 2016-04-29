@@ -20,9 +20,6 @@ counters:
     # EXIT - completed streams per active circuit for port>=10000 and no other class
     CircuitStreamsOther:
         sigma: 0.0
-    # EXIT - completed streams per active circuit for BitTorrent or port>=10000
-    CircuitStreamsP2P:
-        sigma: 0.0
     # EXIT - completed streams per active circuit for HTTP/HTTPS
     CircuitStreamsWeb:
         sigma: 0.0
@@ -54,9 +51,6 @@ counters:
     StreamBytesInOther:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream
-    StreamBytesInP2P:
-        sigma: 0.0
-    # EXIT - bytes received from server per completed stream
     StreamBytesInWeb:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream
@@ -64,9 +58,6 @@ counters:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream
     StreamBytesOutOther:
-        sigma: 0.0
-    # EXIT - bytes sent to server per completed stream
-    StreamBytesOutP2P:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream
     StreamBytesOutWeb:
@@ -78,9 +69,6 @@ counters:
     StreamBytesRatioOther:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream
-    StreamBytesRatioP2P:
-        sigma: 0.0
-    # EXIT - ratio of bytes sent to bytes received from server per completed stream
     StreamBytesRatioWeb:
         sigma: 0.0
     # EXIT - time in seconds between create and destroy per completed stream
@@ -90,11 +78,16 @@ counters:
     StreamLifeTimeOther:
         sigma: 0.0
     # EXIT - time in seconds between create and destroy per completed stream
-    StreamLifeTimeP2P:
-        sigma: 0.0
-    # EXIT - time in seconds between create and destroy per completed stream
     StreamLifeTimeWeb:
         sigma: 0.0
     # EXIT - number of streams to servers
     StreamsAll:
+        sigma: 0.0
+    CircuitInterStreamCreationTime:
+        sigma: 0.0
+    CircuitInterStreamCreationTimeWeb:
+        sigma: 0.0
+    CircuitInterStreamCreationTimeInteractive:
+        sigma: 0.0
+    CircuitInterStreamCreationTimeOther:
         sigma: 0.0

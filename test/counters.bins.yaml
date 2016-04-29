@@ -103,16 +103,6 @@ counters:
         - [16.0, 32.0]
         - [32.0, 64.0]
         - [64.0, .inf]
-    # EXIT - completed streams per active circuit for BitTorrent or port>=10000
-    CircuitStreamsP2P:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 4.0]
-        - [4.0, 8.0]
-        - [8.0, 16.0]
-        - [16.0, 32.0]
-        - [32.0, 64.0]
-        - [64.0, .inf]
     # EXIT - completed streams per active circuit for HTTP/HTTPS
     CircuitStreamsWeb:
         bins:
@@ -205,20 +195,6 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream
-    StreamBytesInP2P:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, 65536.0]
-        - [65536.0, 131072.0]
-        - [131072.0, 262144.0]
-        - [262144.0, 524288.0]
-        - [524288.0, 1048576.0]
-        - [1048576.0, 2097152.0]
-        - [2097152.0, 4194304.0]
-        - [4194304.0, 8388608.0]
-        - [8388608.0, .inf]
-    # EXIT - bytes received from server per completed stream
     StreamBytesInWeb:
         bins:
         - [0.0, 1.0]
@@ -248,20 +224,6 @@ counters:
         - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream
     StreamBytesOutOther:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, 65536.0]
-        - [65536.0, 131072.0]
-        - [131072.0, 262144.0]
-        - [262144.0, 524288.0]
-        - [524288.0, 1048576.0]
-        - [1048576.0, 2097152.0]
-        - [2097152.0, 4194304.0]
-        - [4194304.0, 8388608.0]
-        - [8388608.0, .inf]
-    # EXIT - bytes sent to server per completed stream
-    StreamBytesOutP2P:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -338,53 +300,6 @@ counters:
     # EXIT - ratio of bytes sent to bytes received from server per completed stream
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
     StreamBytesRatioOther:
-        bins:
-        - [-.inf, -20.0]
-        - [-20.0, -19.0]
-        - [-19.0, -18.0]
-        - [-18.0, -17.0]
-        - [-17.0, -16.0]
-        - [-16.0, -15.0]
-        - [-15.0, -14.0]
-        - [-14.0, -13.0]
-        - [-13.0, -12.0]
-        - [-12.0, -11.0]
-        - [-11.0, -10.0]
-        - [-10.0, -9.0]
-        - [-9.0, -8.0]
-        - [-8.0, -7.0]
-        - [-7.0, -6.0]
-        - [-6.0, -5.0]
-        - [-5.0, -4.0]
-        - [-4.0, -3.0]
-        - [-3.0, -2.0]
-        - [-2.0, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 0.00000000000001]
-        - [0.00000000000001, 1.0]
-        - [1.0, 2.0]
-        - [2.0, 3.0]
-        - [3.0, 4.0]
-        - [4.0, 5.0]
-        - [5.0, 6.0]
-        - [6.0, 7.0]
-        - [7.0, 8.0]
-        - [8.0, 9.0]
-        - [9.0, 10.0]
-        - [10.0, 11.0]
-        - [11.0, 12.0]
-        - [12.0, 13.0]
-        - [13.0, 14.0]
-        - [14.0, 15.0]
-        - [15.0, 16.0]
-        - [16.0, 17.0]
-        - [17.0, 18.0]
-        - [18.0, 19.0]
-        - [19.0, 20.0]
-        - [20.0, .inf]
-    # EXIT - ratio of bytes sent to bytes received from server per completed stream
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioP2P:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -511,23 +426,6 @@ counters:
         - [600.0, 660.0]
         - [660.0, .inf]
     # EXIT - time in seconds between create and destroy per completed stream
-    StreamLifeTimeP2P:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, 3.0]
-        - [3.0, 4.0]
-        - [4.0, 5.0]
-        - [5.0, 10.0]
-        - [10.0, 15.0]
-        - [15.0, 30.0]
-        - [30.0, 60.0]
-        - [60.0, 120.0]
-        - [120.0, 300.0]
-        - [300.0, 600.0]
-        - [600.0, 660.0]
-        - [660.0, .inf]
-    # EXIT - time in seconds between create and destroy per completed stream
     StreamLifeTimeWeb:
         bins:
         - [0.0, 1.0]
@@ -548,3 +446,27 @@ counters:
     StreamsAll:
         bins:
         - [0.0, .inf]
+    CircuitInterStreamCreationTime:
+        bins:
+        - [0.0, 3.0]
+        - [3.0, 30.0]
+        - [30.0, 300.0]
+        - [300.0, .inf]
+    CircuitInterStreamCreationTimeWeb:
+        bins:
+        - [0.0, 3.0]
+        - [3.0, 30.0]
+        - [30.0, 300.0]
+        - [300.0, .inf]
+    CircuitInterStreamCreationTimeInteractive:
+        bins:
+        - [0.0, 3.0]
+        - [3.0, 30.0]
+        - [30.0, 300.0]
+        - [300.0, .inf]
+    CircuitInterStreamCreationTimeOther:
+        bins:
+        - [0.0, 3.0]
+        - [3.0, 30.0]
+        - [30.0, 300.0]
+        - [300.0, .inf]
