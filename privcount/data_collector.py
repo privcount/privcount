@@ -344,7 +344,7 @@ class Aggregator(ReconnectingClientFactory):
         self.secure_counters.increment("StreamsAll", 1)
         self.secure_counters.increment("StreamBytesAll", 1, totalbw)
 
-        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0, 'web':0, 'other':0}, 'stream_starttimes': {'interactive':[], 'web':[], 'other':[]}})
+        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0, 'web':0, 'p2p':0, 'other':0}, 'stream_starttimes': {'interactive':[], 'web':[], 'p2p':[], 'other':[]}})
 
         stream_class = self._classify_port(port)
         self.circ_info[chanid][circid]['num_streams'][stream_class] += 1
@@ -369,6 +369,13 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment("StreamBytesInInteractive", readbw)
             self.secure_counters.increment("StreamBytesRatioInteractive", ratio)
             self.secure_counters.increment("StreamLifeTimeInteractive", lifetime)
+        elif stream_class == 'p2p':
+            self.secure_counters.increment("StreamsP2P", 1)
+            self.secure_counters.increment("StreamBytesP2P", 1, totalbw)
+            self.secure_counters.increment("StreamBytesOutP2P", writebw)
+            self.secure_counters.increment("StreamBytesInP2P", readbw)
+            self.secure_counters.increment("StreamBytesRatioP2P", ratio)
+            self.secure_counters.increment("StreamLifeTimeP2P", lifetime)
         elif stream_class == 'other':
             self.secure_counters.increment("StreamsOther", 1)
             self.secure_counters.increment("StreamBytesOther", 1, totalbw)
@@ -378,10 +385,18 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment("StreamLifeTimeOther", lifetime)
 
     def _classify_port(self, port):
+        p2p_ports = [1214]
+        for p in xrange(4661, 4666+1): p2p_ports.append(p)
+        for p in xrange(6346, 6429+1): p2p_ports.append(p)
+        p2p_ports.append(6699)
+        for p in xrange(6881, 6999+1): p2p_ports.append(p)
+
         if port in [80, 443]:
             return 'web'
         elif port in [22, 194, 994, 6660, 6661, 6662, 6663, 6664, 6665, 6666, 6667, 6668, 6669, 6670, 6679, 6697, 7000]:
             return 'interactive'
+        elif port in p2p_ports:
+            return 'p2p'
         else:
             return 'other'
 
@@ -418,22 +433,39 @@ class Aggregator(ReconnectingClientFactory):
         # isclient is based on CREATE_FAST and I'm not sure that is always used by clients
         if not prevIsRelay:
             # previous hop is unkown, we are entry
+            self.secure_counters.increment("CircuitsAllEntry", 1)
 
             # only count cells ratio on active circuits with legitimate transfers
-            active_key = 'active' if ncellsin + ncellsout >= 8 else 'inactive'
-            if active_key == 'active':
+            is_active = True if ncellsin + ncellsout >= 8 else False
+            if is_active:
                 self.secure_counters.increment("CircuitCellsIn", ncellsin)
                 self.secure_counters.increment("CircuitCellsOut", ncellsout)
                 self.secure_counters.increment("CircuitCellsRatio", self._encode_ratio(ncellsin, ncellsout))
 
             # count unique client ips
-            if start >= self.cli_ips_rotated:
-                self.cli_ips_current.setdefault(previp, {'active':0, 'inactive':0})[active_key] += 1
-            elif start >= self.cli_ips_rotated-600.0:
-                self.cli_ips_previous.setdefault(previp, {'active':0, 'inactive':0})[active_key] += 1
+            # we saw this client within current rotation window
+            self.cli_ips_current.setdefault(previp, {'is_active':False})
+            if is_active:
+                self.cli_ips_current[previp]['is_active'] = True
+            if start < self.cli_ips_rotated:
+                # we also saw the client in the previous rotation window
+                self.cli_ips_previous.setdefault(previp, {'is_active':False})
+                if is_active:
+                    self.cli_ips_previous[previp]['is_active'] = True
+
+            # count number of completed circuits per client
+            if is_active:
+                if 'num_active_completed' not in self.cli_ips_current[previp]:
+                    self.cli_ips_current[previp]['num_active_completed'] = 0
+                self.cli_ips_current[previp]['num_active_completed'] += 1
+            else:
+                if 'num_inactive_completed' not in self.cli_ips_current[previp]:
+                    self.cli_ips_current[previp]['num_inactive_completed'] = 0
+                self.cli_ips_current[previp]['num_inactive_completed'] += 1
 
         elif not nextIsRelay:
             # prev hop is known relay but next is not, we are exit
+            self.secure_counters.increment("CircuitsAllExit", 1)
 
             # check if we have any stream info in this circuit
             circ_is_known, has_completed_stream = False, False
@@ -452,7 +484,7 @@ class Aggregator(ReconnectingClientFactory):
                 times = self.circ_info[chanid][circid]['stream_starttimes']
 
                 # first increment general counter
-                for isct in self._compute_interstream_creation_times(times['web'] + times['interactive'] + times['other']):
+                for isct in self._compute_interstream_creation_times(times['web'] + times['interactive'] + times['p2p'] + times['other']):
                     self.secure_counters.increment("CircuitInterStreamCreationTime", isct)
 
                 # now only increment the classes that have positive counts
@@ -466,6 +498,11 @@ class Aggregator(ReconnectingClientFactory):
                     self.secure_counters.increment("CircuitStreamsInteractive", counts['interactive'])
                     for isct in self._compute_interstream_creation_times(times['interactive']):
                         self.secure_counters.increment("CircuitInterStreamCreationTimeInteractive", isct)
+                if counts['p2p'] > 0:
+                    self.secure_counters.increment("CircuitsP2P", 1)
+                    self.secure_counters.increment("CircuitStreamsP2P", counts['p2p'])
+                    for isct in self._compute_interstream_creation_times(times['p2p']):
+                        self.secure_counters.increment("CircuitInterStreamCreationTimeP2P", isct)
                 if counts['other'] > 0:
                     self.secure_counters.increment("CircuitsOther", 1)
                     self.secure_counters.increment("CircuitStreamsOther", counts['other'])
@@ -492,6 +529,7 @@ class Aggregator(ReconnectingClientFactory):
         isrelay = True if int(items[5]) > 0 else False
         if not isrelay:
             self.secure_counters.increment("ConnectionsAll", 1)
+            self.secure_counters.increment("ConnectionLifeTime", end - start)
 
     def _do_rotate(self):
         logging.info("rotating circuit window now, last event received from Tor was %s seconds ago", str(time() - self.last_event_time))
@@ -500,9 +538,18 @@ class Aggregator(ReconnectingClientFactory):
         # previous list will be skewed torward longer lived circuits
         if True:#self.num_rotations > 0:
             for ip in self.cli_ips_previous:
+                client = self.cli_ips_previous[ip]
+
                 self.secure_counters.increment("ClientIPsUnique", 1)
-                self.secure_counters.increment("ClientIPCircuitsActive", self.cli_ips_previous[ip]['active'])
-                self.secure_counters.increment("ClientIPCircuitsInactive", self.cli_ips_previous[ip]['inactive'])
+                if client['is_active']:
+                    self.secure_counters.increment("ClientIPsActive", 1)
+                else:
+                    self.secure_counters.increment("ClientIPsInactive", 1)
+
+                if 'num_active_completed' in client:
+                    self.secure_counters.increment("ClientIPCircuitsActive", client['num_active_completed'])
+                if 'num_inactive_completed' in client:
+                    self.secure_counters.increment("ClientIPCircuitsInactive", client['num_inactive_completed'])
 
         # reset for next interval
         self.cli_ips_previous = self.cli_ips_current
