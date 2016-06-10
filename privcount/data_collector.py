@@ -483,7 +483,8 @@ class Aggregator(ReconnectingClientFactory):
                 counts = self.circ_info[chanid][circid]['num_streams']
                 times = self.circ_info[chanid][circid]['stream_starttimes']
 
-                # first increment general counter
+                # first increment general counters
+                self.secure_counters.increment("CircuitStreamsAll", sum(counts.values()))
                 for isct in self._compute_interstream_creation_times(times['web'] + times['interactive'] + times['p2p'] + times['other']):
                     self.secure_counters.increment("CircuitInterStreamCreationTime", isct)
 
