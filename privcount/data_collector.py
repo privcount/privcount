@@ -438,9 +438,12 @@ class Aggregator(ReconnectingClientFactory):
             # only count cells ratio on active circuits with legitimate transfers
             is_active = True if ncellsin + ncellsout >= 8 else False
             if is_active:
+                self.secure_counters.increment("CircuitsActiveEntry", 1)
                 self.secure_counters.increment("CircuitCellsIn", ncellsin)
                 self.secure_counters.increment("CircuitCellsOut", ncellsout)
                 self.secure_counters.increment("CircuitCellsRatio", self._encode_ratio(ncellsin, ncellsout))
+            else:
+                self.secure_counters.increment("CircuitsInactiveEntry", 1)
 
             # count unique client ips
             # we saw this client within current rotation window
@@ -465,7 +468,7 @@ class Aggregator(ReconnectingClientFactory):
 
         elif not nextIsRelay:
             # prev hop is known relay but next is not, we are exit
-            self.secure_counters.increment("CircuitsAllExit", 1)
+            self.secure_counters.increment("CircuitsAll", 1)
 
             # check if we have any stream info in this circuit
             circ_is_known, has_completed_stream = False, False
