@@ -419,6 +419,10 @@ class CollectionPhase(object):
         pass
 
     def store_data(self, client_uid, data):
+        if data == None:
+            logging.warning("received error response from {} while in state {}".format(client_uid, self.state))
+            return
+
         if self.state == 'starting_dcs':
             # we expect these to be the encrpyted and blinded counts
             # from the DCs that we should forward to the SKs during SK startup
