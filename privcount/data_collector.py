@@ -355,6 +355,10 @@ class Aggregator(ReconnectingClientFactory):
         ratio = self._encode_ratio(readbw, writebw)
         lifetime = end-start
 
+        self.secure_counters.increment("StreamBytesOutAll", writebw)
+        self.secure_counters.increment("StreamBytesInAll", readbw)
+        self.secure_counters.increment("StreamBytesRatioAll", ratio)
+
         if stream_class == 'web':
             self.secure_counters.increment("StreamsWeb", 1)
             self.secure_counters.increment("StreamBytesWeb", 1, totalbw)
