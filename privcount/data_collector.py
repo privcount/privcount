@@ -141,7 +141,7 @@ class DataCollector(ReconnectingClientFactory):
         shares = self.aggregator.get_shares()
         # this is a dict {sk_uid : sk_msg} for each sk
         for sk_uid in shares:
-            # TODO encrypt shares[sk_uid] for that sk
+            # encrypt shares[sk_uid] for that sk
             pub_key_str = b64decode(config['sharekeepers'][sk_uid])
             sk_pub_key = load_public_key_string(pub_key_str)
             encrypted_secret = encrypt(sk_pub_key, shares[sk_uid]['secret'])
