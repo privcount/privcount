@@ -176,9 +176,10 @@ class DataCollector(ReconnectingClientFactory):
             self.aggregator = None
             if wants_counters:
                 logging.info("sending counts from {} counters".format(len(counts)))
-                response = counts
+                response['Counts'] = counts
 
         logging.info("collection phase was stopped")
+        response['Config'] = self.config
         return response
 
     def refresh_config(self):

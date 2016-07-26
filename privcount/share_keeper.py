@@ -113,19 +113,22 @@ class ShareKeeper(ReconnectingClientFactory):
         wants_counters = 'send_counters' in config and config['send_counters'] is True
         logging.info("tally server {} final counts".format("wants" if wants_counters else "does not want"))
 
-        response = None
+        response_counts = None
         if wants_counters:
             # send our counts, its an error if we dont have any
             if self.keystore is not None:
-                response = self.keystore.detach_counts()
-                logging.info("sending counts from {} counters".format(len(response)))
+                response_counts = self.keystore.detach_counts()
+                logging.info("sending counts from {} counters".format(len(response_counts)))
         else:
             # this is never an error, but they dont want anything
-            response = {}
+            response_counts = {}
 
         del self.keystore
         self.keystore = None
         logging.info("collection phase was stopped")
+        response = {}
+        response['Counts'] = response_counts
+        response['Config'] = self.config
         return response
 
     def refresh_config(self):

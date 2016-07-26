@@ -9,6 +9,7 @@ import logging
 import cPickle as pickle
 
 from time import time
+from copy import deepcopy
 from base64 import b64encode
 
 from twisted.internet import reactor, task, ssl
@@ -134,6 +135,7 @@ class TallyServer(ServerFactory):
             ts_conf = conf['tally_server']
 
             if 'counters' in ts_conf:
+                # TODO: refactor to avoid duplicate code
                 expanded_path = os.path.expanduser(ts_conf['counters'])
                 ts_conf['counters'] = os.path.abspath(expanded_path)
                 assert os.path.exists(os.path.dirname(ts_conf['counters']))
@@ -295,11 +297,17 @@ class TallyServer(ServerFactory):
         for uid in sk_uids:
             sk_public_keys[uid] = self.clients[uid]['public_key']
 
-        self.collection_phase = CollectionPhase(self.config['collect_period'], self.config['counters'], sk_uids, sk_public_keys, dc_uids, self.config['q'], clock_padding)
+        # clients don't provide some context until the end of the phase
+        # so we'll wait and pass the client context to collection_phase just
+        # before stopping it
+
+        self.collection_phase = CollectionPhase(self.config['collect_period'], self.config['counters'], sk_uids, sk_public_keys, dc_uids, self.config['q'], clock_padding, self.config)
         self.collection_phase.start()
 
     def stop_collection_phase(self):
         assert self.collection_phase is not None
+        self.collection_phase.set_client_status(self.clients)
+        self.collection_phase.set_tally_server_status(self.get_status())
         self.collection_phase.stop()
         if self.collection_phase.is_stopped():
             self.num_completed_collection_phases += 1
@@ -335,7 +343,7 @@ class TallyServer(ServerFactory):
 
 class CollectionPhase(object):
 
-    def __init__(self, period, counters_config, sk_uids, sk_public_keys, dc_uids, param_q, clock_padding):
+    def __init__(self, period, counters_config, sk_uids, sk_public_keys, dc_uids, param_q, clock_padding, tally_server_config):
         # store configs
         self.period = period
         self.counters_config = counters_config
@@ -344,6 +352,11 @@ class CollectionPhase(object):
         self.dc_uids = dc_uids
         self.param_q = param_q
         self.clock_padding = clock_padding
+        # make a deep copy, so we can delete unnecesary keys
+        self.tally_server_config = deepcopy(tally_server_config)
+        self.tally_server_status = None
+        self.client_status = {}
+        self.client_config = {}
 
         # setup some state
         self.state = 'new' # states: new -> starting_dcs -> starting_sks -> started -> stopping -> stopped
@@ -453,17 +466,27 @@ class CollectionPhase(object):
                 self._change_state('started')
 
         elif self.state == 'stopping':
+            # record the configuration for the client context
+            response_config = data.get('Config', None)
+            if response_config is not None:
+                self.set_client_config(client_uid, response_config)
+
             if client_uid in self.need_counts:
                 # the client got our stop command
-                counts = data
-                logging.info("received {} counts from stopped client {}".format(len(counts), client_uid))
+                counts = data.get('Counts', None)
 
-                if not self.is_error() and len(counts) == 0:
+                if counts is None:
+                    logging.warning("received no counts from {}, final results will not be available".format(client_uid))
+                    self.error_flag = True
+                elif not self.is_error() and len(counts) == 0:
                     logging.warning("received empty counts from {}, final results will not be available".format(client_uid))
                     self.error_flag = True
-                if not self.is_error():
+                elif not self.is_error():
+                    logging.info("received {} counts from stopped client {}".format(len(counts), client_uid))
                     # add up the tallies from the client
-                    self.final_counts[client_uid] = data
+                    self.final_counts[client_uid] = counts
+                else:
+                    logging.warning("received counts: error from stopped client {}".format(client_uid))
                 self.need_counts.remove(client_uid)
 
     def is_participating(self, client_uid):
@@ -515,6 +538,105 @@ class CollectionPhase(object):
         logging.info("sending stop command to {} {} request for counters".format(client_uid, msg))
         return config
 
+    # status is a dictionary
+    def set_tally_server_status(self, status):
+        # make a deep copy, so we can delete unnecesary keys
+        self.tally_server_status = deepcopy(status)
+
+    # status is a dictionary of dictionaries, indexed by UID, and then by the
+    # attribute: name, fingerprint, ...
+    def set_client_status(self, status):
+        self.client_status = deepcopy(status)
+
+    # config is a dictionary, indexed by the attributes: name, fingerprint, ...
+    def set_client_config(self, uid, config):
+        self.client_config[uid] = deepcopy(config)
+
+    # returns a list of unique types of clients in self.client_status
+    def get_client_types(self):
+        types = []
+        if self.client_status is None:
+            return types
+        for uid in self.client_status:
+            for k in self.client_status[uid].keys():
+                if k == 'type' and not self.client_status[uid]['type'] in types:
+                    types.append(self.client_status[uid]['type'])
+        return types
+
+    # returns a context for each client by UID, grouped by client type
+    def get_client_context_by_type(self):
+        contexts = {}
+        # we can't group by type without the type from the status
+        if self.client_status is None:
+            return contexts
+        for type in self.get_client_types():
+            for uid in self.client_status:
+                if self.client_status[uid].get('type', 'NoType') == type:
+                    contexts.setdefault(type, {}).setdefault(uid, {})['Status'] = self.client_status[uid]
+                    # remove the (inner) types, because they're redundant now
+                    del contexts[type][uid]['Status']['type']
+                    # add the client config as well
+                    if self.client_config is not None and uid in self.client_config:
+                        contexts[type][uid]['Config'] = self.client_config[uid]
+        return contexts
+
+    # the context is written out with the tally results
+    def get_result_context(self):
+        result_context = {}
+
+        # log the times used for the round
+        result_time = {}
+        # Do we want to round these times?
+        # (That is, use begin and end instead?)
+        result_time['Start'] = self.starting_ts
+        result_time['Stop'] = self.stopping_ts
+        result_time['Period'] = self.period
+        result_time['ClockPadding'] = self.clock_padding
+        result_context['Time'] = result_time
+
+        # the bins are listed in each Tally, so we don't duplicate them here
+        #result_count_context['CounterBins'] = self.counters_config
+
+        # add the context for the clients that participated in the count
+        # this includes all status information by default
+        # clients are grouped by type, rather than listing them all by UID at
+        # the top level of the context
+        if self.client_status is not None:
+            result_context.update(self.get_client_context_by_type())
+
+        # now remove any context we are sure we don't want
+        # We don't need the paths from the configs
+        for uid in result_context.get('DataCollector', {}):
+            if 'state' in result_context['DataCollector'][uid].get('Config', {}):
+                del result_context['DataCollector'][uid]['Config']['state']
+        # We don't want the public key in the ShareKeepers' statuses
+        for uid in result_context.get('ShareKeeper', {}):
+            if 'key' in result_context['ShareKeeper'][uid].get('Config', {}):
+                del result_context['ShareKeeper'][uid]['Config']['key']
+            if 'state' in result_context['ShareKeeper'][uid].get('Config', {}):
+                del result_context['ShareKeeper'][uid]['Config']['state']
+            if 'public_key' in result_context['ShareKeeper'][uid].get('Status', {}):
+                del result_context['ShareKeeper'][uid]['Status']['public_key']
+
+        # add the status and config for the tally server itself
+        result_context['TallyServer'] = {}
+        if self.tally_server_status is not None:
+            result_context['TallyServer']['Status'] = self.tally_server_status
+        result_context['TallyServer']['Config'] = self.tally_server_config
+
+        # We don't need the paths from the configs
+        if 'cert' in result_context['TallyServer']['Config']:
+            del result_context['TallyServer']['Config']['cert']
+        if 'key' in result_context['TallyServer']['Config']:
+            del result_context['TallyServer']['Config']['key']
+        if 'state' in result_context['TallyServer']['Config']:
+            del result_context['TallyServer']['Config']['state']
+        # And we don't need the bins, they're duplicated in 'Tally'
+        if 'counters' in result_context['TallyServer']['Config']:
+            del result_context['TallyServer']['Config']['counters']
+
+        return result_context
+
     def write_results(self, path_prefix):
         if not self.is_stopped():
             logging.warning("trying to write results before collection phase is stopped")
@@ -532,12 +654,30 @@ class CollectionPhase(object):
 
         tallied_counts = tallied_counter.detach_counts()
 
+        # For backwards compatibility, write out a "tallies" file
+        # This file only has the counts
         begin, end = int(round(self.starting_ts)), int(round(self.stopping_ts))
         filepath = "{}/privcount.tallies.{}-{}.json".format(path_prefix, begin, end)
         with open(filepath, 'a') as fout:
             json.dump(tallied_counts, fout, sort_keys=True, indent=4)
 
-        logging.info("tally was successful, results for phase from %d to %d were written to file '%s'", begin, end, filepath)
+        #logging.info("tally was successful, counts for phase from %d to %d were written to file '%s'", begin, end, filepath)
+
+        # Write out an "outcome" file that adds context to the counts
+        # This makes it easier to interpret results later on
+        result_info = {}
+
+        # add the existing list of counts as its own item
+        result_info['Tally'] = tallied_counts
+
+        # add the context of the outcome as another item
+        result_info['Context'] = self.get_result_context()
+
+        filepath = "{}/privcount.outcome.{}-{}.json".format(path_prefix, begin, end)
+        with open(filepath, 'a') as fout:
+            json.dump(result_info, fout, sort_keys=True, indent=4)
+
+        logging.info("tally was successful, outcome of phase from %d to %d were written to file '%s'", begin, end, filepath)
         self.final_counts = {}
 
     def log_status(self):
