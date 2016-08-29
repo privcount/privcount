@@ -421,6 +421,13 @@ class TorControlClientProtocol(LineOnlyReceiver):
             if event != '':
                 if not self.factory.handle_event(event):
                     self.quit()
+        # log any non-privcount responses at an appropriate level
+        elif line == "250 OK":
+            logging.debug("Connection with {}:{}:{}: ok response: '{}'".format(peer.type, peer.host, peer.port, line))
+        elif self.state == 'processing' and line.startswith("5"):
+            logging.warning("Connection with {}:{}:{}: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line.strip()))
+        elif self.state == 'processing' and line.startswith("2"):
+            logging.info("Connection with {}:{}:{}: ok response: '{}'".format(peer.type, peer.host, peer.port, line.strip()))
 
     def quit(self):
         self.sendLine("QUIT")
