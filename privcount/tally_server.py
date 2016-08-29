@@ -269,20 +269,56 @@ class TallyServer(ServerFactory):
         return status
 
     def set_client_status(self, uid, status): # called by protocol
-        oldstate = self.clients[uid]['state'] if uid in self.clients else status['state']
-        oldtime = self.clients[uid]['time'] if uid in self.clients else status['alive']
+        # dump the status content at debug level
+        for k in status.keys():
+            logging.debug("{} sent status: {}: {}".format(uid, k, status[k]))
+        if uid in self.clients:
+            for k in self.clients[uid].keys():
+                logging.debug("{} has stored state: {}: {}".format(uid, k, self.clients[uid][k]))
+
+        # only data collectors have a fingerprint
+        # oldfingerprint is either:
+        #  - the previous fingerprint we had recorded for this client, or
+        #  - None
+        # fingerprint is either:
+        #  - the current fingerprint we've just received in the status, or
+        #  - the previous fingerprint we had recorded for this client, or
+        #  - None
+        # in that order.
+        oldfingerprint = self.clients.get(uid, {}).get('fingerprint')
+        fingerprint = status.get('fingerprint', oldfingerprint)
+
+        # complain if fingerprint changes
+        if (fingerprint is not None and oldfingerprint is not None and
+            fingerprint != oldfingerprint):
+            logging.warning("fingerprint of {} {} state {} changed from {} to {}".format(status['type'], uid, status['state'], oldfingerprint, fingerprint))
+
+        nickname = status.get('nickname', None)
+        # uidname includes the nickname for data collectors
+        if nickname is not None:
+            uidname = uid + ' ' + nickname
+        else:
+            uidname = uid
 
         if uid not in self.clients:
-            logging.info("new {} {} joined and is {}".format(status['type'], uid, status['state']))
+            logging.info("new {} {} joined and is {}".format(status['type'], uidname, status['state']))
 
-        self.clients[uid] = status
-        if oldstate == self.clients[uid]['state']:
-            self.clients[uid]['time'] = oldtime
-        else:
+        oldstate = self.clients[uid]['state'] if uid in self.clients else status['state']
+        # for each key, replace the client value with the value from status,
+        # or, if uid is a new client, initialise uid with status
+        self.clients.setdefault(uid, status).update(status)
+        # use status['alive'] as the initial value of 'time'
+        self.clients[uid].setdefault('time', status['alive'])
+        if oldstate != self.clients[uid]['state']:
             self.clients[uid]['time'] = status['alive']
 
-        minutes = int((time() - status['time'])/ 60.0)
-        logging.info("----client status: {} {} is alive and {} for {} minutes (since {})".format(status['type'], uid, status['state'], minutes, status['time']))
+        last_event_time = status.get('last_event_time', None)
+        last_event_message = ""
+        if last_event_time is not None:
+            last_event_minutes = int((time() - last_event_time)/ 60.0)
+            last_event_message = " last event {} ({} minutes ago)".format(last_event_time, last_event_minutes)
+        minutes = int((time() - self.clients[uid]['time'])/ 60.0)
+        logging.info("----client status: {} {} is alive and {} for {} minutes (since {}){}".format(self.clients[uid]['type'], uidname, self.clients[uid]['state'], minutes, self.clients[uid]['time'], last_event_message))
 
     def get_clock_padding(self, client_uids):
         max_delay = max([self.clients[uid]['rtt']+self.clients[uid]['clock_skew'] for uid in client_uids])
