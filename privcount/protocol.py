@@ -326,9 +326,10 @@ class TorControlClientProtocol(LineOnlyReceiver):
 
     def lineReceived(self, line): # overrides twisted function
         peer = self.transport.getPeer()
+        line = line.strip()
         logging.debug("Received line '{}' from {}:{}:{}".format(line, peer.type, peer.host, peer.port))
 
-        if self.state == 'authenticating' and line.strip() == "250 OK":
+        if self.state == 'authenticating' and line == "250 OK":
             # Just ask for all the info all at once
             self.sendLine("GETCONF Nickname")
             self.sendLine("GETCONF ORPort")
@@ -346,7 +347,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
                     logging.warning("Connection with {}:{}:{}: bad nickname {}".format(peer.type, peer.host, peer.port, nickname))
             # It doesn't have a Nickname, maybe it's a client?
             # But we'll catch that when we check the fingerprint, so just ignore this response
-            elif line.strip() == "250 Nickname":
+            elif line == "250 Nickname":
                 logging.info("Connection with {}:{}:{}: no Nickname".format(peer.type, peer.host, peer.port))
             # It's a relay, and it's just told us its ORPort
             elif line.startswith("250 ORPort="):
@@ -355,7 +356,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
                     logging.warning("Connection with {}:{}:{}: bad ORPort {}".format(peer.type, peer.host, peer.port, orport))
             # It doesn't have an ORPort, maybe it's a client?
             # But we'll catch that when we check the fingerprint, so just ignore this response
-            elif line.strip() == "250 ORPort":
+            elif line == "250 ORPort":
                 logging.warning("Connection with {}:{}:{}: no ORPort".format(peer.type, peer.host, peer.port))
             # It's a relay, and it's just told us its DirPort
             elif line.startswith("250 DirPort="):
@@ -363,7 +364,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
                 if not self.factory.set_dirport(dirport):
                     logging.warning("Connection with {}:{}:{}: bad DirPort {}".format(peer.type, peer.host, peer.port, dirport))
             # It doesn't have an DirPort, just ignore the response
-            elif line.strip() == "250 DirPort":
+            elif line == "250 DirPort":
                 logging.info("Connection with {}:{}:{}: no DirPort".format(peer.type, peer.host, peer.port))
             # It's just told us its version
             # The control spec assumes that Tor always has a version, so there's no error case
@@ -379,7 +380,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
                     logging.warning("Connection with {}:{}:{}: bad address {}".format(peer.type, peer.host, peer.port, address))
                 self.state = 'skip_ok'
             # We asked for its address, and it couldn't find it. That's weird.
-            elif line.strip() == "551 Address unknown":
+            elif line == "551 Address unknown":
                 logging.info("Connection with {}:{}:{}: does not know its own address".format(peer.type, peer.host, peer.port))
             # -- These are the terminating cases, they must end in processing or quit() --
             # It's a relay, and it's just told us its fingerprint
@@ -390,20 +391,20 @@ class TorControlClientProtocol(LineOnlyReceiver):
                 # processing mode will skip any unrecognised lines, such as "250 OK"
                 self.state = 'processing'
             # We asked for its fingerprint, and it said it's a client
-            elif line.strip() == "551 Not running in server mode":
+            elif line == "551 Not running in server mode":
                 logging.warning("Connection with {}:{}:{} failed: not a relay".format(peer.type, peer.host, peer.port))
                 self.quit()
             # something unexpectedly bad happened
             elif line.startswith("5"):
-                logging.warning("Connection with {}:{}:{} failed: unexpected error response: '{}'".format(peer.type, peer.host, peer.port, line.strip()))
+                logging.warning("Connection with {}:{}:{} failed: unexpected error response: '{}'".format(peer.type, peer.host, peer.port, line))
                 self.quit()
             # something unexpected, but ok happened
             elif line.startswith("2"):
-                logging.info("Connection with {}:{}:{}: unexpected OK response: '{}'".format(peer.type, peer.host, peer.port, line.strip()))
+                logging.info("Connection with {}:{}:{}: unexpected OK response: '{}'".format(peer.type, peer.host, peer.port, line))
                 self.state = 'processing'
             # something unexpected happened, let's assume it's ok
             else:
-                logging.warning("Connection with {}:{}:{} failed: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line.strip()))
+                logging.warning("Connection with {}:{}:{} failed: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line))
                 self.state = 'processing'
 
             # we're done with discovering context, let's start processing events
@@ -411,10 +412,10 @@ class TorControlClientProtocol(LineOnlyReceiver):
                 self.sendLine("SETEVENTS PRIVCOUNT")
         elif self.state == 'skip_ok':
             # just skip one OK line
-            if line.strip() == "250 OK":
+            if line == "250 OK":
                 self.state = 'discovering'
             else:
-                logging.warning("Connection with {}:{}:{} failed: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line.strip()))
+                logging.warning("Connection with {}:{}:{} failed: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line))
                 self.quit()
         elif self.state == 'processing' and line.startswith("650 PRIVCOUNT "):
             _, _, event = line.partition(" PRIVCOUNT ") # returns: part1, separator, part2
@@ -425,9 +426,9 @@ class TorControlClientProtocol(LineOnlyReceiver):
         elif line == "250 OK":
             logging.debug("Connection with {}:{}:{}: ok response: '{}'".format(peer.type, peer.host, peer.port, line))
         elif self.state == 'processing' and line.startswith("5"):
-            logging.warning("Connection with {}:{}:{}: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line.strip()))
+            logging.warning("Connection with {}:{}:{}: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line))
         elif self.state == 'processing' and line.startswith("2"):
-            logging.info("Connection with {}:{}:{}: ok response: '{}'".format(peer.type, peer.host, peer.port, line.strip()))
+            logging.info("Connection with {}:{}:{}: ok response: '{}'".format(peer.type, peer.host, peer.port, line))
 
     def quit(self):
         self.sendLine("QUIT")
