@@ -26,6 +26,6 @@ bin representing counts in the range [0, Infinity).
 
 If you have matplotlib installed, you can then visualize the results:
 
-    privcount plot -d <results.json> test
+    privcount plot -d privcount.tallies.*.json test
 
 and open the PDF file that was created.
