@@ -22,6 +22,8 @@ It can optionally install the latest version of privcount using 'pip install', a
 
     ./run_test.sh -I <privcount-directory>
 
+For quick integration testing, reduce the collect_period to 2, and the event_period and checkin_period to 1. This will only capture a few of the injected events.
+
 ### Manual testing
 
 Start the event server that will supply events to the data collector:
