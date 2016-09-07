@@ -663,7 +663,7 @@ class CollectionPhase(object):
         # (That is, use begin and end instead?)
         result_time['Start'] = self.starting_ts
         result_time['Stop'] = self.stopping_ts
-        result_time['Period'] = self.period
+        # the collect, event, and checkin periods are in the tally server config
         result_time['ClockPadding'] = self.clock_padding
         result_context['Time'] = result_time
 
