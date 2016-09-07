@@ -80,8 +80,9 @@ class TallyServer(ServerFactory):
         if self.config is None:
             return
 
-        # refresh and check status every minute
-        task.LoopingCall(self.refresh_loop).start(60, now=False)
+        # refresh and check status every event_period seconds
+        task.LoopingCall(self.refresh_loop).start(self.config['event_period'],
+                                                  now=False)
 
         # setup server for receiving blinded counts from the DC nodes and key shares from the SK nodes
         listen_port = self.config['listen_port']
@@ -170,11 +171,47 @@ class TallyServer(ServerFactory):
             ts_conf['state'] = os.path.abspath(expanded_path)
             assert os.path.exists(os.path.dirname(ts_conf['state']))
 
+            # Must be configured manually
+            assert 'collect_period' in ts_conf
+            # Set the default periods
+            ts_conf.setdefault('event_period', 60)
+            ts_conf.setdefault('checkin_period', 60)
+
+            # The event period should be less than or equal to half the
+            # collect period, otherwise privcount sometimes takes an extra
+            # event period to produce results
+            event_max = ts_conf['collect_period']/2
+            if (ts_conf['event_period'] > event_max):
+                logging.warning("event_period %d too large for collect_period %d, reducing to %d",
+                                ts_conf['event_period'],
+                                ts_conf['collect_period'],
+                                event_max)
+                ts_conf['event_period'] = event_max
+
+            # The checkin period must be less than or equal to half the
+            # collect period, otherwise privcount never finishes.
+            checkin_max = ts_conf['collect_period']/2
+            if (ts_conf['checkin_period'] > checkin_max):
+                logging.warning("checkin_period %d too large for collect_period %d, reducing to %d",
+                                ts_conf['checkin_period'],
+                                ts_conf['collect_period'],
+                                checkin_max)
+                ts_conf['checkin_period'] = checkin_max
+            # It should also be less than or equal to the event period,
+            # so that the TS is up to date with client statuses every
+            # event loop.
+            checkin_max_log = ts_conf['event_period']
+            if (ts_conf['checkin_period'] > checkin_max_log):
+                logging.info("checkin_period %d greater than event_period %d, client statuses might be delayed",
+                             ts_conf['checkin_period'],
+                             ts_conf['event_period'])
+
             assert ts_conf['listen_port'] > 0
             assert ts_conf['sk_threshold'] > 0
             assert ts_conf['dc_threshold'] > 0
-            assert ts_conf['checkin_period'] > 0
             assert ts_conf['collect_period'] > 0
+            assert ts_conf['event_period'] > 0
+            assert ts_conf['checkin_period'] > 0
             assert ts_conf['continue'] == True or ts_conf['continue'] == False
             assert ts_conf['q'] > 0
 
@@ -626,7 +663,7 @@ class CollectionPhase(object):
         # (That is, use begin and end instead?)
         result_time['Start'] = self.starting_ts
         result_time['Stop'] = self.stopping_ts
-        result_time['Period'] = self.period
+        # the collect, event, and checkin periods are in the tally server config
         result_time['ClockPadding'] = self.clock_padding
         result_context['Time'] = result_time
 

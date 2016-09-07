@@ -10,6 +10,22 @@ PYTHONPATH setup properly so that you can call `privcount` without providing a f
 
 ## Running the test
 
+### Automated testing
+
+The automated test script runs all the testing steps listed below, terminating all the privcount processes after the tally server produces a results file:
+
+    ./run_test.sh ..
+
+The first argument is the privcount source directory, which is '..' if you're in privcount/test.
+
+It can optionally install the latest version of privcount using 'pip install', and then run the tests:
+
+    ./run_test.sh -I <privcount-directory>
+
+For quick integration testing, reduce the collect_period to 2, and the event_period and checkin_period to 1. This will only capture a few of the injected events.
+
+### Manual testing
+
 Start the event server that will supply events to the data collector:
 
     privcount inject --simulate --port 20003 --log events.txt
@@ -26,6 +42,6 @@ bin representing counts in the range [0, Infinity).
 
 If you have matplotlib installed, you can then visualize the results:
 
-    privcount plot -d <results.json> test
+    privcount plot -d privcount.tallies.*.json test
 
 and open the PDF file that was created.
