@@ -324,7 +324,7 @@ def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):
 
     net_status = next(parse_file(consensus_path, document_handler='DOCUMENT', validate=False))
     DW = float(net_status.bandwidth_weights['Wed'])/10000
-    EW = float(net_status.bandwidth_weights['Wed'])/10000
+    EW = float(net_status.bandwidth_weights['Wee'])/10000
 
     my_bandwidth, DBW, EBW, sum_of_sq_bw = 0, 0, 0, 0
 
