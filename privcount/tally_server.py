@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_period_since, format_interval_time_between, format_last_event_time_since
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_interval_time_between, format_last_event_time_since
 
 import yaml
 
@@ -246,7 +246,7 @@ class TallyServer(ServerFactory):
             time_since_checkin = now - c_status['alive']
 
             if time_since_checkin > 2 * self.get_checkin_period():
-                logging.warning("last checkin was {} ago for client {}".format(format_elapsed_period_since(time_since_checkin), c_status))
+                logging.warning("last checkin was {} for client {}".format(format_elapsed_time_since(time_since_checkin, 'at'), c_status))
 
             if time_since_checkin > 6 * self.get_checkin_period():
                 logging.warning("marking dead client {}".format(c_status))
