@@ -10,7 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since
 
 import yaml
 
@@ -139,8 +139,7 @@ class DataCollector(ReconnectingClientFactory):
         self.aggregator = Aggregator(dc_counters, config['sharekeepers'], self.config['noise_weight'], config['q'], self.config['event_source'])
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
-        minutes = defer_time / 60.0
-        logging.info("got start command from tally server, starting aggregator in {} minutes (at {})".format(minutes, time()+defer_time))
+        logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
 
         # sync the time that we start listening for Tor events
         self.aggregator_defer_id = reactor.callLater(defer_time, self._start_aggregator_deferred)
@@ -737,7 +736,7 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment("ConnectionLifeTime", end - start)
 
     def _do_rotate(self):
-        logging.info("rotating circuit window now, last event received from Tor was %s seconds ago", str(time() - self.last_event_time))
+        logging.info("rotating circuit window now, {}".format(format_last_event_time_since(self.last_event_time)))
 
         # dont count anything in the first rotation period, since events that ended up in the
         # previous list will be skewed torward longer lived circuits

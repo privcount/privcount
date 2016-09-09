@@ -14,6 +14,7 @@ import uuid
 from random import gauss, randint
 from os import urandom
 from math import sqrt
+from time import time
 from copy import deepcopy
 from base64 import b64encode, b64decode
 
@@ -120,12 +121,77 @@ def get_random_free_port():
         if rc != 0: # error connecting, port is available
             return port
 
+## Logging ##
+
 def log_error():
     _, _, tb = sys.exc_info()
     #traceback.print_tb(tb) # Fixed format
     tb_info = traceback.extract_tb(tb)
     filename, line, func, text = tb_info[-1]
     logging.warning("An error occurred in file '%s', at line %d, in func %s, in statement '%s'", filename, line, func, text)
+
+## Logging: Time Formatting Functions ##
+
+# Return the normalised value of time
+# An abstraction used for consistent time rounding behaviour
+def normalise_time(time):
+    # we ignore microseconds
+    return int(time)
+
+# Return the normalised value of the current time
+def current_time():
+    return normalise_time(time())
+
+# Format the time elapsed since a past event
+# past_timestamp is in seconds since the epoch
+# The elapsed time is from past_timestamp to the current time
+# past_timestamp is typically time_since_checkin
+def format_elapsed_period_since(past_timestamp):
+    past_timestamp = normalise_time(past_timestamp)
+    elapsed_minutes = int((current_time() - past_timestamp)/ 60.0)
+    return "{} minutes".format(elapsed_minutes)
+
+# Format the time elapsed since a past event, and that event's time in UTC
+# past_timestamp is in seconds since the epoch
+# The elapsed time is from past_timestamp to the current time
+# past_timestamp is typically status['time'], and desc is typically 'since'
+def format_elapsed_time_since(past_timestamp, desc):
+    past_timestamp = normalise_time(past_timestamp)
+    elapsed_minutes = int((current_time() - past_timestamp)/ 60.0)
+    return "{} minutes ({} {})".format(elapsed_minutes, desc, past_timestamp)
+
+# Format the time delay until a future event, and the expected event time
+# in UTC
+# delay_period is in seconds
+# The event time is the current time plus delay_period
+# delay_period is typically config['defer_time'], and desc is typically 'at'
+def format_delay_time_wait(delay_period, desc):
+    delay_period = normalise_time(delay_period)
+    delay_minutes = int(delay_period / 60.0)
+    future_timestamp = current_time() + delay_period
+    return "{} minutes ({} {})".format(delay_minutes, desc, future_timestamp)
+
+# Format the interval elapsed between two events, and the times of those
+# events in UTC
+# The timestamps are in seconds since the epoch
+# The interval is between begin_time and end_time
+# desc is typically 'from'
+def format_interval_time_between(begin_timestamp, desc, end_timestamp):
+    return "{} to {}".format(begin_timestamp, end_timestamp)
+
+# Format the time elapsed since the last Tor event, and that event's time
+# in UTC
+# last_event_timestamp is in seconds since the epoch, and can be None
+# for no events
+# The elapsed time is from last_event_timestamp to the current time
+def format_last_event_time_since(last_event_timestamp):
+    if last_event_timestamp is None:
+        return ""
+    else:
+        return "last Tor event was {}".format(format_elapsed_time_since(
+                                                  last_event_timestamp, 'at'))
+
+## Calculation ##
 
 def noise(sigma, sum_of_sq, p_exit):
     sigma_i = p_exit * sigma / sqrt(sum_of_sq)
