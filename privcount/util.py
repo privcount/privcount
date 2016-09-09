@@ -186,7 +186,7 @@ def format_interval_time_between(begin_timestamp, desc, end_timestamp):
 # The elapsed time is from last_event_timestamp to the current time
 def format_last_event_time_since(last_event_timestamp):
     if last_event_timestamp is None:
-        return ""
+        return "no Tor events received"
     else:
         return "last Tor event was {}".format(format_elapsed_time_since(
                                                   last_event_timestamp, 'at'))
