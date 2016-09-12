@@ -146,7 +146,6 @@ def log_error():
 ## All period and timestamp arguments are normalised using normalise_time()
 ## before any calculations or formatting are performed
 
-
 # Return the normalised value of time
 # An abstraction used for consistent time rounding behaviour
 def normalise_time(time):
