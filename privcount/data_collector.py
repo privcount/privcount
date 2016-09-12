@@ -10,7 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path
 
 import yaml
 
@@ -200,8 +200,7 @@ class DataCollector(ReconnectingClientFactory):
             dc_conf = conf['data_collector']
 
             if 'counters' in dc_conf:
-                expanded_path = os.path.expanduser(dc_conf['counters'])
-                dc_conf['counters'] = os.path.abspath(expanded_path)
+                dc_conf['counters'] = normalise_path(dc_conf['counters'])
                 assert os.path.exists(os.path.dirname(dc_conf['counters']))
                 with open(dc_conf['counters'], 'r') as fin:
                     counters_conf = yaml.load(fin)
@@ -209,8 +208,7 @@ class DataCollector(ReconnectingClientFactory):
             else:
                 dc_conf['counters'] = conf['counters']
 
-            expanded_path = os.path.expanduser(dc_conf['state'])
-            dc_conf['state'] = os.path.abspath(expanded_path)
+            dc_conf['state'] = normalise_path(dc_conf['state'])
             assert os.path.exists(os.path.dirname(dc_conf['state']))
 
             assert dc_conf['name'] != ''

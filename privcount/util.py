@@ -12,7 +12,7 @@ import datetime
 import uuid
 
 from random import gauss, randint
-from os import urandom
+from os import urandom, path
 from math import sqrt
 from time import time, strftime, gmtime
 from copy import deepcopy
@@ -120,6 +120,14 @@ def get_random_free_port():
         s.close()
         if rc != 0: # error connecting, port is available
             return port
+
+## File Paths ##
+
+# Return the abolute path corresponding to path_str, with user directories
+# expanded, and the current working directory assumed for relative paths
+def normalise_path(path_str):
+    expanded_path = path.expanduser(path_str)
+    return path.abspath(expanded_path)
 
 ## Logging ##
 

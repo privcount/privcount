@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path
 
 import yaml
 
@@ -151,9 +151,7 @@ class TallyServer(ServerFactory):
             ts_conf = conf['tally_server']
 
             if 'counters' in ts_conf:
-                # TODO: refactor to avoid duplicate code
-                expanded_path = os.path.expanduser(ts_conf['counters'])
-                ts_conf['counters'] = os.path.abspath(expanded_path)
+                ts_conf['counters'] = normalise_path(ts_conf['counters'])
                 assert os.path.exists(os.path.dirname(ts_conf['counters']))
                 with open(ts_conf['counters'], 'r') as fin:
                     counters_conf = yaml.load(fin)
@@ -163,12 +161,10 @@ class TallyServer(ServerFactory):
 
             # if key path is not specified, look at default path, or generate a new key
             if 'key' in ts_conf and 'cert' in ts_conf:
-                expanded_path = os.path.expanduser(ts_conf['key'])
-                ts_conf['key'] = os.path.abspath(expanded_path)
+                ts_conf['key'] = normalise_path(ts_conf['key'])
                 assert os.path.exists(ts_conf['key'])
 
-                expanded_path = os.path.expanduser(ts_conf['cert'])
-                ts_conf['cert'] = os.path.abspath(expanded_path)
+                ts_conf['cert'] = normalise_path(ts_conf['cert'])
                 assert os.path.exists(ts_conf['cert'])
             else:
                 ts_conf['key'] = 'privcount.rsa_key.pem'
@@ -178,12 +174,10 @@ class TallyServer(ServerFactory):
                     generate_cert(ts_conf['key'], ts_conf['cert'])
 
             if 'results' in ts_conf:
-                expanded_path = os.path.expanduser(ts_conf['results'])
-                ts_conf['results'] = os.path.abspath(expanded_path)
+                ts_conf['results'] = normalise_path(ts_conf['results'])
                 assert os.path.exists(os.path.dirname(ts_conf['results']))
 
-            expanded_path = os.path.expanduser(ts_conf['state'])
-            ts_conf['state'] = os.path.abspath(expanded_path)
+            ts_conf['state'] = normalise_path(ts_conf['state'])
             assert os.path.exists(os.path.dirname(ts_conf['state']))
 
             # Must be configured manually

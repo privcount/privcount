@@ -12,7 +12,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 
 from protocol import PrivCountClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt
+from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path
 
 import yaml
 
@@ -143,8 +143,7 @@ class ShareKeeper(ReconnectingClientFactory):
 
             # if key path is not specified, look at default path, or generate a new key
             if 'key' in sk_conf:
-                expanded_path = os.path.expanduser(sk_conf['key'])
-                sk_conf['key'] = os.path.abspath(expanded_path)
+                sk_conf['key'] = normalise_path(sk_conf['key'])
                 assert os.path.exists(sk_conf['key'])
             else:
                 sk_conf['key'] = 'privcount.rsa_key.pem'
@@ -153,8 +152,7 @@ class ShareKeeper(ReconnectingClientFactory):
 
             sk_conf['name'] = get_public_digest(sk_conf['key'])
 
-            expanded_path = os.path.expanduser(sk_conf['state'])
-            sk_conf['state'] = os.path.abspath(expanded_path)
+            sk_conf['state'] = normalise_path(sk_conf['state'])
             assert os.path.exists(os.path.dirname(sk_conf['state']))
 
             assert sk_conf['tally_server_info']['ip'] is not None
