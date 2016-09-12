@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since
 
 import yaml
 
@@ -24,8 +24,23 @@ import yaml
 # for calling methods on reactor # pylint: disable=E1101
 
 def log_tally_server_status(status):
-    minutes = int((time() - status['time'])/ 60.0)
-    logging.info("--server status: PrivCount is {} for {} minutes (since {})".format(status['state'], minutes, status['time']))
+    # clients must only use the expected end time for logging: the tally
+    # server may end the round early, or extend it slightly to allow for
+    # network round trip times
+
+    # until the collection round starts, the tally server doesn't know when it
+    # is expected to end
+    expected_end_msg = ""
+    if 'expected_end_time' in status:
+        stopping_ts = status['expected_end_time']
+        # we're waiting for the collection to stop
+        if stopping_ts > time():
+            expected_end_msg = ", expect collection to end in {}".format(format_delay_time_until(stopping_ts, 'at'))
+        # we expect the collection to have stopped, and the TS should be
+        # collecting results
+        else:
+            expected_end_msg = ", expect collection has ended for {}".format(format_elapsed_time_since(stopping_ts, 'since'))
+    logging.info("--server status: PrivCount is {} for {}{}".format(status['state'], format_elapsed_time_since(status['time'], 'since'), expected_end_msg))
     t, r = status['dcs_total'], status['dcs_required']
     a, i = status['dcs_active'], status['dcs_idle']
     logging.info("--server status: DataCollectors: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
@@ -247,7 +262,7 @@ class TallyServer(ServerFactory):
             time_since_checkin = now - c_status['alive']
 
             if time_since_checkin > 2 * self.get_checkin_period():
-                logging.warning("last checkin was {} minutes ago for client {}".format(time_since_checkin/60.0, c_status))
+                logging.warning("last checkin was {} for client {}".format(format_elapsed_time_since(time_since_checkin, 'at'), c_status))
 
             if time_since_checkin > 6 * self.get_checkin_period():
                 logging.warning("marking dead client {}".format(c_status))
@@ -303,6 +318,12 @@ class TallyServer(ServerFactory):
             'sks_required' : self.config['sk_threshold']
         }
 
+        # we can't know the expected end time until we have started
+        if self.collection_phase is not None:
+            starting_ts = self.collection_phase.get_start_ts()
+            if starting_ts is not None:
+                status['expected_end_time'] = starting_ts + self.config['collect_period']
+
         return status
 
     def set_client_status(self, uid, status): # called by protocol
@@ -351,11 +372,10 @@ class TallyServer(ServerFactory):
 
         last_event_time = status.get('last_event_time', None)
         last_event_message = ""
-        if last_event_time is not None:
-            last_event_minutes = int((time() - last_event_time)/ 60.0)
-            last_event_message = " last event {} ({} minutes ago)".format(last_event_time, last_event_minutes)
-        minutes = int((time() - self.clients[uid]['time'])/ 60.0)
-        logging.info("----client status: {} {} is alive and {} for {} minutes (since {}){}".format(self.clients[uid]['type'], uidname, self.clients[uid]['state'], minutes, self.clients[uid]['time'], last_event_message))
+        # only log a message if we expect events
+        if self.clients[uid]['type'] == 'DataCollector':
+            last_event_message = ' ' + format_last_event_time_since(last_event_time)
+        logging.info("----client status: {} {} is alive and {} for {}{}".format(self.clients[uid]['type'], uidname, self.clients[uid]['state'], format_elapsed_time_since(self.clients[uid]['time'], 'since'), last_event_message))
 
     def get_clock_padding(self, client_uids):
         max_delay = max([self.clients[uid]['rtt']+self.clients[uid]['clock_skew'] for uid in client_uids])
@@ -750,7 +770,7 @@ class CollectionPhase(object):
         with open(filepath, 'a') as fout:
             json.dump(result_info, fout, sort_keys=True, indent=4)
 
-        logging.info("tally was successful, outcome of phase from %d to %d were written to file '%s'", begin, end, filepath)
+        logging.info("tally was successful, outcome of phase of {} was written to file '{}'".format(format_interval_time_between(begin, 'from', end), filepath))
         self.final_counts = {}
 
     def log_status(self):
@@ -761,11 +781,9 @@ class CollectionPhase(object):
         elif self.state == 'starting_sks':
             message += ", waiting to send shares to {} SKs: {}".format(len(self.need_shares), ','.join([ uid for uid in self.need_shares]))
         elif self.state == 'started':
-            minutes = (time() - self.starting_ts) / 60.0
-            message += ", running for {} minutes (since {})".format(minutes, self.starting_ts)
+            message += ", running for {}".format(format_elapsed_time_since(self.starting_ts, 'since'))
         elif self.state == 'stopping':
-            minutes = (time() - self.stopping_ts) / 60.0
-            message += ", trying to stop for {} minutes (since {})".format(minutes, self.stopping_ts)
+            message += ", trying to stop for {}".format(format_elapsed_time_since(self.stopping_ts, 'since'))
             message += ", waiting to receive counts from {} DCs/SKs: {}".format(len(self.need_counts), ','.join([ uid for uid in self.need_counts]))
 
         logging.info(message)
