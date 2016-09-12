@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_interval_time_between, format_last_event_time_since
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since
 
 import yaml
 
@@ -24,7 +24,23 @@ import yaml
 # for calling methods on reactor # pylint: disable=E1101
 
 def log_tally_server_status(status):
-    logging.info("--server status: PrivCount is {} for {}".format(status['state'], format_elapsed_time_since(status['time'], 'since')))
+    # clients must only use the expected end time for logging: the tally
+    # server may end the round early, or extend it slightly to allow for
+    # network round trip times
+
+    # until the collection round starts, the tally server doesn't know when it
+    # is expected to end
+    expected_end_msg = ""
+    if 'expected_end_time' in status:
+        stopping_ts = status['expected_end_time']
+        # we're waiting for the collection to stop
+        if stopping_ts > time():
+            expected_end_msg = ", expect collection to end in {}".format(format_delay_time_until(stopping_ts, 'at'))
+        # we expect the collection to have stopped, and the TS should be
+        # collecting results
+        else:
+            expected_end_msg = ", expect collection has ended for {}".format(format_elapsed_time_since(stopping_ts, 'since'))
+    logging.info("--server status: PrivCount is {} for {}{}".format(status['state'], format_elapsed_time_since(status['time'], 'since'), expected_end_msg))
     t, r = status['dcs_total'], status['dcs_required']
     a, i = status['dcs_active'], status['dcs_idle']
     logging.info("--server status: DataCollectors: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
@@ -301,6 +317,12 @@ class TallyServer(ServerFactory):
             'sks_total' : sk_idle+sk_active,
             'sks_required' : self.config['sk_threshold']
         }
+
+        # we can't know the expected end time until we have started
+        if self.collection_phase is not None:
+            starting_ts = self.collection_phase.get_start_ts()
+            if starting_ts is not None:
+                status['expected_end_time'] = starting_ts + self.config['collect_period']
 
         return status
 

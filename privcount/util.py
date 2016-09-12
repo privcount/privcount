@@ -255,6 +255,20 @@ def format_delay_time_wait(delay_period, desc):
     future_timestamp = current_time() + delay_period
     return format_time(delay_period, desc, future_timestamp)
 
+# Format the time delay until a future event, and the expected event time
+# in UTC
+# The time delay is the difference between future_timestamp and the current
+# time
+# future_timestamp is in seconds since the epoch
+# future_timestamp is typically config['defer_time'], and desc is typically 'at'
+# Returns a string of the form:
+# 1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 1469600312)
+def format_delay_time_until(future_timestamp, desc):
+    # Normalise before calculation to avoid truncation errors
+    future_timestamp = normalise_time(future_timestamp)
+    delay_period = future_timestamp - current_time()
+    return format_time(delay_period, desc, future_timestamp)
+
 # Format the interval elapsed between two events, and the times of those
 # events in UTC
 # The timestamps are in seconds since the epoch
