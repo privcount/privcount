@@ -24,7 +24,7 @@ class ShareKeeper(ReconnectingClientFactory):
     '''
 
     def __init__(self, config_filepath):
-        self.config_filepath = config_filepath
+        self.config_filepath = normalise_path(config_filepath)
         self.config = None
         self.keystore = None
 
@@ -35,7 +35,7 @@ class ShareKeeper(ReconnectingClientFactory):
         # TODO
         return
         # load any state we may have from a previous run
-        state_filepath = self.config['state']
+        state_filepath = normalise_path(self.config['state'])
         if os.path.exists(state_filepath):
             with open(state_filepath, 'r') as fin:
                 state = pickle.load(fin)
@@ -44,7 +44,7 @@ class ShareKeeper(ReconnectingClientFactory):
     def stopFactory(self):
         # TODO
         return
-        state_filepath = self.config['state']
+        state_filepath = normalise_path(self.config['state'])
         if self.keystore is not None:
             # export everything that would be needed to survive an app restart
             state = {'keystore': self.keystore}
@@ -146,7 +146,7 @@ class ShareKeeper(ReconnectingClientFactory):
                 sk_conf['key'] = normalise_path(sk_conf['key'])
                 assert os.path.exists(sk_conf['key'])
             else:
-                sk_conf['key'] = 'privcount.rsa_key.pem'
+                sk_conf['key'] = normalise_path('privcount.rsa_key.pem')
                 if not os.path.exists(sk_conf['key']):
                     generate_keypair(sk_conf['key'])
 

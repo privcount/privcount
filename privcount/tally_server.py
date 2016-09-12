@@ -57,7 +57,7 @@ class TallyServer(ServerFactory):
     '''
 
     def __init__(self, config_filepath):
-        self.config_filepath = config_filepath
+        self.config_filepath = normalise_path(config_filepath)
         self.config = None
         self.clients = {}
         self.collection_phase = None
@@ -71,7 +71,7 @@ class TallyServer(ServerFactory):
         # TODO
         return
         # load any state we may have from a previous run
-        state_filepath = self.config['state']
+        state_filepath = normalise_path(self.config['state'])
         if os.path.exists(state_filepath):
             with open(state_filepath, 'r') as fin:
                 state = pickle.load(fin)
@@ -82,7 +82,7 @@ class TallyServer(ServerFactory):
     def stopFactory(self):
         # TODO
         return
-        state_filepath = self.config['state']
+        state_filepath = normalise_path(self.config['state'])
         if self.collection_phase is not None or len(self.clients) > 0:
             # export everything that would be needed to survive an app restart
             state = {'clients': self.clients, 'collection_phase': self.collection_phase, 'idle_time': self.idle_time}
@@ -167,8 +167,8 @@ class TallyServer(ServerFactory):
                 ts_conf['cert'] = normalise_path(ts_conf['cert'])
                 assert os.path.exists(ts_conf['cert'])
             else:
-                ts_conf['key'] = 'privcount.rsa_key.pem'
-                ts_conf['cert'] = 'privcount.rsa_key.cert'
+                ts_conf['key'] = normalise_path('privcount.rsa_key.pem')
+                ts_conf['cert'] = normalise_path('privcount.rsa_key.cert')
                 if not os.path.exists(ts_conf['key']) or not os.path.exists(ts_conf['cert']):
                     generate_keypair(ts_conf['key'])
                     generate_cert(ts_conf['key'], ts_conf['cert'])
@@ -398,7 +398,7 @@ class TallyServer(ServerFactory):
         self.collection_phase.stop()
         if self.collection_phase.is_stopped():
             self.num_completed_collection_phases += 1
-            dir_path = './' if 'results' not in self.config else self.config['results']
+            dir_path = normalise_path('./') if 'results' not in self.config else self.config['results']
             self.collection_phase.write_results(dir_path)
             self.collection_phase = None
             self.idle_time = time()
@@ -725,6 +725,9 @@ class CollectionPhase(object):
         return result_context
 
     def write_results(self, path_prefix):
+        # this should already have been done, but let's make sure
+        path_prefix = normalise_path(path_prefix)
+
         if not self.is_stopped():
             logging.warning("trying to write results before collection phase is stopped")
             return

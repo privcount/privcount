@@ -29,7 +29,7 @@ class DataCollector(ReconnectingClientFactory):
     '''
 
     def __init__(self, config_filepath):
-        self.config_filepath = config_filepath
+        self.config_filepath = normalise_path(config_filepath)
         self.config = None
         self.aggregator = None
         self.aggregator_defer_id = None
@@ -42,7 +42,7 @@ class DataCollector(ReconnectingClientFactory):
         # TODO
         return
         # load any state we may have from a previous run
-        state_filepath = self.config['state']
+        state_filepath = normalise_path(self.config['state'])
         if os.path.exists(state_filepath):
             with open(state_filepath, 'r') as fin:
                 state = pickle.load(fin)
@@ -52,7 +52,7 @@ class DataCollector(ReconnectingClientFactory):
     def stopFactory(self):
         # TODO
         return
-        state_filepath = self.config['state']
+        state_filepath = normalise_path(self.config['state'])
         if self.aggregator is not None:
             # export everything that would be needed to survive an app restart
             state = {'aggregator': self.aggregator, 'aggregator_defer_id': self.aggregator_defer_id}
