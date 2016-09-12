@@ -12,7 +12,7 @@ import datetime
 import uuid
 
 from random import gauss, randint
-from os import urandom
+from os import urandom, path
 from math import sqrt
 from time import time, strftime, gmtime
 from copy import deepcopy
@@ -121,6 +121,14 @@ def get_random_free_port():
         if rc != 0: # error connecting, port is available
             return port
 
+## File Paths ##
+
+# Return the abolute path corresponding to path_str, with user directories
+# expanded, and the current working directory assumed for relative paths
+def normalise_path(path_str):
+    expanded_path = path.expanduser(path_str)
+    return path.abspath(expanded_path)
+
 ## Logging ##
 
 def log_error():
@@ -137,7 +145,6 @@ def log_error():
 ## a desc argument is a string description of the timestamp's meaning
 ## All period and timestamp arguments are normalised using normalise_time()
 ## before any calculations or formatting are performed
-
 
 # Return the normalised value of time
 # An abstraction used for consistent time rounding behaviour

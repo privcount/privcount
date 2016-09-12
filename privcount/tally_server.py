@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path
 
 import yaml
 
@@ -57,7 +57,7 @@ class TallyServer(ServerFactory):
     '''
 
     def __init__(self, config_filepath):
-        self.config_filepath = config_filepath
+        self.config_filepath = normalise_path(config_filepath)
         self.config = None
         self.clients = {}
         self.collection_phase = None
@@ -71,7 +71,7 @@ class TallyServer(ServerFactory):
         # TODO
         return
         # load any state we may have from a previous run
-        state_filepath = self.config['state']
+        state_filepath = normalise_path(self.config['state'])
         if os.path.exists(state_filepath):
             with open(state_filepath, 'r') as fin:
                 state = pickle.load(fin)
@@ -82,7 +82,7 @@ class TallyServer(ServerFactory):
     def stopFactory(self):
         # TODO
         return
-        state_filepath = self.config['state']
+        state_filepath = normalise_path(self.config['state'])
         if self.collection_phase is not None or len(self.clients) > 0:
             # export everything that would be needed to survive an app restart
             state = {'clients': self.clients, 'collection_phase': self.collection_phase, 'idle_time': self.idle_time}
@@ -151,9 +151,7 @@ class TallyServer(ServerFactory):
             ts_conf = conf['tally_server']
 
             if 'counters' in ts_conf:
-                # TODO: refactor to avoid duplicate code
-                expanded_path = os.path.expanduser(ts_conf['counters'])
-                ts_conf['counters'] = os.path.abspath(expanded_path)
+                ts_conf['counters'] = normalise_path(ts_conf['counters'])
                 assert os.path.exists(os.path.dirname(ts_conf['counters']))
                 with open(ts_conf['counters'], 'r') as fin:
                     counters_conf = yaml.load(fin)
@@ -163,27 +161,25 @@ class TallyServer(ServerFactory):
 
             # if key path is not specified, look at default path, or generate a new key
             if 'key' in ts_conf and 'cert' in ts_conf:
-                expanded_path = os.path.expanduser(ts_conf['key'])
-                ts_conf['key'] = os.path.abspath(expanded_path)
+                ts_conf['key'] = normalise_path(ts_conf['key'])
                 assert os.path.exists(ts_conf['key'])
 
-                expanded_path = os.path.expanduser(ts_conf['cert'])
-                ts_conf['cert'] = os.path.abspath(expanded_path)
+                ts_conf['cert'] = normalise_path(ts_conf['cert'])
                 assert os.path.exists(ts_conf['cert'])
             else:
-                ts_conf['key'] = 'privcount.rsa_key.pem'
-                ts_conf['cert'] = 'privcount.rsa_key.cert'
+                ts_conf['key'] = normalise_path('privcount.rsa_key.pem')
+                ts_conf['cert'] = normalise_path('privcount.rsa_key.cert')
                 if not os.path.exists(ts_conf['key']) or not os.path.exists(ts_conf['cert']):
                     generate_keypair(ts_conf['key'])
                     generate_cert(ts_conf['key'], ts_conf['cert'])
 
             if 'results' in ts_conf:
-                expanded_path = os.path.expanduser(ts_conf['results'])
-                ts_conf['results'] = os.path.abspath(expanded_path)
-                assert os.path.exists(os.path.dirname(ts_conf['results']))
+                ts_conf['results'] = normalise_path(ts_conf['results'])
+            else:
+                ts_conf['results'] = normalise_path('./')
+            assert os.path.exists(os.path.dirname(ts_conf['results']))
 
-            expanded_path = os.path.expanduser(ts_conf['state'])
-            ts_conf['state'] = os.path.abspath(expanded_path)
+            ts_conf['state'] = normalise_path(ts_conf['state'])
             assert os.path.exists(os.path.dirname(ts_conf['state']))
 
             # Must be configured manually
@@ -404,8 +400,7 @@ class TallyServer(ServerFactory):
         self.collection_phase.stop()
         if self.collection_phase.is_stopped():
             self.num_completed_collection_phases += 1
-            dir_path = './' if 'results' not in self.config else self.config['results']
-            self.collection_phase.write_results(dir_path)
+            self.collection_phase.write_results(self.config['results'])
             self.collection_phase = None
             self.idle_time = time()
 
@@ -731,6 +726,9 @@ class CollectionPhase(object):
         return result_context
 
     def write_results(self, path_prefix):
+        # this should already have been done, but let's make sure
+        path_prefix = normalise_path(path_prefix)
+
         if not self.is_stopped():
             logging.warning("trying to write results before collection phase is stopped")
             return
@@ -750,7 +748,7 @@ class CollectionPhase(object):
         # For backwards compatibility, write out a "tallies" file
         # This file only has the counts
         begin, end = int(round(self.starting_ts)), int(round(self.stopping_ts))
-        filepath = "{}/privcount.tallies.{}-{}.json".format(path_prefix, begin, end)
+        filepath = os.path.join(path_prefix, "privcount.tallies.{}-{}.json".format(begin, end))
         with open(filepath, 'a') as fout:
             json.dump(tallied_counts, fout, sort_keys=True, indent=4)
 
@@ -766,7 +764,7 @@ class CollectionPhase(object):
         # add the context of the outcome as another item
         result_info['Context'] = self.get_result_context()
 
-        filepath = "{}/privcount.outcome.{}-{}.json".format(path_prefix, begin, end)
+        filepath = os.path.join(path_prefix, "privcount.outcome.{}-{}.json".format(begin, end))
         with open(filepath, 'a') as fout:
             json.dump(result_info, fout, sort_keys=True, indent=4)
 
