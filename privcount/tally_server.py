@@ -748,7 +748,7 @@ class CollectionPhase(object):
         # For backwards compatibility, write out a "tallies" file
         # This file only has the counts
         begin, end = int(round(self.starting_ts)), int(round(self.stopping_ts))
-        filepath = "{}/privcount.tallies.{}-{}.json".format(path_prefix, begin, end)
+        filepath = os.path.join(path_prefix, "privcount.tallies.{}-{}.json".format(begin, end))
         with open(filepath, 'a') as fout:
             json.dump(tallied_counts, fout, sort_keys=True, indent=4)
 
@@ -764,7 +764,7 @@ class CollectionPhase(object):
         # add the context of the outcome as another item
         result_info['Context'] = self.get_result_context()
 
-        filepath = "{}/privcount.outcome.{}-{}.json".format(path_prefix, begin, end)
+        filepath = os.path.join(path_prefix, "privcount.outcome.{}-{}.json".format(begin, end))
         with open(filepath, 'a') as fout:
             json.dump(result_info, fout, sort_keys=True, indent=4)
 
