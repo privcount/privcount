@@ -175,7 +175,9 @@ class TallyServer(ServerFactory):
 
             if 'results' in ts_conf:
                 ts_conf['results'] = normalise_path(ts_conf['results'])
-                assert os.path.exists(os.path.dirname(ts_conf['results']))
+            else:
+                ts_conf['results'] = normalise_path('./')
+            assert os.path.exists(os.path.dirname(ts_conf['results']))
 
             ts_conf['state'] = normalise_path(ts_conf['state'])
             assert os.path.exists(os.path.dirname(ts_conf['state']))
@@ -398,8 +400,7 @@ class TallyServer(ServerFactory):
         self.collection_phase.stop()
         if self.collection_phase.is_stopped():
             self.num_completed_collection_phases += 1
-            dir_path = normalise_path('./') if 'results' not in self.config else self.config['results']
-            self.collection_phase.write_results(dir_path)
+            self.collection_phase.write_results(self.config['results'])
             self.collection_phase = None
             self.idle_time = time()
 
