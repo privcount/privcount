@@ -308,29 +308,123 @@ def format_last_event_time_since(last_event_timestamp):
 
 ## Calculation ##
 
+# Sample noise from a gussian distribution
+# the distribution is over +/- sigma, scaled by the noise weight
+# calculated from the exit probability p_exit, and the overall sum_of_sq
+# bandwidth
+# returns a floating-point value between +sigma and -sigma, scaled by
+# noise_weight
 def noise(sigma, sum_of_sq, p_exit):
     sigma_i = p_exit * sigma / sqrt(sum_of_sq)
     random_sample = gauss(0, sigma_i)
     return random_sample
 
+# Calculate pseudo-random bytes using a keyed hash based on key and IV
+# Given the same key and IV, the same pseudo-random bytes will be produced
+# key must contain at least as many bits of entropy as the hash
+# Therefore, it must be at least 32 bytes long
+# returns 32 pseudo-random bytes
 def PRF(key, IV):
-    return Hash("PRF1|KEY:%s|IV:%s|" % (key, IV)).digest()
+    assert len(key) >= Hash().digest_size
+    prv = Hash("PRF1|KEY:%s|IV:%s|" % (key, IV)).digest()
+    # for security, the key input must have at least as many bytes as the hash
+    # output (we do not depend on the length or content of IV for security)
+    assert len(key) >= len(prv)
+    return prv
 
+Q_BYTE_MAX = 8L
+Q_BIT_MAX = Q_BYTE_MAX * 8L
+
+# Sample a uniformly pseudo-random value from the random byte array s,
+# returning a value with maximum q
+# s must be at least 8 bytes long
+# the returned value has a maximum of 2**64 - 1, so q is limited to 2**64
+# returns a uniformly distributed in [0, q)
 def sample(s, q):
+    # in order for this function to return v in {0, ... , q-1}, q-1 must be
+    # representable in Q_BIT_MAX bits or less
+    # (2**N is the first number not representable in an N-bit unsigned integer)
+    assert long(q-1) < 2L**Q_BIT_MAX
     ## Unbiased sampling through rejection sampling
     while True:
-        v = struct.unpack("<L", s[:4])[0]
-        if 0 <= v < q:
+        # s must have enough bytes for us to extract 8
+        assert len(s) >= Q_BYTE_MAX
+        # to get a value of q-1, we need this many bits
+        q_bit_count = long(q-1).bit_length()
+        # and this many bytes
+        q_byte_count = (q_bit_count+7)//8
+        assert q_byte_count <= Q_BYTE_MAX
+        # Pad the bytes we'll never use with zeroes, otherwise we reject
+        # a large number of values
+        # Since the extraction is little-endian, and we want to pad unused
+        # bytes, the zero bytes go in the larger indexes
+        s_bytes = s[:q_byte_count] + ('\0' * (Q_BYTE_MAX - q_byte_count))
+        # <Q means unpack 8 little-endian bytes into a C unsigned long long
+        v = long(struct.unpack("<Q", s_bytes)[0])
+        # this will fail if we have mismatching endianness and padding
+        assert v < 2L**(q_byte_count*8L)
+        if 0L <= v < q:
             break
+        # when we reject the value, re-hash s and try again
         s = Hash(s).digest()
     return v
 
+# Calculate a blinding factor with maximum q, based on label and secret
+# when positive is True, return the blinding factor, and when positive is
+# False, returns the unblinding factor (the inverse value mod q)
 def derive_blinding_factor(label, secret, q, positive=True):
     ## Keyed share derivation
     s = PRF(secret, label)
     v = sample(s, q)
+    assert v < q
     s0 = v if positive else q - v
     return s0
+
+# adjust the unsigned 0 <= count < q, returning a signed integer
+# for odd  q, returns { -q//2, ... , 0, ... , q//2 }
+# for even q, returns { -q//2, ... , 0, ... , q//2 - 1 }
+# with the smaller positive values >= q//2 [- 1] becoming the largest negative
+# values
+# this is the inverse operation of x % q, when x is in the appropriate range
+def adjust_count_signed(count, q):
+    # sanity check input
+    assert count < q
+    # When implementing this adjustment,
+    # { 0, ... , (q + 1)//2 - 1}  is interpreted as that value,
+    # { (q + 1)//2, ... , q - 1 } is interpreted as that value minus q, or
+    # { (q + 1)//2 - q, ... , q - 1 - q }
+    #
+    # For odd q, (q + 1)//2 rounds up to q//2 + 1, so positive simplifies to:
+    # { 0, ... , q//2 + 1 - 1 }
+    # { 0, ... , q//2 }
+    # and because q == q//2 + q//2 + 1 for odd q, negative simplifies to:
+    # { q//2 + 1 - q//2 - q//2 - 1, ... , q - 1 - q}
+    # { -q//2, ... , -1 }
+    # Odd q has the same number of values above and below 0:
+    # { -q//2, ... , 0, ... , q//2 }
+    #
+    # For even q, (q+1)//2 rounds down to q//2, so positive simplifies to:
+    # { 0, ... , q//2 - 1 }
+    # and because q == q//2 + q//2 for even q, negative simplifies to:
+    # { q//2 - q//2 - q//2, ... , q - 1 - q}
+    # { -q//2, ... , -1 }
+    # Even q has the 1 more value below 0 than above it:
+    # { -q//2, ... , 0, ... , q//2 - 1 }
+    # This is equivalent to signed two's complement, if q is an integral power
+    # of two
+    if count >= ((q + 1L) // 2L):
+        signed_count = count - q
+    else:
+        signed_count = count
+    # sanity check output
+    assert signed_count >= -q//2L
+    if q % 2L == 1L:
+        # odd case
+        assert signed_count <= q//2L
+    else:
+        # even case
+        assert signed_count <= q//2L - 1L
+    return signed_count
 
 class SecureCounters(object):
     '''
@@ -380,28 +474,29 @@ class SecureCounters(object):
     tally..() uses the counts received from all of the data collectors and share keepers
     this produces the final, unblinded, noisy counts of the privcount process
 
-    see privcount/test/test_counters.py for a test case
+    see privcount/test/test_counters.py for some test cases
     '''
 
     def __init__(self, counters, q):
         self.counters = deepcopy(counters)
-        self.q = q
+        self.q = long(q)
         self.shares = None
 
-        # initialize all counters to 0
+        # initialize all counters to 0L
+        # counters use unlimited length integers to avoid overflow
         for key in self.counters:
             if 'bins' not in self.counters[key]:
                 return None
             for item in self.counters[key]['bins']:
                 assert len(item) == 2
-                item.append(0.0) # bin is now, e.g.: [0.0, 512.0, 0.0] for bin_left, bin_right, count
+                item.append(0L) # bin is now, e.g.: [0.0, 512.0, 0L] for bin_left, bin_right, count
 
     def _derive_all_counters(self, secret, positive):
         for key in self.counters:
             for item in self.counters[key]['bins']:
                 label = "{}_{}_{}".format(key, item[0], item[1])
                 blinding_factor = derive_blinding_factor(label, secret, self.q, positive=positive)
-                item[2] = (item[2] + blinding_factor) % self.q
+                item[2] = (item[2] + long(blinding_factor)) % self.q
 
     def _blind(self, secret):
         self._derive_all_counters(secret, True)
@@ -412,7 +507,8 @@ class SecureCounters(object):
     def generate(self, uids, noise_weight):
         self.shares = {}
         for uid in uids:
-            secret = urandom(20)
+            # the secret should be at least as large as the hash output
+            secret = urandom(Hash().digest_size)
             hash_id = PRF(secret, "KEYID")
             self.shares[uid] = {'secret': secret, 'hash_id': hash_id}
             # add blinding factors to all of the counters
@@ -423,7 +519,8 @@ class SecureCounters(object):
             for item in self.counters[key]['bins']:
                 sigma = self.counters[key]['sigma']
                 sampled_noise = noise(sigma, 1, noise_weight)
-                noise_val = int(round(sampled_noise))
+                noise_val = long(round(sampled_noise))
+                # if noise_val is negative, modulus produces a positive result
                 item[2] = (item[2] + noise_val) % self.q
 
     def detach_blinding_shares(self):
@@ -440,11 +537,11 @@ class SecureCounters(object):
         # reverse blinding factors for all of the counters
         self._unblind(b64decode(share['secret']))
 
-    def increment(self, counter_key, bin_value, num_increments=1.0):
+    def increment(self, counter_key, bin_value, num_increments=1L):
         if self.counters is not None and counter_key in self.counters:
             for item in self.counters[counter_key]['bins']:
                 if bin_value >= item[0] and bin_value < item[1]:
-                    item[2] = (item[2] + num_increments) % self.q
+                    item[2] = (item[2] + long(num_increments)) % self.q
 
     def _tally_counter(self, counter):
         if self.counters == None:
@@ -483,8 +580,7 @@ class SecureCounters(object):
         # (negative counts are possible if noise is negative)
         for key in self.counters:
             for tally_bin in self.counters[key]['bins']:
-                if tally_bin[2] > (self.q / 2):
-                    tally_bin[2] -= self.q
+                tally_bin[2] = adjust_count_signed(tally_bin[2], self.q)
         return True
 
     def detach_counts(self):
@@ -507,7 +603,10 @@ def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):
     DW = float(net_status.bandwidth_weights['Wed'])/10000
     EW = float(net_status.bandwidth_weights['Wee'])/10000
 
-    my_bandwidth, DBW, EBW, sum_of_sq_bw = 0, 0, 0, 0
+    # we must use longs here, because otherwise sum_of_sq_bw can overflow on
+    # platforms where python has 32-bit ints
+    # (on these platforms, this happens when router_entry.bandwidth > 65535)
+    my_bandwidth, DBW, EBW, sum_of_sq_bw = 0L, 0L, 0L, 0L
 
     if my_fingerprint in net_status.routers:
         my_bandwidth = net_status.routers[my_fingerprint].bandwidth
