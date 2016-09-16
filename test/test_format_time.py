@@ -3,6 +3,9 @@ from privcount.util import normalise_time, format_epoch, format_period, format_d
 # some of this code is only executed when we reach 1 week
 # so let's test it thoroughly
 
+# this test will always exit successfully, unless the logging code throws
+# an exception: any formatting issues need to be identified by inspection
+
 def test_format_time(time):
   print "normalise_time({}) = {}".format(time, normalise_time(time))
   print "format_epoch({}) = {}".format(time, format_epoch(time))

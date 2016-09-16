@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+# this test will fail if any counter inconsistencies are detected
+
 from privcount.util import SecureCounters, adjust_count_signed
 from math import sqrt
 import sys

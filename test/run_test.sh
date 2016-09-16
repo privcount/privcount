@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -u
+
 # If you have privcount installed in a venv, activate it before running
 # this script
 
@@ -24,6 +27,22 @@ fi
 
 cd "$PRIVCOUNT_DIRECTORY/test"
 
+# Run the python-based unit tests
+echo "Testing time formats:"
+python test_format_time.py
+echo ""
+
+echo "Testing keyed hash:"
+python test_keyed_random.py
+echo ""
+
+echo "Testing counters:"
+python test_counters.py
+echo ""
+
+# Requires a local privcount-patched Tor instance
+#python test_tor_ctl_event.py
+
 # Record how long the tests take to run
 date
 STARTSEC="`date +%s`"
@@ -31,7 +50,7 @@ STARTSEC="`date +%s`"
 # Move aside the old result files
 echo "Moving old results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
 mkdir -p old
-mv privcount.* old/
+mv privcount.* old/ || true
 
 # Then run the injector, ts, sk, and dc
 echo "Launching injector, tally server, share keeper, and data collector..."

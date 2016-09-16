@@ -4,9 +4,16 @@
 # this test can not prove that these constructs produce uniformly random
 # results, it can only reveal obvious range or partition issues
 
+# this test will exit successfully, unless the counters are more than
+# MAX_DIVERGENCE from the full range or equal bin counts
+
 from os import urandom
 from random import randrange
 from privcount.util import sample, derive_blinding_factor, Hash
+
+# Allow this much divergence from the full range and equal bin counts
+MAX_DIVERGENCE = 0.02
+MAX_DIVERGENCE_PERCENT = MAX_DIVERGENCE * 100.0
 
 # some of the privcount random functions expect additional arguments
 IV = "TEST"
@@ -126,6 +133,8 @@ def bin_trial(result_count, func, max, n_bins):
 def format_difference(actual, expected, total):
     difference = actual - expected
     percentage = round(difference * 100.0 / total, 1)
+    # with 100,000 trials, we shouldn't get any differences larger than ~2%
+    assert percentage < MAX_DIVERGENCE_PERCENT
     return "{} - {} = {} ({} %)".format(actual, expected, difference,
                                         percentage)
 
@@ -136,6 +145,9 @@ def format_difference_list(actual_list, expected, total):
     difference_list = [actual - expected for actual in actual_list]
     percentage_list = [round(difference * 100.0 / total, 1)
                        for difference in difference_list]
+    # with 100,000 trials, we shouldn't get any differences larger than ~2%
+    for p in percentage_list:
+        assert p < MAX_DIVERGENCE_PERCENT
     return "{} - {} = {} ({} %)".format(actual_list, expected, difference_list,
                                  percentage_list)
 
