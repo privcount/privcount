@@ -7,7 +7,7 @@ from math import sqrt
 import sys
 
 # When testing q itself, use this range of values
-q_min = 2L**24L
+q_min = 1L
 q_max = 2L**64L
 
 # A simple set of byte counters
@@ -36,12 +36,13 @@ counters = {
 def check_adjust_count_signed(q):
     # for any q, returns { (q + 1)//2 - q, ... , 0, ... , (q + 1)//2 - 1 }
     assert adjust_count_signed(0, q) == 0
-    # we assume here that q is large
-    assert q >= 3
-    assert adjust_count_signed(1, q) == 1
-    assert adjust_count_signed((q + 1)//2 - 1, q) == (q + 1)//2 - 1
-    assert adjust_count_signed((q + 1)//2, q) == (q + 1)//2 - q
-    assert adjust_count_signed(q - 1, q) == -1
+    # we assume here that q is at least large enough to have -1, 0, 1
+    if q < 3L:
+        return
+    assert adjust_count_signed(1L, q) == 1
+    assert adjust_count_signed((q + 1L)//2L - 1L, q) == (q + 1L)//2L - 1L
+    assert adjust_count_signed((q + 1L)//2L, q) == (q + 1L)//2L - q
+    assert adjust_count_signed(q - 1L, q) == -1L
 
 # check that each blinding share is unique
 # if not, there is a coding error that affects the security of the system
@@ -75,8 +76,8 @@ def check_blinding_values(secure_counters, q):
         q, max_blinding_value_count, blinding_value_count)
     if blinding_value_count < max_blinding_value_count:
         assert blinding_value_count == unique_blinding_value_count
-    else:
-        print "skipping blinding value collision test: collisions too likely"
+    #else:
+    #   print "skipping blinding value collision test: collisions too likely"
 
 # create the counters for a data collector, who will generate the shares and
 # noise
