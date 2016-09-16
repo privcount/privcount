@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from privcount.util import SecureCounters
+from privcount.util import SecureCounters, adjust_count_signed
 from math import sqrt
 import sys
 
@@ -33,6 +33,17 @@ counters = {
     'sigma': 0.0
   }
 }
+
+# check that adjust_count_signed works as expected for q
+def check_adjust_count_signed(q):
+    # for any q, returns { (q + 1)//2 - q, ... , 0, ... , (q + 1)//2 - 1 }
+    assert adjust_count_signed(0, q) == 0
+    # we assume here that q is large
+    assert q >= 3
+    assert adjust_count_signed(1, q) == 1
+    assert adjust_count_signed((q + 1)//2 - 1, q) == (q + 1)//2 - 1
+    assert adjust_count_signed((q + 1)//2, q) == (q + 1)//2 - q
+    assert adjust_count_signed(q - 1, q) == -1
 
 # check that each blinding share is unique
 # if not, there is a coding error that affects the security of the system
@@ -201,6 +212,34 @@ def try_counters(counters, q, N, X=None, multi_bin=True):
     tallies = sum_counters(counters, q, dc_list, sk_list)
     check_counters(tallies, amount, multi_bin)
 
+# Check that unsigned to signed conversion works with odd and even q
+print "Unsigned to signed counter conversion, q = 3:"
+# for odd  q, returns { -q//2, ... , 0, ... , q//2 }
+assert adjust_count_signed(0, 3) == 0
+assert adjust_count_signed(1, 3) == 1
+assert adjust_count_signed(2, 3) == -1
+print ""
+
+print "Unsigned to signed counter conversion, q = 4:"
+# for even q, returns { -q//2, ... , 0, ... , q//2 - 1 }
+assert adjust_count_signed(0, 4) == 0
+assert adjust_count_signed(1, 4) == 1
+assert adjust_count_signed(2, 4) == -2
+assert adjust_count_signed(3, 4) == -1
+print ""
+
+print "Unsigned to signed counter conversion, q = {}:".format(q)
+check_adjust_count_signed(q)
+print ""
+
+print "Unsigned to signed counter conversion, q = {}:".format(q+1)
+check_adjust_count_signed(q+1)
+print ""
+
+print "Unsigned to signed counter conversion, q = {}:".format(q-1)
+check_adjust_count_signed(q-1)
+print ""
+
 # Check that secure counters increment correctly for small values of N
 # using the default increment of 1
 print "Multiple increments, 2-argument form of increment:"
@@ -273,6 +312,9 @@ while q <= q_max:
         a = 1L
         X = 2L**a
         print "Trying q = 2**{} = {}".format(b, q)
+        print "Unsigned to signed counter conversion, q = {}:".format(q)
+        check_adjust_count_signed(q)
+        print ""
         # we interpret values >= q/2 as negative
         # So make sure that q is larger than 2*(N*X + 1)
         while X < q/2L:
@@ -294,6 +336,9 @@ assert q_max >= q_min
 a = 1L
 X = 2L**a
 print "Trying q = q_max = {}".format(q)
+print "Unsigned to signed counter conversion, q = {}:".format(q)
+check_adjust_count_signed(q)
+print ""
 # we interpret values >= q/2 as negative
 # So make sure that q is larger than 2*(N*X + 1)
 while X < q/2L:
