@@ -10,7 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, q
 
 import yaml
 
@@ -94,7 +94,7 @@ class DataCollector(ReconnectingClientFactory):
 
     def do_start(self, config): # called by protocol
         # return None if failure, otherwise json will encode result
-        if 'q' not in config or 'sharekeepers' not in config or 'counters' not in config:
+        if 'sharekeepers' not in config or 'counters' not in config:
             return None
         # if we are still running from a previous incarnation, we need to stop first
         if self.aggregator is not None:
@@ -136,7 +136,7 @@ class DataCollector(ReconnectingClientFactory):
             logging.info('refusing to start collecting without required share keepers')
             return None
 
-        self.aggregator = Aggregator(dc_counters, config['sharekeepers'], self.config['noise_weight'], config['q'], self.config['event_source'])
+        self.aggregator = Aggregator(dc_counters, config['sharekeepers'], self.config['noise_weight'], q(), self.config['event_source'])
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -186,7 +186,10 @@ class DataCollector(ReconnectingClientFactory):
                 response['Counts'] = counts
 
         logging.info("collection phase was stopped")
-        response['Config'] = self.config
+        # even though q is hard-coded, include it anyway
+        config = deepcopy(self.config)
+        config['q'] = q()
+        response['Config'] = config
         return response
 
     def refresh_config(self):

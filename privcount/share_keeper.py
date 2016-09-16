@@ -7,12 +7,14 @@ import os
 import logging
 import cPickle as pickle
 
+from copy import deepcopy
+
 from twisted.internet import reactor, ssl
 from twisted.internet.protocol import ReconnectingClientFactory
 
 from protocol import PrivCountClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path
+from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, q
 
 import yaml
 
@@ -85,11 +87,11 @@ class ShareKeeper(ReconnectingClientFactory):
         # return None if failure, otherwise json will encode the result back to TS
         logging.info("got command to start new collection phase")
 
-        if 'q' not in config or 'shares' not in config or 'counters' not in config:
+        if 'shares' not in config or 'counters' not in config:
             logging.warning("start command from tally server cannot be completed due to missing data")
             return None
 
-        self.keystore = SecureCounters(config['counters'], config['q'])
+        self.keystore = SecureCounters(config['counters'], q())
         share_list = config['shares']
 
         private_key = load_private_key_file(self.config['key'])
@@ -128,7 +130,10 @@ class ShareKeeper(ReconnectingClientFactory):
         logging.info("collection phase was stopped")
         response = {}
         response['Counts'] = response_counts
-        response['Config'] = self.config
+        # even though q is hard-coded, include it anyway
+        config = deepcopy(self.config)
+        config['q'] = q()
+        response['Config'] = config
         return response
 
     def refresh_config(self):

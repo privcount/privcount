@@ -9,7 +9,7 @@
 
 from os import urandom
 from random import randrange
-from privcount.util import sample, derive_blinding_factor, Hash
+from privcount.util import sample, derive_blinding_factor, Hash, q
 
 # Allow this much divergence from the full range and equal bin counts
 MAX_DIVERGENCE = 0.02
@@ -24,10 +24,8 @@ POSITIVE = True
 # (this lack of entropy won't be apparent in the output, because it is hashed)
 PRIV_KEY_LEN = Hash().digest_size
 
-# this should be equal to privcount's hard-coded q value
-#PRIV_COUNT_MAX = 2147483647L
-PRIV_COUNT_MAX = 999999999959L
-#PRIV_COUNT_MAX = 2L**64L
+# privcount's hard-coded q value
+PRIV_COUNTER_MAX = q()
 
 # the number of random values used in each trial
 N_TRIALS = 100000
@@ -164,12 +162,12 @@ def run_trial(result_count, func, max, n_bins):
                                                   expected_bin_count))
 
 print "random.randrange:"
-run_trial(N_TRIALS, random_value, PRIV_COUNT_MAX, BIN_COUNT)
+run_trial(N_TRIALS, random_value, PRIV_COUNTER_MAX, BIN_COUNT)
 print ""
 
 print "privcount.sample:"
-run_trial(N_TRIALS, sample_value, PRIV_COUNT_MAX, BIN_COUNT)
+run_trial(N_TRIALS, sample_value, PRIV_COUNTER_MAX, BIN_COUNT)
 print ""
 
 print "privcount.derive_blinding_factor:"
-run_trial(N_TRIALS, blinding_value, PRIV_COUNT_MAX, BIN_COUNT)
+run_trial(N_TRIALS, blinding_value, PRIV_COUNTER_MAX, BIN_COUNT)

@@ -308,6 +308,17 @@ def format_last_event_time_since(last_event_timestamp):
 
 ## Calculation ##
 
+# The hard-coded q value, which is used to limit the maximum counter values
+# In PrivCount, this does not have to be prime, and there is no need for it
+# to be configurable
+# All PrivCount counters should use unlimited-length Python longs, so that
+# q can exceed the size of a native C long
+def q():
+    #return 2147483647L
+    return 999999999959L
+    # q is limited to 2**64, because sample() only unpacks 8 bytes
+    #return 2L**64L
+
 # Sample noise from a gussian distribution
 # the distribution is over +/- sigma, scaled by the noise weight
 # calculated from the exit probability p_exit, and the overall sum_of_sq

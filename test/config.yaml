@@ -15,7 +15,6 @@ tally_server:
     # period, unless you are willing to wait a while for client status updates
     checkin_period: 5 # (default: 60 seconds) number of seconds clients should wait before checking with TS for updates
     continue: False # start another collection phase after finishing a previous
-    q: 999999999959 ## 2147483647 # ((2**31)-1) 2^31 - 1 happens to be a prime
     # optional overrides:
     key: 'keys/ts.pem' # path to the rsa private key
     cert: 'keys/ts.cert' # path to the public key certificate

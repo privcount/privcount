@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, q
 
 import yaml
 
@@ -224,7 +224,7 @@ class TallyServer(ServerFactory):
             assert ts_conf['event_period'] > 0
             assert ts_conf['checkin_period'] > 0
             assert ts_conf['continue'] == True or ts_conf['continue'] == False
-            assert ts_conf['q'] > 0
+            assert q() > 0
 
             for key in ts_conf['counters']:
                 if 'Histogram' in key:
@@ -390,7 +390,7 @@ class TallyServer(ServerFactory):
         # so we'll wait and pass the client context to collection_phase just
         # before stopping it
 
-        self.collection_phase = CollectionPhase(self.config['collect_period'], self.config['counters'], sk_uids, sk_public_keys, dc_uids, self.config['q'], clock_padding, self.config)
+        self.collection_phase = CollectionPhase(self.config['collect_period'], self.config['counters'], sk_uids, sk_public_keys, dc_uids, q(), clock_padding, self.config)
         self.collection_phase.start()
 
     def stop_collection_phase(self):
@@ -710,7 +710,10 @@ class CollectionPhase(object):
         result_context['TallyServer'] = {}
         if self.tally_server_status is not None:
             result_context['TallyServer']['Status'] = self.tally_server_status
-        result_context['TallyServer']['Config'] = self.tally_server_config
+        # even though q is hard-coded, include it anyway
+        tally_server_config = deepcopy(self.tally_server_config)
+        tally_server_config['q'] = q()
+        result_context['TallyServer']['Config'] = tally_server_config
 
         # We don't need the paths from the configs
         if 'cert' in result_context['TallyServer']['Config']:
