@@ -6,7 +6,7 @@
 
 from os import urandom
 from random import randrange
-from privcount.util import sample, derive_blinding_factor
+from privcount.util import sample, derive_blinding_factor, Hash
 
 # some of the privcount random functions expect additional arguments
 IV = "TEST"
@@ -15,8 +15,7 @@ POSITIVE = True
 # this should be equal to privcount's hard-coded key length
 # key should contain at least 32 bytes of entropy, as the hash is 32 bytes
 # (this lack of entropy won't be apparent in the output, because it is hashed)
-PRIV_KEY_LEN = 20
-#PRIV_KEY_LEN = 40
+PRIV_KEY_LEN = Hash().digest_size
 
 # this should be equal to privcount's hard-coded q value
 #PRIV_COUNT_MAX = 2147483647L
