@@ -39,8 +39,10 @@ BIN_COUNT = 2
 # errors in our own unpacking and sampling code)
 
 
-# call python's random.randrange(max), ignoring key
 def random_value(key, max):
+    '''
+    call python's random.randrange(max), ignoring key
+    '''
     # random.randrange() takes one argument: a maximum value
     # and returns a random value in [0, max)
     # it is *NOT* uniformy distributed in python versions < 3.2
@@ -48,14 +50,18 @@ def random_value(key, max):
     # https://docs.python.org/3.5/library/random.html#random.randrange
     return randrange(max)
 
-# call privcount.util.sample with key and max
 def sample_value(key, max):
+    '''
+    call privcount.util.sample with key and max
+    '''
     # sample takes two arguments: a key string, and a maximum value
     # and returns a random value in [0, max)
     return sample(key, max)
 
-# call privcount.util.blinding_value with IV, key, max, and POSITIVE
 def blinding_value(key, max):
+    '''
+    call privcount.util.blinding_value with IV, key, max, and POSITIVE
+    '''
     # derive_blinding_factor takes four arguments: a label string,
     # a secret string, a maximum value, and a boolean indicating
     # the direction of blinding
@@ -67,9 +73,11 @@ def blinding_value(key, max):
         value -= 1
     return value
 
-# Observe the range of func(key, max) with random keys for result_count trials
-# Return (min_value, max_value)
 def range_trial(result_count, func, max):
+    '''
+    Observe the range of func(key, max) with random keys for result_count trials
+    Return (min_value, max_value)
+    '''
     min_value = None
     max_value = None
     count = 0
@@ -83,11 +91,13 @@ def range_trial(result_count, func, max):
         count += 1
     return (min_value, max_value)
 
-# Bin a value in [0, max) into one of n_bins
-# returns a bin number in [0, n_bins) corresponding to value, or None if value
-# does not fit in any bin (this can happen if n_bins does not divide evenly
-# into max)
 def bin(value, max, n_bins):
+    '''
+    Bin a value in [0, max) into one of n_bins
+    returns a bin number in [0, n_bins) corresponding to value, or None if value
+    does not fit in any bin (this can happen if n_bins does not divide evenly
+    into max)
+    '''
     # find values that don't fit evenly in any bin
     residual = max % n_bins
     bin_width = (max - residual) // n_bins
@@ -99,9 +109,11 @@ def bin(value, max, n_bins):
         return None
     return value // bin_width
 
-# Bin the value of func(key, max) into one of n_bins, returning the bin number
-# return the bin corresponding to func's output for key
 def key_bin(func, key, max, n_bins):
+    '''
+    Bin the value of func(key, max) into one of n_bins, returning the bin number
+    returns the bin corresponding to func's output for key
+    '''
     value = func(key, max)
     assert value >= 0L
     assert value < max
@@ -112,9 +124,11 @@ def key_bin(func, key, max, n_bins):
     assert bin_number < n_bins
     return bin_number
 
-# Do result_count trials of func(key, max) with random keys, and bin each
-# result, returning a list of bin counts
 def bin_trial(result_count, func, max, n_bins):
+    '''
+    Do result_count trials of func(key, max) with random keys, and bin each
+    result, returning a list of bin counts
+    '''
     bins = list(0 for i in range(n_bins))
     count = 0
     while count < result_count:
@@ -125,10 +139,12 @@ def bin_trial(result_count, func, max, n_bins):
             count += 1
     return bins
 
-# Calculate the difference between actual and expected
-# Calculate the percentage of total that difference represents
-# return a formatted string
 def format_difference(actual, expected, total):
+    '''
+    Calculate the difference between actual and expected
+    Calculate the percentage of total that difference represents
+    return a formatted string
+    '''
     difference = actual - expected
     percentage = round(difference * 100.0 / total, 1)
     # with 100,000 trials, we shouldn't get any differences larger than ~2%
@@ -136,10 +152,12 @@ def format_difference(actual, expected, total):
     return "{} - {} = {} ({} %)".format(actual, expected, difference,
                                         percentage)
 
-# Calculate the difference_list between actual and expected_list
-# Calculate the percentage_list of total that difference_list represents
-# return a formatted string
 def format_difference_list(actual_list, expected, total):
+    '''
+    Calculate the difference_list between actual and expected_list
+    Calculate the percentage_list of total that difference_list represents
+    return a formatted string
+    '''
     difference_list = [actual - expected for actual in actual_list]
     percentage_list = [round(difference * 100.0 / total, 1)
                        for difference in difference_list]
@@ -149,8 +167,10 @@ def format_difference_list(actual_list, expected, total):
     return "{} - {} = {} ({} %)".format(actual_list, expected, difference_list,
                                  percentage_list)
 
-# Run a randomness trial on func and print the results
 def run_trial(result_count, func, max, n_bins):
+    '''
+    Run a randomness trial on func and print the results
+    '''
     (obs_min, obs_max) = range_trial(result_count, func, max)
     bin_list = bin_trial(result_count, func, max, n_bins)
     print "Actual - Expected = Difference (% Difference of Max)"

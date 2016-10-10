@@ -93,7 +93,10 @@ class DataCollector(ReconnectingClientFactory):
         reactor.connectSSL(ts_ip, ts_port, self, ssl.ClientContextFactory()) # pylint: disable=E1101
 
     def do_start(self, config): # called by protocol
-        # return None if failure, otherwise json will encode result
+        '''
+        start the node running
+        return None if failure, otherwise json will encode result
+        '''
         if 'sharekeepers' not in config or 'counters' not in config:
             return None
         # if we are still running from a previous incarnation, we need to stop first
@@ -162,8 +165,10 @@ class DataCollector(ReconnectingClientFactory):
         self.aggregator.start()
 
     def do_stop(self, config): # called by protocol
-        # stop the node from running
-        # return None if failure, otherwise json will encode result
+        '''
+        stop the node from running
+        return None if failure, otherwise json will encode result
+        '''
         logging.info("got command to stop collection phase")
         if 'send_counters' not in config:
             return None
@@ -193,7 +198,9 @@ class DataCollector(ReconnectingClientFactory):
         return response
 
     def refresh_config(self):
-        # re-read config and process any changes
+        '''
+        re-read config and process any changes
+        '''
         try:
             logging.debug("reading config file from '%s'", self.config_filepath)
 
@@ -479,8 +486,10 @@ class Aggregator(ReconnectingClientFactory):
     def get_fingerprint(self):
         return self.fingerprint
 
-    # return a dictionary containing each available context item
     def get_context(self):
+        '''
+        return a dictionary containing each available context item
+        '''
         context = {}
         if self.get_nickname() is not None:
             context['nickname'] = self.get_nickname()

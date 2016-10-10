@@ -24,9 +24,11 @@ import yaml
 # for calling methods on reactor # pylint: disable=E1101
 
 def log_tally_server_status(status):
-    # clients must only use the expected end time for logging: the tally
-    # server may end the round early, or extend it slightly to allow for
-    # network round trip times
+    '''
+    clients must only use the expected end time for logging: the tally
+    server may end the round early, or extend it slightly to allow for
+    network round trip times
+    '''
 
     # until the collection round starts, the tally server doesn't know when it
     # is expected to end
@@ -141,7 +143,9 @@ class TallyServer(ServerFactory):
             self.collection_phase.log_status()
 
     def refresh_config(self):
-        # re-read config and process any changes
+        '''
+        re-read config and process any changes
+        '''
         try:
             logging.debug("reading config file from '%s'", self.config_filepath)
 
@@ -404,19 +408,28 @@ class TallyServer(ServerFactory):
             self.collection_phase = None
             self.idle_time = time()
 
-    def get_start_config(self, client_uid): # called by protocol
-        # return None to indicate we shouldnt start the client yet
+    def get_start_config(self, client_uid):
+        '''
+        called by protocol
+        return None to indicate we shouldnt start the client yet
+        '''
         if self.collection_phase is not None:
             return self.collection_phase.get_start_config(client_uid)
         else:
             return None
 
-    def set_start_result(self, client_uid, result_data): # called by protocol
+    def set_start_result(self, client_uid, result_data):
+        '''
+        called by protocol
+        '''
         if self.collection_phase is not None:
             self.collection_phase.store_data(client_uid, result_data)
 
-    def get_stop_config(self, client_uid): # called by protocol
-        # returns None to indicate we shouldnt stop the client yet
+    def get_stop_config(self, client_uid):
+        '''
+        called by protocol
+        returns None to indicate we shouldnt stop the client yet
+        '''
         if self.collection_phase is not None:
             return self.collection_phase.get_stop_config(client_uid)
         elif client_uid in self.clients and self.clients[client_uid]['state'] == 'active':
@@ -513,10 +526,12 @@ class CollectionPhase(object):
                 self._change_state('stopped')
 
     def lost_client(self, client_uid):
-        # this is called when client_uid isnt responding
-        # we could mark error_flag as true and abort, or keep counting anyway
-        # and hope we can recover from the error by adding the local state
-        # files later... TODO
+        '''
+        this is called when client_uid isn't responding
+        we could mark error_flag as true and abort, or keep counting anyway
+        and hope we can recover from the error by adding the local state
+        files later... TODO
+        '''
         pass
 
     def store_data(self, client_uid, data):
@@ -626,22 +641,30 @@ class CollectionPhase(object):
         logging.info("sending stop command to {} {} request for counters".format(client_uid, msg))
         return config
 
-    # status is a dictionary
     def set_tally_server_status(self, status):
+        '''
+        status is a dictionary
+        '''
         # make a deep copy, so we can delete unnecesary keys
         self.tally_server_status = deepcopy(status)
 
-    # status is a dictionary of dictionaries, indexed by UID, and then by the
-    # attribute: name, fingerprint, ...
     def set_client_status(self, status):
+        '''
+        status is a dictionary of dictionaries, indexed by UID, and then by the
+        attribute: name, fingerprint, ...
+        '''
         self.client_status = deepcopy(status)
 
-    # config is a dictionary, indexed by the attributes: name, fingerprint, ...
     def set_client_config(self, uid, config):
+        '''
+        config is a dictionary, indexed by the attributes: name, fingerprint, ...
+        '''
         self.client_config[uid] = deepcopy(config)
 
-    # returns a list of unique types of clients in self.client_status
     def get_client_types(self):
+        '''
+        returns a list of unique types of clients in self.client_status
+        '''
         types = []
         if self.client_status is None:
             return types
@@ -651,8 +674,10 @@ class CollectionPhase(object):
                     types.append(self.client_status[uid]['type'])
         return types
 
-    # returns a context for each client by UID, grouped by client type
     def get_client_context_by_type(self):
+        '''
+        returns a context for each client by UID, grouped by client type
+        '''
         contexts = {}
         # we can't group by type without the type from the status
         if self.client_status is None:
@@ -668,8 +693,10 @@ class CollectionPhase(object):
                         contexts[type][uid]['Config'] = self.client_config[uid]
         return contexts
 
-    # the context is written out with the tally results
     def get_result_context(self):
+        '''
+        the context is written out with the tally results
+        '''
         result_context = {}
 
         # log the times used for the round

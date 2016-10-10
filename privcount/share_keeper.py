@@ -54,7 +54,7 @@ class ShareKeeper(ReconnectingClientFactory):
                 pickle.dump(state, fout)
 
     def run(self):
-        # load iniital config
+        # load initial config
         self.refresh_config()
         if self.config is None:
             logging.critical("cannot start due to error in config file")
@@ -83,8 +83,10 @@ class ShareKeeper(ReconnectingClientFactory):
         reactor.connectSSL(ts_ip, ts_port, self, ssl.ClientContextFactory()) # pylint: disable=E1101
 
     def do_start(self, config): # called by protocol
-        # this is called when we receive a command from the TS to start a new collection phase
-        # return None if failure, otherwise json will encode the result back to TS
+        '''
+        this is called when we receive a command from the TS to start a new collection phase
+        return None if failure, otherwise json will encode the result back to TS
+        '''
         logging.info("got command to start new collection phase")
 
         if 'shares' not in config or 'counters' not in config:
@@ -105,9 +107,11 @@ class ShareKeeper(ReconnectingClientFactory):
         return {}
 
     def do_stop(self, config): # called by protocol
-        # the TS wants us to stop the current collection phase
-        # they may or may not want us to send back our counters
-        # return None if failure, otherwise json will encode result back to the TS
+        '''
+        the TS wants us to stop the current collection phase
+        they may or may not want us to send back our counters
+        return None if failure, otherwise json will encode result back to the TS
+        '''
         logging.info("got command to stop collection phase")
         if 'send_counters' not in config:
             return None
@@ -137,7 +141,9 @@ class ShareKeeper(ReconnectingClientFactory):
         return response
 
     def refresh_config(self):
-        # re-read config and process any changes
+        '''
+        re-read config and process any changes
+        '''
         try:
             logging.debug("reading config file from '%s'", self.config_filepath)
 

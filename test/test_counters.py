@@ -32,8 +32,10 @@ counters = {
   }
 }
 
-# check that adjust_count_signed works as expected for q
 def check_adjust_count_signed(q):
+    '''
+    check that adjust_count_signed works as expected for q
+    '''
     # for any q, returns { (q + 1)//2 - q, ... , 0, ... , (q + 1)//2 - 1 }
     assert adjust_count_signed(0, q) == 0
     # we assume here that q is at least large enough to have -1, 0, 1
@@ -44,9 +46,11 @@ def check_adjust_count_signed(q):
     assert adjust_count_signed((q + 1L)//2L, q) == (q + 1L)//2L - q
     assert adjust_count_signed(q - 1L, q) == -1L
 
-# check that each blinding share is unique
-# if not, there is a coding error that affects the security of the system
 def check_blinding_shares(shares):
+    '''
+    check that each blinding share is unique
+    if not, there is a coding error that affects the security of the system
+    '''
     blinding_share_list = []
     for sk_name in shares:
         blinding_share_list.append(shares[sk_name]['secret'])
@@ -54,9 +58,11 @@ def check_blinding_shares(shares):
     # since there are only 2 x 256 bit values, collisions are very unlikely
     assert len(blinding_share_list) == len(set(blinding_share_list))
 
-# check that each blinding value is unique
-# if not, there is a coding error that affects the security of the system
 def check_blinding_values(secure_counters, q):
+    '''
+    check that each blinding value is unique
+    if not, there is a coding error that affects the security of the system
+    '''
     blinding_value_list = []
     for key in secure_counters.counters:
         for item in secure_counters.counters[key]['bins']:
@@ -79,11 +85,13 @@ def check_blinding_values(secure_counters, q):
     #else:
     #   print "skipping blinding value collision test: collisions too likely"
 
-# create the counters for a data collector, who will generate the shares and
-# noise
-# uses q to generate the appropriate blinding factors
-# returns a tuple containing a list of DCs and a list of SKs
 def create_counters(counters, q):
+    '''
+    create the counters for a data collector, who will generate the shares and
+    noise
+    uses q to generate the appropriate blinding factors
+    returns a tuple containing a list of DCs and a list of SKs
+    '''
     sc_dc = SecureCounters(counters, q)
     sc_dc.generate(['sk1', 'sk2'], 1.0)
     check_blinding_values(sc_dc, q)
@@ -102,12 +110,14 @@ def create_counters(counters, q):
     check_blinding_values(sc_sk2, q)
     return ([sc_dc], [sc_sk1, sc_sk2])
 
-# run a set of increments at the dc N times, using the two-argument form of
-# increment() to increment by 1 each time
-# each bin has 0, 1, or 2 values added per increment when multi_bin is True,
-# and 0 or 1 values added per increment when multi_bin is False
-# Returns long(N)
 def increment_counters(dc_list, N, multi_bin=True):
+    '''
+    run a set of increments at the dc N times, using the two-argument form of
+    increment() to increment by 1 each time
+    each bin has 0, 1, or 2 values added per increment when multi_bin is True,
+    and 0 or 1 values added per increment when multi_bin is False
+    Returns long(N)
+    '''
     sc_dc = dc_list[0]
     # xrange only accepts python ints, which is ok, because it's impossible to
     # increment more than 2**31 times in any reasonable test duration
@@ -131,11 +141,13 @@ def increment_counters(dc_list, N, multi_bin=True):
             sc_dc.increment('Bytes', 10000.0)
     return long(N)
 
-# run a set of increments at the dc N times, incrementing by X each time
-# each bin has 0, 1, or 2 values added per increment when multi_bin is True,
-# and 0 or 1 values added per increment when multi_bin is False
-# Returns long(N) * long(X)
 def increment_counters_num(dc_list, N, X=1L, multi_bin=True):
+    '''
+    run a set of increments at the dc N times, incrementing by X each time
+    each bin has 0, 1, or 2 values added per increment when multi_bin is True,
+    and 0 or 1 values added per increment when multi_bin is False
+    Returns long(N) * long(X)
+    '''
     sc_dc = dc_list[0]
     # xrange only accepts python ints, which is ok, because it's impossible to
     # increment more than 2**31 times in any reasonable test duration
@@ -159,9 +171,11 @@ def increment_counters_num(dc_list, N, X=1L, multi_bin=True):
             sc_dc.increment('Bytes', 10000.0, long(X))
     return long(N)*long(X)
 
-# Sums the counters in dc_list and sk_list, with maximum count q
-# Returns a tallies object populated with the resulting counts
 def sum_counters(counters, q, dc_list, sk_list):
+    '''
+    Sums the counters in dc_list and sk_list, with maximum count q
+    Returns a tallies object populated with the resulting counts
+    '''
     # get all of the counts, send for tallying
     counts_dc_list = [sc_dc.detach_counts() for sc_dc in dc_list]
     counts_sk_list = [sc_sk.detach_counts() for sc_sk in sk_list]
@@ -173,9 +187,11 @@ def sum_counters(counters, q, dc_list, sk_list):
     assert is_tally_success
     return sc_ts.detach_counts()
 
-# Checks that the tallies are the expected values, based on the number of
-# repetitions N, and whether we're in multi_bin mode
 def check_counters(tallies, N, multi_bin=True):
+    '''
+    Checks that the tallies are the expected values, based on the number of
+    repetitions N, and whether we're in multi_bin mode
+    '''
     print tallies
     if multi_bin:
         assert tallies['Bytes']['bins'][0][2] == 2*N
@@ -194,11 +210,13 @@ def check_counters(tallies, N, multi_bin=True):
     assert tallies['SanityCheck']['bins'][0][2] == 0
     print "all counts are correct!"
 
-# Validate that a counter run with counters, q, N, X, and multi_bin works,
-# and produces consistent results
-# If X is None, use the 2-argument form of increment, otherwise, use the
-# 3-argument form
 def try_counters(counters, q, N, X=None, multi_bin=True):
+    '''
+    Validate that a counter run with counters, q, N, X, and multi_bin works,
+    and produces consistent results
+    If X is None, use the 2-argument form of increment, otherwise, use the
+    3-argument form
+    '''
     (dc_list, sk_list) = create_counters(counters, q)
     if X is None:
         # use the 2-argument form

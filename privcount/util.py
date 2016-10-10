@@ -123,9 +123,11 @@ def get_random_free_port():
 
 ## File Paths ##
 
-# Return the abolute path corresponding to path_str, with user directories
-# expanded, and the current working directory assumed for relative paths
 def normalise_path(path_str):
+    '''
+    Return the abolute path corresponding to path_str, with user directories
+    expanded, and the current working directory assumed for relative paths
+    '''
     expanded_path = path.expanduser(path_str)
     return path.abspath(expanded_path)
 
@@ -146,22 +148,28 @@ def log_error():
 ## All period and timestamp arguments are normalised using normalise_time()
 ## before any calculations or formatting are performed
 
-# Return the normalised value of time
-# An abstraction used for consistent time rounding behaviour
 def normalise_time(time):
+    '''
+    Return the normalised value of time
+    An abstraction used for consistent time rounding behaviour
+    '''
     # we ignore microseconds
     return int(time)
 
-# Return the normalised value of the current time
 def current_time():
+    '''
+    Return the normalised value of the current time
+    '''
     return normalise_time(time())
 
-# Format a time period as a human-readable string
-# period is in seconds
-# Returns a string of the form:
-# 1w 3d 12h 20m 32s
-# starting with the first non-zero period (seconds are always included)
 def format_period(period):
+    '''
+    Format a time period as a human-readable string
+    period is in seconds
+    Returns a string of the form:
+    1w 3d 12h 20m 32s
+    starting with the first non-zero period (seconds are always included)
+    '''
     period = normalise_time(period)
     period_str = ""
     # handle negative times by prepending a minus sign
@@ -198,108 +206,126 @@ def format_period(period):
     period_str += "{}s".format(second)
     return period_str
 
-# Format a timestamp as a human-readable UTC date and time string
-# timestamp is in seconds since the epoch
-# Returns a string of the form:
-# 2016-07-16 17:58:00
 def format_datetime(timestamp):
+    '''
+    Format a timestamp as a human-readable UTC date and time string
+    timestamp is in seconds since the epoch
+    Returns a string of the form:
+    2016-07-16 17:58:00
+    '''
     timestamp = normalise_time(timestamp)
     return strftime("%Y-%m-%d %H:%M:%S", gmtime(timestamp))
 
-# Format a timestamp as a unix epoch numeric string
-# timestamp is in seconds since the epoch
-# Returns a string of the form:
-# 1468691880
 def format_epoch(timestamp):
+    '''
+    Format a timestamp as a unix epoch numeric string
+    timestamp is in seconds since the epoch
+    Returns a string of the form:
+    1468691880
+    '''
     timestamp = normalise_time(timestamp)
     return str(timestamp)
 
-# Format a period and timestamp as a human-readable string in UTC
-# period is in seconds, and timestamp is in seconds since the epoch
-# Returns a string of the form:
-# 1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 1468691880)
 def format_time(period, desc, timestamp):
+    '''
+    Format a period and timestamp as a human-readable string in UTC
+    period is in seconds, and timestamp is in seconds since the epoch
+    Returns a string of the form:
+    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 1468691880)
+    '''
     return "{} ({} {} {})".format(format_period(period),
                                   desc,
                                   format_datetime(timestamp),
                                   format_epoch(timestamp))
 
-# Format a period and two interval timestamps as a human-readable string in UTC
-# period is in seconds, and the timestamps are in seconds since the epoch
-# Returns a string of the form:
-# 1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 to 2016-07-27 06:18:32,
-# 1468691880 to 1469600312)
 def format_interval(period, desc, begin_timestamp, end_timestamp):
-  return "{} ({} {} to {}, {} to {})".format(format_period(period),
-                                             desc,
-                                             format_datetime(begin_timestamp),
-                                             format_datetime(end_timestamp),
-                                             format_epoch(begin_timestamp),
-                                             format_epoch(end_timestamp))
+    '''
+    Format a period and two interval timestamps as a human-readable string in UTC
+    period is in seconds, and the timestamps are in seconds since the epoch
+    Returns a string of the form:
+    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 to 2016-07-27 06:18:32,
+    1468691880 to 1469600312)
+    '''
+    return "{} ({} {} to {}, {} to {})".format(format_period(period),
+                                               desc,
+                                               format_datetime(begin_timestamp),
+                                               format_datetime(end_timestamp),
+                                               format_epoch(begin_timestamp),
+                                               format_epoch(end_timestamp))
 
-# Format the time elapsed since a past event, and that event's time in UTC
-# past_timestamp is in seconds since the epoch
-# The elapsed time is from past_timestamp to the current time
-# past_timestamp is typically status['time'], and desc is typically 'since'
-# Returns a string of the form:
-# 1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 1468691880)
 def format_elapsed_time_since(past_timestamp, desc):
+    '''
+    Format the time elapsed since a past event, and that event's time in UTC
+    past_timestamp is in seconds since the epoch
+    The elapsed time is from past_timestamp to the current time
+    past_timestamp is typically status['time'], and desc is typically 'since'
+    Returns a string of the form:
+    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 1468691880)
+    '''
     # Normalise before calculation to avoid truncation errors
     past_timestamp = normalise_time(past_timestamp)
     elapsed_period = current_time() - past_timestamp
     return format_time(elapsed_period, desc, past_timestamp)
 
-# Format the time delay until a future event, and the expected event time
-# in UTC
-# delay_period is in seconds
-# The event time is the current time plus delay_period
-# delay_period is typically config['defer_time'], and desc is typically 'at'
-# Returns a string of the form:
-# 1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 1469600312)
 def format_delay_time_wait(delay_period, desc):
+    '''
+    Format the time delay until a future event, and the expected event time
+    in UTC
+    delay_period is in seconds
+    The event time is the current time plus delay_period
+    delay_period is typically config['defer_time'], and desc is typically 'at'
+    Returns a string of the form:
+    1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 1469600312)
+    '''
     # Normalise before calculation to avoid truncation errors
     delay_period = normalise_time(delay_period)
     future_timestamp = current_time() + delay_period
     return format_time(delay_period, desc, future_timestamp)
 
-# Format the time delay until a future event, and the expected event time
-# in UTC
-# The time delay is the difference between future_timestamp and the current
-# time
-# future_timestamp is in seconds since the epoch
-# future_timestamp is typically config['defer_time'], and desc is typically 'at'
-# Returns a string of the form:
-# 1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 1469600312)
 def format_delay_time_until(future_timestamp, desc):
+    '''
+    Format the time delay until a future event, and the expected event time
+    in UTC
+    The time delay is the difference between future_timestamp and the current
+    time
+    future_timestamp is in seconds since the epoch
+    future_timestamp is typically config['defer_time'], and desc is typically 'at'
+    returns a string of the form:
+    1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 1469600312)
+    '''
     # Normalise before calculation to avoid truncation errors
     future_timestamp = normalise_time(future_timestamp)
     delay_period = future_timestamp - current_time()
     return format_time(delay_period, desc, future_timestamp)
 
-# Format the interval elapsed between two events, and the times of those
-# events in UTC
-# The timestamps are in seconds since the epoch
-# The interval is between begin_time and end_time
-# desc is typically 'from'
-# Returns a string of the form:
-# 1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 to 2016-07-27 06:18:32,
-# 1468691880 to 1469600312)
 def format_interval_time_between(begin_timestamp, desc, end_timestamp):
+    '''
+    Format the interval elapsed between two events, and the times of those
+    events in UTC
+    The timestamps are in seconds since the epoch
+    The interval is between begin_time and end_time
+    desc is typically 'from'
+    Returns a string of the form:
+    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 to 2016-07-27 06:18:32,
+    1468691880 to 1469600312)
+    '''
     # Normalise before calculation to avoid truncation errors
     begin_timestamp = normalise_time(begin_timestamp)
     end_timestamp = normalise_time(end_timestamp)
     period = end_timestamp - begin_timestamp
     return format_interval(period, desc, begin_timestamp, end_timestamp)
 
-# Format the time elapsed since the last Tor event, and that event's time
-# in UTC
-# last_event_timestamp is in seconds since the epoch, and can be None
-# for no events
-# The elapsed time is from last_event_timestamp to the current time
-# Returns a string in one of the following forms:
-# no Tor events received
-# last Tor event was 1w 3d 12h 20m 32s (at 2016-07-16 17:58:00 1468691880)
 def format_last_event_time_since(last_event_timestamp):
+    '''
+    Format the time elapsed since the last Tor event, and that event's time
+    in UTC
+    last_event_timestamp is in seconds since the epoch, and can be None
+    for no events
+    The elapsed time is from last_event_timestamp to the current time
+    Returns a string in one of the following forms:
+    no Tor events received
+    last Tor event was 1w 3d 12h 20m 32s (at 2016-07-16 17:58:00 1468691880)
+    '''
     if last_event_timestamp is None:
         return "no Tor events received"
     else:
@@ -308,34 +334,40 @@ def format_last_event_time_since(last_event_timestamp):
 
 ## Calculation ##
 
-# The hard-coded q value, which is used to limit the maximum counter values
-# In PrivCount, this does not have to be prime, and there is no need for it
-# to be configurable
-# All PrivCount counters should use unlimited-length Python longs, so that
-# q can exceed the size of a native C long
 def q():
+    '''
+    The hard-coded q value, which is used to limit the maximum counter values
+    In PrivCount, this does not have to be prime, and there is no need for it
+    to be configurable
+    All PrivCount counters should use unlimited-length Python longs, so that
+    q can exceed the size of a native C long
+    '''
     #return 2147483647L
     return 999999999959L
     # q is limited to 2**64, because sample() only unpacks 8 bytes
     #return 2L**64L
 
-# Sample noise from a gussian distribution
-# the distribution is over +/- sigma, scaled by the noise weight
-# calculated from the exit probability p_exit, and the overall sum_of_sq
-# bandwidth
-# returns a floating-point value between +sigma and -sigma, scaled by
-# noise_weight
 def noise(sigma, sum_of_sq, p_exit):
+    '''
+    Sample noise from a gussian distribution
+    the distribution is over +/- sigma, scaled by the noise weight
+    calculated from the exit probability p_exit, and the overall sum_of_sq
+    bandwidth
+    returns a floating-point value between +sigma and -sigma, scaled by
+    noise_weight
+    '''
     sigma_i = p_exit * sigma / sqrt(sum_of_sq)
     random_sample = gauss(0, sigma_i)
     return random_sample
 
-# Calculate pseudo-random bytes using a keyed hash based on key and IV
-# Given the same key and IV, the same pseudo-random bytes will be produced
-# key must contain at least as many bits of entropy as the hash
-# Therefore, it must be at least 32 bytes long
-# returns 32 pseudo-random bytes
 def PRF(key, IV):
+    '''
+    Calculate pseudo-random bytes using a keyed hash based on key and IV
+    Given the same key and IV, the same pseudo-random bytes will be produced
+    key must contain at least as many bits of entropy as the hash
+    Therefore, it must be at least 32 bytes long
+    returns 32 pseudo-random bytes
+    '''
     assert len(key) >= Hash().digest_size
     prv = Hash("PRF1|KEY:%s|IV:%s|" % (key, IV)).digest()
     # for security, the key input must have at least as many bytes as the hash
@@ -346,12 +378,14 @@ def PRF(key, IV):
 Q_BYTE_MAX = 8L
 Q_BIT_MAX = Q_BYTE_MAX * 8L
 
-# Sample a uniformly pseudo-random value from the random byte array s,
-# returning a value with maximum q
-# s must be at least 8 bytes long
-# the returned value has a maximum of 2**64 - 1, so q is limited to 2**64
-# returns a uniformly distributed in [0, q)
 def sample(s, q):
+    '''
+    Sample a uniformly pseudo-random value from the random byte array s,
+    returning a value with maximum q
+    s must be at least 8 bytes long
+    the returned value has a maximum of 2**64 - 1, so q is limited to 2**64
+    returns a uniformly distributed in [0, q)
+    '''
     # in order for this function to return v in {0, ... , q-1}, q-1 must be
     # representable in Q_BIT_MAX bits or less
     # (2**N is the first number not representable in an N-bit unsigned integer)
@@ -380,10 +414,12 @@ def sample(s, q):
         s = Hash(s).digest()
     return v
 
-# Calculate a blinding factor with maximum q, based on label and secret
-# when positive is True, return the blinding factor, and when positive is
-# False, returns the unblinding factor (the inverse value mod q)
 def derive_blinding_factor(label, secret, q, positive=True):
+    '''
+    Calculate a blinding factor with maximum q, based on label and secret
+    when positive is True, return the blinding factor, and when positive is
+    False, returns the unblinding factor (the inverse value mod q)
+    '''
     ## Keyed share derivation
     s = PRF(secret, label)
     v = sample(s, q)
@@ -391,13 +427,16 @@ def derive_blinding_factor(label, secret, q, positive=True):
     s0 = v if positive else q - v
     return s0
 
-# adjust the unsigned 0 <= count < q, returning a signed integer
-# for odd  q, returns { -q//2, ... , 0, ... , q//2 }
-# for even q, returns { -q//2, ... , 0, ... , q//2 - 1 }
-# with the smaller positive values >= q//2 [- 1] becoming the largest negative
-# values
-# this is the inverse operation of x % q, when x is in the appropriate range
 def adjust_count_signed(count, q):
+    '''
+    adjust the unsigned 0 <= count < q, returning a signed integer
+    for odd  q, returns { -q//2, ... , 0, ... , q//2 }
+    for even q, returns { -q//2, ... , 0, ... , q//2 - 1 }
+    with the smaller positive values >= q//2 [- 1] becoming the largest negative
+    values
+    this is the inverse operation of x % q, when x is in the appropriate range
+    (x % q always returns a positive integer when q is positive)
+    '''
     # sanity check input
     assert count < q
     # When implementing this adjustment,
@@ -525,7 +564,7 @@ class SecureCounters(object):
             # add blinding factors to all of the counters
             self._blind(secret)
 
-	    # Add noise for each counter independently
+	      # Add noise for each counter independently
         for key in self.counters:
             for item in self.counters[key]['bins']:
                 sigma = self.counters[key]['sigma']
@@ -545,7 +584,9 @@ class SecureCounters(object):
         return shares
 
     def import_blinding_share(self, share):
-        # reverse blinding factors for all of the counters
+        '''
+        reverse blinding factors for all of the counters
+        '''
         self._unblind(b64decode(share['secret']))
 
     def increment(self, counter_key, bin_value, num_increments=1L):
