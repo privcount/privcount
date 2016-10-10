@@ -272,8 +272,8 @@ class Aggregator(ReconnectingClientFactory):
         self.rotator = None
         self.tor_control_port = tor_control_port
 
-        self.last_event_time = 0
-        self.num_rotations = 0
+        self.last_event_time = 0.0
+        self.num_rotations = 0L
         self.circ_info = {}
         self.cli_ips_rotated = time()
         self.cli_ips_current = {}
@@ -503,7 +503,7 @@ class Aggregator(ReconnectingClientFactory):
             context['address'] = self.get_address()
         if self.get_fingerprint() is not None:
             context['fingerprint'] = self.get_fingerprint()
-        if self.last_event_time != 0:
+        if self.last_event_time != 0.0:
             context['last_event_time'] = self.last_event_time
         return context
 
@@ -536,7 +536,7 @@ class Aggregator(ReconnectingClientFactory):
         return True
 
     def _handle_stream_event(self, items):
-        chanid, circid, strmid, port, readbw, writebw = [int(v) for v in items[0:6]]
+        chanid, circid, strmid, port, readbw, writebw = [long(v) for v in items[0:6]]
         start, end = float(items[6]), float(items[7])
         is_dns = True if int(items[8]) == 1 else False
         is_dir = True if int(items[9]) == 1 else False
@@ -545,15 +545,14 @@ class Aggregator(ReconnectingClientFactory):
         totalbw = readbw+writebw
         if totalbw <= 0:
             return
-        totalbw = int(round(totalbw/1024.0)) # XXX temporary until we fix float/long issue in counter
 
         self.secure_counters.increment("StreamsAll", 1)
         self.secure_counters.increment("StreamBytesAll", 1, totalbw)
 
-        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0, 'web':0, 'p2p':0, 'other':0}, 'stream_starttimes': {'interactive':[], 'web':[], 'p2p':[], 'other':[]}})
+        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0L, 'web':0L, 'p2p':0L, 'other':0L}, 'stream_starttimes': {'interactive':[], 'web':[], 'p2p':[], 'other':[]}})
 
         stream_class = self._classify_port(port)
-        self.circ_info[chanid][circid]['num_streams'][stream_class] += 1
+        self.circ_info[chanid][circid]['num_streams'][stream_class] += 1L
         self.circ_info[chanid][circid]['stream_starttimes'][stream_class].append(start)
 
         # the amount we read from the stream is bound for the client
@@ -629,7 +628,7 @@ class Aggregator(ReconnectingClientFactory):
         return times
 
     def _handle_circuit_event(self, items):
-        chanid, circid, ncellsin, ncellsout, readbwdns, writebwdns, readbwexit, writebwexit = [int(v) for v in items[0:8]]
+        chanid, circid, ncellsin, ncellsout, readbwdns, writebwdns, readbwexit, writebwexit = [long(v) for v in items[0:8]]
         start, end = float(items[8]), float(items[9])
         previp = items[10]
         prevIsClient = True if int(items[11]) > 0 else False
@@ -669,12 +668,12 @@ class Aggregator(ReconnectingClientFactory):
             # count number of completed circuits per client
             if is_active:
                 if 'num_active_completed' not in self.cli_ips_current[previp]:
-                    self.cli_ips_current[previp]['num_active_completed'] = 0
-                self.cli_ips_current[previp]['num_active_completed'] += 1
+                    self.cli_ips_current[previp]['num_active_completed'] = 0L
+                self.cli_ips_current[previp]['num_active_completed'] += 1L
             else:
                 if 'num_inactive_completed' not in self.cli_ips_current[previp]:
-                    self.cli_ips_current[previp]['num_inactive_completed'] = 0
-                self.cli_ips_current[previp]['num_inactive_completed'] += 1
+                    self.cli_ips_current[previp]['num_inactive_completed'] = 0L
+                self.cli_ips_current[previp]['num_inactive_completed'] += 1L
 
         elif not nextIsRelay:
             # prev hop is known relay but next is not, we are exit
@@ -736,7 +735,7 @@ class Aggregator(ReconnectingClientFactory):
                     self.circ_info.pop(chanid, None)
 
     def _handle_connection_event(self, items):
-        chanid = int(items[0])
+        chanid = long(items[0])
         start, end = float(items[1]), float(items[2])
         ip = items[3]
         isclient = True if int(items[4]) > 0 else False
@@ -769,4 +768,4 @@ class Aggregator(ReconnectingClientFactory):
         self.cli_ips_previous = self.cli_ips_current
         self.cli_ips_current = {}
         self.cli_ips_rotated = time()
-        self.num_rotations += 1
+        self.num_rotations += 1L

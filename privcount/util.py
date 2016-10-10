@@ -342,10 +342,11 @@ def q():
     All PrivCount counters should use unlimited-length Python longs, so that
     q can exceed the size of a native C long
     '''
+    # historical q values
     #return 2147483647L
-    return 999999999959L
+    #return 999999999959L
     # q is limited to 2**64, because sample() only unpacks 8 bytes
-    #return 2L**64L
+    return 2L**64L
 
 def noise(sigma, sum_of_sq, p_exit):
     '''
