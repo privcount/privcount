@@ -4,6 +4,7 @@
 
 from privcount.util import SecureCounters, adjust_count_signed, q
 from math import sqrt
+import random
 import sys
 
 # When testing q itself, use this range of values
@@ -45,6 +46,16 @@ def check_adjust_count_signed(q):
     assert adjust_count_signed((q + 1L)//2L - 1L, q) == (q + 1L)//2L - 1L
     assert adjust_count_signed((q + 1L)//2L, q) == (q + 1L)//2L - q
     assert adjust_count_signed(q - 1L, q) == -1L
+
+def try_adjust_count_signed(q):
+    '''
+    check that adjust_count_signed works as expected for q,
+    and a randomly chosen number between q_min and q
+    '''
+    # this is neither cryptographically secure nor uniformly distributed
+    q_random = random.randrange(q_min, q)
+    check_adjust_count_signed(q_random)
+    check_adjust_count_signed(q)
 
 def check_blinding_shares(shares):
     '''
@@ -154,6 +165,11 @@ def increment_counters_num(dc_list, N, X=1L, multi_bin=True):
     assert N <= sys.maxint
     for _ in xrange(int(N)):
         # bin[0]
+        # test that increment handles signed numbers, doubles & ints correctly
+        # we can't rely on X being able to fit in a double or an int
+        # so just increment by one, then subtract one
+        sc_dc.increment('Bytes', 0.0, 1.0)
+        sc_dc.increment('Bytes', 0.0, -1)
         sc_dc.increment('Bytes', 0.0, long(X))
         if multi_bin:
             sc_dc.increment('Bytes', 511.0, long(X))
@@ -192,7 +208,9 @@ def check_counters(tallies, N, multi_bin=True):
     Checks that the tallies are the expected values, based on the number of
     repetitions N, and whether we're in multi_bin mode
     '''
-    print tallies
+    print "amount: {}".format(N)
+    print "tallies: {}".format(tallies)
+    # these assertions may also fail if the counter values overflow q
     if multi_bin:
         assert tallies['Bytes']['bins'][0][2] == 2*N
     else:
@@ -210,13 +228,17 @@ def check_counters(tallies, N, multi_bin=True):
     assert tallies['SanityCheck']['bins'][0][2] == 0
     print "all counts are correct!"
 
-def try_counters(counters, q, N, X=None, multi_bin=True):
+def run_counters(counters, q, N, X=None, multi_bin=True):
     '''
     Validate that a counter run with counters, q, N, X, and multi_bin works,
     and produces consistent results
     If X is None, use the 2-argument form of increment, otherwise, use the
     3-argument form
     '''
+    print "q: {} N: {} X: {} multi_bin: {}".format(q, N,
+                                                   X if X is not None
+                                                     else "None",
+                                                   multi_bin)
     (dc_list, sk_list) = create_counters(counters, q)
     if X is None:
         # use the 2-argument form
@@ -228,6 +250,25 @@ def try_counters(counters, q, N, X=None, multi_bin=True):
         assert amount == N*X
     tallies = sum_counters(counters, q, dc_list, sk_list)
     check_counters(tallies, amount, multi_bin)
+
+def try_counters(counters, q, N, X=None, multi_bin=True):
+    '''
+    Validate that a counter run with counters, q, N, X, and multi_bin works,
+    and produces consistent results
+    Also try a randomly selected number q_random between q_min and q,
+    and a randomly selected number N_random between 0 and min(q_random, N)
+    and a randomly selected number X_random between 0 and min(q_random, X)
+    If X is None, use the 2-argument form of increment, otherwise, use the
+    3-argument form
+    '''
+    # this is neither cryptographically secure nor uniformly distributed
+    q_random = random.randrange(q_min, q)
+    N_random = random.randrange(0, min(q_random, N))
+    X_random = None
+    if X is not None:
+        X_random = random.randrange(0, min(q_random, X))
+    run_counters(counters, q_random, N_random, X_random, multi_bin)
+    run_counters(counters, q, N, X, multi_bin)
 
 # Check that unsigned to signed conversion works with odd and even q
 print "Unsigned to signed counter conversion, q = 3:"
@@ -248,17 +289,17 @@ print "Success!"
 print ""
 
 print "Unsigned to signed counter conversion, q = {}:".format(q())
-check_adjust_count_signed(q())
+try_adjust_count_signed(q())
 print "Success!"
 print ""
 
 print "Unsigned to signed counter conversion, q = {}:".format(q() + 1L)
-check_adjust_count_signed(q() + 1L)
+try_adjust_count_signed(q() + 1L)
 print "Success!"
 print ""
 
 print "Unsigned to signed counter conversion, q = {}:".format(q() - 1L)
-check_adjust_count_signed(q() - 1L)
+try_adjust_count_signed(q() - 1L)
 print "Success!"
 print ""
 
@@ -335,7 +376,7 @@ while q_try <= q_max:
         X = 2L**a
         print "Trying q = 2**{} = {}".format(b, q_try)
         print "Unsigned to signed counter conversion, q = {}:".format(q_try)
-        check_adjust_count_signed(q_try)
+        try_adjust_count_signed(q_try)
         print "Success!"
         print ""
         # we interpret values >= q/2 as negative
@@ -360,7 +401,7 @@ a = 1L
 X = 2L**a
 print "Trying q = q_max = {}".format(q_try)
 print "Unsigned to signed counter conversion, q = {}:".format(q_try)
-check_adjust_count_signed(q_try)
+try_adjust_count_signed(q_try)
 print "Success!"
 print ""
 # we interpret values >= q/2 as negative
