@@ -3,6 +3,8 @@
 This directory contains the necessary components to run a local deployment of PrivCount and to test
 its ability to correctly gather statistics using safe test data.
 
+It also contains some unit tests that exercise various PrivCount subsystems.
+
 ## Prerequisites
 
 You should have followed the main README to setup and install PrivCount. You should have your
@@ -25,6 +27,20 @@ It can optionally install the latest version of privcount using 'pip install', a
 For quick integration testing, reduce the collect_period to 2, and the event_period and checkin_period to 1. This will only capture a few of the injected events.
 
 ### Manual testing
+
+#### Unit Tests
+
+Run the unit tests: (optional)
+
+    python test_format_time.py
+    python test_keyed_random.py
+    python test_counters.py
+
+If you have a local privcount-patched Tor instance on control port 9050, you can test that it supports PRIVCOUNT events: (optional)
+
+    python test_counters.py
+
+#### Integration Tests
 
 Start the event server that will supply events to the data collector:
 

@@ -10,7 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config
 
 import yaml
 
@@ -93,8 +93,11 @@ class DataCollector(ReconnectingClientFactory):
         reactor.connectSSL(ts_ip, ts_port, self, ssl.ClientContextFactory()) # pylint: disable=E1101
 
     def do_start(self, config): # called by protocol
-        # return None if failure, otherwise json will encode result
-        if 'q' not in config or 'sharekeepers' not in config or 'counters' not in config:
+        '''
+        start the node running
+        return None if failure, otherwise json will encode result
+        '''
+        if 'sharekeepers' not in config or 'counters' not in config:
             return None
         # if we are still running from a previous incarnation, we need to stop first
         if self.aggregator is not None:
@@ -136,7 +139,7 @@ class DataCollector(ReconnectingClientFactory):
             logging.info('refusing to start collecting without required share keepers')
             return None
 
-        self.aggregator = Aggregator(dc_counters, config['sharekeepers'], self.config['noise_weight'], config['q'], self.config['event_source'])
+        self.aggregator = Aggregator(dc_counters, config['sharekeepers'], self.config['noise_weight'], counter_modulus(), self.config['event_source'])
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -162,8 +165,10 @@ class DataCollector(ReconnectingClientFactory):
         self.aggregator.start()
 
     def do_stop(self, config): # called by protocol
-        # stop the node from running
-        # return None if failure, otherwise json will encode result
+        '''
+        stop the node from running
+        return None if failure, otherwise json will encode result
+        '''
         logging.info("got command to stop collection phase")
         if 'send_counters' not in config:
             return None
@@ -186,11 +191,14 @@ class DataCollector(ReconnectingClientFactory):
                 response['Counts'] = counts
 
         logging.info("collection phase was stopped")
-        response['Config'] = self.config
+        # even though the counter limits are hard-coded, include them anyway
+        response['Config'] = add_counter_limits_to_config(self.config)
         return response
 
     def refresh_config(self):
-        # re-read config and process any changes
+        '''
+        re-read config and process any changes
+        '''
         try:
             logging.debug("reading config file from '%s'", self.config_filepath)
 
@@ -262,8 +270,8 @@ class Aggregator(ReconnectingClientFactory):
         self.rotator = None
         self.tor_control_port = tor_control_port
 
-        self.last_event_time = 0
-        self.num_rotations = 0
+        self.last_event_time = 0.0
+        self.num_rotations = 0L
         self.circ_info = {}
         self.cli_ips_rotated = time()
         self.cli_ips_current = {}
@@ -476,8 +484,10 @@ class Aggregator(ReconnectingClientFactory):
     def get_fingerprint(self):
         return self.fingerprint
 
-    # return a dictionary containing each available context item
     def get_context(self):
+        '''
+        return a dictionary containing each available context item
+        '''
         context = {}
         if self.get_nickname() is not None:
             context['nickname'] = self.get_nickname()
@@ -491,7 +501,7 @@ class Aggregator(ReconnectingClientFactory):
             context['address'] = self.get_address()
         if self.get_fingerprint() is not None:
             context['fingerprint'] = self.get_fingerprint()
-        if self.last_event_time != 0:
+        if self.last_event_time != 0.0:
             context['last_event_time'] = self.last_event_time
         return context
 
@@ -524,7 +534,7 @@ class Aggregator(ReconnectingClientFactory):
         return True
 
     def _handle_stream_event(self, items):
-        chanid, circid, strmid, port, readbw, writebw = [int(v) for v in items[0:6]]
+        chanid, circid, strmid, port, readbw, writebw = [long(v) for v in items[0:6]]
         start, end = float(items[6]), float(items[7])
         is_dns = True if int(items[8]) == 1 else False
         is_dir = True if int(items[9]) == 1 else False
@@ -533,15 +543,14 @@ class Aggregator(ReconnectingClientFactory):
         totalbw = readbw+writebw
         if totalbw <= 0:
             return
-        totalbw = int(round(totalbw/1024.0)) # XXX temporary until we fix float/long issue in counter
 
         self.secure_counters.increment("StreamsAll", 1)
         self.secure_counters.increment("StreamBytesAll", 1, totalbw)
 
-        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0, 'web':0, 'p2p':0, 'other':0}, 'stream_starttimes': {'interactive':[], 'web':[], 'p2p':[], 'other':[]}})
+        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0L, 'web':0L, 'p2p':0L, 'other':0L}, 'stream_starttimes': {'interactive':[], 'web':[], 'p2p':[], 'other':[]}})
 
         stream_class = self._classify_port(port)
-        self.circ_info[chanid][circid]['num_streams'][stream_class] += 1
+        self.circ_info[chanid][circid]['num_streams'][stream_class] += 1L
         self.circ_info[chanid][circid]['stream_starttimes'][stream_class].append(start)
 
         # the amount we read from the stream is bound for the client
@@ -617,7 +626,7 @@ class Aggregator(ReconnectingClientFactory):
         return times
 
     def _handle_circuit_event(self, items):
-        chanid, circid, ncellsin, ncellsout, readbwdns, writebwdns, readbwexit, writebwexit = [int(v) for v in items[0:8]]
+        chanid, circid, ncellsin, ncellsout, readbwdns, writebwdns, readbwexit, writebwexit = [long(v) for v in items[0:8]]
         start, end = float(items[8]), float(items[9])
         previp = items[10]
         prevIsClient = True if int(items[11]) > 0 else False
@@ -657,12 +666,12 @@ class Aggregator(ReconnectingClientFactory):
             # count number of completed circuits per client
             if is_active:
                 if 'num_active_completed' not in self.cli_ips_current[previp]:
-                    self.cli_ips_current[previp]['num_active_completed'] = 0
-                self.cli_ips_current[previp]['num_active_completed'] += 1
+                    self.cli_ips_current[previp]['num_active_completed'] = 0L
+                self.cli_ips_current[previp]['num_active_completed'] += 1L
             else:
                 if 'num_inactive_completed' not in self.cli_ips_current[previp]:
-                    self.cli_ips_current[previp]['num_inactive_completed'] = 0
-                self.cli_ips_current[previp]['num_inactive_completed'] += 1
+                    self.cli_ips_current[previp]['num_inactive_completed'] = 0L
+                self.cli_ips_current[previp]['num_inactive_completed'] += 1L
 
         elif not nextIsRelay:
             # prev hop is known relay but next is not, we are exit
@@ -724,7 +733,7 @@ class Aggregator(ReconnectingClientFactory):
                     self.circ_info.pop(chanid, None)
 
     def _handle_connection_event(self, items):
-        chanid = int(items[0])
+        chanid = long(items[0])
         start, end = float(items[1]), float(items[2])
         ip = items[3]
         isclient = True if int(items[4]) > 0 else False
@@ -757,4 +766,4 @@ class Aggregator(ReconnectingClientFactory):
         self.cli_ips_previous = self.cli_ips_current
         self.cli_ips_current = {}
         self.cli_ips_rotated = time()
-        self.num_rotations += 1
+        self.num_rotations += 1L

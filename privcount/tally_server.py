@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config
 
 import yaml
 
@@ -24,9 +24,11 @@ import yaml
 # for calling methods on reactor # pylint: disable=E1101
 
 def log_tally_server_status(status):
-    # clients must only use the expected end time for logging: the tally
-    # server may end the round early, or extend it slightly to allow for
-    # network round trip times
+    '''
+    clients must only use the expected end time for logging: the tally
+    server may end the round early, or extend it slightly to allow for
+    network round trip times
+    '''
 
     # until the collection round starts, the tally server doesn't know when it
     # is expected to end
@@ -141,7 +143,9 @@ class TallyServer(ServerFactory):
             self.collection_phase.log_status()
 
     def refresh_config(self):
-        # re-read config and process any changes
+        '''
+        re-read config and process any changes
+        '''
         try:
             logging.debug("reading config file from '%s'", self.config_filepath)
 
@@ -224,7 +228,15 @@ class TallyServer(ServerFactory):
             assert ts_conf['event_period'] > 0
             assert ts_conf['checkin_period'] > 0
             assert ts_conf['continue'] == True or ts_conf['continue'] == False
-            assert ts_conf['q'] > 0
+            # check the hard-coded counter values are sane
+            assert counter_modulus() > 0
+            assert min_blinded_counter_value() == 0
+            assert max_blinded_counter_value() > 0
+            assert max_blinded_counter_value() < counter_modulus()
+            assert min_tally_counter_value() < 0
+            assert max_tally_counter_value() > 0
+            assert max_tally_counter_value() < counter_modulus()
+            assert -min_tally_counter_value() < counter_modulus()
 
             for key in ts_conf['counters']:
                 if 'Histogram' in key:
@@ -390,7 +402,7 @@ class TallyServer(ServerFactory):
         # so we'll wait and pass the client context to collection_phase just
         # before stopping it
 
-        self.collection_phase = CollectionPhase(self.config['collect_period'], self.config['counters'], sk_uids, sk_public_keys, dc_uids, self.config['q'], clock_padding, self.config)
+        self.collection_phase = CollectionPhase(self.config['collect_period'], self.config['counters'], sk_uids, sk_public_keys, dc_uids, counter_modulus(), clock_padding, self.config)
         self.collection_phase.start()
 
     def stop_collection_phase(self):
@@ -404,19 +416,28 @@ class TallyServer(ServerFactory):
             self.collection_phase = None
             self.idle_time = time()
 
-    def get_start_config(self, client_uid): # called by protocol
-        # return None to indicate we shouldnt start the client yet
+    def get_start_config(self, client_uid):
+        '''
+        called by protocol
+        return None to indicate we shouldnt start the client yet
+        '''
         if self.collection_phase is not None:
             return self.collection_phase.get_start_config(client_uid)
         else:
             return None
 
-    def set_start_result(self, client_uid, result_data): # called by protocol
+    def set_start_result(self, client_uid, result_data):
+        '''
+        called by protocol
+        '''
         if self.collection_phase is not None:
             self.collection_phase.store_data(client_uid, result_data)
 
-    def get_stop_config(self, client_uid): # called by protocol
-        # returns None to indicate we shouldnt stop the client yet
+    def get_stop_config(self, client_uid):
+        '''
+        called by protocol
+        returns None to indicate we shouldnt stop the client yet
+        '''
         if self.collection_phase is not None:
             return self.collection_phase.get_stop_config(client_uid)
         elif client_uid in self.clients and self.clients[client_uid]['state'] == 'active':
@@ -431,14 +452,14 @@ class TallyServer(ServerFactory):
 
 class CollectionPhase(object):
 
-    def __init__(self, period, counters_config, sk_uids, sk_public_keys, dc_uids, param_q, clock_padding, tally_server_config):
+    def __init__(self, period, counters_config, sk_uids, sk_public_keys, dc_uids, modulus, clock_padding, tally_server_config):
         # store configs
         self.period = period
         self.counters_config = counters_config
         self.sk_uids = sk_uids
         self.sk_public_keys = sk_public_keys
         self.dc_uids = dc_uids
-        self.param_q = param_q
+        self.modulus = modulus
         self.clock_padding = clock_padding
         # make a deep copy, so we can delete unnecesary keys
         self.tally_server_config = deepcopy(tally_server_config)
@@ -513,10 +534,12 @@ class CollectionPhase(object):
                 self._change_state('stopped')
 
     def lost_client(self, client_uid):
-        # this is called when client_uid isnt responding
-        # we could mark error_flag as true and abort, or keep counting anyway
-        # and hope we can recover from the error by adding the local state
-        # files later... TODO
+        '''
+        this is called when client_uid isn't responding
+        we could mark error_flag as true and abort, or keep counting anyway
+        and hope we can recover from the error by adding the local state
+        files later... TODO
+        '''
         pass
 
     def store_data(self, client_uid, data):
@@ -599,7 +622,7 @@ class CollectionPhase(object):
             return None
 
         assert self.state == 'starting_dcs' or self.state == 'starting_sks'
-        config = {'q':self.param_q}
+        config = {}
 
         if self.state == 'starting_dcs' and client_uid in self.dc_uids:
             config['sharekeepers'] = {}
@@ -626,22 +649,30 @@ class CollectionPhase(object):
         logging.info("sending stop command to {} {} request for counters".format(client_uid, msg))
         return config
 
-    # status is a dictionary
     def set_tally_server_status(self, status):
+        '''
+        status is a dictionary
+        '''
         # make a deep copy, so we can delete unnecesary keys
         self.tally_server_status = deepcopy(status)
 
-    # status is a dictionary of dictionaries, indexed by UID, and then by the
-    # attribute: name, fingerprint, ...
     def set_client_status(self, status):
+        '''
+        status is a dictionary of dictionaries, indexed by UID, and then by the
+        attribute: name, fingerprint, ...
+        '''
         self.client_status = deepcopy(status)
 
-    # config is a dictionary, indexed by the attributes: name, fingerprint, ...
     def set_client_config(self, uid, config):
+        '''
+        config is a dictionary, indexed by the attributes: name, fingerprint, ...
+        '''
         self.client_config[uid] = deepcopy(config)
 
-    # returns a list of unique types of clients in self.client_status
     def get_client_types(self):
+        '''
+        returns a list of unique types of clients in self.client_status
+        '''
         types = []
         if self.client_status is None:
             return types
@@ -651,8 +682,10 @@ class CollectionPhase(object):
                     types.append(self.client_status[uid]['type'])
         return types
 
-    # returns a context for each client by UID, grouped by client type
     def get_client_context_by_type(self):
+        '''
+        returns a context for each client by UID, grouped by client type
+        '''
         contexts = {}
         # we can't group by type without the type from the status
         if self.client_status is None:
@@ -668,8 +701,10 @@ class CollectionPhase(object):
                         contexts[type][uid]['Config'] = self.client_config[uid]
         return contexts
 
-    # the context is written out with the tally results
     def get_result_context(self):
+        '''
+        the context is written out with the tally results
+        '''
         result_context = {}
 
         # log the times used for the round
@@ -710,7 +745,8 @@ class CollectionPhase(object):
         result_context['TallyServer'] = {}
         if self.tally_server_status is not None:
             result_context['TallyServer']['Status'] = self.tally_server_status
-        result_context['TallyServer']['Config'] = self.tally_server_config
+        # even though the counter limits are hard-coded, include them anyway
+        result_context['TallyServer']['Config'] = add_counter_limits_to_config(self.tally_server_config)
 
         # We don't need the paths from the configs
         if 'cert' in result_context['TallyServer']['Config']:
@@ -736,7 +772,7 @@ class CollectionPhase(object):
             logging.warning("no tally results to write!")
             return
 
-        tallied_counter = SecureCounters(self.counters_config, self.param_q)
+        tallied_counter = SecureCounters(self.counters_config, self.modulus)
         tally_was_successful = tallied_counter.tally_counters(self.final_counts.values())
 
         if not tally_was_successful:

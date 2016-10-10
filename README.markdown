@@ -64,7 +64,6 @@ Example of the global section for a `privcount-config.yml` file, which all nodes
         start_time: 1452520800 # 2016-01-11 at 2pm UTC
         epoch: 604800 # (1 week = 604800 seconds) the safe time frame of stats collection for all stats
         clock_skew: 300 # seconds - to deal with clock skews and latency
-        q: 2147483647 # ((2**31)-1) 2^31 - 1 happens to be a prime
 
 ## tally server
 

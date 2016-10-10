@@ -7,12 +7,14 @@ import os
 import logging
 import cPickle as pickle
 
+from copy import deepcopy
+
 from twisted.internet import reactor, ssl
 from twisted.internet.protocol import ReconnectingClientFactory
 
 from protocol import PrivCountClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path
+from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config
 
 import yaml
 
@@ -52,7 +54,7 @@ class ShareKeeper(ReconnectingClientFactory):
                 pickle.dump(state, fout)
 
     def run(self):
-        # load iniital config
+        # load initial config
         self.refresh_config()
         if self.config is None:
             logging.critical("cannot start due to error in config file")
@@ -81,15 +83,17 @@ class ShareKeeper(ReconnectingClientFactory):
         reactor.connectSSL(ts_ip, ts_port, self, ssl.ClientContextFactory()) # pylint: disable=E1101
 
     def do_start(self, config): # called by protocol
-        # this is called when we receive a command from the TS to start a new collection phase
-        # return None if failure, otherwise json will encode the result back to TS
+        '''
+        this is called when we receive a command from the TS to start a new collection phase
+        return None if failure, otherwise json will encode the result back to TS
+        '''
         logging.info("got command to start new collection phase")
 
-        if 'q' not in config or 'shares' not in config or 'counters' not in config:
+        if 'shares' not in config or 'counters' not in config:
             logging.warning("start command from tally server cannot be completed due to missing data")
             return None
 
-        self.keystore = SecureCounters(config['counters'], config['q'])
+        self.keystore = SecureCounters(config['counters'], counter_modulus())
         share_list = config['shares']
 
         private_key = load_private_key_file(self.config['key'])
@@ -103,9 +107,11 @@ class ShareKeeper(ReconnectingClientFactory):
         return {}
 
     def do_stop(self, config): # called by protocol
-        # the TS wants us to stop the current collection phase
-        # they may or may not want us to send back our counters
-        # return None if failure, otherwise json will encode result back to the TS
+        '''
+        the TS wants us to stop the current collection phase
+        they may or may not want us to send back our counters
+        return None if failure, otherwise json will encode result back to the TS
+        '''
         logging.info("got command to stop collection phase")
         if 'send_counters' not in config:
             return None
@@ -128,11 +134,14 @@ class ShareKeeper(ReconnectingClientFactory):
         logging.info("collection phase was stopped")
         response = {}
         response['Counts'] = response_counts
-        response['Config'] = self.config
+        # even though the counter limits are hard-coded, include them anyway
+        response['Config'] = add_counter_limits_to_config(self.config)
         return response
 
     def refresh_config(self):
-        # re-read config and process any changes
+        '''
+        re-read config and process any changes
+        '''
         try:
             logging.debug("reading config file from '%s'", self.config_filepath)
 

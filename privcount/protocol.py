@@ -100,23 +100,33 @@ class PrivCountProtocol(LineOnlyReceiver):
         logging.debug("Connection with {}:{}:{} was lost: {}".format(peer.type, peer.host, peer.port, reason.getErrorMessage()))
 
     def handle_handshake_event(self, event_type, event_payload):
-        '''override this function in a subclass to handle the event type'''
+        '''
+        override this function in a subclass to handle the event type
+        '''
         pass
 
     def handle_status_event(self, event_type, event_payload):
-        '''override this function in a subclass to handle the event type'''
+        '''
+        override this function in a subclass to handle the event type
+        '''
         pass
 
     def handle_start_event(self, event_type, event_payload):
-        '''override this function in a subclass to handle the event type'''
+        '''
+        override this function in a subclass to handle the event type
+        '''
         pass
 
     def handle_stop_event(self, event_type, event_payload):
-        '''override this function in a subclass to handle the event type'''
+        '''
+        override this function in a subclass to handle the event type
+        '''
         pass
 
     def handle_checkin_event(self, event_type, event_payload):
-        '''override this function in a subclass to handle the event type'''
+        '''
+        override this function in a subclass to handle the event type
+        '''
         pass
 
 class PrivCountServerProtocol(PrivCountProtocol):
@@ -131,7 +141,9 @@ class PrivCountServerProtocol(PrivCountProtocol):
         self.send_handshake_event()
 
     def send_handshake_event(self):
-        # initiate the handshake with the client
+        '''
+        initiate the handshake with the client
+        '''
         self.server_cookie = round(random.random(), 6)
         self.sendLine("HANDSHAKE1 {}".format(self.server_cookie))
 
@@ -438,7 +450,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
         logging.debug("Connection with {}:{}:{} was lost: {}".format(peer.type, peer.host, peer.port, reason.getErrorMessage()))
 
 class TorControlServerProtocol(LineOnlyReceiver):
-    """
+    '''
     The server side of the Tor control protocol as exercised by PrivCount.
 
     This is useful for emulating a Tor control server for testing purposes.
@@ -474,17 +486,23 @@ class TorControlServerProtocol(LineOnlyReceiver):
     QUIT
     250 closing connection
     Connection closed by foreign host.
-    """
+    '''
 
     def __init__(self, factory):
         self.factory = factory
         self.authenticated = False
 
-    def connectionMade(self): # overrides twisted function
+    def connectionMade(self):
+        '''
+        overrides twisted function
+        '''
         peer = self.transport.getPeer()
         logging.debug("Connection with {}:{}:{} was made".format(peer.type, peer.host, peer.port))
 
-    def lineReceived(self, line): # overrides twisted function
+    def lineReceived(self, line):
+        '''
+        overrides twisted function
+        '''
         peer = self.transport.getPeer()
         line = line.strip()
         parts = line.split(' ')
@@ -555,6 +573,9 @@ class TorControlServerProtocol(LineOnlyReceiver):
         else:
             self.sendLine('510 Unrecognized command ""')
 
-    def connectionLost(self, reason): # overrides twisted function
+    def connectionLost(self, reason):
+        '''
+        overrides twisted function
+        '''
         peer = self.transport.getPeer()
         logging.debug("Connection with {}:{}:{} was lost: {}".format(peer.type, peer.host, peer.port, reason.getErrorMessage()))
