@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, q
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config
 
 import yaml
 
@@ -228,7 +228,15 @@ class TallyServer(ServerFactory):
             assert ts_conf['event_period'] > 0
             assert ts_conf['checkin_period'] > 0
             assert ts_conf['continue'] == True or ts_conf['continue'] == False
-            assert q() > 0
+            # check the hard-coded counter values are sane
+            assert counter_modulus() > 0
+            assert min_blinded_counter_value() == 0
+            assert max_blinded_counter_value() > 0
+            assert max_blinded_counter_value() < counter_modulus()
+            assert min_tally_counter_value() < 0
+            assert max_tally_counter_value() > 0
+            assert max_tally_counter_value() < counter_modulus()
+            assert -min_tally_counter_value() < counter_modulus()
 
             for key in ts_conf['counters']:
                 if 'Histogram' in key:
@@ -394,7 +402,7 @@ class TallyServer(ServerFactory):
         # so we'll wait and pass the client context to collection_phase just
         # before stopping it
 
-        self.collection_phase = CollectionPhase(self.config['collect_period'], self.config['counters'], sk_uids, sk_public_keys, dc_uids, q(), clock_padding, self.config)
+        self.collection_phase = CollectionPhase(self.config['collect_period'], self.config['counters'], sk_uids, sk_public_keys, dc_uids, counter_modulus(), clock_padding, self.config)
         self.collection_phase.start()
 
     def stop_collection_phase(self):
@@ -444,14 +452,14 @@ class TallyServer(ServerFactory):
 
 class CollectionPhase(object):
 
-    def __init__(self, period, counters_config, sk_uids, sk_public_keys, dc_uids, param_q, clock_padding, tally_server_config):
+    def __init__(self, period, counters_config, sk_uids, sk_public_keys, dc_uids, modulus, clock_padding, tally_server_config):
         # store configs
         self.period = period
         self.counters_config = counters_config
         self.sk_uids = sk_uids
         self.sk_public_keys = sk_public_keys
         self.dc_uids = dc_uids
-        self.param_q = param_q
+        self.modulus = modulus
         self.clock_padding = clock_padding
         # make a deep copy, so we can delete unnecesary keys
         self.tally_server_config = deepcopy(tally_server_config)
@@ -614,7 +622,7 @@ class CollectionPhase(object):
             return None
 
         assert self.state == 'starting_dcs' or self.state == 'starting_sks'
-        config = {'q':self.param_q}
+        config = {}
 
         if self.state == 'starting_dcs' and client_uid in self.dc_uids:
             config['sharekeepers'] = {}
@@ -737,10 +745,8 @@ class CollectionPhase(object):
         result_context['TallyServer'] = {}
         if self.tally_server_status is not None:
             result_context['TallyServer']['Status'] = self.tally_server_status
-        # even though q is hard-coded, include it anyway
-        tally_server_config = deepcopy(self.tally_server_config)
-        tally_server_config['q'] = q()
-        result_context['TallyServer']['Config'] = tally_server_config
+        # even though the counter limits are hard-coded, include them anyway
+        result_context['TallyServer']['Config'] = add_counter_limits_to_config(self.tally_server_config)
 
         # We don't need the paths from the configs
         if 'cert' in result_context['TallyServer']['Config']:
@@ -766,7 +772,7 @@ class CollectionPhase(object):
             logging.warning("no tally results to write!")
             return
 
-        tallied_counter = SecureCounters(self.counters_config, self.param_q)
+        tallied_counter = SecureCounters(self.counters_config, self.modulus)
         tally_was_successful = tallied_counter.tally_counters(self.final_counts.values())
 
         if not tally_was_successful:

@@ -14,7 +14,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 
 from protocol import PrivCountClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, q
+from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config
 
 import yaml
 
@@ -93,7 +93,7 @@ class ShareKeeper(ReconnectingClientFactory):
             logging.warning("start command from tally server cannot be completed due to missing data")
             return None
 
-        self.keystore = SecureCounters(config['counters'], q())
+        self.keystore = SecureCounters(config['counters'], counter_modulus())
         share_list = config['shares']
 
         private_key = load_private_key_file(self.config['key'])
@@ -134,10 +134,8 @@ class ShareKeeper(ReconnectingClientFactory):
         logging.info("collection phase was stopped")
         response = {}
         response['Counts'] = response_counts
-        # even though q is hard-coded, include it anyway
-        config = deepcopy(self.config)
-        config['q'] = q()
-        response['Config'] = config
+        # even though the counter limits are hard-coded, include them anyway
+        response['Config'] = add_counter_limits_to_config(self.config)
         return response
 
     def refresh_config(self):

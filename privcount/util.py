@@ -334,19 +334,66 @@ def format_last_event_time_since(last_event_timestamp):
 
 ## Calculation ##
 
-def q():
+def counter_modulus():
     '''
-    The hard-coded q value, which is used to limit the maximum counter values
+    The hard-coded modulus value for a blinded counter
+    Blinded counters are unsigned
     In PrivCount, this does not have to be prime, and there is no need for it
     to be configurable
     All PrivCount counters should use unlimited-length Python longs, so that
-    q can exceed the size of a native C long
+    counter_modulus can exceed 64 bits, the size of a native C long
     '''
     # historical q values
     #return 2147483647L
     #return 999999999959L
-    # q is limited to 2**64, because sample() only unpacks 8 bytes
+    # modulus is limited to 2**64, because sample() only unpacks 8 bytes
     return 2L**64L
+
+def min_blinded_counter_value():
+    '''
+    The hard-coded minimum value for a blinded counter
+    Blinded counters are unsigned
+    Always zero
+    '''
+    return 0L
+
+def max_blinded_counter_value():
+    '''
+    The hard-coded maximum value for a blinded counter
+    Blinded counters are unsigned
+    '''
+    return counter_modulus() - 1L
+
+def min_tally_counter_value():
+    '''
+    The hard-coded minimum value for a tallied counter
+    Tallied counters are signed, to allow for negative noise
+    '''
+    return adjust_count_signed((counter_modulus() + 1)//2,
+                               counter_modulus())
+
+def max_tally_counter_value():
+    '''
+    The hard-coded maximum value for a tallied counter
+    Tallied counters are signed, to allow for negative noise
+    '''
+    return adjust_count_signed((counter_modulus() + 1)//2 - 1,
+                               counter_modulus())
+
+def add_counter_limits_to_config(config):
+    '''
+    Add the hard-coded counter limits to a deep copy of the config dictionary
+    Returns the modified deep copy of the config dictionary
+    '''
+    assert config is not None
+    config = deepcopy(config)
+    # call this modulus so it sorts near the other values
+    config['modulus'] = counter_modulus()
+    config['min_blinded_counter_value'] = min_blinded_counter_value()
+    config['max_blinded_counter_value'] = max_blinded_counter_value()
+    config['min_tally_counter_value'] = min_tally_counter_value()
+    config['max_tally_counter_value'] = max_tally_counter_value()
+    return config
 
 def noise(sigma, sum_of_sq, p_exit):
     '''
@@ -376,105 +423,105 @@ def PRF(key, IV):
     assert len(key) >= len(prv)
     return prv
 
-Q_BYTE_MAX = 8L
-Q_BIT_MAX = Q_BYTE_MAX * 8L
+SAMPLE_BYTE_MAX = 8L
+SAMPLE_BIT_MAX = SAMPLE_BYTE_MAX * 8L
 
-def sample(s, q):
+def sample(s, modulus):
     '''
     Sample a uniformly pseudo-random value from the random byte array s,
-    returning a value with maximum q
+    returning a value less than modulus
     s must be at least 8 bytes long
-    the returned value has a maximum of 2**64 - 1, so q is limited to 2**64
-    returns a uniformly distributed in [0, q)
+    the returned value has a maximum of 2**64 - 1, so modulus is limited to 2**64
+    returns a uniformly distributed in [0, modulus)
     '''
-    # in order for this function to return v in {0, ... , q-1}, q-1 must be
-    # representable in Q_BIT_MAX bits or less
+    # in order for this function to return v in {0, ... , modulus-1}, modulus-1 must be
+    # representable in SAMPLE_BIT_MAX bits or less
     # (2**N is the first number not representable in an N-bit unsigned integer)
-    assert long(q-1) < 2L**Q_BIT_MAX
+    assert long(modulus-1) < 2L**SAMPLE_BIT_MAX
     ## Unbiased sampling through rejection sampling
     while True:
         # s must have enough bytes for us to extract 8
-        assert len(s) >= Q_BYTE_MAX
-        # to get a value of q-1, we need this many bits
-        q_bit_count = long(q-1).bit_length()
+        assert len(s) >= SAMPLE_BYTE_MAX
+        # to get a value of modulus-1, we need this many bits
+        q_bit_count = long(modulus-1).bit_length()
         # and this many bytes
         q_byte_count = (q_bit_count+7)//8
-        assert q_byte_count <= Q_BYTE_MAX
+        assert q_byte_count <= SAMPLE_BYTE_MAX
         # Pad the bytes we'll never use with zeroes, otherwise we reject
         # a large number of values
         # Since the extraction is little-endian, and we want to pad unused
         # bytes, the zero bytes go in the larger indexes
-        s_bytes = s[:q_byte_count] + ('\0' * (Q_BYTE_MAX - q_byte_count))
+        s_bytes = s[:q_byte_count] + ('\0' * (SAMPLE_BYTE_MAX - q_byte_count))
         # <Q means unpack 8 little-endian bytes into a C unsigned long long
         v = long(struct.unpack("<Q", s_bytes)[0])
         # this will fail if we have mismatching endianness and padding
         assert v < 2L**(q_byte_count*8L)
-        if 0L <= v < q:
+        if 0L <= v < modulus:
             break
         # when we reject the value, re-hash s and try again
         s = Hash(s).digest()
     return v
 
-def derive_blinding_factor(label, secret, q, positive=True):
+def derive_blinding_factor(label, secret, modulus, positive=True):
     '''
-    Calculate a blinding factor with maximum q, based on label and secret
+    Calculate a blinding factor less than modulus, based on label and secret
     when positive is True, return the blinding factor, and when positive is
-    False, returns the unblinding factor (the inverse value mod q)
+    False, returns the unblinding factor (the inverse value mod modulus)
     '''
     ## Keyed share derivation
     s = PRF(secret, label)
-    v = sample(s, q)
-    assert v < q
-    s0 = v if positive else q - v
+    v = sample(s, modulus)
+    assert v < modulus
+    s0 = v if positive else modulus - v
     return s0
 
-def adjust_count_signed(count, q):
+def adjust_count_signed(count, modulus):
     '''
-    adjust the unsigned 0 <= count < q, returning a signed integer
-    for odd  q, returns { -q//2, ... , 0, ... , q//2 }
-    for even q, returns { -q//2, ... , 0, ... , q//2 - 1 }
-    with the smaller positive values >= q//2 [- 1] becoming the largest negative
+    adjust the unsigned 0 <= count < modulus, returning a signed integer
+    for odd  modulus, returns { -modulus//2, ... , 0, ... , modulus//2 }
+    for even modulus, returns { -modulus//2, ... , 0, ... , modulus//2 - 1 }
+    with the smaller positive values >= modulus//2 [- 1] becoming the largest negative
     values
-    this is the inverse operation of x % q, when x is in the appropriate range
-    (x % q always returns a positive integer when q is positive)
+    this is the inverse operation of x % modulus, when x is in the appropriate range
+    (x % modulus always returns a positive integer when modulus is positive)
     '''
     # sanity check input
-    assert count < q
+    assert count < modulus
     # When implementing this adjustment,
-    # { 0, ... , (q + 1)//2 - 1}  is interpreted as that value,
-    # { (q + 1)//2, ... , q - 1 } is interpreted as that value minus q, or
-    # { (q + 1)//2 - q, ... , q - 1 - q }
+    # { 0, ... , (modulus + 1)//2 - 1}  is interpreted as that value,
+    # { (modulus + 1)//2, ... , modulus - 1 } is interpreted as that value minus modulus, or
+    # { (modulus + 1)//2 - modulus, ... , modulus - 1 - modulus }
     #
-    # For odd q, (q + 1)//2 rounds up to q//2 + 1, so positive simplifies to:
-    # { 0, ... , q//2 + 1 - 1 }
-    # { 0, ... , q//2 }
-    # and because q == q//2 + q//2 + 1 for odd q, negative simplifies to:
-    # { q//2 + 1 - q//2 - q//2 - 1, ... , q - 1 - q}
-    # { -q//2, ... , -1 }
-    # Odd q has the same number of values above and below 0:
-    # { -q//2, ... , 0, ... , q//2 }
+    # For odd modulus, (modulus + 1)//2 rounds up to modulus//2 + 1, so positive simplifies to:
+    # { 0, ... , modulus//2 + 1 - 1 }
+    # { 0, ... , modulus//2 }
+    # and because modulus == modulus//2 + modulus//2 + 1 for odd modulus, negative simplifies to:
+    # { modulus//2 + 1 - modulus//2 - modulus//2 - 1, ... , modulus - 1 - modulus}
+    # { -modulus//2, ... , -1 }
+    # Odd modulus has the same number of values above and below 0:
+    # { -modulus//2, ... , 0, ... , modulus//2 }
     #
-    # For even q, (q+1)//2 rounds down to q//2, so positive simplifies to:
-    # { 0, ... , q//2 - 1 }
-    # and because q == q//2 + q//2 for even q, negative simplifies to:
-    # { q//2 - q//2 - q//2, ... , q - 1 - q}
-    # { -q//2, ... , -1 }
-    # Even q has the 1 more value below 0 than above it:
-    # { -q//2, ... , 0, ... , q//2 - 1 }
-    # This is equivalent to signed two's complement, if q is an integral power
+    # For even modulus, (modulus+1)//2 rounds down to modulus//2, so positive simplifies to:
+    # { 0, ... , modulus//2 - 1 }
+    # and because modulus == modulus//2 + modulus//2 for even modulus, negative simplifies to:
+    # { modulus//2 - modulus//2 - modulus//2, ... , modulus - 1 - modulus}
+    # { -modulus//2, ... , -1 }
+    # Even modulus has the 1 more value below 0 than above it:
+    # { -modulus//2, ... , 0, ... , modulus//2 - 1 }
+    # This is equivalent to signed two's complement, if modulus is an integral power
     # of two
-    if count >= ((q + 1L) // 2L):
-        signed_count = count - q
+    if count >= ((modulus + 1L) // 2L):
+        signed_count = count - modulus
     else:
         signed_count = count
     # sanity check output
-    assert signed_count >= -q//2L
-    if q % 2L == 1L:
+    assert signed_count >= -modulus//2L
+    if modulus % 2L == 1L:
         # odd case
-        assert signed_count <= q//2L
+        assert signed_count <= modulus//2L
     else:
         # even case
-        assert signed_count <= q//2L - 1L
+        assert signed_count <= modulus//2L - 1L
     return signed_count
 
 class SecureCounters(object):
@@ -528,9 +575,9 @@ class SecureCounters(object):
     see privcount/test/test_counters.py for some test cases
     '''
 
-    def __init__(self, counters, q):
+    def __init__(self, counters, modulus):
         self.counters = deepcopy(counters)
-        self.q = long(q)
+        self.modulus = long(modulus)
         self.shares = None
 
         # initialize all counters to 0L
@@ -546,8 +593,8 @@ class SecureCounters(object):
         for key in self.counters:
             for item in self.counters[key]['bins']:
                 label = "{}_{}_{}".format(key, item[0], item[1])
-                blinding_factor = derive_blinding_factor(label, secret, self.q, positive=positive)
-                item[2] = (item[2] + long(blinding_factor)) % self.q
+                blinding_factor = derive_blinding_factor(label, secret, self.modulus, positive=positive)
+                item[2] = (item[2] + long(blinding_factor)) % self.modulus
 
     def _blind(self, secret):
         self._derive_all_counters(secret, True)
@@ -572,7 +619,7 @@ class SecureCounters(object):
                 sampled_noise = noise(sigma, 1, noise_weight)
                 noise_val = long(round(sampled_noise))
                 # if noise_val is negative, modulus produces a positive result
-                item[2] = (item[2] + noise_val) % self.q
+                item[2] = (item[2] + noise_val) % self.modulus
 
     def detach_blinding_shares(self):
         shares = self.shares
@@ -594,7 +641,7 @@ class SecureCounters(object):
         if self.counters is not None and counter_key in self.counters:
             for item in self.counters[counter_key]['bins']:
                 if bin_value >= item[0] and bin_value < item[1]:
-                    item[2] = (item[2] + long(num_increments)) % self.q
+                    item[2] = (item[2] + long(num_increments)) % self.modulus
 
     def _tally_counter(self, counter):
         if self.counters == None:
@@ -619,7 +666,7 @@ class SecureCounters(object):
             num_bins = len(self.counters[key]['bins'])
             for i in xrange(num_bins):
                 tally_bin = self.counters[key]['bins'][i]
-                tally_bin[2] = (tally_bin[2] + counter[key]['bins'][i][2]) % self.q
+                tally_bin[2] = (tally_bin[2] + counter[key]['bins'][i][2]) % self.modulus
 
         # success
         return True
@@ -633,7 +680,7 @@ class SecureCounters(object):
         # (negative counts are possible if noise is negative)
         for key in self.counters:
             for tally_bin in self.counters[key]['bins']:
-                tally_bin[2] = adjust_count_signed(tally_bin[2], self.q)
+                tally_bin[2] = adjust_count_signed(tally_bin[2], self.modulus)
         return True
 
     def detach_counts(self):

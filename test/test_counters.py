@@ -2,14 +2,14 @@
 
 # this test will fail if any counter inconsistencies are detected
 
-from privcount.util import SecureCounters, adjust_count_signed, q
+from privcount.util import SecureCounters, adjust_count_signed, counter_modulus, add_counter_limits_to_config
 from math import sqrt
 import random
 import sys
 
-# When testing q itself, use this range of values
-q_min = 1L
-q_max = 2L**64L
+# When testing counter modulus values, use this range
+modulus_min = 1L
+modulus_max = 2L**64L
 
 # A simple set of byte counters
 counters = {
@@ -33,29 +33,29 @@ counters = {
   }
 }
 
-def check_adjust_count_signed(q):
+def check_adjust_count_signed(modulus):
     '''
-    check that adjust_count_signed works as expected for q
+    check that adjust_count_signed works as expected for modulus
     '''
-    # for any q, returns { (q + 1)//2 - q, ... , 0, ... , (q + 1)//2 - 1 }
-    assert adjust_count_signed(0, q) == 0
-    # we assume here that q is at least large enough to have -1, 0, 1
-    if q < 3L:
+    # for any modulus, returns { (modulus + 1)//2 - modulus, ... , 0, ... , (modulus + 1)//2 - 1 }
+    assert adjust_count_signed(0, modulus) == 0
+    # we assume here that modulus is at least large enough to have -1, 0, 1
+    if modulus < 3L:
         return
-    assert adjust_count_signed(1L, q) == 1
-    assert adjust_count_signed((q + 1L)//2L - 1L, q) == (q + 1L)//2L - 1L
-    assert adjust_count_signed((q + 1L)//2L, q) == (q + 1L)//2L - q
-    assert adjust_count_signed(q - 1L, q) == -1L
+    assert adjust_count_signed(1L, modulus) == 1
+    assert adjust_count_signed((modulus + 1L)//2L - 1L, modulus) == (modulus + 1L)//2L - 1L
+    assert adjust_count_signed((modulus + 1L)//2L, modulus) == (modulus + 1L)//2L - modulus
+    assert adjust_count_signed(modulus - 1L, modulus) == -1L
 
-def try_adjust_count_signed(q):
+def try_adjust_count_signed(modulus):
     '''
-    check that adjust_count_signed works as expected for q,
-    and a randomly chosen number between q_min and q
+    check that adjust_count_signed works as expected for modulus,
+    and a randomly chosen number between modulus_min and modulus
     '''
     # this is neither cryptographically secure nor uniformly distributed
-    q_random = random.randrange(q_min, q)
-    check_adjust_count_signed(q_random)
-    check_adjust_count_signed(q)
+    modulus_random = random.randrange(modulus_min, modulus)
+    check_adjust_count_signed(modulus_random)
+    check_adjust_count_signed(modulus)
 
 def check_blinding_shares(shares):
     '''
@@ -69,7 +69,7 @@ def check_blinding_shares(shares):
     # since there are only 2 x 256 bit values, collisions are very unlikely
     assert len(blinding_share_list) == len(set(blinding_share_list))
 
-def check_blinding_values(secure_counters, q):
+def check_blinding_values(secure_counters, modulus):
     '''
     check that each blinding value is unique
     if not, there is a coding error that affects the security of the system
@@ -79,33 +79,33 @@ def check_blinding_values(secure_counters, q):
         for item in secure_counters.counters[key]['bins']:
             blinding_value_list.append(item[2])
     # are all the blinding values unique?
-    # only check this if the number of items is very small compared with q
+    # only check this if the number of items is very small compared with modulus
     # RAM bit error rates are up to 10^-13 per second
     # http://www.cs.toronto.edu/~bianca/papers/sigmetrics09.pdf
     # So this check should fail by chance less often than a hardware error
     # Using the approximation from
     # https://en.wikipedia.org/wiki/Birthday_problem#Square_approximation
-    # n = sqrt(2m * p(n)) where m is q and p(n) is 10^-13
-    max_blinding_value_count = sqrt(2.0 * (q / (10L**13L)))
+    # n = sqrt(2m * p(n)) where m is modulus and p(n) is 10^-13
+    max_blinding_value_count = sqrt(2.0 * (modulus / (10L**13L)))
     blinding_value_count = len(blinding_value_list)
     unique_blinding_value_count = len(set(blinding_value_list))
-    print "q: {} max_blinding: {} actual blinding: {}".format(
-        q, max_blinding_value_count, blinding_value_count)
+    print "modulus: {} max_blinding: {} actual blinding: {}".format(
+        modulus, max_blinding_value_count, blinding_value_count)
     if blinding_value_count < max_blinding_value_count:
         assert blinding_value_count == unique_blinding_value_count
     #else:
     #   print "skipping blinding value collision test: collisions too likely"
 
-def create_counters(counters, q):
+def create_counters(counters, modulus):
     '''
     create the counters for a data collector, who will generate the shares and
     noise
-    uses q to generate the appropriate blinding factors
+    uses modulus to generate the appropriate blinding factors
     returns a tuple containing a list of DCs and a list of SKs
     '''
-    sc_dc = SecureCounters(counters, q)
+    sc_dc = SecureCounters(counters, modulus)
     sc_dc.generate(['sk1', 'sk2'], 1.0)
-    check_blinding_values(sc_dc, q)
+    check_blinding_values(sc_dc, modulus)
     # get the shares used to init the secure counters on the share keepers
     shares = sc_dc.detach_blinding_shares()
 
@@ -113,12 +113,12 @@ def create_counters(counters, q):
     check_blinding_shares(shares)
 
     # create share keeper versions of the counters
-    sc_sk1 = SecureCounters(counters, q)
+    sc_sk1 = SecureCounters(counters, modulus)
     sc_sk1.import_blinding_share(shares['sk1'])
-    check_blinding_values(sc_sk1, q)
-    sc_sk2 = SecureCounters(counters, q)
+    check_blinding_values(sc_sk1, modulus)
+    sc_sk2 = SecureCounters(counters, modulus)
     sc_sk2.import_blinding_share(shares['sk2'])
-    check_blinding_values(sc_sk2, q)
+    check_blinding_values(sc_sk2, modulus)
     return ([sc_dc], [sc_sk1, sc_sk2])
 
 def increment_counters(dc_list, N, multi_bin=True):
@@ -187,9 +187,9 @@ def increment_counters_num(dc_list, N, X=1L, multi_bin=True):
             sc_dc.increment('Bytes', 10000.0, long(X))
     return long(N)*long(X)
 
-def sum_counters(counters, q, dc_list, sk_list):
+def sum_counters(counters, modulus, dc_list, sk_list):
     '''
-    Sums the counters in dc_list and sk_list, with maximum count q
+    Sums the counters in dc_list and sk_list, with maximum count modulus
     Returns a tallies object populated with the resulting counts
     '''
     # get all of the counts, send for tallying
@@ -197,7 +197,7 @@ def sum_counters(counters, q, dc_list, sk_list):
     counts_sk_list = [sc_sk.detach_counts() for sc_sk in sk_list]
 
     # tally them up
-    sc_ts = SecureCounters(counters, q)
+    sc_ts = SecureCounters(counters, modulus)
     counts_list = counts_dc_list + counts_sk_list
     is_tally_success = sc_ts.tally_counters(counts_list)
     assert is_tally_success
@@ -210,7 +210,7 @@ def check_counters(tallies, N, multi_bin=True):
     '''
     print "amount: {}".format(N)
     print "tallies: {}".format(tallies)
-    # these assertions may also fail if the counter values overflow q
+    # these assertions may also fail if the counter values overflow modulus
     if multi_bin:
         assert tallies['Bytes']['bins'][0][2] == 2*N
     else:
@@ -228,18 +228,18 @@ def check_counters(tallies, N, multi_bin=True):
     assert tallies['SanityCheck']['bins'][0][2] == 0
     print "all counts are correct!"
 
-def run_counters(counters, q, N, X=None, multi_bin=True):
+def run_counters(counters, modulus, N, X=None, multi_bin=True):
     '''
-    Validate that a counter run with counters, q, N, X, and multi_bin works,
+    Validate that a counter run with counters, modulus, N, X, and multi_bin works,
     and produces consistent results
     If X is None, use the 2-argument form of increment, otherwise, use the
     3-argument form
     '''
-    print "q: {} N: {} X: {} multi_bin: {}".format(q, N,
-                                                   X if X is not None
+    print "modulus: {} N: {} X: {} multi_bin: {}".format(modulus, N,
+                                                     X if X is not None
                                                      else "None",
-                                                   multi_bin)
-    (dc_list, sk_list) = create_counters(counters, q)
+                                                     multi_bin)
+    (dc_list, sk_list) = create_counters(counters, modulus)
     if X is None:
         # use the 2-argument form
         amount = increment_counters(dc_list, N, multi_bin)
@@ -248,39 +248,39 @@ def run_counters(counters, q, N, X=None, multi_bin=True):
         # use the 3-argument form
         amount = increment_counters_num(dc_list, N, X, multi_bin)
         assert amount == N*X
-    tallies = sum_counters(counters, q, dc_list, sk_list)
+    tallies = sum_counters(counters, modulus, dc_list, sk_list)
     check_counters(tallies, amount, multi_bin)
 
-def try_counters(counters, q, N, X=None, multi_bin=True):
+def try_counters(counters, modulus, N, X=None, multi_bin=True):
     '''
-    Validate that a counter run with counters, q, N, X, and multi_bin works,
+    Validate that a counter run with counters, modulus, N, X, and multi_bin works,
     and produces consistent results
-    Also try a randomly selected number q_random between q_min and q,
+    Also try a randomly selected number modulus_random between modulus_min and modulus,
     and a randomly selected number N_random between 0 and min(q_random, N)
     and a randomly selected number X_random between 0 and min(q_random, X)
     If X is None, use the 2-argument form of increment, otherwise, use the
     3-argument form
     '''
     # this is neither cryptographically secure nor uniformly distributed
-    q_random = random.randrange(q_min, q)
-    N_random = random.randrange(0, min(q_random, N))
+    modulus_random = random.randrange(modulus_min, modulus)
+    N_random = random.randrange(0, min(modulus_random, N))
     X_random = None
     if X is not None:
-        X_random = random.randrange(0, min(q_random, X))
-    run_counters(counters, q_random, N_random, X_random, multi_bin)
-    run_counters(counters, q, N, X, multi_bin)
+        X_random = random.randrange(0, min(modulus_random, X))
+    run_counters(counters, modulus_random, N_random, X_random, multi_bin)
+    run_counters(counters, modulus, N, X, multi_bin)
 
-# Check that unsigned to signed conversion works with odd and even q
-print "Unsigned to signed counter conversion, q = 3:"
-# for odd  q, returns { -q//2, ... , 0, ... , q//2 }
+# Check that unsigned to signed conversion works with odd and even modulus
+print "Unsigned to signed counter conversion, modulus = 3:"
+# for odd  modulus, returns { -modulus//2, ... , 0, ... , modulus//2 }
 assert adjust_count_signed(0L, 3L) == 0L
 assert adjust_count_signed(1L, 3L) == 1L
 assert adjust_count_signed(2L, 3L) == -1L
 print "Success!"
 print ""
 
-print "Unsigned to signed counter conversion, q = 4:"
-# for even q, returns { -q//2, ... , 0, ... , q//2 - 1 }
+print "Unsigned to signed counter conversion, modulus = 4:"
+# for even modulus, returns { -modulus//2, ... , 0, ... , modulus//2 - 1 }
 assert adjust_count_signed(0L, 4L) == 0L
 assert adjust_count_signed(1L, 4L) == 1L
 assert adjust_count_signed(2L, 4L) == -2L
@@ -288,18 +288,18 @@ assert adjust_count_signed(3L, 4L) == -1L
 print "Success!"
 print ""
 
-print "Unsigned to signed counter conversion, q = {}:".format(q())
-try_adjust_count_signed(q())
+print "Unsigned to signed counter conversion, modulus = {}:".format(counter_modulus())
+try_adjust_count_signed(counter_modulus())
 print "Success!"
 print ""
 
-print "Unsigned to signed counter conversion, q = {}:".format(q() + 1L)
-try_adjust_count_signed(q() + 1L)
+print "Unsigned to signed counter conversion, modulus = {}:".format(counter_modulus() + 1L)
+try_adjust_count_signed(counter_modulus() + 1L)
 print "Success!"
 print ""
 
-print "Unsigned to signed counter conversion, q = {}:".format(q() - 1L)
-try_adjust_count_signed(q() - 1L)
+print "Unsigned to signed counter conversion, modulus = {}:".format(counter_modulus() - 1L)
+try_adjust_count_signed(counter_modulus() - 1L)
 print "Success!"
 print ""
 
@@ -307,7 +307,7 @@ print ""
 # using the default increment of 1
 print "Multiple increments, 2-argument form of increment:"
 N = 500L
-try_counters(counters, q(), N)
+try_counters(counters, counter_modulus(), N)
 print ""
 
 # Check that secure counters increment correctly for a single increment
@@ -315,28 +315,28 @@ print ""
 print "Single increment, 3-argument form of increment:"
 N = 1L
 X = 500L
-try_counters(counters, q(), N, X)
+try_counters(counters, counter_modulus(), N, X)
 print ""
 
 # And multiple increments using the 3-argument form
 print "Multiple increments, 3-argument form of increment, explicit +1:"
 N = 500L
 X = 1L
-try_counters(counters, q(), N, X)
+try_counters(counters, counter_modulus(), N, X)
 
 print "Multiple increments, 3-argument form of increment, explicit +2:"
 N = 250L
 X = 2L
-try_counters(counters, q(), N, X)
+try_counters(counters, counter_modulus(), N, X)
 
 print "Multiple increments, 2-argument form of increment, multi_bin=False:"
 N = 20L
-try_counters(counters, q(), N, multi_bin=False)
+try_counters(counters, counter_modulus(), N, multi_bin=False)
 
 print "Multiple increments, 3-argument form of increment, multi_bin=False:"
 N = 20L
 X = 1L
-try_counters(counters, q(), N, X, multi_bin=False)
+try_counters(counters, counter_modulus(), N, X, multi_bin=False)
 print ""
 
 print "Increasing increments, designed to trigger an overflow:"
@@ -344,74 +344,76 @@ N = 1L
 
 a = 1L
 X = 2L**a
-# we interpret values >= q/2 as negative, so there's no point testing them
-# (privcount requires that the total counts are much less than q/2)
-while X < q()//2L:
-    print "Trying count 2**{} = {} < q/2 ({})".format(a, X, q()//2)
-    try_counters(counters, q(), N, X, multi_bin=False)
+# we interpret values >= modulus/2 as negative, so there's no point testing them
+# (privcount requires that the total counts are much less than modulus/2)
+while X < counter_modulus()//2L:
+    print "Trying count 2**{} = {} < modulus/2 ({})".format(a, X, counter_modulus()//2)
+    try_counters(counters, counter_modulus(), N, X, multi_bin=False)
     print ""
-    # This should terminate in at most ~log2(q) steps
+    # This should terminate in at most ~log2(modulus) steps
     a += 1L
     X = 2L**a
 
-# Now try q/2-1 explicitly
+# Now try modulus/2-1 explicitly
 N = 1L
-X = q()//2L - 1L
-print "Trying count = q/2 - 1 = {}".format(X)
-try_counters(counters, q(), N, X, multi_bin=False)
-print "Reached count of q/2 - 1 = {} without overflowing".format(X)
+X = counter_modulus()//2L - 1L
+print "Trying count = modulus/2 - 1 = {}".format(X)
+try_counters(counters, counter_modulus(), N, X, multi_bin=False)
+print "Reached count of modulus/2 - 1 = {} without overflowing".format(X)
 print ""
 
-print "Increasing q, designed to trigger floating-point inaccuracies:"
+print "Increasing modulus, designed to trigger floating-point inaccuracies:"
 N = 1L
 
 b = 1L
 q_try = 2L**b
 
-assert q_max >= q_min
-while q_try <= q_max:
-    # Skip the sampling if q is too low
-    if q_try >= q_min:
+assert modulus_max >= modulus_min
+while q_try <= modulus_max:
+    # Skip the sampling if modulus is too low
+    if q_try >= modulus_min:
         a = 1L
         X = 2L**a
-        print "Trying q = 2**{} = {}".format(b, q_try)
-        print "Unsigned to signed counter conversion, q = {}:".format(q_try)
+        print "Trying modulus = 2**{} = {}".format(b, q_try)
+        print "Unsigned to signed counter conversion, modulus = {}:".format(q_try)
         try_adjust_count_signed(q_try)
         print "Success!"
         print ""
-        # we interpret values >= q/2 as negative
-        # So make sure that q is larger than 2*(N*X + 1)
+        # we interpret values >= modulus/2 as negative
+        # So make sure that modulus is larger than 2*(N*X + 1)
         while X < q_try//2L:
-            print "Trying count 2**{} = {} < q/2 ({})".format(a, X, q_try//2)
+            print "Trying count 2**{} = {} < modulus/2 ({})".format(a, X, q_try//2)
             try_counters(counters, q_try, N, X, multi_bin=False)
             print ""
-            # This inner loop should terminate in at most ~log2(q) steps
+            # This inner loop should terminate in at most ~log2(modulus) steps
             a += 1L
             X = 2L**a
     print ""
-    # This outer loop should terminate in at most ~log2(q_max) steps
+    # This outer loop should terminate in at most ~log2(modulus_max) steps
     b += 1L
     q_try = 2L**b
 
-# Now try q = q_max explicitly
+# Now try modulus = modulus_max explicitly
 N = 1L
-q_try = q_max
-assert q_max >= q_min
+q_try = modulus_max
+assert modulus_max >= modulus_min
 a = 1L
 X = 2L**a
-print "Trying q = q_max = {}".format(q_try)
-print "Unsigned to signed counter conversion, q = {}:".format(q_try)
+print "Trying modulus = modulus_max = {}".format(q_try)
+print "Unsigned to signed counter conversion, modulus = {}:".format(q_try)
 try_adjust_count_signed(q_try)
 print "Success!"
 print ""
-# we interpret values >= q/2 as negative
-# So make sure that q is larger than 2*(N*X + 1)
+# we interpret values >= modulus/2 as negative
+# So make sure that modulus is larger than 2*(N*X + 1)
 while X < q_try//2L:
-    print "Trying count 2**{} = {} < q/2 ({})".format(a, X, q_try//2)
+    print "Trying count 2**{} = {} < modulus/2 ({})".format(a, X, q_try//2)
     try_counters(counters, q_try, N, X, multi_bin=False)
     print ""
-    # This should terminate in at most ~log2(q) steps
+    # This should terminate in at most ~log2(modulus) steps
     a += 1L
     X = 2L**a
 
-print "Reached q = q_max = {} without overflow or inaccuracy".format(q_try)
+print "Reached modulus = modulus_max = {} without overflow or inaccuracy".format(q_try)
+
+print "Hard-coded counter values: {}".format(add_counter_limits_to_config({}))

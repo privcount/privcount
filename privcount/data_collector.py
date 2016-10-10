@@ -10,7 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, q
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config
 
 import yaml
 
@@ -139,7 +139,7 @@ class DataCollector(ReconnectingClientFactory):
             logging.info('refusing to start collecting without required share keepers')
             return None
 
-        self.aggregator = Aggregator(dc_counters, config['sharekeepers'], self.config['noise_weight'], q(), self.config['event_source'])
+        self.aggregator = Aggregator(dc_counters, config['sharekeepers'], self.config['noise_weight'], counter_modulus(), self.config['event_source'])
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -191,10 +191,8 @@ class DataCollector(ReconnectingClientFactory):
                 response['Counts'] = counts
 
         logging.info("collection phase was stopped")
-        # even though q is hard-coded, include it anyway
-        config = deepcopy(self.config)
-        config['q'] = q()
-        response['Config'] = config
+        # even though the counter limits are hard-coded, include them anyway
+        response['Config'] = add_counter_limits_to_config(self.config)
         return response
 
     def refresh_config(self):
