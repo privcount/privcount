@@ -4,12 +4,20 @@ PrivCount is an independent implementation of the PrivEx Secret Sharing (S2) var
 been customized in order to be able to aggregate a large variety of statistical counts from Tor
 while providing differential privacy guarantees. For more information, see the associated
 publication:
-TBA
+
+```
+Safely Measuring Tor
+23rd ACM Conference on Computer and Communication Security (CCS 2016)
+Rob Jansen and Aaron Johnson
+```
 
 For more information about PrivEx, see:
-Tariq Elahi, George Danezis, and Ian Goldberg. "PrivEx: Private Collection of Traffic Statistics
-for Anonymous Communication Networks." Proceedings of the 2014 ACM SIGSAC Conference on Computer
-and Communications Security. ACM, 2014.
+
+```
+PrivEx: Private Collection of Traffic Statistics for Anonymous Communication Networks
+21st ACM Conference on Computer and Communications Security (CCS 2014)
+Tariq Elahi, George Danezis, and Ian Goldberg
+```
 
 # requirements
 
