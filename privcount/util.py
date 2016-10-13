@@ -454,8 +454,8 @@ def PRF(key, IV):
     Therefore, it must be at least 32 bytes long
     returns 32 pseudo-random bytes
     '''
-    assert len(key) >= Hash().digest_size
-    prv = Hash("PRF1|KEY:%s|IV:%s|" % (key, IV)).digest()
+    assert len(key) >= DigestHash().digest_size
+    prv = DigestHash("PRF1|KEY:%s|IV:%s|" % (key, IV)).digest()
     # for security, the key input must have at least as many bytes as the hash
     # output (we do not depend on the length or content of IV for security)
     assert len(key) >= len(prv)
@@ -497,7 +497,7 @@ def sample(s, modulus):
         if 0L <= v < modulus:
             break
         # when we reject the value, re-hash s and try again
-        s = Hash(s).digest()
+        s = DigestHash(s).digest()
     return v
 
 def derive_blinding_factor(label, secret, modulus, positive=True):
@@ -644,7 +644,7 @@ class SecureCounters(object):
         self.shares = {}
         for uid in uids:
             # the secret should be at least as large as the hash output
-            secret = urandom(Hash().digest_size)
+            secret = urandom(DigestHash().digest_size)
             hash_id = PRF(secret, "KEYID")
             self.shares[uid] = {'secret': secret, 'hash_id': hash_id}
             # add blinding factors to all of the counters

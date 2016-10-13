@@ -9,7 +9,7 @@
 
 from os import urandom
 from random import randrange
-from privcount.util import sample, derive_blinding_factor, Hash, counter_modulus
+from privcount.util import sample, derive_blinding_factor, DigestHash, counter_modulus
 
 # Allow this much divergence from the full range and equal bin counts
 MAX_DIVERGENCE = 0.02
@@ -22,7 +22,7 @@ POSITIVE = True
 # this should be equal to privcount's hard-coded key length
 # key should contain at least 32 bytes of entropy, as the hash is 32 bytes
 # (this lack of entropy won't be apparent in the output, because it is hashed)
-PRIV_KEY_LEN = Hash().digest_size
+PRIV_KEY_LEN = DigestHash().digest_size
 
 # the hard-coded modulus value
 PRIV_COUNTER_MODULUS = counter_modulus()
