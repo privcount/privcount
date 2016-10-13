@@ -407,7 +407,7 @@ def min_tally_counter_value():
     The hard-coded minimum value for a tallied counter
     Tallied counters are signed, to allow for negative noise
     '''
-    return adjust_count_signed((counter_modulus() + 1)//2,
+    return adjust_count_signed((counter_modulus() + 1L)//2L,
                                counter_modulus())
 
 def max_tally_counter_value():
@@ -415,7 +415,7 @@ def max_tally_counter_value():
     The hard-coded maximum value for a tallied counter
     Tallied counters are signed, to allow for negative noise
     '''
-    return adjust_count_signed((counter_modulus() + 1)//2 - 1,
+    return adjust_count_signed((counter_modulus() + 1L)//2L - 1L,
                                counter_modulus())
 
 def add_counter_limits_to_config(config):
