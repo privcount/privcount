@@ -10,9 +10,9 @@ PRIVCOUNT_HANDSHAKE_MAGIC = 759.623
 
 class PrivCountProtocol(LineOnlyReceiver):
     '''
-    The base protocol class for PrivCount. This class logs basic connection information when
-    connections are made and lost, and tracks the validity of connections during the handshake
-    process and execution of the protocol.
+    The base protocol class for PrivCount. This class logs basic connection
+    information when connections are made and lost, and tracks the validity of
+    connections during the handshake process and execution of the protocol.
     '''
 
     def __init__(self, factory):
