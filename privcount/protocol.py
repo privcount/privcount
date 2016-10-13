@@ -51,23 +51,45 @@ class PrivCountProtocol(LineOnlyReceiver):
         return LineOnlyReceiver.lineLengthExceeded(self, line)
 
     def process_event(self, event_type, event_payload):
-        if event_type.startswith('HANDSHAKE'):
-            self.handle_handshake_event(event_type, event_payload)
-            return
+        try:
+            if event_type.startswith('HANDSHAKE'):
+                self.handle_handshake_event(event_type, event_payload)
+                return
 
-        if self.is_valid_connection:
-            is_valid = False
+            if self.is_valid_connection:
+                is_valid = False
 
-            if event_type.startswith('STATUS'):
-                is_valid = self.handle_status_event(event_type, event_payload)
-            elif event_type.startswith('START'):
-                is_valid = self.handle_start_event(event_type, event_payload)
-            elif event_type.startswith('STOP'):
-                is_valid = self.handle_stop_event(event_type, event_payload)
-            elif event_type.startswith('CHECKIN'):
-                is_valid = self.handle_checkin_event(event_type, event_payload)
+                if event_type.startswith('STATUS'):
+                    is_valid = self.handle_status_event(event_type,
+                                                        event_payload)
+                elif event_type.startswith('START'):
+                    is_valid = self.handle_start_event(event_type,
+                                                       event_payload)
+                elif event_type.startswith('STOP'):
+                    is_valid = self.handle_stop_event(event_type,
+                                                      event_payload)
+                elif event_type.startswith('CHECKIN'):
+                    is_valid = self.handle_checkin_event(event_type,
+                                                         event_payload)
+                self.is_valid_connection = is_valid
 
-            self.is_valid_connection = is_valid
+        except BaseException as e:
+            # Any unhandled exception in client/server code is an error
+            # that should terminate the connection. Otherwise, a client
+            # failing due to an exception can cause an infinite retry loop.
+            logging.error(
+                "Exception {} while processing event type: {} payload: {}"
+                .format(e, event_type, event_payload))
+
+            # That said, terminating on exception is a denial of service
+            # risk: if an untrusted party can cause an exception, they can
+            # bring down the privcount network.
+            # Since we ignore unrecognised events, the client would have to be
+            # maliciously crafted, not just a port scanner.
+
+            # die immediately using os._exit()
+            # we can't use sys.exit() here, because twisted catches and logs it
+            _exit(1)
 
         if not self.is_valid_connection:
             self.protocol_failed()
