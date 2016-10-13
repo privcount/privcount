@@ -78,8 +78,8 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
     pkill -P $$
     exit 1
   fi
-  # succeed if an outcomes file is produced
-  if [ -f privcount.outcomes.*.json ]; then
+  # succeed if an outcome file is produced
+  if [ -f privcount.outcome.*.json ]; then
     break
   fi
   sleep 1
