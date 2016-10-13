@@ -37,6 +37,10 @@ echo "Testing time formats:"
 python test_format_time.py
 echo ""
 
+echo "Testing encryption:"
+python test_encryption.py
+echo ""
+
 echo "Testing keyed hash:"
 python test_keyed_random.py
 echo ""
