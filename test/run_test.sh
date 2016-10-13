@@ -59,10 +59,27 @@ privcount ts config.yaml &
 privcount sk config.yaml &
 privcount dc config.yaml &
 
-# Then wait until they produce a results file
-echo "Waiting for results..."
-while [ ! -f privcount.outcome.*.json ]; do
+# Then wait for each job, terminating if any job produces an error
+# Ideally, we'd want to use wait, or wait $job, but that only checks one job
+# at a time, so continuing processes can cause the script to run forever
+echo "Waiting for PrivCount to finish..."
+JOB_STATUS=`jobs`
+echo "$JOB_STATUS"
+while echo "$JOB_STATUS" | grep -q "Running"; do
+  # fail if any job has failed
+  if echo "$JOB_STATUS" | grep -q "Exit"; then
+    # and kill everything
+    echo "Terminating privcount due to error..."
+    pkill -P $$
+    exit 1
+  fi
+  # succeed if an outcomes file is produced
+  if [ -f privcount.outcomes.*.json ]; then
+    break
+  fi
   sleep 1
+  JOB_STATUS=`jobs`
+  echo "$JOB_STATUS"
 done
 
 # Measure how long the actual tests took
