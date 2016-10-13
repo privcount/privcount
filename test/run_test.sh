@@ -20,6 +20,11 @@ elif [ $# -eq 2 ]; then
 fi
 
 if [ "$PRIVCOUNT_INSTALL" -eq 1 ]; then
+  # Install the latest requirements
+  # Unfortunately, this doesn't work on my OS X install without sudo
+  #echo "Installing requirements from '$PRIVCOUNT_DIRECTORY' ..."
+  #pip install -r "$PRIVCOUNT_DIRECTORY/requirements.txt"
+
   # Install the latest privcount version
   echo "Installing latest version of privcount from '$PRIVCOUNT_DIRECTORY' ..."
   pip install -I "$PRIVCOUNT_DIRECTORY"
