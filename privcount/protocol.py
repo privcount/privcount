@@ -1,6 +1,7 @@
 import random, logging, json
 
 from time import time
+from os import _exit
 
 from twisted.internet import reactor
 from twisted.protocols.basic import LineOnlyReceiver
