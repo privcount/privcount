@@ -270,7 +270,9 @@ class TallyServer(ServerFactory):
             time_since_checkin = now - c_status['alive']
 
             if time_since_checkin > 2 * self.get_checkin_period():
-                logging.warning("last checkin was {} for client {}".format(format_elapsed_time_since(time_since_checkin, 'at'), c_status))
+                logging.warning("last checkin was {} for client {}".format(
+                        format_elapsed_time_wait(time_since_checkin, 'at'),
+                        c_status))
 
             if time_since_checkin > 6 * self.get_checkin_period():
                 logging.warning("marking dead client {}".format(c_status))
