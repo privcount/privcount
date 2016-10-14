@@ -291,6 +291,20 @@ def format_interval(period, desc, begin_timestamp, end_timestamp):
                                                format_epoch(begin_timestamp),
                                                format_epoch(end_timestamp))
 
+def format_elapsed_time_wait(elapsed_period, desc):
+    '''
+    Format the time elapsed since a past event, and the past event time in UTC
+    elapsed_period is in seconds
+    The event time is the current time minus elapsed_period
+    elapsed_period is typically time_since_checkin, and desc is typically 'at'
+    Returns a string of the form:
+    1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 1469600312)
+    '''
+    # Normalise before calculation to avoid truncation errors
+    elapsed_period = normalise_time(elapsed_period)
+    past_timestamp = current_time() - elapsed_period
+    return format_time(elapsed_period, desc, past_timestamp)
+
 def format_elapsed_time_since(past_timestamp, desc):
     '''
     Format the time elapsed since a past event, and that event's time in UTC
