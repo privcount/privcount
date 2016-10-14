@@ -5,7 +5,8 @@
 
 from privcount.util import SecureCounters, adjust_count_signed, counter_modulus, add_counter_limits_to_config
 from math import sqrt
-import random
+from random import SystemRandom
+
 import sys
 
 import logging
@@ -16,8 +17,8 @@ logging.root.name = ''
 
 # When testing counter modulus values, use this range
 modulus_min = 1L
-# test at least 2**64, or 2**10 times our current limit
-modulus_max = max(2L**64L, counter_modulus() * 2L**10L)
+# test at least 2**64, or 2**5 times our current limit
+modulus_max = max(2L**64L, counter_modulus() * 2L**5L)
 
 # A simple set of byte counters
 counters = {
@@ -60,8 +61,8 @@ def try_adjust_count_signed(modulus):
     check that adjust_count_signed works as expected for modulus,
     and a randomly chosen number between modulus_min and modulus
     '''
-    # this is neither cryptographically secure nor uniformly distributed
-    modulus_random = random.randrange(modulus_min, modulus)
+    # randrange is not uniformly distributed in python versions < 3.2
+    modulus_random = SystemRandom().randrange(modulus_min, modulus)
     check_adjust_count_signed(modulus_random)
     check_adjust_count_signed(modulus)
 
@@ -219,7 +220,7 @@ def check_counters(tallies, N, multi_bin=True):
     else:
         assert tallies['Bytes']['bins'][4][2] == 1*N
     assert tallies['SanityCheck']['bins'][0][2] == 0
-    logging.info("all counts are correct!")
+    logging.debug("all counts are correct!")
 
 def run_counters(counters, modulus, N, X=None, multi_bin=True):
     '''
@@ -254,12 +255,12 @@ def try_counters(counters, modulus, N, X=None, multi_bin=True):
     If X is None, use the 2-argument form of increment, otherwise, use the
     3-argument form
     '''
-    # this is neither cryptographically secure nor uniformly distributed
-    modulus_random = random.randrange(modulus_min, modulus)
-    N_random = random.randrange(0, min(modulus_random, N))
+    # randrange is not uniformly distributed in python versions < 3.2
+    modulus_random = SystemRandom().randrange(modulus_min, modulus)
+    N_random = SystemRandom().randrange(0, min(modulus_random, N))
     X_random = None
     if X is not None:
-        X_random = random.randrange(0, min(modulus_random, X))
+        X_random = SystemRandom().randrange(0, min(modulus_random, X))
     run_counters(counters, modulus_random, N_random, X_random, multi_bin)
     run_counters(counters, modulus, N, X, multi_bin)
 

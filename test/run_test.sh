@@ -33,7 +33,7 @@ fi
 cd "$PRIVCOUNT_DIRECTORY/test"
 
 # Run the python-based unit tests
-echo "Testing time formats:"
+echo "Testing time formatting:"
 python test_format_time.py
 echo ""
 
@@ -41,8 +41,8 @@ echo "Testing encryption:"
 python test_encryption.py
 echo ""
 
-echo "Testing keyed hash:"
-python test_keyed_random.py
+echo "Testing random numbers:"
+python test_random.py
 echo ""
 
 echo "Testing counters:"

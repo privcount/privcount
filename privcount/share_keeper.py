@@ -100,8 +100,17 @@ class ShareKeeper(ReconnectingClientFactory):
         for share in share_list:
             encrypted_secret = share['secret']
             secret = decrypt(private_key, encrypted_secret)
+            # TODO: secure delete
             share['secret'] = secret
-            self.keystore.import_blinding_share(share)
+            blinding_result = self.keystore.import_blinding_share(share)
+            if not blinding_result:
+                # the structure of the imported share did not match the
+                # configured counters
+                # this is likely a configuration error or a programming bug,
+                # but there is also no way to detect the TS modifying the data
+                logging.warning("failed to import blinding share {} config {}",
+                                share, config)
+                return None
 
         logging.info("successfully started and imported {} blinding shares for {} counters".format(len(share_list), len(config['counters'])))
         return {}
