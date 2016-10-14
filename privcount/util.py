@@ -325,7 +325,8 @@ def generate_cert(key_path, cert_out_path):
 def get_random_free_port():
     while True:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        port = randint(10000, 60000)
+        # choose an evenly distributed port that doesn't leak RNG state
+        port = sample_randint(10000, 60000)
         rc = s.connect_ex(('127.0.0.1', port))
         s.close()
         if rc != 0: # error connecting, port is available
