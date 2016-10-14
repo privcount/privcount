@@ -85,8 +85,7 @@ def encrypt(pub_key, plaintext):
     except UnsupportedAlgorithm as e:
         # a failure to encrypt our own data is a fatal error
         # the most likely cause of this error is an old cryptography library
-        logging.error("Fatal error: encryption hash {} unsupported, try " +
-                      "upgrading to cryptography >= 1.4. Exception: {}".format(
+        logging.error("Fatal error: encryption hash {} unsupported, try upgrading to cryptography >= 1.4. Exception: {}".format(
                           CryptoHash, e))
         # die immediately using os._exit()
         # we can't use sys.exit() here, because twisted catches and logs it
@@ -114,8 +113,7 @@ def decrypt(priv_key, ciphertext):
         # a failure to dencrypt someone else's data is not typically a fatal
         # error, but in this particular case, the most likely cause of this
         # error is an old cryptography library
-        logging.error("Fatal error: encryption hash {} unsupported, try " +
-                      "upgrading to cryptography >= 1.4. Exception: {}".format(
+        logging.error("Fatal error: encryption hash {} unsupported, try upgrading to cryptography >= 1.4. Exception: {}".format(
                           CryptoHash, e))
         # die immediately using os._exit()
         # we can't use sys.exit() here, because twisted catches and logs it
