@@ -33,12 +33,16 @@ fi
 cd "$PRIVCOUNT_DIRECTORY/test"
 
 # Run the python-based unit tests
-echo "Testing time formats:"
+echo "Testing time formatting:"
 python test_format_time.py
 echo ""
 
-echo "Testing keyed hash:"
-python test_keyed_random.py
+echo "Testing encryption:"
+python test_encryption.py
+echo ""
+
+echo "Testing random numbers:"
+python test_random.py
 echo ""
 
 echo "Testing counters:"
@@ -78,8 +82,8 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
     pkill -P $$
     exit 1
   fi
-  # succeed if an outcomes file is produced
-  if [ -f privcount.outcomes.*.json ]; then
+  # succeed if an outcome file is produced
+  if [ -f privcount.outcome.*.json ]; then
     break
   fi
   sleep 1

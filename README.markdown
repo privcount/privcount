@@ -38,12 +38,14 @@ as we explain below.
 
 I recommend using virtual environments to isolate the python environment and avoid conflicts.
 Run the following from the base directory of this package (i.e., the same location of this README).
+(If you're using OS X or ubuntu, you might need to use "sudo -H" before some of the pip commands.)
 
     pip install virtualenv
     virtualenv --no-site-packages venv
     source venv/bin/activate
     pip install -r requirements.txt # excludes the optional numpy and matplotlib libraries
     pip install -I .
+    test/run_test.sh . # run the unit tests to check your setup
     deactivate
 
 # running
@@ -58,7 +60,11 @@ PrivCount as normal. For example:
 
 # testing
 
-See `test/README.markdown` for notes about testing PrivCount in a private local deployment.
+See `test/README.markdown` for notes about testing PrivCount in a private local deployment, or just run the unit tests:
+
+    source venv/bin/activate # enter the virtual environment
+    test/run_test.sh -I .
+    deactivate # exit the virtual environment
 
 ----------
 
