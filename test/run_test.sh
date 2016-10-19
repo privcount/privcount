@@ -86,7 +86,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   if [ -f privcount.outcome.*.json ]; then
     break
   fi
-  sleep 1
+  sleep 2
   JOB_STATUS=`jobs`
   echo "$JOB_STATUS"
 done
