@@ -43,7 +43,9 @@ Run the following from the base directory of this package (i.e., the same locati
     pip install virtualenv
     virtualenv --no-site-packages venv
     source venv/bin/activate
-    pip install -r requirements.txt # excludes the optional numpy and matplotlib libraries
+    pip install -r requirements.txt
+    # if you want to use the optional privcount plot command
+    pip install -r requirements-plot.txt
     pip install -I .
     test/run_test.sh . # run the unit tests to check your setup
     deactivate

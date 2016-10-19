@@ -78,7 +78,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   # fail if any job has failed
   if echo "$JOB_STATUS" | grep -q "Exit"; then
     # and kill everything
-    echo "Terminating privcount due to error..."
+    echo "Error: Privcount process exited with an error..."
     pkill -P $$
     exit 1
   fi
@@ -86,7 +86,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   if [ -f privcount.outcome.*.json ]; then
     break
   fi
-  sleep 1
+  sleep 2
   JOB_STATUS=`jobs`
   echo "$JOB_STATUS"
 done
@@ -95,9 +95,27 @@ done
 ENDDATE=`date`
 ENDSEC="`date +%s`"
 
-# Plot the tallies file
-echo "Plotting results..."
-privcount plot -d privcount.tallies.*.json test
+# If an outcome file was produced, keep a link to the latest file
+if [ -f privcount.outcome.*.json ]; then
+  ln -s privcount.outcome.*.json privcount.outcome.latest.json
+else
+  echo "Error: No outcome file produced."
+  pkill -P $$
+  exit 1
+fi
+
+# If a tallies file was produced, keep a link to the latest file, and plot it
+if [ -f privcount.tallies.*.json ]; then
+  ln -s privcount.tallies.*.json privcount.tallies.latest.json
+  echo "Plotting results..."
+  # plot will fail if the optional dependencies are not installed
+  # tolerate this failure, and shut down the privcount processes
+  privcount plot -d privcount.tallies.latest.json data || true
+else
+  echo "Error: No tallies file produced."
+  pkill -P $$
+  exit 1
+fi
 
 # And terminate all the privcount processes
 echo "Terminating privcount..."
@@ -107,3 +125,21 @@ pkill -P $$
 echo "$ENDDATE"
 ELAPSEDSEC=$[ $ENDSEC - $STARTSEC ]
 echo "Seconds Elapsed: $ELAPSEDSEC"
+
+# Show the differences between the latest and old latest outcome files
+if [ -e privcount.outcome.latest.json -a \
+     -e old/privcount.outcome.latest.json ]; then
+  # there's no point in comparing the tallies JSON or results PDF
+  echo "Comparing latest outcomes file with previous outcomes file..."
+  # skip expected differences due to time or network jitter
+  # some minor numeric differences are expected due to noise, and due to
+  # events falling before or after data collection stops in short runs
+  diff --minimal \
+      -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
+      old/privcount.outcome.latest.json privcount.outcome.latest.json
+else
+  # Since we need old/latest and latest, it takes two runs to generate the
+  # first outcome file comparison
+  echo "Warning: Outcomes files could not be compared."
+  echo "$0 must be run twice to produce the first comparison."
+fi
