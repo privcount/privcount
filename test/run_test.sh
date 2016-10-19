@@ -78,7 +78,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   # fail if any job has failed
   if echo "$JOB_STATUS" | grep -q "Exit"; then
     # and kill everything
-    echo "Terminating privcount due to error..."
+    echo "Error: Privcount process exited with an error..."
     pkill -P $$
     exit 1
   fi
