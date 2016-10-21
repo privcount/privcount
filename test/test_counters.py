@@ -101,7 +101,8 @@ def create_counters(counters, modulus):
     returns a tuple containing a list of DCs and a list of SKs
     '''
     sc_dc = SecureCounters(counters, modulus)
-    sc_dc.generate(['sk1', 'sk2'], 1.0)
+    sc_dc.generate_blinding_shares(['sk1', 'sk2'])
+    sc_dc.generate_noise(1.0)
     check_blinding_values(sc_dc, modulus)
     # get the shares used to init the secure counters on the share keepers
     shares = sc_dc.detach_blinding_shares()

@@ -97,7 +97,8 @@ class DataCollector(ReconnectingClientFactory):
         start the node running
         return None if failure, otherwise json will encode result
         '''
-        if 'sharekeepers' not in config or 'counters' not in config:
+        if ('sharekeepers' not in config or 'counters' not in config or
+            'noise_weight' not in config or 'dc_threshold' not in config):
             return None
         # if we are still running from a previous incarnation, we need to stop first
         if self.aggregator is not None:
@@ -139,7 +140,8 @@ class DataCollector(ReconnectingClientFactory):
             logging.info('refusing to start collecting without required share keepers')
             return None
 
-        self.aggregator = Aggregator(dc_counters, config['sharekeepers'], self.config['noise_weight'], counter_modulus(), self.config['event_source'])
+        # The aggregator doesn't care about the DC threshold
+        self.aggregator = Aggregator(dc_counters, config['sharekeepers'], config['noise_weight'], counter_modulus(), self.config['event_source'])
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -223,7 +225,6 @@ class DataCollector(ReconnectingClientFactory):
             assert os.path.exists(os.path.dirname(dc_conf['state']))
 
             assert dc_conf['name'] != ''
-            assert dc_conf['noise_weight'] >= 0
             assert dc_conf['tally_server_info']['ip'] is not None
             assert dc_conf['tally_server_info']['port'] > 0
 
@@ -264,9 +265,14 @@ class Aggregator(ReconnectingClientFactory):
     send results for tallying
     '''
 
-    def __init__(self, counters, sk_uids, noise_weight, param_q, tor_control_port):
-        self.secure_counters = SecureCounters(counters, param_q)
-        self.secure_counters.generate(sk_uids, noise_weight)
+    def __init__(self, counters, sk_uids, noise_weight, modulus,
+                 tor_control_port):
+        self.secure_counters = SecureCounters(counters, modulus)
+        # we can't generate the noise yet, because we don't know the
+        # DC fingerprint
+        self.secure_counters.generate_blinding_shares(sk_uids)
+        self.noise_weight_config = noise_weight
+        self.noise_weight_value = None
 
         self.connector = None
         self.protocol = None
@@ -316,6 +322,11 @@ class Aggregator(ReconnectingClientFactory):
         if self.connector is not None:
             self.connector.disconnect()
 
+        # make sure we added noise
+        if self.noise_weight_value is None:
+            logging.warning("Noise was not added to counters when the control port connection was opened. Adding now.")
+            self.generate_noise()
+
         # return the final counts and make sure we cant be restarted
         counts = self.secure_counters.detach_counts()
         del self.secure_counters
@@ -324,6 +335,30 @@ class Aggregator(ReconnectingClientFactory):
 
     def get_shares(self):
         return self.secure_counters.detach_blinding_shares()
+
+    DEFAULT_NOISE_WEIGHT_VALUE = 1.0
+
+    def generate_noise(self):
+        '''
+        If self.fingerprint is included in the noise weight config from the
+        tally server, add noise to the counters based on the weight for that
+        fingerprint.
+        If not, warn and add noise with weight DEFAULT_NOISE_WEIGHT_VALUE.
+        Must be called before detaching counters.
+        '''
+        if self.noise_weight_value is not None:
+            logging.warning("Asked to add noise twice. Ignoring.")
+            return
+
+        if (self.fingerprint is not None and
+            self.noise_weight_config.has_key(self.fingerprint)):
+            self.noise_weight_value = self.noise_weight_config[self.fingerprint]
+        else:
+            self.noise_weight_value = DEFAULT_NOISE_WEIGHT_VALUE
+            logging.warning("Tally Server did not provide a noise weight for our fingerprint {} in noise weight config {}, using noise weight {}."
+                            .format(self.fingerprint, self.noise_weight_config,
+                                    self.noise_weight_value))
+        self.secure_counters.generate_noise(self.noise_weight_value)
 
     def set_nickname(self, nickname):
         nickname = nickname.strip()
@@ -463,6 +498,12 @@ class Aggregator(ReconnectingClientFactory):
         return self.address
 
     def set_fingerprint(self, fingerprint):
+        '''
+        If fingerprint is valid, set our stored fingerprint to fingerprint, and
+        return True.
+        Otherwise, return False.
+        Called by TorControlClientProtocol.
+        '''
         fingerprint = fingerprint.strip()
 
         # Do some basic validation of the fingerprint
@@ -473,18 +514,23 @@ class Aggregator(ReconnectingClientFactory):
             logging.warning("Bad fingerprint characters: %s", fingerprint)
             return False
 
-        # Are we replacing an existing fingerprint?
-        if self.fingerprint is not None:
+        # Is this the first time we've been told a fingerprint?
+        if self.fingerprint is None:
+            self.fingerprint = fingerprint
+            self.generate_noise()
+        else:
             if self.fingerprint != fingerprint:
-                logging.warning("Replacing fingerprint %s with %s", self.fingerprint, fingerprint)
+                logging.warning("Received different fingerprint %s, keeping original fingerprint %s",
+                                self.fingerprint, fingerprint)
             else:
                 logging.debug("Duplicate fingerprint received %s", fingerprint)
-
-        self.fingerprint = fingerprint
 
         return True
 
     def get_fingerprint(self):
+        '''
+        Return the stored fingerprint for this relay.
+        '''
         return self.fingerprint
 
     def get_context(self):
@@ -506,6 +552,10 @@ class Aggregator(ReconnectingClientFactory):
             context['fingerprint'] = self.get_fingerprint()
         if self.last_event_time != 0.0:
             context['last_event_time'] = self.last_event_time
+        if self.noise_weight_config is not None:
+            context['noise_weight_config'] = self.noise_weight_config
+        if self.noise_weight_value is not None:
+            context['noise_weight_value'] = self.noise_weight_value
         return context
 
     def handle_event(self, event):

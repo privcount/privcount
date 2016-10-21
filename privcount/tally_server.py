@@ -224,6 +224,7 @@ class TallyServer(ServerFactory):
             assert ts_conf['listen_port'] > 0
             assert ts_conf['sk_threshold'] > 0
             assert ts_conf['dc_threshold'] > 0
+            assert ts_conf.has_key('noise_weight')
             assert ts_conf['collect_period'] > 0
             assert ts_conf['event_period'] > 0
             assert ts_conf['checkin_period'] > 0
@@ -404,7 +405,16 @@ class TallyServer(ServerFactory):
         # so we'll wait and pass the client context to collection_phase just
         # before stopping it
 
-        self.collection_phase = CollectionPhase(self.config['collect_period'], self.config['counters'], sk_uids, sk_public_keys, dc_uids, counter_modulus(), clock_padding, self.config)
+        self.collection_phase = CollectionPhase(self.config['collect_period'],
+                                                self.config['counters'],
+                                                self.config['noise_weight'],
+                                                self.config['dc_threshold'],
+                                                sk_uids,
+                                                sk_public_keys,
+                                                dc_uids,
+                                                counter_modulus(),
+                                                clock_padding,
+                                                self.config)
         self.collection_phase.start()
 
     def stop_collection_phase(self):
@@ -454,10 +464,14 @@ class TallyServer(ServerFactory):
 
 class CollectionPhase(object):
 
-    def __init__(self, period, counters_config, sk_uids, sk_public_keys, dc_uids, modulus, clock_padding, tally_server_config):
+    def __init__(self, period, counters_config, noise_weight_config,
+                 dc_threshold_config, sk_uids, sk_public_keys, dc_uids,
+                 modulus, clock_padding, tally_server_config):
         # store configs
         self.period = period
         self.counters_config = counters_config
+        self.noise_weight_config = noise_weight_config
+        self.dc_threshold_config = dc_threshold_config
         self.sk_uids = sk_uids
         self.sk_public_keys = sk_public_keys
         self.dc_uids = dc_uids
@@ -620,6 +634,10 @@ class CollectionPhase(object):
         return self.starting_ts
 
     def get_start_config(self, client_uid):
+        '''
+        Get the starting DC or SK configuration.
+        Called by protocol via TallyServer.get_start_config()
+        '''
         if not self.is_participating(client_uid) or client_uid not in self.need_shares:
             return None
 
@@ -631,13 +649,25 @@ class CollectionPhase(object):
             for sk_uid in self.sk_public_keys:
                 config['sharekeepers'][sk_uid] = b64encode(self.sk_public_keys[sk_uid])
             config['counters'] = self.counters_config
+            config['noise_weight'] = self.noise_weight_config
+            config['dc_threshold'] = self.dc_threshold_config
             config['defer_time'] = self.clock_padding
-            logging.info("sending start comand with {} counters and requesting {} shares to data collector {}".format(len(config['counters']), len(config['sharekeepers']), client_uid))
+            logging.info("sending start comand with {} counters and requesting {} shares to data collector {}"
+                         .format(len(config['counters']),
+                                 len(config['sharekeepers']),
+                                 client_uid))
+            logging.debug("full data collector start config {}".format(config))
 
         elif self.state == 'starting_sks' and client_uid in self.sk_uids:
             config['shares'] = self.encrypted_shares[client_uid]
             config['counters'] = self.counters_config
-            logging.info("sending start command with {} counters and {} shares to share keeper {}".format(len(config['counters']), len(config['shares']), client_uid))
+            config['noise_weight'] = self.noise_weight_config
+            config['dc_threshold'] = self.dc_threshold_config
+            logging.info("sending start command with {} counters and {} shares to share keeper {}"
+                         .format(len(config['counters']),
+                                 len(config['shares']),
+                                 client_uid))
+            logging.debug("full share keeper start config {}".format(config))
 
         return config
 

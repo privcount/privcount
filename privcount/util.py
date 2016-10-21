@@ -724,7 +724,8 @@ class SecureCounters(object):
     It is used approximately like this:
 
     data collector:
-    init(), generate(), detach_blinding_shares(), increment()[repeated],
+    init(), generate_blinding_shares(), detach_blinding_shares(),
+    generate_noise(), increment()[repeated],
     detach_counts()
     the blinding shares are sent to each share keeper
     the counts are sent to the tally server at the end
@@ -847,11 +848,10 @@ class SecureCounters(object):
         # failure here should be logged, and the counters ignored
         return self._derive_all_counters(blinding_factors, False)
 
-    def generate(self, uids, noise_weight):
+    def generate_blinding_shares(self, uids):
         '''
         Generate and apply blinding factors for each counter and share keeper
         uid.
-        Generate and apply noise for each counter.
         '''
         self.shares = {}
         for uid in uids:
@@ -860,6 +860,10 @@ class SecureCounters(object):
             # the caller can add additional annotations to this dictionary
             self.shares[uid] = {'secret': blinding_factors, 'sk_uid': uid}
 
+    def generate_noise(self, noise_weight):
+        '''
+        Generate and apply noise for each counter.
+        '''
         # generate noise for each counter independently
         noise_values = deepcopy(self.zero_counters)
         for key in noise_values:
