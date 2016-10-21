@@ -111,7 +111,7 @@ class DataCollector(ReconnectingClientFactory):
             if key in dc_counters and 'bins' in ts_counters[key]:
                 dc_counters[key]['bins'] = deepcopy(ts_counters[key]['bins'])
 
-        # we cant count keys for which we don't have configured bins
+        # we can't count keys for which we don't have configured bins
         for key in dc_counters:
             if 'bins' not in dc_counters[key]:
                 logging.warning("skipping counter '{}' because we do not have any bins configured".format(key))
