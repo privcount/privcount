@@ -9,9 +9,10 @@ from base64 import b64encode, b64decode
 from os import urandom
 from random import SystemRandom
 
+import string
 import sys
 
-from privcount.util import load_public_key_file, load_private_key_file, encrypt_pk, decrypt_pk, generate_symmetric_key, encrypt_symmetric, decrypt_symmetric, encode_data, decode_data, encrypt, decrypt
+from privcount.util import load_public_key_file, load_private_key_file, encrypt_pk, decrypt_pk, generate_symmetric_key, encrypt_symmetric, decrypt_symmetric, encode_data, decode_data, encrypt, decrypt, counter_modulus
 
 import logging
 # DEBUG logs every check: use it on failure
@@ -21,8 +22,10 @@ logging.root.name = ''
 
 # What range of random numbers should we use for ints and longs?
 INT_BITS = 64 if sys.maxsize > 2**32 else 32
-RAND_INT_BITS = INT_BITS - 1
-RAND_LONG_BITS = INT_BITS + 10
+RAND_INT_BITS = INT_BITS - 2
+# Use a maximum long that's larger than an int, the modulus, and a double's
+# integer-fidelity range
+RAND_LONG_BITS = max(INT_BITS, counter_modulus().bit_length(), sys.float_info.mant_dig) + 1
 
 # How long should the random string be (in unencoded bytes)?
 RAND_STR_BYTES = 20
@@ -145,6 +148,11 @@ rand_long_long = SystemRandom().getrandbits(RAND_LONG_BITS)
 assert isinstance(rand_long_long, long)
 rand_double = SystemRandom().random()
 rand_string = b64encode(urandom(RAND_STR_BYTES))
+uni_string = u'Low: \t\r\n Mid: \x85 \xe9 Unicode: \u0bf2 \u2323 \u33af \U00008000'
+# make sure there are some unusual characters in there
+# (and we haven't just created an unencoded ascii string)
+assert len(uni_string.strip(string.ascii_letters + string.digits +
+                            string.punctuation + string.whitespace)) > 0
 
 logging.info("Checking basic types:")
 check(pub_key, priv_key, rand_int_int)
@@ -152,13 +160,14 @@ check(pub_key, priv_key, rand_int_long)
 check(pub_key, priv_key, rand_long_long)
 check(pub_key, priv_key, rand_double)
 check(pub_key, priv_key, rand_string)
+check(pub_key, priv_key, uni_string)
 
 logging.info("Checking basic containers:")
 # currently, we only support lists and dicts
 rand_dict = {'rii': rand_int_int, 'ril': rand_int_long, 'rll': rand_long_long,
-             'rd': rand_double, 'rs': rand_string}
+             'rd': rand_double, 'rs': rand_string, 'us': uni_string}
 rand_list = [rand_int_int, rand_int_long, rand_long_long, rand_double,
-             rand_string]
+             rand_string, uni_string]
 check(pub_key, priv_key, rand_dict)
 check(pub_key, priv_key, rand_list)
 
@@ -169,7 +178,8 @@ check(pub_key, priv_key, nested_container)
 
 logging.info("Checking containers with multiple references to sub-containers:")
 multi_ref_scalar = [rand_int_int, rand_int_int]
-multi_ref_object = [rand_long_long, rand_long_long, rand_string, rand_string]
+multi_ref_object = [rand_long_long, rand_long_long, rand_string, rand_string,
+                    uni_string, uni_string, uni_string]
 multi_ref_container = [rand_dict, rand_dict, rand_dict]
 
 check(pub_key, priv_key, multi_ref_scalar)
