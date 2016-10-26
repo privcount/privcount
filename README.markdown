@@ -26,19 +26,19 @@ Base components:
     system libs: libssl libssl-dev cffi
     python libs: pyyaml, twisted, pyopenssl, service-identity, cryptography
 
+    We require OpenSSL version 1.0.2 or later for SHA256-padded RSA encryption.
+
 Optional graphing extensions (required only for the `plot` subcommand):
 
     system libs: libpng libpng-devel, #TODO this list is incomplete
     python libs: numpy, matplotlib
 
-System libs can be install with `apt-get`, `yum`, `brew`, etc. Python libs can be installed with `pip`,
-as we explain below.
+System libs can be install with `apt-get`, `yum`, `brew`, etc. Python libs can be installed with `pip`, as we explain below.
 
 # installation
 
 I recommend using virtual environments to isolate the python environment and avoid conflicts.
 Run the following from the base directory of this package (i.e., the same location of this README).
-(If you're using OS X or ubuntu, you might need to use "sudo -H" before some of the pip commands.)
 
     pip install virtualenv
     virtualenv --no-site-packages venv
@@ -47,8 +47,18 @@ Run the following from the base directory of this package (i.e., the same locati
     # if you want to use the optional privcount plot command
     pip install -r requirements-plot.txt
     pip install -I .
-    test/run_test.sh . # run the unit tests to check your setup
+    test/run_test.sh -I . # run the unit tests to check your setup
     deactivate
+
+Troubleshooting:
+
+If 'pip install virtualenv' fails due to permissions errors, install as root. Using 'sudo -H' before 'pip install' should work.
+
+Some environments (macOS) might need help locating headers and libraries. If so, use 'CFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib"' (substituting your package manager's path) before pip install.
+
+Some environments (macOS) use the site packages, even if '--no-site-packages' is specified. This can cause failures. Use 'pip install -I' to work around this. 'pip --isolated' might also help, as may 'pip uninstall' outside the virtualenv.
+
+If the encryption unit tests fail with an "UnsupportedAlgorithm" exception, make sure you have cryptography >= 1.4 with OpenSSL >= 1.0.2. You may be using a binary wheel that was compiled with an older OpenSSL version. If so, rebuild and reinstall cryptography using 'pip install -I --no-binary cryptography cryptography'.
 
 # running
 
