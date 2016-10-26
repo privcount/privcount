@@ -348,21 +348,18 @@ class TallyServer(ServerFactory):
                 logging.debug("{} has stored state: {}: {}".format(uid, k, self.clients[uid][k]))
 
         # only data collectors have a fingerprint
-        # oldfingerprint is either:
-        #  - the previous fingerprint we had recorded for this client, or
-        #  - None
-        # fingerprint is either:
-        #  - the current fingerprint we've just received in the status, or
-        #  - the previous fingerprint we had recorded for this client, or
-        #  - None
-        # in that order.
+        # oldfingerprint is the previous fingerprint for this client (if any)
+        # fingerprint is the current fingerprint in the status (if any)
+        # If there is no fingerprint, these are None
         oldfingerprint = self.clients.get(uid, {}).get('fingerprint')
-        fingerprint = status.get('fingerprint', oldfingerprint)
+        fingerprint = status.get('fingerprint', None)
 
-        # complain if fingerprint changes
+        # complain if fingerprint changes, and keep the old one
         if (fingerprint is not None and oldfingerprint is not None and
             fingerprint != oldfingerprint):
-            logging.warning("fingerprint of {} {} state {} changed from {} to {}".format(status['type'], uid, status['state'], oldfingerprint, fingerprint))
+            logging.warning("Ignoring fingerprint update from {} {} state {}: kept old {} ignored new {}"
+                            .format(status['type'], uid, status['state'],
+                                    oldfingerprint, fingerprint))
 
         nickname = status.get('nickname', None)
         # uidname includes the nickname for data collectors
@@ -382,6 +379,9 @@ class TallyServer(ServerFactory):
         self.clients[uid].setdefault('time', status['alive'])
         if oldstate != self.clients[uid]['state']:
             self.clients[uid]['time'] = status['alive']
+        # always keep the old fingerprint
+        if oldfingerprint is not None:
+            self.clients[uid]['fingerprint'] = oldfingerprint
 
         last_event_time = status.get('last_event_time', None)
         last_event_message = ""
