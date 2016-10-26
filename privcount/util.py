@@ -10,7 +10,7 @@ import logging
 import socket
 import datetime
 import uuid
-import yaml
+import json
 
 from random import SystemRandom
 from os import path
@@ -67,108 +67,33 @@ def get_serialized_public_key(key_path, is_private_key=True):
         data = get_public_bytes(key_file.read(), is_private_key)
     return data
 
-def walk_tree(visitor, data_structure):
-    """
-    Recursively call visitor(data_structure) on the leaf elements of an
-    arbitrary python data structure.
-    Only supports tree-like structures - does not support structures which
-    contain references to parent objects.
-    Currently supports traversing dicts and lists.
-    Modifies the data structure in-place. To preserve the original data
-    structure, deepcopy it before calling this function.
-    Returns the modified data structure.
-    """
-    if isinstance(data_structure, dict):
-        for key in data_structure.keys():
-            data_structure[key] = walk_tree(visitor, data_structure[key])
-    elif isinstance(data_structure, list):
-        for i in xrange(len(data_structure)):
-            data_structure[i] = walk_tree(visitor, data_structure[i])
-    else:
-        data_structure = visitor(data_structure)
-    return data_structure
-
-def long_to_str(data_structure):
-    """
-    If data_structure is a long, return the equivalent string, suffixed with
-    'L'.
-    Otherwise, leave it unmodified.
-    """
-    if type(data_structure) is long:
-        return str(data_structure) + 'L'
-    else:
-        return data_structure
-
-def str_to_long(data_structure):
-    """
-    If data_structure is a str, suffixed with 'L', and has an equivalent long,
-    return that long.
-    Otherwise, leave it unmodified.
-    """
-    if (type(data_structure) is str and len(data_structure) > 0 and
-        data_structure[-1] == 'L'):
-        try:
-            return long(data_structure)
-        except ValueError:
-            return data_structure
-    else:
-        return data_structure
-
-def encode_longs(data_structure):
-    """
-    Recursively convert longs to strings in an arbitrary python data structure.
-    Only supports tree-like structures - does not support structures which
-    contain references to parent objects.
-    Modifies the data structure in-place. To preserve the original data
-    structure, deepcopy it before calling this function.
-    Returns the modified data structure.
-    """
-    return walk_tree(long_to_str, data_structure)
-
-def decode_longs(data_structure):
-    """
-    Recursively convert numeric strings suffixed with 'L' to longs, in an
-    arbitrary python data structure.
-    Only supports tree-like structures - does not support structures which
-    contain references to parent objects.
-    Modifies the data structure in-place. To preserve the original data
-    structure, deepcopy it before calling this function.
-    Returns the modified data structure.
-    """
-    return walk_tree(str_to_long, data_structure)
-
 def encode_data(data_structure):
     """
     Encode an arbitrary python data structure in a format that is suitable
     for encryption (encrypt() expects bytes).
     The data structure can only contain basic python types, those supported
-    by yaml.safe_load, and longs (no arbitrary objects).
+    by json.dumps (including longs, but no arbitrary objects).
     Performs the following transformations, in order:
-    - make longs into strings: yaml.safe_load doesn't load objects
-    - dump the data structure using yaml: b64encode doesn't encode objects
-    - b64encode the yaml: avoid any round-trip string encoding issues
+    - dump the data structure using json: b64encode doesn't encode objects
+    - b64encode the json: avoid any round-trip string encoding issues
     Returns a base64 blob that can safely be encrypted, decrypted, then passed
     to decode_data to produce the original data structure.
     """
-    data_structure = encode_longs(deepcopy(data_structure))
-    yaml_string = yaml.dump(data_structure)
-    return b64encode(yaml_string)
+    json_string = json.dumps(data_structure)
+    return b64encode(json_string)
 
 def decode_data(encoded_string):
     """
     Decode an arbitrary python data structure from the format provided by
     encode_data().
     The data structure can only contain basic python types, those supported
-    by yaml.safe_load, and longs (no arbitrary objects).
+    by json.loads (including longs, but no arbitrary objects).
     Performs the inverse transformations to encode_data().
-    Note: any numeric strings ending with 'L' in the original data structure
-    will be converted to longs.
     Returns a python data structure.
     """
-    yaml_string = b64decode(encoded_string)
-    # use safe_load, because decrypted data may be untrusted (from the network)
-    data_structure = yaml.safe_load(yaml_string)
-    return decode_longs(data_structure)
+    json_string = b64decode(encoded_string)
+    # json.loads is safe to use on untrusted data (from the network)
+    return json.loads(json_string)
 
 def generate_symmetric_key():
     """
@@ -261,7 +186,7 @@ def decrypt_pk(priv_key, ciphertext):
 def encrypt(pub_key, data_structure):
     """
     Encrypt an arbitrary python data structure, using the following scheme:
-    - transform the data structure into a b64encoded yaml string
+    - transform the data structure into a b64encoded json string
     - encrypt the string with a single-use symmetric encryption key
     - encrypt the single-use key using asymmetric encryption with pub_key
     The data structure can contain any number of nested dicts, lists, strings,
@@ -885,7 +810,7 @@ class SecureCounters(object):
                 if generate_factors:
                     original_factor = None
                 else:
-                    original_factor = item[2]
+                    original_factor = long(item[2])
                 blinding_factor = derive_blinding_factor(original_factor,
                                                          self.modulus,
                                                          positive=positive)
@@ -977,7 +902,8 @@ class SecureCounters(object):
         if self.counters is not None and counter_key in self.counters:
             for item in self.counters[counter_key]['bins']:
                 if bin_value >= item[0] and bin_value < item[1]:
-                    item[2] = (item[2] + long(num_increments)) % self.modulus
+                    item[2] = ((long(item[2]) + long(num_increments))
+                               % self.modulus)
 
     def _tally_counter(self, counter):
         if self.counters == None:
@@ -992,7 +918,8 @@ class SecureCounters(object):
             num_bins = len(self.counters[key]['bins'])
             for i in xrange(num_bins):
                 tally_bin = self.counters[key]['bins'][i]
-                tally_bin[2] = ((tally_bin[2] + counter[key]['bins'][i][2])
+                tally_bin[2] = ((long(tally_bin[2]) +
+                                 long(counter[key]['bins'][i][2]))
                                 % self.modulus)
 
         # success

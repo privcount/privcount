@@ -41,6 +41,25 @@ PK_ENCRYPTION_LENGTH_MAX = 446
 # It's unlikely we'll ever send more than a megabyte
 SYM_ENCRYPTION_LENGTH_MAX = 1024*1024
 
+def check_equality(plaintext, resulttext):
+    """
+    Check that input_value == output_value, and their types are consistent.
+    """
+    logging.debug(str(type(plaintext)) + ' type to ' + str(type(resulttext)))
+    logging.debug(repr(plaintext) + ' value to ' + repr(resulttext))
+    # We could do a recursive data type equality comparison, but this would
+    # involve a lot of code. Instead, we test bare instances of the types
+    # we care about.
+    # Two types are equivalent if they are subclass/superclass, or if they are
+    # in a set of safe equivalences: int/long and str/unicode.
+    assert (isinstance(plaintext, type(resulttext)) or
+            isinstance(resulttext, type(plaintext)) or
+            (isinstance(plaintext, (int, long)) and
+             isinstance(resulttext, (int, long))) or
+            (isinstance(plaintext, (str, unicode)) and
+             isinstance(resulttext, (str, unicode))))
+    assert plaintext == resulttext
+
 def check_pk_encdec(pub_key, priv_key, plaintext):
     """
     Check that plaintext survives pk encryption and descryption intact
@@ -52,8 +71,7 @@ def check_pk_encdec(pub_key, priv_key, plaintext):
         len(ciphertext), len(b64decode(ciphertext))))
     logging.debug("Decrypting ciphertext with an asymmetric private key:")
     resulttext = decrypt_pk(priv_key, ciphertext)
-    assert type(plaintext) == type(resulttext)
-    assert plaintext == resulttext
+    check_equality(plaintext, resulttext)
     logging.debug("Decrypted data was identical to the original data!")
 
 def check_symmetric_encdec(secret_key, plaintext):
@@ -68,8 +86,7 @@ def check_symmetric_encdec(secret_key, plaintext):
                   .format(len(ciphertext), len(ciphertext)*6/8))
     logging.debug("Decrypting ciphertext with a symmetric secret key:")
     resulttext = decrypt_symmetric(secret_key, ciphertext)
-    assert type(plaintext) == type(resulttext)
-    assert plaintext == resulttext
+    check_equality(plaintext, resulttext)
     logging.debug("Decrypted data was identical to the original data!")
 
 def check_data_encdec(data_structure):
@@ -82,8 +99,7 @@ def check_data_encdec(data_structure):
                   .format(len(encoded_string), len(b64decode(encoded_string))))
     logging.debug("Decoding data structure from a string:")
     result = decode_data(encoded_string)
-    assert type(result) == type(data_structure)
-    assert result == data_structure
+    check_equality(data_structure, result)
     logging.debug("Decoded data was identical to the original data!")
 
 def check_encdec(pub_key, priv_key, data_structure):
@@ -94,10 +110,7 @@ def check_encdec(pub_key, priv_key, data_structure):
     ciphertext = encrypt(pub_key, data_structure)
     logging.debug("Decrypting data structure:")
     result_structure = decrypt(priv_key, ciphertext)
-    # We could do a recursive data type comparison, but value equality is
-    # almost always enough for our purposes
-    assert type(data_structure) == type(result_structure)
-    assert data_structure == result_structure
+    check_equality(data_structure, result_structure)
     logging.debug("Decrypted data was identical to the original data!")
 
 def check(pub_key, priv_key, data_structure):
