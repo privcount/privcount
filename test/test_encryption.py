@@ -9,9 +9,10 @@ from base64 import b64encode, b64decode
 from os import urandom
 from random import SystemRandom
 
+import string
 import sys
 
-from privcount.util import load_public_key_file, load_private_key_file, encrypt_pk, decrypt_pk, generate_symmetric_key, encrypt_symmetric, decrypt_symmetric, encode_data, decode_data, encrypt, decrypt
+from privcount.util import load_public_key_file, load_private_key_file, encrypt_pk, decrypt_pk, generate_symmetric_key, encrypt_symmetric, decrypt_symmetric, encode_data, decode_data, encrypt, decrypt, counter_modulus
 
 import logging
 # DEBUG logs every check: use it on failure
@@ -21,8 +22,10 @@ logging.root.name = ''
 
 # What range of random numbers should we use for ints and longs?
 INT_BITS = 64 if sys.maxsize > 2**32 else 32
-RAND_INT_BITS = INT_BITS - 1
-RAND_LONG_BITS = INT_BITS + 10
+RAND_INT_BITS = INT_BITS - 2
+# Use a maximum long that's larger than an int, the modulus, and a double's
+# integer-fidelity range
+RAND_LONG_BITS = max(INT_BITS, counter_modulus().bit_length(), sys.float_info.mant_dig) + 1
 
 # How long should the random string be (in unencoded bytes)?
 RAND_STR_BYTES = 20
@@ -38,6 +41,25 @@ PK_ENCRYPTION_LENGTH_MAX = 446
 # It's unlikely we'll ever send more than a megabyte
 SYM_ENCRYPTION_LENGTH_MAX = 1024*1024
 
+def check_equality(plaintext, resulttext):
+    """
+    Check that input_value == output_value, and their types are consistent.
+    """
+    logging.debug(str(type(plaintext)) + ' type to ' + str(type(resulttext)))
+    logging.debug(repr(plaintext) + ' value to ' + repr(resulttext))
+    # We could do a recursive data type equality comparison, but this would
+    # involve a lot of code. Instead, we test bare instances of the types
+    # we care about.
+    # Two types are equivalent if they are subclass/superclass, or if they are
+    # in a set of safe equivalences: int/long and str/unicode.
+    assert (isinstance(plaintext, type(resulttext)) or
+            isinstance(resulttext, type(plaintext)) or
+            (isinstance(plaintext, (int, long)) and
+             isinstance(resulttext, (int, long))) or
+            (isinstance(plaintext, (str, unicode)) and
+             isinstance(resulttext, (str, unicode))))
+    assert plaintext == resulttext
+
 def check_pk_encdec(pub_key, priv_key, plaintext):
     """
     Check that plaintext survives pk encryption and descryption intact
@@ -49,8 +71,7 @@ def check_pk_encdec(pub_key, priv_key, plaintext):
         len(ciphertext), len(b64decode(ciphertext))))
     logging.debug("Decrypting ciphertext with an asymmetric private key:")
     resulttext = decrypt_pk(priv_key, ciphertext)
-    assert type(plaintext) == type(resulttext)
-    assert plaintext == resulttext
+    check_equality(plaintext, resulttext)
     logging.debug("Decrypted data was identical to the original data!")
 
 def check_symmetric_encdec(secret_key, plaintext):
@@ -65,8 +86,7 @@ def check_symmetric_encdec(secret_key, plaintext):
                   .format(len(ciphertext), len(ciphertext)*6/8))
     logging.debug("Decrypting ciphertext with a symmetric secret key:")
     resulttext = decrypt_symmetric(secret_key, ciphertext)
-    assert type(plaintext) == type(resulttext)
-    assert plaintext == resulttext
+    check_equality(plaintext, resulttext)
     logging.debug("Decrypted data was identical to the original data!")
 
 def check_data_encdec(data_structure):
@@ -79,8 +99,7 @@ def check_data_encdec(data_structure):
                   .format(len(encoded_string), len(b64decode(encoded_string))))
     logging.debug("Decoding data structure from a string:")
     result = decode_data(encoded_string)
-    assert type(result) == type(data_structure)
-    assert result == data_structure
+    check_equality(data_structure, result)
     logging.debug("Decoded data was identical to the original data!")
 
 def check_encdec(pub_key, priv_key, data_structure):
@@ -91,10 +110,7 @@ def check_encdec(pub_key, priv_key, data_structure):
     ciphertext = encrypt(pub_key, data_structure)
     logging.debug("Decrypting data structure:")
     result_structure = decrypt(priv_key, ciphertext)
-    # We could do a recursive data type comparison, but value equality is
-    # almost always enough for our purposes
-    assert type(data_structure) == type(result_structure)
-    assert data_structure == result_structure
+    check_equality(data_structure, result_structure)
     logging.debug("Decrypted data was identical to the original data!")
 
 def check(pub_key, priv_key, data_structure):
@@ -145,6 +161,11 @@ rand_long_long = SystemRandom().getrandbits(RAND_LONG_BITS)
 assert isinstance(rand_long_long, long)
 rand_double = SystemRandom().random()
 rand_string = b64encode(urandom(RAND_STR_BYTES))
+uni_string = u'Low: \t\r\n Mid: \x85 \xe9 Unicode: \u0bf2 \u2323 \u33af \U00008000'
+# make sure there are some unusual characters in there
+# (and we haven't just created an unencoded ascii string)
+assert len(uni_string.strip(string.ascii_letters + string.digits +
+                            string.punctuation + string.whitespace)) > 0
 
 logging.info("Checking basic types:")
 check(pub_key, priv_key, rand_int_int)
@@ -152,13 +173,14 @@ check(pub_key, priv_key, rand_int_long)
 check(pub_key, priv_key, rand_long_long)
 check(pub_key, priv_key, rand_double)
 check(pub_key, priv_key, rand_string)
+check(pub_key, priv_key, uni_string)
 
 logging.info("Checking basic containers:")
 # currently, we only support lists and dicts
 rand_dict = {'rii': rand_int_int, 'ril': rand_int_long, 'rll': rand_long_long,
-             'rd': rand_double, 'rs': rand_string}
+             'rd': rand_double, 'rs': rand_string, 'us': uni_string}
 rand_list = [rand_int_int, rand_int_long, rand_long_long, rand_double,
-             rand_string]
+             rand_string, uni_string]
 check(pub_key, priv_key, rand_dict)
 check(pub_key, priv_key, rand_list)
 
@@ -169,7 +191,8 @@ check(pub_key, priv_key, nested_container)
 
 logging.info("Checking containers with multiple references to sub-containers:")
 multi_ref_scalar = [rand_int_int, rand_int_int]
-multi_ref_object = [rand_long_long, rand_long_long, rand_string, rand_string]
+multi_ref_object = [rand_long_long, rand_long_long, rand_string, rand_string,
+                    uni_string, uni_string, uni_string]
 multi_ref_container = [rand_dict, rand_dict, rand_dict]
 
 check(pub_key, priv_key, multi_ref_scalar)
