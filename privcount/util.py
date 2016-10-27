@@ -225,7 +225,10 @@ def encrypt_pk(pub_key, plaintext):
     except UnsupportedAlgorithm as e:
         # a failure to encrypt our own data is a fatal error
         # the most likely cause of this error is an old cryptography library
-        logging.error("Fatal error: encryption hash {} unsupported, try upgrading to cryptography >= 1.4. Exception: {}".format(
+        # although some newer binary cryptography libraries are linked with
+        # old OpenSSL versions, to fix, check 'openssl version' >= 1.0.2, then:
+        # pip install -I --no-binary cryptography cryptography
+        logging.error("Fatal error: encryption hash {} unsupported, try upgrading to cryptography >= 1.4 compiled with OpenSSL >= 1.0.2. Exception: {}".format(
                           CryptoHash, e))
         # re-raise the exception for the caller to handle
         raise e
