@@ -28,6 +28,7 @@ class ShareKeeper(ReconnectingClientFactory):
     def __init__(self, config_filepath):
         self.config_filepath = normalise_path(config_filepath)
         self.config = None
+        self.start_config = None
         self.keystore = None
 
     def buildProtocol(self, addr):
@@ -84,10 +85,20 @@ class ShareKeeper(ReconnectingClientFactory):
 
     def do_start(self, config): # called by protocol
         '''
-        this is called when we receive a command from the TS to start a new collection phase
-        return None if failure, otherwise json will encode the result back to TS
+        this is called when we receive a command from the TS to start a new
+        collection phase
+        return None if failure, otherwise the protocol will encode the result
+        in json and send it back to TS
         '''
         logging.info("got command to start new collection phase")
+        # keep the start config to send to the TS at the end of the collection
+        # deepcopy so we can delete the (encrypted) secrets from the shares
+        self.start_config = deepcopy(config)
+        # discard the secrets
+        # we haven't checked if any shares are present, so don't assume
+        for share in self.start_config.get('shares', []):
+            # this is still encrypted, so there's no need for a secure delete
+            del share['secret']
 
         if ('shares' not in config or 'counters' not in config or
             'noise_weight' not in config or 'dc_threshold' not in config):
@@ -151,6 +162,9 @@ class ShareKeeper(ReconnectingClientFactory):
         response['Counts'] = response_counts
         # even though the counter limits are hard-coded, include them anyway
         response['Config'] = add_counter_limits_to_config(self.config)
+        # and include the config sent by the tally server in do_start
+        if self.start_config is not None:
+            response['Config']['Start'] = self.start_config
         return response
 
     def refresh_config(self):

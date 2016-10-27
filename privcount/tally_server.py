@@ -762,18 +762,29 @@ class CollectionPhase(object):
             result_context.update(self.get_client_context_by_type())
 
         # now remove any context we are sure we don't want
-        # We don't need the paths from the configs
-        for uid in result_context.get('DataCollector', {}):
-            if 'state' in result_context['DataCollector'][uid].get('Config', {}):
-                del result_context['DataCollector'][uid]['Config']['state']
+        for dc in result_context.get('DataCollector', {}).values():
+            # We don't need the paths from the configs
+            if 'state' in dc.get('Config', {}):
+                del dc['Config']['state']
+            # or the counters
+            if 'counters' in dc.get('Config', {}).get('Start',{}):
+                del dc['Config']['Start']['counters']
+            # or the sk public keys
+            if 'sharekeepers' in dc.get('Config', {}).get('Start',{}):
+                for uid in dc['Config']['Start']['sharekeepers']:
+                    dc['Config']['Start']['sharekeepers'][uid] = "(public key)"
+
         # We don't want the public key in the ShareKeepers' statuses
-        for uid in result_context.get('ShareKeeper', {}):
-            if 'key' in result_context['ShareKeeper'][uid].get('Config', {}):
-                del result_context['ShareKeeper'][uid]['Config']['key']
-            if 'state' in result_context['ShareKeeper'][uid].get('Config', {}):
-                del result_context['ShareKeeper'][uid]['Config']['state']
-            if 'public_key' in result_context['ShareKeeper'][uid].get('Status', {}):
-                del result_context['ShareKeeper'][uid]['Status']['public_key']
+        for sk in result_context.get('ShareKeeper', {}).values():
+            if 'key' in sk.get('Config', {}):
+                del sk['Config']['key']
+            if 'state' in sk.get('Config', {}):
+                del sk['Config']['state']
+            if 'public_key' in sk.get('Status', {}):
+                del sk['Status']['public_key']
+            # or the counters
+            if 'counters' in sk.get('Config', {}).get('Start',{}):
+                del sk['Config']['Start']['counters']
 
         # add the status and config for the tally server itself
         result_context['TallyServer'] = {}

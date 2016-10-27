@@ -31,6 +31,7 @@ class DataCollector(ReconnectingClientFactory):
     def __init__(self, config_filepath):
         self.config_filepath = normalise_path(config_filepath)
         self.config = None
+        self.start_config = None
         self.aggregator = None
         self.aggregator_defer_id = None
         self.context = {}
@@ -97,6 +98,10 @@ class DataCollector(ReconnectingClientFactory):
         start the node running
         return None if failure, otherwise json will encode result
         '''
+        # keep the start config to send to the TS at the end of the collection
+        # deepcopy in case we make any modifications later
+        self.start_config = deepcopy(config)
+
         if ('sharekeepers' not in config or 'counters' not in config or
             'noise_weight' not in config or 'dc_threshold' not in config):
             return None
@@ -206,6 +211,9 @@ class DataCollector(ReconnectingClientFactory):
         logging.info("collection phase was stopped")
         # even though the counter limits are hard-coded, include them anyway
         response['Config'] = add_counter_limits_to_config(self.config)
+        # and include the config sent by the tally server in do_start
+        if self.start_config is not None:
+            response['Config']['Start'] = self.start_config
         return response
 
     def refresh_config(self):
@@ -572,8 +580,6 @@ class Aggregator(ReconnectingClientFactory):
             context['fingerprint'] = self.get_fingerprint()
         if self.last_event_time != 0.0:
             context['last_event_time'] = self.last_event_time
-        if self.noise_weight_config is not None:
-            context['noise_weight_config'] = self.noise_weight_config
         if self.noise_weight_value is not None:
             context['noise_weight_value'] = self.noise_weight_value
         return context
