@@ -3,9 +3,6 @@
 set -e
 set -u
 
-# If you have privcount installed in a venv, activate it before running
-# this script
-
 # Process arguments
 if [ $# -lt 1 -o $# -gt 2 ]; then
   echo "usage: $0 [-I] <privcount-directory>"
@@ -17,6 +14,14 @@ elif [ $# -eq 1 ]; then
 elif [ $# -eq 2 ]; then
   PRIVCOUNT_INSTALL=1
   PRIVCOUNT_DIRECTORY="$2"
+fi
+
+# source the venv if it exists
+if [ -f "$PRIVCOUNT_DIRECTORY/venv/bin/activate" ]; then
+    echo "Using virtualenv in venv..."
+    set +u
+    . "$PRIVCOUNT_DIRECTORY/venv/bin/activate"
+    set -u
 fi
 
 if [ "$PRIVCOUNT_INSTALL" -eq 1 ]; then
