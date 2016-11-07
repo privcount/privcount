@@ -560,6 +560,78 @@ def add_counter_limits_to_config(config):
     config['max_tally_counter_value'] = max_tally_counter_value()
     return config
 
+MAX_DC_COUNT = 10**6
+
+def check_dc_threshold(dc_threshold, description="threshold"):
+    '''
+    Check that dc_threshold is a valid dc threshold.
+    DC thresholds must be positive non-zero, and less than or equal to
+    MAX_DC_COUNT.
+    Returns True if the dc threshold is valid.
+    Logs a specific warning using description and returns False if it is not.
+    '''
+    if dc_threshold <= 0:
+        logging.warning("Data collector {} must be at least 1, was {}"
+                        .format(description, dc_threshold))
+        return False
+    if dc_threshold > MAX_DC_COUNT:
+        logging.warning("Data collector {} can be at most {}, was {}"
+                        .format(description, MAX_DC_COUNT, dc_threshold))
+        return False
+    return True
+
+def check_noise_weight_value(noise_weight_value, description="value"):
+    '''
+    Check that noise_weight_value is a valid noise weight.
+    Noise weights must be positive and less than or equal to the maximum
+    tallied counter value.
+    Returns True if the noise weight value is valid.
+    Logs a specific warning using description, and returns False if it is not.
+    '''
+    if noise_weight_value < 0.0:
+        logging.warning("Noise weight {} must be positive, was {}".format(
+                description, noise_weight_value))
+        return False
+    if noise_weight_value > max_tally_counter_value():
+        logging.warning("Noise weight {} can be at most {}, was {}".format(
+                description, max_tally_counter_value(), noise_weight_value))
+        return False
+    return True
+
+def check_noise_weight_sum(noise_weight_sum, description="sum"):
+    '''
+    Check that noise_weight_sum is a valid summed noise weight.
+    Noise weight sums must pass check_noise_weight_value().
+    Returns True if the noise weight sum is valid.
+    Logs a specific warning using description and returns False if it is not.
+    '''
+    if not check_noise_weight_value(noise_weight_sum, description):
+        return False
+    return True
+
+def check_noise_weight_config(noise_weight_config, dc_threshold):
+    '''
+    Check that noise_weight_config is a valid noise weight configuration.
+    Each noise weight must also pass check_noise_weight_value().
+    Returns True if the noise weight config is valid.
+    Logs a specific warning and returns False if it is not.
+    '''
+    if not check_dc_threshold(dc_threshold):
+        return False
+    # there must be noise weights for a threshold of DCs
+    if len(noise_weight_config) < dc_threshold:
+        logging.warning("There must be at least as many noise weights as the threshold of data collectors. Noise weights: {}, Threshold: {}."
+                        .format(len(noise_weight_config), dc_threshold))
+        return False
+    # each noise weight must be individually valid
+    for dc in noise_weight_config:
+        if not check_noise_weight_value(noise_weight_config[dc]):
+            return False
+    # the sum must be valid
+    if not check_noise_weight_sum(sum(noise_weight_config.values())):
+        return False
+    return True
+
 def noise(sigma, sum_of_sq, p_exit):
     '''
     Sample noise from a gussian distribution
@@ -724,7 +796,8 @@ class SecureCounters(object):
     It is used approximately like this:
 
     data collector:
-    init(), generate(), detach_blinding_shares(), increment()[repeated],
+    init(), generate_blinding_shares(), detach_blinding_shares(),
+    generate_noise(), increment()[repeated],
     detach_counts()
     the blinding shares are sent to each share keeper
     the counts are sent to the tally server at the end
@@ -847,11 +920,10 @@ class SecureCounters(object):
         # failure here should be logged, and the counters ignored
         return self._derive_all_counters(blinding_factors, False)
 
-    def generate(self, uids, noise_weight):
+    def generate_blinding_shares(self, uids):
         '''
         Generate and apply blinding factors for each counter and share keeper
         uid.
-        Generate and apply noise for each counter.
         '''
         self.shares = {}
         for uid in uids:
@@ -860,6 +932,10 @@ class SecureCounters(object):
             # the caller can add additional annotations to this dictionary
             self.shares[uid] = {'secret': blinding_factors, 'sk_uid': uid}
 
+    def generate_noise(self, noise_weight):
+        '''
+        Generate and apply noise for each counter.
+        '''
         # generate noise for each counter independently
         noise_values = deepcopy(self.zero_counters)
         for key in noise_values:

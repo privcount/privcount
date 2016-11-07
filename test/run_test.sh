@@ -100,12 +100,15 @@ done
 ENDDATE=`date`
 ENDSEC="`date +%s`"
 
+# And terminate all the privcount processes
+echo "Terminating privcount..."
+pkill -P $$
+
 # If an outcome file was produced, keep a link to the latest file
 if [ -f privcount.outcome.*.json ]; then
   ln -s privcount.outcome.*.json privcount.outcome.latest.json
 else
   echo "Error: No outcome file produced."
-  pkill -P $$
   exit 1
 fi
 
@@ -118,18 +121,8 @@ if [ -f privcount.tallies.*.json ]; then
   privcount plot -d privcount.tallies.latest.json data || true
 else
   echo "Error: No tallies file produced."
-  pkill -P $$
   exit 1
 fi
-
-# And terminate all the privcount processes
-echo "Terminating privcount..."
-pkill -P $$
-
-# Show how long it took
-echo "$ENDDATE"
-ELAPSEDSEC=$[ $ENDSEC - $STARTSEC ]
-echo "Seconds Elapsed: $ELAPSEDSEC"
 
 # Show the differences between the latest and old latest outcome files
 if [ -e privcount.outcome.latest.json -a \
@@ -141,10 +134,15 @@ if [ -e privcount.outcome.latest.json -a \
   # events falling before or after data collection stops in short runs
   diff --minimal \
       -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
-      old/privcount.outcome.latest.json privcount.outcome.latest.json
+      old/privcount.outcome.latest.json privcount.outcome.latest.json || true
 else
   # Since we need old/latest and latest, it takes two runs to generate the
   # first outcome file comparison
   echo "Warning: Outcomes files could not be compared."
   echo "$0 must be run twice to produce the first comparison."
 fi
+
+# Show how long it took
+echo "$ENDDATE"
+ELAPSEDSEC=$[ $ENDSEC - $STARTSEC ]
+echo "Seconds Elapsed: $ELAPSEDSEC"
