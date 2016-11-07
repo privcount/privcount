@@ -99,6 +99,7 @@ class ShareKeeper(ReconnectingClientFactory):
         for share in self.start_config.get('shares', []):
             # this is still encrypted, so there's no need for a secure delete
             del share['secret']
+            share['secret'] = "(encrypted blinding share, deleted by share keeper)"
 
         if ('shares' not in config or 'counters' not in config or
             'noise_weight' not in config or 'dc_threshold' not in config):
@@ -127,9 +128,13 @@ class ShareKeeper(ReconnectingClientFactory):
                 # but there is also no way to detect the TS modifying the data
                 logging.warning("failed to import blinding share {} config {}",
                                 share, config)
+                # TODO: secure delete
+                del private_key
                 return None
 
         logging.info("successfully started and imported {} blinding shares for {} counters".format(len(share_list), len(config['counters'])))
+        # TODO: secure delete
+        del private_key
         return {}
 
     def do_stop(self, config): # called by protocol
