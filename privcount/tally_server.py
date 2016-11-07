@@ -765,10 +765,10 @@ class CollectionPhase(object):
         for dc in result_context.get('DataCollector', {}).values():
             # We don't need the paths from the configs
             if 'state' in dc.get('Config', {}):
-                del dc['Config']['state']
+                dc['Config']['state'] = "(state path)"
             # or the counters
             if 'counters' in dc.get('Config', {}).get('Start',{}):
-                del dc['Config']['Start']['counters']
+                dc['Config']['Start']['counters'] = "(counters, no counts)"
             # or the sk public keys
             if 'sharekeepers' in dc.get('Config', {}).get('Start',{}):
                 for uid in dc['Config']['Start']['sharekeepers']:
@@ -777,14 +777,14 @@ class CollectionPhase(object):
         # We don't want the public key in the ShareKeepers' statuses
         for sk in result_context.get('ShareKeeper', {}).values():
             if 'key' in sk.get('Config', {}):
-                del sk['Config']['key']
+                sk['Config']['key'] = "(key path)"
             if 'state' in sk.get('Config', {}):
-                del sk['Config']['state']
+                sk['Config']['state'] = "(state path)"
             if 'public_key' in sk.get('Status', {}):
-                del sk['Status']['public_key']
+                sk['Status']['public_key'] = "(public key)"
             # or the counters
             if 'counters' in sk.get('Config', {}).get('Start',{}):
-                del sk['Config']['Start']['counters']
+                sk['Config']['Start']['counters'] = "(counters, no counts)"
 
         # add the status and config for the tally server itself
         result_context['TallyServer'] = {}
@@ -795,14 +795,14 @@ class CollectionPhase(object):
 
         # We don't need the paths from the configs
         if 'cert' in result_context['TallyServer']['Config']:
-            del result_context['TallyServer']['Config']['cert']
+            result_context['TallyServer']['Config']['cert'] = "(cert path)"
         if 'key' in result_context['TallyServer']['Config']:
-            del result_context['TallyServer']['Config']['key']
+            result_context['TallyServer']['Config']['key'] = "(key path)"
         if 'state' in result_context['TallyServer']['Config']:
-            del result_context['TallyServer']['Config']['state']
+            result_context['TallyServer']['Config']['state'] = "(state path)"
         # And we don't need the bins, they're duplicated in 'Tally'
         if 'counters' in result_context['TallyServer']['Config']:
-            del result_context['TallyServer']['Config']['counters']
+            result_context['TallyServer']['Config']['counters'] = "(counters, no counts)"
 
         return result_context
 
