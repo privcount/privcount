@@ -4,7 +4,12 @@ tally_server:
     counters: './counters.bins.yaml' # path to a yaml file containing our counter bin configurations
     noise_weight: # distribute noise among all machines / data collectors
         # The tor relay fingerprints must be quoted, as some start with 0-9
+        # This is the fingerprint from the test data collector
+        # Comment it out to test the missing fingerprint failure case
         'FACADE0000000000000000000123456789ABCDEF': 1.0
+        # This fingerprint is not present on the test data collector,
+        # it should be ignored
+        '3DEADBEEF012345678900000000000000DEADC00': 1.0
     listen_port: 20001 # open port on which to listen for remote connections from TKSes
     sk_threshold: 1 # number of share keeper nodes required before starting
     dc_threshold: 1 # number of data collector nodes required before starting
