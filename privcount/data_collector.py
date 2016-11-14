@@ -10,7 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_sigmas_config
 
 import yaml
 
@@ -249,8 +249,7 @@ class DataCollector(ReconnectingClientFactory):
             assert dc_conf['event_source'] is not None
             assert dc_conf['event_source'] > 0
 
-            for key in dc_conf['counters']:
-                assert dc_conf['counters'][key]['sigma'] >= 0.0
+            check_sigmas_config(dc_conf['counters'])
 
             assert 'share_keepers' in dc_conf
 

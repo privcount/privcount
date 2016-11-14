@@ -632,6 +632,16 @@ def check_noise_weight_config(noise_weight_config, dc_threshold):
         return False
     return True
 
+def check_sigmas_config(sigmas):
+    '''
+    Check that each sigma value in sigmas is valid.
+    Returns True if all sigma values are valid, and False if any are invalid.
+    '''
+    for key in sigmas:
+        if sigmas[key]['sigma'] < 0.0:
+            return False
+    return True
+
 def noise(sigma, sum_of_sq, p_exit):
     '''
     Sample noise from a gussian distribution
