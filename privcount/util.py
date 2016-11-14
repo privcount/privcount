@@ -828,8 +828,7 @@ class SecureCounters(object):
         # initialize all counters to 0L
         # counters use unlimited length integers to avoid overflow
         for key in self.counters:
-            if 'bins' not in self.counters[key]:
-                return None
+            assert('bins' in self.counters[key])
             for item in self.counters[key]['bins']:
                 assert len(item) == 2
                 # bin is now, e.g.: [0.0, 512.0, 0L] for bin_left, bin_right,
