@@ -184,17 +184,18 @@ class ShareKeeper(ReconnectingClientFactory):
                 conf = yaml.load(fin)
             sk_conf = conf['share_keeper']
 
-            # if key path is not specified, look at default path, or generate a new key
+            # if key path is not specified, use default path
             if 'key' in sk_conf:
                 sk_conf['key'] = normalise_path(sk_conf['key'])
-                assert os.path.exists(sk_conf['key'])
             else:
                 sk_conf['key'] = normalise_path('privcount.rsa_key.pem')
-                if not os.path.exists(sk_conf['key']):
-                    generate_keypair(sk_conf['key'])
+            # if the key does not exist, generate a new key
+            if not os.path.exists(sk_conf['key']):
+                generate_keypair(sk_conf['key'])
 
             sk_conf['name'] = get_public_digest(sk_conf['key'])
 
+            # the state file
             sk_conf['state'] = normalise_path(sk_conf['state'])
             assert os.path.exists(os.path.dirname(sk_conf['state']))
 

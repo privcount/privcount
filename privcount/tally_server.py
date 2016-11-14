@@ -154,35 +154,38 @@ class TallyServer(ServerFactory):
                 conf = yaml.load(fin)
             ts_conf = conf['tally_server']
 
+            # the counter bin file
             if 'counters' in ts_conf:
                 ts_conf['counters'] = normalise_path(ts_conf['counters'])
-                assert os.path.exists(os.path.dirname(ts_conf['counters']))
+                assert os.path.exists(ts_conf['counters'])
                 with open(ts_conf['counters'], 'r') as fin:
                     counters_conf = yaml.load(fin)
                 ts_conf['counters'] = counters_conf['counters']
             else:
                 ts_conf['counters'] = conf['counters']
 
-            # if key path is not specified, look at default path, or generate a new key
+            # a private/public key pair and a cert containing the public key
+            # if either path is not specified, use the default path
             if 'key' in ts_conf and 'cert' in ts_conf:
                 ts_conf['key'] = normalise_path(ts_conf['key'])
-                assert os.path.exists(ts_conf['key'])
-
                 ts_conf['cert'] = normalise_path(ts_conf['cert'])
-                assert os.path.exists(ts_conf['cert'])
             else:
                 ts_conf['key'] = normalise_path('privcount.rsa_key.pem')
                 ts_conf['cert'] = normalise_path('privcount.rsa_key.cert')
-                if not os.path.exists(ts_conf['key']) or not os.path.exists(ts_conf['cert']):
-                    generate_keypair(ts_conf['key'])
-                    generate_cert(ts_conf['key'], ts_conf['cert'])
+            # generate a new key and cert if either file does not exist
+            if (not os.path.exists(ts_conf['key']) or
+                not os.path.exists(ts_conf['cert'])):
+                generate_keypair(ts_conf['key'])
+                generate_cert(ts_conf['key'], ts_conf['cert'])
 
+            # a directory for results files
             if 'results' in ts_conf:
                 ts_conf['results'] = normalise_path(ts_conf['results'])
             else:
                 ts_conf['results'] = normalise_path('./')
-            assert os.path.exists(os.path.dirname(ts_conf['results']))
+            assert os.path.exists(ts_conf['results'])
 
+            # the state file
             ts_conf['state'] = normalise_path(ts_conf['state'])
             assert os.path.exists(os.path.dirname(ts_conf['state']))
 

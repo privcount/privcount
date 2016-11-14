@@ -228,15 +228,17 @@ class DataCollector(ReconnectingClientFactory):
                 conf = yaml.load(fin)
             dc_conf = conf['data_collector']
 
+            # the counter noise file
             if 'counters' in dc_conf:
                 dc_conf['counters'] = normalise_path(dc_conf['counters'])
-                assert os.path.exists(os.path.dirname(dc_conf['counters']))
+                assert os.path.exists(dc_conf['counters'])
                 with open(dc_conf['counters'], 'r') as fin:
                     counters_conf = yaml.load(fin)
                 dc_conf['counters'] = counters_conf['counters']
             else:
                 dc_conf['counters'] = conf['counters']
 
+            # the state file
             dc_conf['state'] = normalise_path(dc_conf['state'])
             assert os.path.exists(os.path.dirname(dc_conf['state']))
 
