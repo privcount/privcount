@@ -103,7 +103,12 @@ class DataCollector(ReconnectingClientFactory):
         self.start_config = deepcopy(config)
 
         if ('sharekeepers' not in config or 'counters' not in config or
-            'noise_weight' not in config or 'dc_threshold' not in config):
+            'sigmas' not in config or 'noise_weight' not in config or
+            'dc_threshold' not in config):
+            return None
+
+        # if the sigmas don't pass the validity checks, fail
+        if not check_sigmas_config(config['sigmas']):
             return None
 
         # if the noise weights don't pass the validity checks, fail
@@ -115,12 +120,15 @@ class DataCollector(ReconnectingClientFactory):
         if self.aggregator is not None:
             return None
 
-        ts_counters, dc_counters = deepcopy(config['counters']), deepcopy(self.config['counters'])
+        # counter bins from the TS
+        ts_counters = config['counters']
+        # deepcopy the sigmas so we can add bins to them
+        dc_counters = deepcopy(config['sigmas'])
 
-        # we keep our local config for which keys we are counting and the sigmas for noise
-        # we allow the tally server to update only the bin widths for each counter
-        for key in ts_counters:
-            if key in dc_counters and 'bins' in ts_counters[key]:
+        # we allow the tally server to update the bin widths for each counter
+        # and the sigmas, and the set of counters
+        for key in dc_counters:
+            if 'bins' in ts_counters.get(key, {}):
                 dc_counters[key]['bins'] = deepcopy(ts_counters[key]['bins'])
 
         # we can't count keys for which we don't have configured bins
@@ -129,8 +137,8 @@ class DataCollector(ReconnectingClientFactory):
                 logging.warning("skipping counter '{}' because we do not have any bins configured".format(key))
                 dc_counters.pop(key, None)
 
-        # we require that only the configured share keepers be used in the collection phase
-        # because we must be able to encrypt messages to them
+        # we require that only the configured share keepers be used in the
+        # collection phase, because we must be able to encrypt messages to them
         expected_sk_digests = set()
         for digest in self.config['share_keepers']:
             expected_sk_digests.add(digest)
@@ -228,16 +236,6 @@ class DataCollector(ReconnectingClientFactory):
                 conf = yaml.load(fin)
             dc_conf = conf['data_collector']
 
-            # the counter noise file
-            if 'counters' in dc_conf:
-                dc_conf['counters'] = normalise_path(dc_conf['counters'])
-                assert os.path.exists(dc_conf['counters'])
-                with open(dc_conf['counters'], 'r') as fin:
-                    counters_conf = yaml.load(fin)
-                dc_conf['counters'] = counters_conf['counters']
-            else:
-                dc_conf['counters'] = conf['counters']
-
             # the state file
             dc_conf['state'] = normalise_path(dc_conf['state'])
             assert os.path.exists(os.path.dirname(dc_conf['state']))
@@ -248,8 +246,6 @@ class DataCollector(ReconnectingClientFactory):
 
             assert dc_conf['event_source'] is not None
             assert dc_conf['event_source'] > 0
-
-            check_sigmas_config(dc_conf['counters'])
 
             assert 'share_keepers' in dc_conf
 

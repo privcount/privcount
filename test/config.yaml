@@ -2,6 +2,7 @@
 tally_server:
     state: 'privcount.ts.state' # path to file where persistent state will be stored
     counters: './counters.bins.yaml' # path to a yaml file containing our counter bin configurations
+    sigmas: './counters.noise.yaml' # path to a yaml file containing our counter sigma (noise) configurations
     noise_weight: # distribute noise among all machines / data collectors
         # The tor relay fingerprints must be quoted, as some start with 0-9
         # This is the fingerprint from the test data collector
@@ -41,7 +42,6 @@ share_keeper:
 data_collector:
     name: phantomtrain1 # a unique, human meaningful name for debugging
     state: 'privcount.dc.state' # path to file where persistent state will be stored
-    counters: './counters.noise.yaml' # path to a yaml file containing our counter noise configurations
     event_source: 20003 # the Tor control port from which we will receive events
     tally_server_info: # where the tally server is located
         ip: 127.0.0.1

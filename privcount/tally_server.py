@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_sigmas_config
 
 import yaml
 
@@ -163,6 +163,18 @@ class TallyServer(ServerFactory):
                 ts_conf['counters'] = counters_conf['counters']
             else:
                 ts_conf['counters'] = conf['counters']
+
+            # the counter sigmas (noise) file
+            if 'sigmas' in ts_conf:
+                ts_conf['sigmas'] = normalise_path(ts_conf['sigmas'])
+                assert os.path.exists(ts_conf['sigmas'])
+                with open(ts_conf['sigmas'], 'r') as fin:
+                    sigmas_conf = yaml.load(fin)
+                ts_conf['sigmas'] = sigmas_conf['counters']
+            else:
+                ts_conf['sigmas'] = conf['counters']
+
+            check_sigmas_config(ts_conf['sigmas'])
 
             # a private/public key pair and a cert containing the public key
             # if either path is not specified, use the default path
@@ -412,6 +424,7 @@ class TallyServer(ServerFactory):
 
         self.collection_phase = CollectionPhase(self.config['collect_period'],
                                                 self.config['counters'],
+                                                self.config['sigmas'],
                                                 self.config['noise_weight'],
                                                 self.config['dc_threshold'],
                                                 sk_uids,
@@ -469,12 +482,15 @@ class TallyServer(ServerFactory):
 
 class CollectionPhase(object):
 
-    def __init__(self, period, counters_config, noise_weight_config,
-                 dc_threshold_config, sk_uids, sk_public_keys, dc_uids,
-                 modulus, clock_padding, tally_server_config):
+    def __init__(self, period, counters_config, sigmas_config,
+                 noise_weight_config, dc_threshold_config, sk_uids,
+                 sk_public_keys, dc_uids, modulus, clock_padding,
+                 tally_server_config):
         # store configs
         self.period = period
+        # the counter bins
         self.counters_config = counters_config
+        self.sigmas_config = sigmas_config
         self.noise_weight_config = noise_weight_config
         self.dc_threshold_config = dc_threshold_config
         self.sk_uids = sk_uids
@@ -654,6 +670,7 @@ class CollectionPhase(object):
             for sk_uid in self.sk_public_keys:
                 config['sharekeepers'][sk_uid] = b64encode(self.sk_public_keys[sk_uid])
             config['counters'] = self.counters_config
+            config['sigmas'] = self.sigmas_config
             config['noise_weight'] = self.noise_weight_config
             config['dc_threshold'] = self.dc_threshold_config
             config['defer_time'] = self.clock_padding
@@ -666,6 +683,7 @@ class CollectionPhase(object):
         elif self.state == 'starting_sks' and client_uid in self.sk_uids:
             config['shares'] = self.encrypted_shares[client_uid]
             config['counters'] = self.counters_config
+            config['sigmas'] = self.sigmas_config
             config['noise_weight'] = self.noise_weight_config
             config['dc_threshold'] = self.dc_threshold_config
             logging.info("sending start command with {} counters and {} shares to share keeper {}"

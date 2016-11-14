@@ -14,7 +14,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 
 from protocol import PrivCountClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config
+from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_sigmas_config
 
 import yaml
 
@@ -104,6 +104,10 @@ class ShareKeeper(ReconnectingClientFactory):
         if ('shares' not in config or 'counters' not in config or
             'noise_weight' not in config or 'dc_threshold' not in config):
             logging.warning("start command from tally server cannot be completed due to missing data")
+            return None
+
+        # if the sigmas don't pass the validity checks, fail
+        if not check_sigmas_config(config['sigmas']):
             return None
 
         # if the noise weights don't pass the validity checks, fail
