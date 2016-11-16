@@ -1,9 +1,16 @@
 import math
 import scipy.stats
 
-def satisfies_dp(sensitivity, epsilon, delta, std):
-    """Return True if (epsilon, delta)-differential privacy is satisfied."""
+DEFAULT_SIGMA_TOLERANCE = 1e-6
+DEFAULT_EPSILON_TOLERANCE = 1e-15
+DEFAULT_SIGMA_RATIO_TOLERANCE = 1e-6
 
+DEFAULT_DUMMY_COUNTER_NAME = 'SanityCheck'
+
+def satisfies_dp(sensitivity, epsilon, delta, std):
+    '''
+    Return True if (epsilon, delta)-differential privacy is satisfied.
+    '''
     # find lowest value at which epsilon differential-privacy is satisfied
     lower_x = -(float(epsilon) * (std**2.0) / sensitivity) + sensitivity/2.0
     # determine lower tail probability of normal distribution w/ mean of zero
@@ -14,15 +21,17 @@ def satisfies_dp(sensitivity, epsilon, delta, std):
     else:
         return False
 
-
-def interval_boolean_binary_search(fn, lower_bound, upper_bound,
-    return_true=True, tol=1e-6):
-    """Searches interval (lower_bound, upper_bound) for x such that fn(x) is
+def interval_boolean_binary_search(fn, lower_bound, upper_bound, tol,
+                                   return_true=True):
+    '''
+    Searches interval (lower_bound, upper_bound) for x such that fn(x) is
     True. Assumes fn is monotonic: if x<y and fn(x)=True, then fn(y) is True.
     If return_true is True, returns smallest value x such that fn(x)=True,
     within tolerance tol. Else returns largest value such that fn(y)=False,
-    within tolerance tol."""
-
+    within tolerance tol.
+    Unlike similar functions, tol does not have a default - insted, use the
+    default tolerance for the specific variable being searched.
+    '''
     if (upper_bound < lower_bound):
         raise ValueError('Invalid binary-search interval: [{}, {}]'.format(\
             lower_bound, upper_bound))
@@ -56,10 +65,13 @@ def interval_boolean_binary_search(fn, lower_bound, upper_bound,
         else:
             upper_bound = midpoint
 
-
-def get_differentially_private_std(sensitivity, epsilon, delta, tol=1e-6):
-    """Determine smallest standard deviation for a normal distribution such that
-    the probability of a value violating epsilon-differential privacy is at most delta."""
+def get_differentially_private_std(sensitivity, epsilon, delta,
+                                   tol=DEFAULT_SIGMA_TOLERANCE):
+    '''
+    Determine smallest standard deviation for a normal distribution such that
+    the probability of a value violating epsilon-differential privacy is at
+    most delta.
+    '''
 
     # std upper bound determined by improving result in literature, 
     # Hardt and Roth, "Beating Randomized Response on Incoherent Matrices"
@@ -73,16 +85,18 @@ def get_differentially_private_std(sensitivity, epsilon, delta, tol=1e-6):
     
     std = interval_boolean_binary_search(\
         lambda x: satisfies_dp(sensitivity, epsilon, delta, x), std_lower_bound,
-        std_upper_bound, return_true=True, tol=tol)
+        std_upper_bound, tol, return_true=True)
 
     return std
 
-
-#  allocate privacy budget among statistics
-def get_approximate_privacy_allocation(epsilon, delta, stats_parameters, sigma_tol=1e-6):
-    """Allocate epsilon to equalize noise ratios assuming delta is shared
+def get_approximate_privacy_allocation(epsilon, delta, stats_parameters,
+                                       sigma_tol=DEFAULT_SIGMA_TOLERANCE):
+    '''
+    Allocate privacy budget among statistics
+    Allocate epsilon to equalize noise ratios assuming delta is shared
     equally. Find optimal sigma (within tolerance sigma_tol) given epsilon
-    privacy allocation."""
+    privacy allocation.
+    '''
 
     # allocate epsilon
     epsilons = dict()
@@ -109,32 +123,67 @@ def get_approximate_privacy_allocation(epsilon, delta, stats_parameters, sigma_t
 
     return (epsilons, sigmas)
 
-
-# find epsilons for fixed delta
-def get_differentially_private_epsilon(sensitivity, sigma, delta, tol=1e-15):
+def get_differentially_private_epsilon(sensitivity, sigma, delta,
+                                       tol=DEFAULT_EPSILON_TOLERANCE):
+    '''
+    find epsilons for fixed delta
+    '''
     epsilon_upper_bound = (float(sensitivity)/sigma) * (2.0 *  math.log(2.0/delta))**(0.5)
     epsilon_lower_bound = 0
     epsilon = interval_boolean_binary_search(\
         lambda x: satisfies_dp(sensitivity, x, delta, sigma), epsilon_lower_bound,
-        epsilon_upper_bound, return_true=True, tol=tol)
+        epsilon_upper_bound, tol, return_true=True)
 
     return epsilon
 
-
-# given sigma, determine total epsilon used
-def get_epsilon_consumed(stats_parameters, excess_noise_ratio, sigma_ratio, delta, tol=1e-15):
+def get_epsilon_consumed(stats_parameters, excess_noise_ratio, sigma_ratio,
+                         delta, tol=DEFAULT_EPSILON_TOLERANCE):
+    '''
+    given sigma, determine total epsilon used
+    '''
     stat_delta = float(delta) / len(stats_parameters)
     epsilons = dict()
     for param, (sensitivity, val) in stats_parameters.iteritems():
-        sigma = float(sigma_ratio) * val / math.sqrt(excess_noise_ratio)
+        sigma = get_sigma(excess_noise_ratio, sigma_ratio, val)
         epsilon = get_differentially_private_epsilon(sensitivity, sigma, stat_delta, tol=tol)
         epsilons[param] = epsilon
 
     return epsilons
 
-# search for sigma ratio (and resulting epsilon allocation) that just consumes epsilon budget
-def get_opt_privacy_allocation(epsilon, delta, stats_parameters, excess_noise_ratio, sigma_tol=1e-6,
-    epsilon_tol=1e-15, sigma_ratio_tol=1e-6):
+def get_sigma(excess_noise_ratio, sigma_ratio, estimated_value):
+    '''
+    Calculate the (optimal) sigma from the excess noise ratio, (optimal)
+    sigma ratio, and per-statistic expected value.
+    Inverse of get_expected_noise_ratio.
+    '''
+    if excess_noise_ratio == 0.0:
+        return 0.0
+    else:
+        # let negative excess_noise_ratio raise an exception
+        return (float(sigma_ratio) * estimated_value /
+                math.sqrt(excess_noise_ratio))
+
+def get_expected_noise_ratio(excess_noise_ratio, sigma, estimated_value):
+    '''
+    Calculate the expected noise ratio from the excess noise ratio,
+    and per-statistic sigma and expected value.
+    Inverse of get_sigma.
+    '''
+    if estimated_value == 0.0:
+        return 0.0
+    else:
+        # let negative excess_noise_ratio raise an exception
+        return math.sqrt(excess_noise_ratio) * sigma / estimated_value
+
+def get_opt_privacy_allocation(epsilon, delta, stats_parameters,
+                               excess_noise_ratio,
+                               sigma_tol=DEFAULT_SIGMA_TOLERANCE,
+                               epsilon_tol=DEFAULT_EPSILON_TOLERANCE,
+                               sigma_ratio_tol=DEFAULT_SIGMA_RATIO_TOLERANCE):
+    '''
+    search for sigma ratio (and resulting epsilon allocation) that just
+    consumes epsilon budget
+    '''
     # get allocation that is optimal for approximate sigmas to get sigma ratio bounds
     approx_epsilons, approx_sigmas = get_approximate_privacy_allocation(epsilon, delta,
         stats_parameters, sigma_tol=1e-6)
@@ -142,7 +191,9 @@ def get_opt_privacy_allocation(epsilon, delta, stats_parameters, excess_noise_ra
     min_sigma_ratio = None
     max_sigma_ratio = None
     for param, (sensitivity, val) in stats_parameters.iteritems():
-        ratio = math.sqrt(excess_noise_ratio) * approx_sigmas[param] / val
+        ratio = get_expected_noise_ratio(excess_noise_ratio,
+                                         approx_sigmas[param],
+                                         val)
         if (min_sigma_ratio is None) or (ratio < min_sigma_ratio):
             min_sigma_ratio = ratio
         if (max_sigma_ratio is None) or (ratio > max_sigma_ratio):
@@ -151,18 +202,40 @@ def get_opt_privacy_allocation(epsilon, delta, stats_parameters, excess_noise_ra
     opt_sigma_ratio = interval_boolean_binary_search(\
         lambda x: sum((get_epsilon_consumed(stats_parameters, excess_noise_ratio, x, delta,
             tol=epsilon_tol)).itervalues()) <= epsilon,
-        min_sigma_ratio, max_sigma_ratio, return_true=True, tol=sigma_ratio_tol)
+        min_sigma_ratio, max_sigma_ratio, sigma_ratio_tol, return_true=True)
     # compute epsilon allocation that achieves optimal sigma ratio
     opt_epsilons = get_epsilon_consumed(stats_parameters, excess_noise_ratio, opt_sigma_ratio,
         delta, tol=epsilon_tol)
     # turn opt sigma ratio into per-parameter sigmas
     opt_sigmas = dict()
     for param, (sensitivity, val) in stats_parameters.iteritems():
-        opt_sigma = float(opt_sigma_ratio) * val / math.sqrt(excess_noise_ratio)
+        opt_sigma = get_sigma(excess_noise_ratio, opt_sigma_ratio, val)
         opt_sigmas[param] = opt_sigma
 
     return (opt_epsilons, opt_sigmas, opt_sigma_ratio)
 
+def get_sanity_check_counter():
+    '''
+    Provide a dictionary with the standard sanity check counter values.
+    It is typically used like:
+        counters['SanityCheck'] = get_sanity_check_counter()
+    All of these values are unused, except for:
+        bins:
+            - [-inf, inf] (a long counter is appended by SecureCounters,
+                           it should only ever have blinding values added)
+        estimated_value: 0.0 (TODO: used for checking if stats have changed)
+        sigma: 0.0 (used for adding noise, 0.0 means no noise is added)
+    '''
+    sanity_check = {}
+    sanity_check['bins'] = [-float('inf'), float('inf')]
+    sanity_check['sensitivity'] = 0.0
+    sanity_check['estimated_value'] = 0.0
+    sanity_check['statistics'] = (sanity_check['sensitivity'],
+                                  sanity_check['estimated_value'])
+    sanity_check['sigma'] = 0.0
+    sanity_check['epsilon'] = 0.0
+    sanity_check['expected_noise_ratio'] = 0.0
+    return sanity_check
 
 # privacy sensitivity
 sensitivity_client_ips_per_slice = 1
@@ -405,9 +478,10 @@ stats_parameters = {\
     ######
 }
 
-
 def print_privacy_allocation(stats_parameters, sigmas, epsilons, excess_noise_ratio):
-    """Print information about sigmas and noise ratios for each statistic."""
+    '''
+    Print information about sigmas and noise ratios for each statistic.
+    '''
     # print epsilons sorted by epsilon allocation
     epsilons_sorted = epsilons.keys()
     epsilons_sorted.sort(key = lambda x: epsilons[x], reverse = True)
@@ -416,15 +490,19 @@ def print_privacy_allocation(stats_parameters, sigmas, epsilons, excess_noise_ra
         print('{}: {}'.format(param, epsilons[param]))
     # print equalized ratio of sigma to expected value
     for param, stats in stats_parameters.iteritems():
-        ratio = math.sqrt(excess_noise_ratio) * sigmas[param] / stats[1]
+        ratio = get_expected_noise_ratio(excess_noise_ratio,
+                                         sigmas[param],
+                                         stats[1])
         print('Ratio of sigma value to expected value: {}'.format(ratio))
         break
         
     # print allocation of privacy budget
     sigma_params_sorted = sigmas.keys()
-    dummy_counter = 'SanityCheck' # add dummy counter for full counters.noise.yaml
+    # add dummy counter for full counters.noise.yaml
+    dummy_counter = DEFAULT_DUMMY_COUNTER_NAME
     sigma_params_sorted.append(dummy_counter) 
-    sigmas[dummy_counter] = 0.0
+    sigmas[dummy_counter] = get_sanity_check_counter()['sigma']
+    epsilons[dummy_counter] = get_sanity_check_counter()['epsilon']
     sigma_params_sorted.sort()
     print('Sigma values\n-----')
     print('counters:')
@@ -433,14 +511,13 @@ def print_privacy_allocation(stats_parameters, sigmas, epsilons, excess_noise_ra
         print('    {}:'.format(param))
         print('        sigma: {:4f}'.format(sigma))
 
-
 if __name__ == '__main__':
     epsilon = 0.3
     delta = 1e-3
     excess_noise_ratio = num_relay_machines # factor by which noise is expanded to allow for malicious relays
-    sigma_tol=1e-6
-    epsilon_tol=1e-15
-    sigma_ratio_tol=1e-6
+    sigma_tol=DEFAULT_SIGMA_TOLERANCE
+    epsilon_tol=DEFAULT_EPSILON_TOLERANCE
+    sigma_ratio_tol=DEFAULT_SIGMA_RATIO_TOLERANCE
 
     ## P2P (and other added) initial statistics ##
     p2p_initial_epsilons, p2p_initial_sigmas, p2p_initial_sigma_ratio =\
