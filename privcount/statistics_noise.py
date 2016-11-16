@@ -1,5 +1,6 @@
 import math
 import scipy.stats
+import yaml
 
 DEFAULT_SIGMA_TOLERANCE = 1e-6
 DEFAULT_EPSILON_TOLERANCE = 1e-15
@@ -221,21 +222,204 @@ def get_sanity_check_counter():
         counters['SanityCheck'] = get_sanity_check_counter()
     All of these values are unused, except for:
         bins:
-            - [-inf, inf] (a long counter is appended by SecureCounters,
+            - [0.0, inf] (a long counter is appended by SecureCounters,
                            it should only ever have blinding values added)
         estimated_value: 0.0 (TODO: used for checking if stats have changed)
         sigma: 0.0 (used for adding noise, 0.0 means no noise is added)
     '''
     sanity_check = {}
-    sanity_check['bins'] = [-float('inf'), float('inf')]
+    sanity_check['bins'] = [0.0, float('inf')]
     sanity_check['sensitivity'] = 0.0
     sanity_check['estimated_value'] = 0.0
-    sanity_check['statistics'] = (sanity_check['sensitivity'],
-                                  sanity_check['estimated_value'])
     sanity_check['sigma'] = 0.0
     sanity_check['epsilon'] = 0.0
     sanity_check['expected_noise_ratio'] = 0.0
     return sanity_check
+
+def get_noise_allocation(noise_parameters,
+                         sanity_check=DEFAULT_DUMMY_COUNTER_NAME):
+    '''
+    An adapter which wraps get_opt_privacy_allocation, extracting the
+    parameters from the noise_parameters data structure, and updating
+    noise_parameters with the calculated values.
+    If sanity_check is not None, adds a sanity check counter to the result,
+    with the counter name supplied in sanity_check, and values created using
+    get_sanity_check_counter().
+    Returns a data structure containing the results on success.
+    Raises a ValueError on failure.
+    The format of noise_parameters is:
+    privacy:
+        epsilon: float in
+        delta: float in
+        excess_noise_ratio: float in
+        sigma_tolerance: float in optional default 1e-6
+        epsilon_tolerance: float in optional default 1e-15
+        sigma_ratio_tolerance: float in optional default 1e-6
+        sigma_ratio: float out
+    counters:
+        'CounterName': multiple
+            bins: optional, unused
+                - [float, float, long optional] multiple, unused
+            sensitivity: float in
+            estimated_value: float in
+            sigma: float out
+            epsilon: float out
+            expected_noise_ratio: float out
+    The expected noise ratio should be identical for each counter, except for
+    floating-point inaccuracies.
+    '''
+    # extract the top-level structures
+    noise = noise_parameters['privacy']
+    counters = noise_parameters['counters']
+    excess_noise_ratio = noise['excess_noise_ratio']
+    # rearrange the counter values, and produce the parameter-only structure
+    stats_parameters = {}
+    for stat in counters:
+        statistics = (counters[stat]['sensitivity'],
+                      counters[stat]['estimated_value'])
+        stats_parameters[stat] = statistics
+    # calculate the noise allocations
+    # and update the structure with defaults, if not already present
+    epsilons, sigmas, sigma_ratio = \
+        get_opt_privacy_allocation(noise['epsilon'],
+                                   noise['delta'],
+                                   stats_parameters,
+                                   excess_noise_ratio,
+                                   sigma_tol=noise.setdefault(
+                                                 'sigma_tolerance',
+                                                 DEFAULT_SIGMA_TOLERANCE),
+                                   epsilon_tol=noise.setdefault(
+                                                 'epsilon_tolerance',
+                                                 DEFAULT_EPSILON_TOLERANCE),
+                                   sigma_ratio_tol=noise.setdefault(
+                                                 'sigma_ratio_tolerance',
+                                                 DEFAULT_SIGMA_RATIO_TOLERANCE)
+                               )
+    # update the structure with the results
+    noise['sigma_ratio'] = sigma_ratio
+    for stat in counters:
+        counters[stat]['epsilon'] = epsilons[stat]
+        counters[stat]['sigma'] = sigmas[stat]
+        noise_ratio = get_expected_noise_ratio(
+            excess_noise_ratio,
+            counters[stat]['sigma'],
+            counters[stat]['estimated_value'])
+        counters[stat]['expected_noise_ratio'] = noise_ratio
+    if sanity_check is not None:
+        counters[sanity_check] = get_sanity_check_counter()
+    return noise_parameters
+
+def get_noise_allocation_stats(epsilon, delta, stats_parameters,
+                               excess_noise_ratio,
+                               sigma_tol=None,
+                               epsilon_tol=None,
+                               sigma_ratio_tol=None,
+                               sanity_check=DEFAULT_DUMMY_COUNTER_NAME):
+    '''
+    Like get_noise_allocation, but uses the structure stats_parameters:
+    - 'CounterName': multiple
+        statistics: (sensitivity float in, estimated_value float in)
+    And the variables:
+        epsilon: float in
+        delta: float in
+        excess_noise_ratio: float in
+        sigma_tolerance: float in optional default None (1e-6)
+        epsilon_tolerance: float in optional default None (1e-15)
+        sigma_ratio_tolerance: float in optional default None (1e-6)
+    And calls get_noise_allocation, to return the result:
+    privacy:
+        (as in get_noise_allocation)
+    counters:
+        'CounterName': multiple
+            sensitivity: float out
+            estimated_value: float out
+            (remainder as in get_noise_allocation)
+    A sanity check counter is added by default, see get_noise_allocation() for
+    details.
+    This adapter is used as part of the unit tests. It should produce the same
+    results as calling get_opt_privacy_allocation() directly (but structured in
+    the format used by get_noise_allocation()).
+    '''
+    noise_parameters = {}
+    # construct the noise part
+    noise_parameters['privacy'] = {}
+    noise_parameters['privacy']['epsilon'] = epsilon
+    noise_parameters['privacy']['delta'] = delta
+    noise_parameters['privacy']['excess_noise_ratio'] = excess_noise_ratio
+    if sigma_tol is not None:
+        noise_parameters['privacy']['sigma_tolerance'] = sigma_tol
+    if epsilon_tol is not None:
+        noise_parameters['privacy']['epsilon_tolerance'] = epsilon_tol
+    if sigma_ratio_tol is not None:
+        noise_parameters['privacy']['sigma_ratio_tolerance'] = sigma_ratio_tol
+    # construct the counter part
+    noise_parameters['counters'] = {}
+    for stat in stats_parameters:
+        counter = {}
+        (sensitivity, estimated_value) = stats_parameters[stat]
+        counter['sensitivity'] = sensitivity
+        counter['estimated_value'] = estimated_value
+        noise_parameters['counters'][stat] = counter
+    return get_noise_allocation(noise_parameters, sanity_check=sanity_check)
+
+def compare_noise_allocation(epsilon, delta, stats_parameters,
+                             excess_noise_ratio,
+                             sigma_tol=DEFAULT_SIGMA_TOLERANCE,
+                             epsilon_tol=DEFAULT_EPSILON_TOLERANCE,
+                             sigma_ratio_tol=DEFAULT_SIGMA_RATIO_TOLERANCE,
+                             sanity_check=DEFAULT_DUMMY_COUNTER_NAME):
+    '''
+    Call get_opt_privacy_allocation() and get_noise_allocation_stats(),
+    and assert that the results are equivalent.
+    '''
+    # Call the base function
+    epsilons, sigmas, sigma_ratio =\
+        get_opt_privacy_allocation(epsilon, delta, stats_parameters,
+                                   excess_noise_ratio,
+                                   sigma_tol=sigma_tol,
+                                   epsilon_tol=epsilon_tol,
+                                   sigma_ratio_tol=sigma_ratio_tol)
+    # Add the sanity check counter
+    if sanity_check is not None:
+        sigmas[sanity_check] = get_sanity_check_counter()['sigma']
+        epsilons[sanity_check] = get_sanity_check_counter()['epsilon']
+    # Call the high-level function
+    noise_parameters =\
+        get_noise_allocation_stats(epsilon, delta, stats_parameters,
+                                   excess_noise_ratio,
+                                   sigma_tol=sigma_tol,
+                                   epsilon_tol=epsilon_tol,
+                                   sigma_ratio_tol=sigma_ratio_tol,
+                                   sanity_check=sanity_check)
+    # assert that the results and calculated values are equivalent
+    # base results
+    assert noise_parameters['privacy']['sigma_ratio'] == sigma_ratio
+    np_excess_noise_ratio = noise_parameters['privacy']['excess_noise_ratio']
+    for stat in noise_parameters['counters']:
+        counter = noise_parameters['counters'][stat]
+        assert epsilons[stat] == counter['epsilon']
+        assert sigmas[stat] == counter['sigma']
+        # rearranged values
+        if stat == sanity_check:
+            sc = get_sanity_check_counter()
+            base_sensitivity = sc['sensitivity']
+            base_estimated_value = sc['estimated_value']
+        else:
+            (base_sensitivity, base_estimated_value) = stats_parameters[stat]
+        np_sensitivity = counter['sensitivity']
+        np_estimated_value = counter['estimated_value']
+        assert base_sensitivity == np_sensitivity
+        assert base_estimated_value == np_estimated_value
+        # calculated values
+        base_noise_ratio = get_expected_noise_ratio(excess_noise_ratio,
+                                                    sigmas[stat],
+                                                    base_estimated_value)
+        np_noise_ratio = get_expected_noise_ratio(np_excess_noise_ratio,
+                                                  counter['sigma'],
+                                                  counter['estimated_value'])
+        calc_noise_ratio = counter['expected_noise_ratio']
+        assert base_noise_ratio == np_noise_ratio
+        assert base_noise_ratio == calc_noise_ratio
 
 # privacy sensitivity
 sensitivity_client_ips_per_slice = 1
@@ -528,6 +712,22 @@ if __name__ == '__main__':
     print('* P2P initial statistics *\n')
     print_privacy_allocation(p2p_initial_stats_parameters, p2p_initial_sigmas,
         p2p_initial_epsilons, excess_noise_ratio)
+    compare_noise_allocation(epsilon, delta, p2p_initial_stats_parameters,
+                             excess_noise_ratio,
+                             sigma_tol=sigma_tol,
+                             epsilon_tol=epsilon_tol,
+                             sigma_ratio_tol=sigma_ratio_tol,
+                             sanity_check=DEFAULT_DUMMY_COUNTER_NAME)
+    p2p_initial_noise_parameters =\
+        get_noise_allocation_stats(epsilon, delta,
+                                   p2p_initial_stats_parameters,
+                                   excess_noise_ratio,
+                                   sigma_tol=sigma_tol,
+                                   epsilon_tol=epsilon_tol,
+                                   sigma_ratio_tol=sigma_ratio_tol,
+                                   sanity_check=DEFAULT_DUMMY_COUNTER_NAME)
+    print('\nnoise config\n')
+    print yaml.dump(p2p_initial_noise_parameters, default_flow_style=False)
     ####
     
     ## initial statistics ##
@@ -539,6 +739,21 @@ if __name__ == '__main__':
     print('\n* Initial statistics *\n')
     print_privacy_allocation(initial_stats_parameters, initial_sigmas,
         initial_epsilons, excess_noise_ratio)
+    compare_noise_allocation(epsilon, delta, initial_stats_parameters,
+                             excess_noise_ratio,
+                             sigma_tol=sigma_tol,
+                             epsilon_tol=epsilon_tol,
+                             sigma_ratio_tol=sigma_ratio_tol,
+                             sanity_check=DEFAULT_DUMMY_COUNTER_NAME)
+    initial_noise_parameters =\
+        get_noise_allocation_stats(epsilon, delta, initial_stats_parameters,
+                                   excess_noise_ratio,
+                                   sigma_tol=sigma_tol,
+                                   epsilon_tol=epsilon_tol,
+                                   sigma_ratio_tol=sigma_ratio_tol,
+                                   sanity_check=DEFAULT_DUMMY_COUNTER_NAME)
+    print('\nnoise config\n')
+    print yaml.dump(initial_noise_parameters, default_flow_style=False)
     ####
     
     ## full statistics ##
@@ -549,4 +764,45 @@ if __name__ == '__main__':
     # print information about full statistics noise
     print('\n* Full statistics *\n')
     print_privacy_allocation(stats_parameters, full_sigmas, full_epsilons, excess_noise_ratio)
+    compare_noise_allocation(epsilon, delta, stats_parameters,
+                             excess_noise_ratio,
+                             sigma_tol=sigma_tol,
+                             epsilon_tol=epsilon_tol,
+                             sigma_ratio_tol=sigma_ratio_tol,
+                             sanity_check=DEFAULT_DUMMY_COUNTER_NAME)
+    noise_parameters =\
+        get_noise_allocation_stats(epsilon, delta, stats_parameters,
+                                   excess_noise_ratio,
+                                   sigma_tol=sigma_tol,
+                                   epsilon_tol=epsilon_tol,
+                                   sigma_ratio_tol=sigma_ratio_tol,
+                                   sanity_check=DEFAULT_DUMMY_COUNTER_NAME)
+    print('\nnoise config\n')
+    print yaml.dump(noise_parameters, default_flow_style=False)
+    # Debug output
+    if False:
+        print "Inputs:"
+        print "epsilon"
+        print epsilon
+        print "delta"
+        print delta
+        print "stats_parameters"
+        print stats_parameters
+        print "excess_noise_ratio"
+        print excess_noise_ratio
+        print "sigma_tol"
+        print sigma_tol
+        print "epsilon_tol"
+        print epsilon_tol
+        print "sigma_ratio_tol"
+        print sigma_ratio_tol
+        print "Outputs:"
+        print "full_epsilons"
+        print full_epsilons
+        print "full_sigmas"
+        print full_sigmas
+        print "full_sigma_ratio"
+        print full_sigma_ratio
+        print "noise_parameters"
+        print noise_parameters
     ####
