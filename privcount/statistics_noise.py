@@ -186,7 +186,7 @@ def get_opt_privacy_allocation(epsilon, delta, stats_parameters,
     '''
     # get allocation that is optimal for approximate sigmas to get sigma ratio bounds
     approx_epsilons, approx_sigmas = get_approximate_privacy_allocation(epsilon, delta,
-        stats_parameters, sigma_tol=1e-6)
+        stats_parameters, sigma_tol=sigma_tol)
     # ratios of sigma to expected value
     min_sigma_ratio = None
     max_sigma_ratio = None
