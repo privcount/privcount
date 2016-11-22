@@ -895,7 +895,7 @@ class CollectionPhase(object):
         # This file only has the counts
         begin, end = int(round(self.starting_ts)), int(round(self.stopping_ts))
         filepath = os.path.join(path_prefix, "privcount.tallies.{}-{}.json".format(begin, end))
-        with open(filepath, 'a') as fout:
+        with open(filepath, 'w') as fout:
             json.dump(tallied_counts, fout, sort_keys=True, indent=4)
 
         #logging.info("tally was successful, counts for phase from %d to %d were written to file '%s'", begin, end, filepath)
@@ -911,7 +911,7 @@ class CollectionPhase(object):
         result_info['Context'] = self.get_result_context()
 
         filepath = os.path.join(path_prefix, "privcount.outcome.{}-{}.json".format(begin, end))
-        with open(filepath, 'a') as fout:
+        with open(filepath, 'w') as fout:
             json.dump(result_info, fout, sort_keys=True, indent=4)
 
         logging.info("tally was successful, outcome of phase of {} was written to file '{}'".format(format_interval_time_between(begin, 'from', end), filepath))
