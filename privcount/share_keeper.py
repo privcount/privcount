@@ -136,8 +136,8 @@ class ShareKeeper(ReconnectingClientFactory):
                 # configured counters
                 # this is likely a configuration error or a programming bug,
                 # but there is also no way to detect the TS modifying the data
-                logging.warning("failed to import blinding share {} config {}",
-                                share, config)
+                logging.warning("failed to import blinding share {} config {}"
+                                .format(share, config))
                 # TODO: secure delete
                 del private_key
                 return None
