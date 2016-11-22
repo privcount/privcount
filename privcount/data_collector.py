@@ -10,7 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_sigmas_config
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters
 
 import yaml
 
@@ -103,12 +103,13 @@ class DataCollector(ReconnectingClientFactory):
         self.start_config = deepcopy(config)
 
         if ('sharekeepers' not in config or 'counters' not in config or
-            'sigmas' not in config or 'noise_weight' not in config or
+            'noise' not in config or 'noise_weight' not in config or
             'dc_threshold' not in config):
             return None
 
-        # if the sigmas don't pass the validity checks, fail
-        if not check_sigmas_config(config['sigmas']):
+        # if the counters don't pass the validity checks, fail
+        if not check_counters_config(config['counters'],
+                                     config['noise']['counters']):
             return None
 
         # if the noise weights don't pass the validity checks, fail
@@ -116,26 +117,14 @@ class DataCollector(ReconnectingClientFactory):
                                          config['dc_threshold']):
             return None
 
-        # if we are still running from a previous incarnation, we need to stop first
+        # if we are still running from a previous incarnation, we need to stop
+        # first
         if self.aggregator is not None:
             return None
 
-        # counter bins from the TS
-        ts_counters = config['counters']
-        # deepcopy the sigmas so we can add bins to them
-        dc_counters = deepcopy(config['sigmas'])
-
-        # we allow the tally server to update the bin widths for each counter
-        # and the sigmas, and the set of counters
-        for key in dc_counters:
-            if 'bins' in ts_counters.get(key, {}):
-                dc_counters[key]['bins'] = deepcopy(ts_counters[key]['bins'])
-
-        # we can't count keys for which we don't have configured bins
-        for key in dc_counters:
-            if 'bins' not in dc_counters[key]:
-                logging.warning("skipping counter '{}' because we do not have any bins configured".format(key))
-                dc_counters.pop(key, None)
+        # combine the bins and sigmas
+        dc_counters = combine_counters(config['counters'],
+                                       config['noise']['counters'])
 
         # we require that only the configured share keepers be used in the
         # collection phase, because we must be able to encrypt messages to them

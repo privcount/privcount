@@ -632,15 +632,121 @@ def check_noise_weight_config(noise_weight_config, dc_threshold):
         return False
     return True
 
+def check_bins_config(bins):
+    '''
+    Check that bins are non-overlapping.
+    Returns True if all bins are non-overlapping, and False if any overlap.
+    Raises an exception if any counter does not have bins, or if any bin does
+    not have a lower and upper bound
+    '''
+    # sort names alphabetically, so the logs are in a sensible order
+    for key in sorted(bins.keys()):
+        # this sorts the bins by the first element in ascending order
+        # (if the first elements are equal, the bins are sorted by the second
+        # element)
+        sorted_bins = sorted(bins[key]['bins'])
+        prev_bin = None
+        for bin in sorted_bins:
+            # bins are an array [l, u, c], where c counts values such that:
+            # l <= value < u
+            # c is optional, and is ignored by this code
+            l = bin[0]
+            u = bin[1]
+            # check for inverted bounds
+            if l >= u:
+                logging.warning("bin {} in counter {} will never count any values, because its lower bound is greater than or equal to its upper bound"
+                                .format(bin, key))
+                return False
+            # make sure we have a bin to compare to
+            if prev_bin is not None:
+                prev_l = prev_bin[0]
+                prev_u = prev_bin[1]
+                # two sorted bins overlap if:
+                # - their lower bounds are equal, or
+                # - the upper bound of a bin is greater than the lower bound
+                #   of the next bin
+                if prev_l == l:
+                    logging.warning("bin {} in counter {} overlaps bin {}: their lower bounds are equal"
+                                    .format(prev_bin, key, bin))
+                    return False
+                elif prev_u > l:
+                    logging.warning("bin {} in counter {} overlaps bin {}: the first bin's upper bound is greater than the second bin's lower bound"
+                                    .format(prev_bin, key, bin))
+                    return False
+            prev_bin = bin
+    return True
+
 def check_sigmas_config(sigmas):
     '''
     Check that each sigma value in sigmas is valid.
     Returns True if all sigma values are valid, and False if any are invalid.
+    Raises an exception if any sigma value is missing.
     '''
-    for key in sigmas:
+    # sort names alphabetically, so the logs are in a sensible order
+    for key in sorted(sigmas.keys()):
         if sigmas[key]['sigma'] < 0.0:
+            logging.warning("invalid sigma for counter {}: less than zero".format(key))
             return False
     return True
+
+def combine_counters(bins, sigmas):
+    '''
+    Combine the counters in bins and sigmas, excluding any counters that are
+    missing from either bins or sigmas.
+    Combine the keys and values from both bins and sigmas in the output
+    counters, according to what the tally server is permitted to update.
+    (Both bins and sigmas are configured at the tally server.)
+    Return a dictionary containing the combined keys.
+    '''
+    # we allow the tally server to update the set of counters
+    # (we can't count keys for which we don't have both bins and sigmas)
+    common_keys = set(bins.keys()).intersection(sigmas.keys())
+
+    # warn about missing bins and sigmas
+    # sort names alphabetically, so the logs are in a sensible order
+    for key in sorted(set(bins.keys()).difference(common_keys)):
+            logging.warning("skipping counter '{}' because it has a bin, but no sigma".format(key))
+    for key in sorted(set(sigmas.keys()).difference(common_keys)):
+            logging.warning("skipping counter '{}' because it has a sigma, but no bin".format(key))
+
+    counters_combined = {}
+    # sort names alphabetically, so the logs are in a sensible order
+    for key in sorted(common_keys):
+        if 'bins' in bins[key] and 'sigma' in sigmas[key]:
+            # Use the values from the sigmas
+            counters_combined[key] = deepcopy(sigmas[key])
+            # Except for the bin values, which come from bins
+            # we allow the tally server to update the bin widths
+            counters_combined[key]['bins'] = deepcopy(bins[key]['bins'])
+        elif 'bins' not in bins[key]:
+            logging.warning("skipping counter '{}' because we have a bin counter, but it does not have any bins configured".format(key))
+        elif 'sigma' not in sigmas[key]:
+            logging.warning("skipping counter '{}' because we have a sigma counter, but it does not have any sigmas configured".format(key))
+        else:
+            # if we've correctly handled all the cases, then...
+            logging.error("this line should be unreachable")
+    return counters_combined
+
+def check_combined_counters(bins, sigmas):
+    '''
+    Sanity check bins against sigmas.
+    Returns False if:
+      - the set of counters in bins and sigmas is not the same, or
+      - any counter is missing bins, or
+      - any counter is missing a sigma, or
+      - any counter is duplicated.
+    '''
+    combined_counters = combine_counters(bins, sigmas)
+    return (len(combined_counters) == len(bins) and
+            len(combined_counters) == len(sigmas))
+
+def check_counters_config(bins, sigmas):
+    '''
+    Sanity check bins and sigmas individually.
+    Check that bins and sigmas have the same set of counters.
+    '''
+    return (check_bins_config(bins) and check_sigmas_config(sigmas) and
+            check_combined_counters(bins, sigmas))
 
 def noise(sigma, sum_of_sq, p_exit):
     '''
