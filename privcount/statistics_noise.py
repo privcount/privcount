@@ -98,13 +98,15 @@ def get_approximate_privacy_allocation(epsilon, delta, stats_parameters,
     equally. Find optimal sigma (within tolerance sigma_tol) given epsilon
     privacy allocation.
     '''
-
     # allocate epsilon
     epsilons = dict()
     init_constant = None
     init_param = None
     coefficient_sum = 1
     for param, (s, v) in stats_parameters.iteritems():
+        # ignore dummy counters
+        if v == 0.0:
+            continue
         if init_constant is None:
             init_constant = float(s) / v
             init_param = param
@@ -113,14 +115,23 @@ def get_approximate_privacy_allocation(epsilon, delta, stats_parameters,
     epsilons[init_param] = float(epsilon)/coefficient_sum
     for param, (s, v) in stats_parameters.iteritems():
         if (param != init_param):
-            epsilons[param] = epsilons[init_param] * float(s) / v / init_constant
+            # give dummy counters a sensible default value
+            if v == 0.0:
+                epsilons[param] = get_sanity_check_counter()['epsilon']
+            else:
+                epsilons[param] = (epsilons[init_param] * float(s) / v /
+                                   init_constant)
     # determine sigmas to acheive desired epsilons and delta
     sigmas = dict()
     stat_delta = float(delta) / len(stats_parameters)
     for param, (s, v) in stats_parameters.iteritems():
-        sigma = get_differentially_private_std(s, epsilons[param],
-            stat_delta, tol=sigma_tol)
-        sigmas[param] = sigma
+        # give dummy counters a sensible default value
+        if s == 0.0:
+            sigmas[param] = get_sanity_check_counter()['sigma']
+        else:
+            sigma = get_differentially_private_std(s, epsilons[param],
+                                                   stat_delta, tol=sigma_tol)
+            sigmas[param] = sigma
 
     return (epsilons, sigmas)
 
@@ -129,8 +140,11 @@ def get_differentially_private_epsilon(sensitivity, sigma, delta,
     '''
     find epsilons for fixed delta
     '''
+    # skip search for sanity check counters
+    if sigma == 0.0:
+        return 0.0
     epsilon_upper_bound = (float(sensitivity)/sigma) * (2.0 *  math.log(2.0/delta))**(0.5)
-    epsilon_lower_bound = 0
+    epsilon_lower_bound = 0.0
     epsilon = interval_boolean_binary_search(\
         lambda x: satisfies_dp(sensitivity, x, delta, sigma), epsilon_lower_bound,
         epsilon_upper_bound, tol, return_true=True)
