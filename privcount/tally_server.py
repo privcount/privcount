@@ -16,7 +16,8 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_since, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config
+from statistics_noise import get_noise_allocation
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config
 
 import yaml
 
@@ -154,35 +155,93 @@ class TallyServer(ServerFactory):
                 conf = yaml.load(fin)
             ts_conf = conf['tally_server']
 
+            # the counter bin file
             if 'counters' in ts_conf:
                 ts_conf['counters'] = normalise_path(ts_conf['counters'])
-                assert os.path.exists(os.path.dirname(ts_conf['counters']))
+                assert os.path.exists(ts_conf['counters'])
                 with open(ts_conf['counters'], 'r') as fin:
                     counters_conf = yaml.load(fin)
                 ts_conf['counters'] = counters_conf['counters']
             else:
                 ts_conf['counters'] = conf['counters']
 
-            # if key path is not specified, look at default path, or generate a new key
+            # the counter noise config - one of the following must be provided:
+            # noise: contains the noise allocation parameters,
+            # sigmas: contains pre-calculated sigmas
+            # (if both are provided, sigmas is ignored)
+            # noise file
+            if 'noise' in ts_conf:                
+                ts_conf['noise'] = normalise_path(ts_conf['noise'])
+                assert os.path.exists(ts_conf['noise'])
+                with open(ts_conf['noise'], 'r') as fin:
+                    noise_conf = yaml.load(fin)
+                # use both the privacy and counters elements from noise_conf
+                ts_conf['noise'] = {}
+                ts_conf['noise']['privacy'] = noise_conf['privacy']
+                ts_conf['noise']['counters'] = noise_conf['counters']
+            # noise config in the same file
+            elif 'privacy' in conf and 'counters' in conf:
+                ts_conf['noise'] = {}
+                ts_conf['noise']['privacy'] = conf['privacy']
+                ts_conf['noise']['counters'] = conf['counters']
+            # sigmas file
+            elif 'sigmas' in ts_conf:
+                ts_conf['sigmas'] = normalise_path(ts_conf['sigmas'])
+                assert os.path.exists(ts_conf['sigmas'])
+                with open(ts_conf['sigmas'], 'r') as fin:
+                    sigmas_conf = yaml.load(fin)
+                ts_conf['noise'] = {}
+                ts_conf['noise']['counters'] = sigmas_conf['counters']
+                # we've packed it into ts_conf['noise'], so remove it
+                del ts_conf['sigmas']
+            # sigmas config in the same file
+            else:
+                ts_conf['noise'] = {}
+                ts_conf['noise']['counters'] = conf['counters']
+
+            # an optional noise allocation results file
+            if 'allocation' in ts_conf:
+                ts_conf['allocation'] = normalise_path(ts_conf['allocation'])
+                assert os.path.exists(os.path.dirname(ts_conf['allocation']))
+
+            # now all the files are loaded, use noise to calculate sigmas
+            # (if noise was configured)
+            if 'privacy' in ts_conf['noise']:
+                ts_conf['noise'] = get_noise_allocation(ts_conf['noise'])
+                # and write it to the specified file (if configured)
+                if 'allocation' in ts_conf:
+                    with open(ts_conf['allocation'], 'w') as fout:
+                        yaml.dump(ts_conf['noise'], fout,
+                                  default_flow_style=False)
+
+            # now we have bins and sigmas (and perhaps additional calculation
+            # info along with the sigmas)
+            # perform sanity checks
+            assert check_counters_config(ts_conf['counters'],
+                                         ts_conf['noise']['counters'])
+
+            # a private/public key pair and a cert containing the public key
+            # if either path is not specified, use the default path
             if 'key' in ts_conf and 'cert' in ts_conf:
                 ts_conf['key'] = normalise_path(ts_conf['key'])
-                assert os.path.exists(ts_conf['key'])
-
                 ts_conf['cert'] = normalise_path(ts_conf['cert'])
-                assert os.path.exists(ts_conf['cert'])
             else:
                 ts_conf['key'] = normalise_path('privcount.rsa_key.pem')
                 ts_conf['cert'] = normalise_path('privcount.rsa_key.cert')
-                if not os.path.exists(ts_conf['key']) or not os.path.exists(ts_conf['cert']):
-                    generate_keypair(ts_conf['key'])
-                    generate_cert(ts_conf['key'], ts_conf['cert'])
+            # generate a new key and cert if either file does not exist
+            if (not os.path.exists(ts_conf['key']) or
+                not os.path.exists(ts_conf['cert'])):
+                generate_keypair(ts_conf['key'])
+                generate_cert(ts_conf['key'], ts_conf['cert'])
 
+            # a directory for results files
             if 'results' in ts_conf:
                 ts_conf['results'] = normalise_path(ts_conf['results'])
             else:
                 ts_conf['results'] = normalise_path('./')
-            assert os.path.exists(os.path.dirname(ts_conf['results']))
+            assert os.path.exists(ts_conf['results'])
 
+            # the state file
             ts_conf['state'] = normalise_path(ts_conf['state'])
             assert os.path.exists(os.path.dirname(ts_conf['state']))
 
@@ -409,6 +468,7 @@ class TallyServer(ServerFactory):
 
         self.collection_phase = CollectionPhase(self.config['collect_period'],
                                                 self.config['counters'],
+                                                self.config['noise'],
                                                 self.config['noise_weight'],
                                                 self.config['dc_threshold'],
                                                 sk_uids,
@@ -466,12 +526,15 @@ class TallyServer(ServerFactory):
 
 class CollectionPhase(object):
 
-    def __init__(self, period, counters_config, noise_weight_config,
-                 dc_threshold_config, sk_uids, sk_public_keys, dc_uids,
-                 modulus, clock_padding, tally_server_config):
+    def __init__(self, period, counters_config, noise_config,
+                 noise_weight_config, dc_threshold_config, sk_uids,
+                 sk_public_keys, dc_uids, modulus, clock_padding,
+                 tally_server_config):
         # store configs
         self.period = period
+        # the counter bins
         self.counters_config = counters_config
+        self.noise_config = noise_config
         self.noise_weight_config = noise_weight_config
         self.dc_threshold_config = dc_threshold_config
         self.sk_uids = sk_uids
@@ -651,6 +714,7 @@ class CollectionPhase(object):
             for sk_uid in self.sk_public_keys:
                 config['sharekeepers'][sk_uid] = b64encode(self.sk_public_keys[sk_uid])
             config['counters'] = self.counters_config
+            config['noise'] = self.noise_config
             config['noise_weight'] = self.noise_weight_config
             config['dc_threshold'] = self.dc_threshold_config
             config['defer_time'] = self.clock_padding
@@ -663,6 +727,7 @@ class CollectionPhase(object):
         elif self.state == 'starting_sks' and client_uid in self.sk_uids:
             config['shares'] = self.encrypted_shares[client_uid]
             config['counters'] = self.counters_config
+            config['noise'] = self.noise_config
             config['noise_weight'] = self.noise_weight_config
             config['dc_threshold'] = self.dc_threshold_config
             logging.info("sending start command with {} counters and {} shares to share keeper {}"
@@ -830,7 +895,7 @@ class CollectionPhase(object):
         # This file only has the counts
         begin, end = int(round(self.starting_ts)), int(round(self.stopping_ts))
         filepath = os.path.join(path_prefix, "privcount.tallies.{}-{}.json".format(begin, end))
-        with open(filepath, 'a') as fout:
+        with open(filepath, 'w') as fout:
             json.dump(tallied_counts, fout, sort_keys=True, indent=4)
 
         #logging.info("tally was successful, counts for phase from %d to %d were written to file '%s'", begin, end, filepath)
@@ -846,7 +911,7 @@ class CollectionPhase(object):
         result_info['Context'] = self.get_result_context()
 
         filepath = os.path.join(path_prefix, "privcount.outcome.{}-{}.json".format(begin, end))
-        with open(filepath, 'a') as fout:
+        with open(filepath, 'w') as fout:
             json.dump(result_info, fout, sort_keys=True, indent=4)
 
         logging.info("tally was successful, outcome of phase of {} was written to file '{}'".format(format_interval_time_between(begin, 'from', end), filepath))

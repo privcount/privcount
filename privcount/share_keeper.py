@@ -14,7 +14,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 
 from protocol import PrivCountClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config
+from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters
 
 import yaml
 
@@ -102,14 +102,24 @@ class ShareKeeper(ReconnectingClientFactory):
             share['secret'] = "(encrypted blinding share, deleted by share keeper)"
 
         if ('shares' not in config or 'counters' not in config or
-            'noise_weight' not in config or 'dc_threshold' not in config):
+            'noise' not in config or 'noise_weight' not in config or
+            'dc_threshold' not in config):
             logging.warning("start command from tally server cannot be completed due to missing data")
+            return None
+
+        # if the counters don't pass the validity checks, fail
+        if not check_counters_config(config['counters'],
+                                     config['noise']['counters']):
             return None
 
         # if the noise weights don't pass the validity checks, fail
         if not check_noise_weight_config(config['noise_weight'],
                                          config['dc_threshold']):
             return None
+
+        # combine the bins and sigmas
+        config['counters'] = combine_counters(config['counters'],
+                                              config['noise']['counters'])
 
         self.keystore = SecureCounters(config['counters'], counter_modulus())
         share_list = config['shares']
@@ -126,8 +136,8 @@ class ShareKeeper(ReconnectingClientFactory):
                 # configured counters
                 # this is likely a configuration error or a programming bug,
                 # but there is also no way to detect the TS modifying the data
-                logging.warning("failed to import blinding share {} config {}",
-                                share, config)
+                logging.warning("failed to import blinding share {} config {}"
+                                .format(share, config))
                 # TODO: secure delete
                 del private_key
                 return None
@@ -184,17 +194,18 @@ class ShareKeeper(ReconnectingClientFactory):
                 conf = yaml.load(fin)
             sk_conf = conf['share_keeper']
 
-            # if key path is not specified, look at default path, or generate a new key
+            # if key path is not specified, use default path
             if 'key' in sk_conf:
                 sk_conf['key'] = normalise_path(sk_conf['key'])
-                assert os.path.exists(sk_conf['key'])
             else:
                 sk_conf['key'] = normalise_path('privcount.rsa_key.pem')
-                if not os.path.exists(sk_conf['key']):
-                    generate_keypair(sk_conf['key'])
+            # if the key does not exist, generate a new key
+            if not os.path.exists(sk_conf['key']):
+                generate_keypair(sk_conf['key'])
 
             sk_conf['name'] = get_public_digest(sk_conf['key'])
 
+            # the state file
             sk_conf['state'] = normalise_path(sk_conf['state'])
             assert os.path.exists(os.path.dirname(sk_conf['state']))
 

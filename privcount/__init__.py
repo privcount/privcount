@@ -4,6 +4,7 @@ __all__ = [
    'plot',
    'protocol',
    'share_keeper',
+   'statistics_noise',
    'tally_server',
    'util',
 ]

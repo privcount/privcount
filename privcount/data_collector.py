@@ -10,7 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters
 
 import yaml
 
@@ -103,7 +103,13 @@ class DataCollector(ReconnectingClientFactory):
         self.start_config = deepcopy(config)
 
         if ('sharekeepers' not in config or 'counters' not in config or
-            'noise_weight' not in config or 'dc_threshold' not in config):
+            'noise' not in config or 'noise_weight' not in config or
+            'dc_threshold' not in config):
+            return None
+
+        # if the counters don't pass the validity checks, fail
+        if not check_counters_config(config['counters'],
+                                     config['noise']['counters']):
             return None
 
         # if the noise weights don't pass the validity checks, fail
@@ -111,26 +117,17 @@ class DataCollector(ReconnectingClientFactory):
                                          config['dc_threshold']):
             return None
 
-        # if we are still running from a previous incarnation, we need to stop first
+        # if we are still running from a previous incarnation, we need to stop
+        # first
         if self.aggregator is not None:
             return None
 
-        ts_counters, dc_counters = deepcopy(config['counters']), deepcopy(self.config['counters'])
+        # combine the bins and sigmas
+        dc_counters = combine_counters(config['counters'],
+                                       config['noise']['counters'])
 
-        # we keep our local config for which keys we are counting and the sigmas for noise
-        # we allow the tally server to update only the bin widths for each counter
-        for key in ts_counters:
-            if key in dc_counters and 'bins' in ts_counters[key]:
-                dc_counters[key]['bins'] = deepcopy(ts_counters[key]['bins'])
-
-        # we can't count keys for which we don't have configured bins
-        for key in dc_counters:
-            if 'bins' not in dc_counters[key]:
-                logging.warning("skipping counter '{}' because we do not have any bins configured".format(key))
-                dc_counters.pop(key, None)
-
-        # we require that only the configured share keepers be used in the collection phase
-        # because we must be able to encrypt messages to them
+        # we require that only the configured share keepers be used in the
+        # collection phase, because we must be able to encrypt messages to them
         expected_sk_digests = set()
         for digest in self.config['share_keepers']:
             expected_sk_digests.add(digest)
@@ -228,15 +225,7 @@ class DataCollector(ReconnectingClientFactory):
                 conf = yaml.load(fin)
             dc_conf = conf['data_collector']
 
-            if 'counters' in dc_conf:
-                dc_conf['counters'] = normalise_path(dc_conf['counters'])
-                assert os.path.exists(os.path.dirname(dc_conf['counters']))
-                with open(dc_conf['counters'], 'r') as fin:
-                    counters_conf = yaml.load(fin)
-                dc_conf['counters'] = counters_conf['counters']
-            else:
-                dc_conf['counters'] = conf['counters']
-
+            # the state file
             dc_conf['state'] = normalise_path(dc_conf['state'])
             assert os.path.exists(os.path.dirname(dc_conf['state']))
 
@@ -246,9 +235,6 @@ class DataCollector(ReconnectingClientFactory):
 
             assert dc_conf['event_source'] is not None
             assert dc_conf['event_source'] > 0
-
-            for key in dc_conf['counters']:
-                assert dc_conf['counters'][key]['sigma'] >= 0.0
 
             assert 'share_keepers' in dc_conf
 

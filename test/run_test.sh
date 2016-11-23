@@ -54,6 +54,10 @@ echo "Testing counters:"
 python test_counters.py
 echo ""
 
+echo "Testing noise:"
+# The noise script contains its own main function, which we use as a test
+python ../privcount/statistics_noise.py
+
 # Requires a local privcount-patched Tor instance
 #python test_tor_ctl_event.py
 
