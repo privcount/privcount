@@ -10,7 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters, choose_secret_handshake_path
 
 import yaml
 
@@ -225,6 +225,10 @@ class DataCollector(ReconnectingClientFactory):
                 conf = yaml.load(fin)
             dc_conf = conf['data_collector']
 
+            # find the path for the secret handshake file
+            dc_conf['secret_handshake'] = choose_secret_handshake_path(
+                dc_conf, conf)
+
             # the state file
             dc_conf['state'] = normalise_path(dc_conf['state'])
             assert os.path.exists(os.path.dirname(dc_conf['state']))
@@ -257,6 +261,15 @@ class DataCollector(ReconnectingClientFactory):
         except KeyError:
             logging.warning("problem reading config file: missing required keys")
             log_error()
+
+    def get_secret_handshake_path(self):
+        '''
+        Return the path of the secret handshake key file, or None if the config
+        has not been loaded.
+        '''
+        # The secret handshake path should be loaded (or assigned a default)
+        # whenever the config is loaded
+        return self.config.get('secret_handshake')
 
 class Aggregator(ReconnectingClientFactory):
     '''

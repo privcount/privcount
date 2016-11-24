@@ -9,3 +9,4 @@ test/privcount.results.pdf
 test/privcount.tallies.*.json
 test/privcount.outcome.*.json
 test/old
+test/keys/secret_handshake.yaml

@@ -32,6 +32,12 @@ tally_server:
     key: 'keys/ts.pem' # path to the rsa private key
     cert: 'keys/ts.cert' # path to the public key certificate
     #results: './' # path to directory where the result files will be written
+    #
+    # the security of each PrivCount deployment depends on the handshake key
+    # being unique, random, and secret
+    # all nodes must agree on this key to handshake correctly
+    # if the key file does not exist, the TS creates a file with a random key
+    secret_handshake: 'keys/secret_handshake.yaml'
 
 # only the share keepers need these
 share_keeper:
@@ -41,6 +47,8 @@ share_keeper:
         port: 20001
     # optional overrides:
     key: 'keys/sk.pem' # path to the rsa private key
+    # all nodes must agree on this key to handshake correctly
+    secret_handshake: 'keys/secret_handshake.yaml'
 
 # only the data collectors need these
 data_collector:
@@ -52,3 +60,5 @@ data_collector:
         port: 20001
     share_keepers: # share keepers' public key hashes (`openssl rsa -pubout < keys/sk.pem | sha256sum`)
         - 'e79ea9173e28e6a54f6d2ec6494c1723a330811652acebbe8d98098ce347d679'
+    # all nodes must agree on this key to handshake correctly
+    secret_handshake: 'keys/secret_handshake.yaml'

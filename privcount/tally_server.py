@@ -17,8 +17,7 @@ from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
 from statistics_noise import get_noise_allocation
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config
-
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, choose_secret_handshake_path
 import yaml
 
 # for warning about logging function and format # pylint: disable=W1202
@@ -154,6 +153,17 @@ class TallyServer(ServerFactory):
             with open(self.config_filepath, 'r') as fin:
                 conf = yaml.load(fin)
             ts_conf = conf['tally_server']
+
+            # find the path for the secret handshake file
+            ts_conf['secret_handshake'] = choose_secret_handshake_path(
+                ts_conf, conf)
+            # check we can load the secret handshake file, creating if needed
+            # (but ignore the actual secret, it never forms part of our config)
+            # we can't use PrivCountProtocol.handshake_secret(), because
+            # our own self.config is either None or outdated at this point
+            assert PrivCountServerProtocol.handshake_secret_load(
+                ts_conf['secret_handshake'],
+                create=True)
 
             # the counter bin file
             if 'counters' in ts_conf:
@@ -323,6 +333,15 @@ class TallyServer(ServerFactory):
         except KeyError:
             logging.warning("problem reading config file: missing required keys")
             log_error()
+
+    def get_secret_handshake_path(self):
+        '''
+        Return the path of the secret handshake key file, or None if the config
+        has not been loaded.
+        '''
+        # The secret handshake path should be loaded (or assigned a default)
+        # whenever the config is loaded
+        return self.config.get('secret_handshake')
 
     def clear_dead_clients(self):
         now = time()

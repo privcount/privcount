@@ -67,6 +67,23 @@ def get_serialized_public_key(key_path, is_private_key=True):
         data = get_public_bytes(key_file.read(), is_private_key)
     return data
 
+def choose_secret_handshake_path(local_conf, global_conf):
+    '''
+    Determine the secret handshake path using the first path from:
+    - local_conf,
+    - global_conf, or
+    - the default hard-coded path,
+    and return that path.
+    '''
+    if 'secret_handshake' in local_conf:
+        return normalise_path(local_conf['secret_handshake'])
+    # unlike other top-level configs, this is a file path, not data
+    elif 'secret_handshake' in global_conf:
+        return normalise_path(global_conf['secret_handshake'])
+    # if the path is not specified, use the default path
+    else:
+        return normalise_path('privcount.secret_handshake.yaml')
+
 def get_hmac(secret_key, unique_prefix, data):
     '''
     Perform a HMAC using the secret key, unique hash prefix, and data.
@@ -75,6 +92,7 @@ def get_hmac(secret_key, unique_prefix, data):
     Returns HMAC-SHA256(secret_key, unique_prefix | data) as bytes.
     '''
     # If the secret key is shorter than the digest size, security is reduced
+    assert secret_key
     assert len(secret_key) >= CryptoHash.digest_size
     h = hmac.HMAC(bytes(secret_key), CryptoHash(), backend=default_backend())
     h.update(bytes(unique_prefix))
@@ -91,6 +109,7 @@ def verify_hmac(expected_result, secret_key, unique_prefix, data):
     Returns True if the signature matches, and False if it does not.
     '''
     # If the secret key is shorter than the digest size, security is reduced
+    assert secret_key
     assert len(secret_key) >= CryptoHash.digest_size
     h = hmac.HMAC(bytes(secret_key), CryptoHash(), backend=default_backend())
     h.update(bytes(unique_prefix))

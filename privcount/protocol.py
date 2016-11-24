@@ -1,7 +1,7 @@
 import logging, json, math
 
 from time import time
-from os import _exit, urandom
+from os import _exit, urandom, path
 from base64 import b64encode, b64decode
 
 from twisted.internet import reactor
@@ -129,16 +129,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             self.protocol_failed()
 
     # PrivCount uses a HMAC-SHA256-based handshake to verify that client and
-    # server both know the secret key, without revealing the key itself
-
-    # The PrivCount handshake HMAC secret key
-    # TODO: make this configurable on each of the nodes
-    # TODO: create a key blacklist of keys that can only be used in tests
-    #       (that is, when the remote end is on IPv4 / IPv6 localhost)
-    # TODO: blacklist the key used in the unit tests
-    # TODO: secure delete the handshake key once we're finished using it
-    #       (never include it in the results context)
-    HANDSHAKE_SECRET_KEY = '7zbIgzijiRmmrdQi1sW0jYl/5j7LNgKnlYGB9TRi7h0='
+    # server both know a shared secret key, without revealing the key itself
 
     # The numbers of space-seprated parts on various protocol handshake lines
 
@@ -186,6 +177,8 @@ class PrivCountProtocol(LineOnlyReceiver):
     COOKIE_B64_BYTES = b64_padded_length(COOKIE_BYTES)
     HMAC_BYTES = CryptoHash.digest_size
     HMAC_B64_BYTES = b64_padded_length(HMAC_BYTES)
+    SECRET_BYTES = CryptoHash.digest_size
+    SECRET_B64_BYTES = b64_padded_length(SECRET_BYTES)
 
     # The early exits in the verification code below are susceptible to
     # timing attacks. However, these timing attacks are only an issue if
@@ -279,16 +272,83 @@ class PrivCountProtocol(LineOnlyReceiver):
         return cookie
 
     @staticmethod
-    def handshake_hmac_get(prefix, server_cookie, client_cookie):
+    def handshake_secret_generate():
         '''
-        Return HMAC(HANDSHAKE_SECRET_KEY,
-                    prefix | server_cookie | client_cookie), base-64 encoded.
+        Return a base-64 encoded random secret key for use in the privcount
+        handshake. This secret needs to be the same on the server and clients.
         '''
-        hmac = b64encode(get_hmac(PrivCountProtocol.HANDSHAKE_SECRET_KEY,
+        handshake_key = b64encode(urandom(PrivCountProtocol.SECRET_BYTES))
+        assert PrivCountProtocol.handshake_secret_verify(handshake_key)
+        return handshake_key
+
+    @staticmethod
+    def handshake_secret_load(secret_handshake_path, create=False):
+        '''
+        Load and decode the base64 encoded secret handshake string from the
+        file at secret_handshake_path.
+        If create is true, and the file does not exist, create a new file
+        containing a random, base64-encoded secret handshake string.
+        '''
+        # generate a new key if the file does not exist
+        # having the protocol deal with config files is an abstraction layer
+        # violation, but it yields better security properties, as only the
+        # protocol layer ever knows the secret key (and it is discarded after
+        # it is used to generate or verify the HMACs)
+        if not path.exists(secret_handshake_path):
+            secret_handshake = PrivCountProtocol.handshake_secret_generate()
+            with open(secret_handshake_path, 'w') as fin:
+                fin.write(secret_handshake)
+        # read from the file (even if we just generated it)
+        with open(secret_handshake_path, 'r') as fin:
+            # read the whole file, but ignore whitespace
+            secret_handshake = fin.read().strip()
+        # decode
+        secret_handshake = PrivCountProtocol.handshake_secret_verify(
+            secret_handshake)
+        return secret_handshake
+
+    @staticmethod
+    def handshake_secret_verify(handshake_key):
+        '''
+        If secret matches the expected format for a base-64 encoded
+        privcount secret handshake key, return the decoded secret.
+        Otherwise, return False.
+        Raises an exception if the secret is not correctly padded base64.
+        '''
+        # The secret and cookie are the same size and encoding, this just works
+        assert (PrivCountProtocol.COOKIE_B64_BYTES ==
+                PrivCountProtocol.SECRET_B64_BYTES)
+        assert (PrivCountProtocol.COOKIE_BYTES ==
+                PrivCountProtocol.SECRET_BYTES)
+        return PrivCountProtocol.handshake_cookie_verify(handshake_key)
+
+
+    def handshake_secret(self):
+        '''
+        Return the secret handshake key, using the file path configured
+        by the factory.
+        If the factory has no file path, return False.
+        '''
+        # This is an abstraction layer violation, but it's necessary
+        handshake_key_path = self.factory.get_secret_handshake_path()
+        if handshake_key_path is not None:
+            return PrivCountProtocol.handshake_secret_load(handshake_key_path)
+        else:
+            return False
+
+    @staticmethod
+    def handshake_hmac_get(handshake_key, prefix, server_cookie,
+                           client_cookie):
+        '''
+        Return HMAC(handshake_key, prefix | server_cookie | client_cookie),
+        base-64 encoded.
+        '''
+        hmac = b64encode(get_hmac(handshake_key,
                                   prefix,
                                   server_cookie +
                                   client_cookie))
         assert PrivCountProtocol.handshake_hmac_verify(hmac,
+                                                       handshake_key,
                                                        prefix,
                                                        server_cookie,
                                                        client_cookie)
@@ -302,18 +362,19 @@ class PrivCountProtocol(LineOnlyReceiver):
         Otherwise, return False.
         Raises an exception if the hmac is not correctly padded base64.
         '''
-        # The HMAC and cookie are the same size and encoding - this just works
+        # The HMAC and cookie are the same size and encoding, this just works
         assert (PrivCountProtocol.COOKIE_B64_BYTES ==
                 PrivCountProtocol.HMAC_B64_BYTES)
         assert (PrivCountProtocol.COOKIE_BYTES == PrivCountProtocol.HMAC_BYTES)
         return PrivCountProtocol.handshake_cookie_verify(b64_hmac)
 
     @staticmethod
-    def handshake_hmac_verify(b64_hmac, prefix, server_cookie, client_cookie):
+    def handshake_hmac_verify(b64_hmac, handshake_key, prefix, server_cookie,
+                              client_cookie):
         '''
         If b64_hmac matches the expected format for a base-64 encoded
-        privcount HMAC, and the HMAC matches the expected HMAC for prefix,
-        and the cookies, return True.
+        privcount HMAC, and the HMAC matches the expected HMAC for
+        handshake_key, prefix, and the cookies, return True.
         Otherwise, return False.
         Raises an exception if the HMAC is not correctly padded base64.
         '''
@@ -322,7 +383,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             logging.warning("Invalid hmac: wrong format")
             return False
         if not verify_hmac(hmac,
-                           PrivCountProtocol.HANDSHAKE_SECRET_KEY,
+                           handshake_key,
                            prefix,
                            server_cookie +
                            client_cookie):
@@ -378,19 +439,22 @@ class PrivCountProtocol(LineOnlyReceiver):
                                            self.privcount_role)
         h2 = "{} {} {}".format(prefix,
                                b64encode(self.client_cookie),
-                               self.handshake_hmac_get(prefix,
+                               self.handshake_hmac_get(self.handshake_secret(),
+                                                       prefix,
                                                        self.server_cookie,
                                                        self.client_cookie))
         assert self.handshake2_verify(h2,
+                                      self.handshake_secret(),
                                       self.server_cookie)
         return h2
 
     @staticmethod
-    def handshake2_verify(handshake, server_cookie):
+    def handshake2_verify(handshake, handshake_key, server_cookie):
         '''
         If handshake matches the expected format for HANDSHAKE2,
-        and the HMAC verifies using server cookie, and the client cookie
-        does not match the server cookie, return the client cookie.
+        and the HMAC verifies using handshake_key and server cookie,
+        and the client cookie does not match the server cookie,
+        return the client cookie.
         Otherwise, return False.
         Raises an exception if the client cookie or the HMAC are not
         correctly padded base64.
@@ -427,6 +491,7 @@ class PrivCountProtocol(LineOnlyReceiver):
                                        PrivCountProtocol.HANDSHAKE2,
                                        PrivCountProtocol.ROLE_CLIENT)
         if not PrivCountProtocol.handshake_hmac_verify(hmac,
+                                                       handshake_key,
                                                        prefix,
                                                        server_cookie,
                                                        client_cookie):
@@ -443,16 +508,19 @@ class PrivCountProtocol(LineOnlyReceiver):
         prefix = self.handshake_prefix_str(PrivCountProtocol.HANDSHAKE3,
                                            self.privcount_role)
         h3 = "{} {}".format(prefix,
-                            self.handshake_hmac_get(prefix,
+                            self.handshake_hmac_get(self.handshake_secret(),
+                                                    prefix,
                                                     self.server_cookie,
                                                     self.client_cookie))
         assert self.handshake3_verify(h3,
+                                      self.handshake_secret(),
                                       self.server_cookie,
                                       self.client_cookie)
         return h3
 
     @staticmethod
-    def handshake3_verify(handshake, server_cookie, client_cookie):
+    def handshake3_verify(handshake, handshake_key, server_cookie,
+                          client_cookie):
         '''
         If handshake matches the expected format for HANDSHAKE3,
         and the HMAC verifies, return True.
@@ -475,6 +543,7 @@ class PrivCountProtocol(LineOnlyReceiver):
                                        PrivCountProtocol.HANDSHAKE3,
                                        PrivCountProtocol.ROLE_SERVER)
         if not PrivCountProtocol.handshake_hmac_verify(hmac,
+                                                       handshake_key,
                                                        prefix,
                                                        server_cookie,
                                                        client_cookie):
@@ -530,9 +599,19 @@ class PrivCountProtocol(LineOnlyReceiver):
         # A failed handshake should not verify as any other handshake type
         # (we don't expect a failed handshake1, but check anyway)
         assert not self.handshake1_verify(hf)
-        dummy_cookie = self.handshake_cookie_get()
-        assert not self.handshake2_verify(hf, dummy_cookie)
-        assert not self.handshake3_verify(hf, dummy_cookie, dummy_cookie)
+        # use the real key if we have it
+        handshake_k = self.handshake_secret()
+        if not handshake_k:
+            handshake_k = self.handshake_secret_generate()
+        # use the real cookies if we have them
+        server_c = self.server_cookie
+        if server_c is not None:
+            server_c = self.handshake_cookie_get()
+        client_c = self.client_cookie
+        if client_c is not None:
+            client_c = self.handshake_cookie_get()
+        assert not self.handshake2_verify(hf, handshake_k, server_c)
+        assert not self.handshake3_verify(hf, handshake_k, server_c, client_c)
         assert not self.handshake4_verify(hf)
         # Check that it verifies as a correctly formatted failure message
         assert self.handshake_fail_verify(hf)
@@ -663,8 +742,10 @@ class PrivCountServerProtocol(PrivCountProtocol):
         event_line = event_type + ' ' + event_payload
 
         if event_type == PrivCountProtocol.HANDSHAKE2:
-            self.client_cookie = self.handshake2_verify(event_line,
-                                                        self.server_cookie)
+            self.client_cookie = self.handshake2_verify(
+                event_line,
+                self.handshake_secret(),
+                self.server_cookie)
             if self.client_cookie:
                 self.sendLine(self.handshake3_str())
             else:
@@ -802,6 +883,7 @@ class PrivCountClientProtocol(PrivCountProtocol):
                 self.handshake_failed()
         elif event_type == PrivCountProtocol.HANDSHAKE3:
             if self.handshake3_verify(event_line,
+                                      self.handshake_secret(),
                                       self.server_cookie,
                                       self.client_cookie):
                 self.sendLine(self.handshake4_str())
