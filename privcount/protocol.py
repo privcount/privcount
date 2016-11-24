@@ -1,13 +1,14 @@
-import logging, json
+import logging, json, math
 
 from time import time
-from os import _exit
-from random import SystemRandom
+from os import _exit, urandom
+from base64 import b64encode, b64decode
 
 from twisted.internet import reactor
 from twisted.protocols.basic import LineOnlyReceiver
 
-PRIVCOUNT_HANDSHAKE_MAGIC = 759.623
+from cryptography.hazmat.primitives.hashes import SHA256
+from privcount.util import CryptoHash, get_hmac, verify_hmac, b64_padded_length
 
 class PrivCountProtocol(LineOnlyReceiver):
     '''
@@ -21,6 +22,7 @@ class PrivCountProtocol(LineOnlyReceiver):
         self.is_valid_connection = False
         self.client_cookie = None
         self.server_cookie = None
+        self.privcount_role = None
 
         '''here we use the LineOnlyReceiver's MAX_LENGTH to drop the connection
         if we receive too much data before the handshake validates it
@@ -28,6 +30,30 @@ class PrivCountProtocol(LineOnlyReceiver):
         away with a small buffer - after the handshake suceeds, we allow lines
         of longer length'''
         self.MAX_LENGTH = 256
+        try:
+            # make sure the maximum line length will accommodate the longest
+            # handshake line, including base64 encoded cookie and HMAC
+            assert self.MAX_LENGTH >= (
+                len(PrivCountProtocol.HANDSHAKE2) +
+                len(PrivCountProtocol.handshake_prefix_str(
+                        PrivCountProtocol.HANDSHAKE2,
+                        PrivCountProtocol.ROLE_CLIENT)) +
+                PrivCountProtocol.COOKIE_B64_BYTES +
+                PrivCountProtocol.HMAC_B64_BYTES)
+        except BaseException as e:
+            # catch errors and terminate the process
+            logging.error(
+                "Exception {} while initialising PrivCountProtocol instance"
+                .format(e))
+            # die immediately using os._exit()
+            # we can't use sys.exit() here, because twisted catches and logs it
+            _exit(1)
+        except:
+            # catch exceptions that don't derive from BaseException
+            logging.error(
+                "Unknown Exception while processing event type: {} payload: {}"
+                .format(event_type, event_payload))
+            _exit(1)
 
     def connectionMade(self): # overrides twisted function
         peer = self.transport.getPeer()
@@ -54,7 +80,7 @@ class PrivCountProtocol(LineOnlyReceiver):
 
     def process_event(self, event_type, event_payload):
         try:
-            if event_type.startswith('HANDSHAKE'):
+            if event_type.startswith(PrivCountProtocol.HANDSHAKE_COMMON):
                 self.handle_handshake_event(event_type, event_payload)
                 return
 
@@ -92,9 +118,465 @@ class PrivCountProtocol(LineOnlyReceiver):
             # die immediately using os._exit()
             # we can't use sys.exit() here, because twisted catches and logs it
             _exit(1)
+        except:
+            # catch exceptions that don't derive from BaseException
+            logging.error(
+                "Unknown Exception while processing event type: {} payload: {}"
+                .format(event_type, event_payload))
+            _exit(1)
 
         if not self.is_valid_connection:
             self.protocol_failed()
+
+    # PrivCount uses a HMAC-SHA256-based handshake to verify that client and
+    # server both know the secret key, without revealing the key itself
+
+    # The PrivCount handshake HMAC secret key
+    # TODO: make this configurable on each of the nodes
+    # TODO: create a key blacklist of keys that can only be used in tests
+    #       (that is, when the remote end is on IPv4 / IPv6 localhost)
+    # TODO: blacklist the key used in the unit tests
+    # TODO: secure delete the handshake key once we're finished using it
+    #       (never include it in the results context)
+    HANDSHAKE_SECRET_KEY = '7zbIgzijiRmmrdQi1sW0jYl/5j7LNgKnlYGB9TRi7h0='
+
+    # The numbers of space-seprated parts on various protocol handshake lines
+
+    # The common prefix for every protocol handshake line:
+    # HANDSHAKEN VERSION ROLE TYPE
+    HANDSHAKE_PREFIX_PARTS = 4
+    # ServerCookie
+    HANDSHAKE1_PARTS = HANDSHAKE_PREFIX_PARTS + 1
+    # ClientCookie HMAC
+    HANDSHAKE2_PARTS = HANDSHAKE_PREFIX_PARTS + 2
+    # HMAC
+    HANDSHAKE3_PARTS = HANDSHAKE_PREFIX_PARTS + 1
+    # SUCCESS
+    HANDSHAKE4_PARTS = HANDSHAKE_PREFIX_PARTS + 1
+    # FAIL
+    HANDSHAKE_FAIL_PARTS = HANDSHAKE_PREFIX_PARTS + 1
+
+    # The first token on each handshake line
+    # These tokens should be unique, because the handshake 2 & 3 tokens are
+    # used as part of the hash prefix.
+    HANDSHAKE_COMMON = 'HANDSHAKE'
+    HANDSHAKE1 = HANDSHAKE_COMMON + '1-SERVER-COOKIE'
+    HANDSHAKE2 = HANDSHAKE_COMMON + '2-CLIENT-COOKIE-HMAC'
+    HANDSHAKE3 = HANDSHAKE_COMMON + '3-SERVER-HMAC'
+    assert HANDSHAKE2 != HANDSHAKE3
+    HANDSHAKE4 = HANDSHAKE_COMMON + '4-CLIENT-VERIFY'
+
+    # The common prefix tokens on each handshake line
+
+    # The first version this handshake was introduced in
+    HANDSHAKE_VERSION = 'PRIVCOUNT-020'
+    # The role of the node sending the handshake
+    ROLE_CLIENT = 'CLIENT'
+    ROLE_SERVER = 'SERVER'
+    # The hash construction used for the handshake
+    assert CryptoHash == SHA256
+    HANDSHAKE_TYPE = 'HMAC-SHA256'
+    # The message used for HANDSHAKE 4 success
+    HANDSHAKE_SUCCESS = 'SUCCESS'
+    # The message is used for HANDSHAKE 2-4 failure
+    HANDSHAKE_FAIL = 'FAIL'
+
+    # The number of bytes in a cookie and a hash
+    COOKIE_BYTES = CryptoHash.digest_size
+    COOKIE_B64_BYTES = b64_padded_length(COOKIE_BYTES)
+    HMAC_BYTES = CryptoHash.digest_size
+    HMAC_B64_BYTES = b64_padded_length(HMAC_BYTES)
+
+    # The early exits in the verification code below are susceptible to
+    # timing attacks. However, these timing attacks are only an issue if
+    # the timing reveals secret information, such as any bits in the long-term
+    # secret key, or a significant proportion of the bits in the short-term
+    # cookies
+
+    # It may also be possible to hold a connection open indefinitely while
+    # brute-forcing the secret key. If this were a feasible attack, we could
+    # limit it by making the cookies expire after a few minutes.
+
+    # Finally, while a HMAC is a proven cryptographic primitive, this
+    # particular construction has not been reviewed by a cryptographer, nor
+    # has this particular implementation undergone cryptographic review.
+    # It likely contains at least one bug, and any bugs might affect security.
+
+    @staticmethod
+    def handshake_prefix_str(handshake_stage, sender_role):
+        '''
+        Return the handshake prefix for stage and role:
+        stage VERSION role TYPE
+        '''
+        return "{} {} {} {}".format(handshake_stage,
+                                    PrivCountProtocol.HANDSHAKE_VERSION,
+                                    sender_role,
+                                    PrivCountProtocol.HANDSHAKE_TYPE)
+
+    @staticmethod
+    def handshake_prefix_verify(handshake, handshake_stage, sender_role):
+        '''
+        If the prefix of handshake matches the expected prefix for stage and
+        role, return True.
+        Otherwise, return False.
+        '''
+        parts = handshake.strip().split()
+        if len(parts) < PrivCountProtocol.HANDSHAKE_PREFIX_PARTS:
+            logging.warning("Invalid handshake: not enough parts {} expected >= {}"
+                            .format(len(parts),
+                                    PrivCountProtocol.HANDSHAKE_PREFIX_PARTS))
+            return False
+        if parts[0] != handshake_stage:
+            logging.warning("Invalid handshake: wrong stage {} expected {}"
+                            .format(parts[0],
+                                    handshake_stage))
+            return False
+        if parts[1] != PrivCountProtocol.HANDSHAKE_VERSION:
+            logging.warning("Invalid handshake: wrong version {} expected {}"
+                            .format(parts[1],
+                                    PrivCountProtocol.HANDSHAKE_VERSION))
+            return False
+        if parts[2] != sender_role:
+            logging.warning("Invalid handshake: wrong role {} expected {}"
+                            .format(parts[2],
+                                    sender_role))
+            return False
+        if parts[3] != PrivCountProtocol.HANDSHAKE_TYPE:
+            logging.warning("Invalid handshake: wrong type {} expected {}"
+                            .format(parts[3],
+                                    PrivCountProtocol.HANDSHAKE_TYPE))
+            return False
+        return True
+
+    @staticmethod
+    def handshake_cookie_get():
+        '''
+        Return random cookie bytes for use in the privcount handshake.
+        '''
+        cookie = urandom(PrivCountProtocol.COOKIE_BYTES)
+        assert PrivCountProtocol.handshake_cookie_verify(b64encode(cookie))
+        return cookie
+
+    @staticmethod
+    def handshake_cookie_verify(b64_cookie):
+        '''
+        If b64_cookie matches the expected format for a base-64 encoded
+        privcount cookie, return the decoded cookie.
+        Otherwise, return False.
+        Raises an exception if the cookie is not correctly padded base64.
+        '''
+        if len(b64_cookie) != PrivCountProtocol.COOKIE_B64_BYTES:
+            logging.warning("Invalid cookie: wrong encoded length {} expected {}"
+                            .format(len(b64_cookie),
+                                    PrivCountProtocol.COOKIE_B64_BYTES))
+            return False
+        cookie = b64decode(b64_cookie)
+        if len(cookie) != PrivCountProtocol.COOKIE_BYTES:
+            logging.warning("Invalid cookie: wrong decoded length {} expected {}"
+                            .format(len(cookie),
+                                    PrivCountProtocol.COOKIE_BYTES))
+            return False
+        return cookie
+
+    @staticmethod
+    def handshake_hmac_get(prefix, server_cookie, client_cookie):
+        '''
+        Return HMAC(HANDSHAKE_SECRET_KEY,
+                    prefix | server_cookie | client_cookie), base-64 encoded.
+        '''
+        hmac = b64encode(get_hmac(PrivCountProtocol.HANDSHAKE_SECRET_KEY,
+                                  prefix,
+                                  server_cookie +
+                                  client_cookie))
+        assert PrivCountProtocol.handshake_hmac_verify(hmac,
+                                                       prefix,
+                                                       server_cookie,
+                                                       client_cookie)
+        return hmac
+
+    @staticmethod
+    def handshake_hmac_decode(b64_hmac):
+        '''
+        If b64_hmac matches the expected format for a base-64 encoded
+        privcount HMAC, return the decoded HMAC.
+        Otherwise, return False.
+        Raises an exception if the hmac is not correctly padded base64.
+        '''
+        # The HMAC and cookie are the same size and encoding - this just works
+        assert (PrivCountProtocol.COOKIE_B64_BYTES ==
+                PrivCountProtocol.HMAC_B64_BYTES)
+        assert (PrivCountProtocol.COOKIE_BYTES == PrivCountProtocol.HMAC_BYTES)
+        return PrivCountProtocol.handshake_cookie_verify(b64_hmac)
+
+    @staticmethod
+    def handshake_hmac_verify(b64_hmac, prefix, server_cookie, client_cookie):
+        '''
+        If b64_hmac matches the expected format for a base-64 encoded
+        privcount HMAC, and the HMAC matches the expected HMAC for prefix,
+        and the cookies, return True.
+        Otherwise, return False.
+        Raises an exception if the HMAC is not correctly padded base64.
+        '''
+        hmac = PrivCountProtocol.handshake_hmac_decode(b64_hmac)
+        if not hmac:
+            logging.warning("Invalid hmac: wrong format")
+            return False
+        if not verify_hmac(hmac,
+                           PrivCountProtocol.HANDSHAKE_SECRET_KEY,
+                           prefix,
+                           server_cookie +
+                           client_cookie):
+            logging.warning("Invalid hmac: verification failed")
+            return False
+        return True
+
+    def handshake1_str(self):
+        '''
+        Return a string for server handshake stage 1:
+        HANDSHAKE1 VERSION SERVER TYPE ServerCookie
+        '''
+        assert self.privcount_role == PrivCountProtocol.ROLE_SERVER
+        prefix = self.handshake_prefix_str(PrivCountProtocol.HANDSHAKE1,
+                                           self.privcount_role)
+        h1 = "{} {}".format(prefix,
+                            b64encode(self.server_cookie))
+        assert self.handshake1_verify(h1)
+        return h1
+
+    @staticmethod
+    def handshake1_verify(handshake):
+        '''
+        If handshake matches the expected format for HANDSHAKE1,
+        return the server cookie.
+        Otherwise, return False.
+        Raises an exception if the server cookie is not correctly padded
+        base64.
+        '''
+        if not PrivCountProtocol.handshake_prefix_verify(
+                                     handshake,
+                                     PrivCountProtocol.HANDSHAKE1,
+                                     PrivCountProtocol.ROLE_SERVER):
+            return False
+        parts = handshake.strip().split()
+        if len(parts) != PrivCountProtocol.HANDSHAKE1_PARTS:
+            logging.warning("Invalid handshake: wrong number of parts {} expected {}"
+                            .format(len(parts),
+                                    PrivCountProtocol.HANDSHAKE1_PARTS))
+            return False
+        server_cookie = PrivCountProtocol.handshake_cookie_verify(
+            parts[PrivCountProtocol.HANDSHAKE_PREFIX_PARTS])
+        return server_cookie
+
+    def handshake2_str(self):
+        '''
+        Return a string for client handshake stage 2:
+        HANDSHAKE2 VERSION CLIENT TYPE ClientCookie
+        HMAC(Key, HandshakePrefix2 | ServerCookie | ClientCookie)
+        '''
+        assert self.privcount_role == PrivCountProtocol.ROLE_CLIENT
+        prefix = self.handshake_prefix_str(PrivCountProtocol.HANDSHAKE2,
+                                           self.privcount_role)
+        h2 = "{} {} {}".format(prefix,
+                               b64encode(self.client_cookie),
+                               self.handshake_hmac_get(prefix,
+                                                       self.server_cookie,
+                                                       self.client_cookie))
+        assert self.handshake2_verify(h2,
+                                      self.server_cookie)
+        return h2
+
+    @staticmethod
+    def handshake2_verify(handshake, server_cookie):
+        '''
+        If handshake matches the expected format for HANDSHAKE2,
+        and the HMAC verifies using server cookie, and the client cookie
+        does not match the server cookie, return the client cookie.
+        Otherwise, return False.
+        Raises an exception if the client cookie or the HMAC are not
+        correctly padded base64.
+        '''
+        if not PrivCountProtocol.handshake_prefix_verify(
+                                     handshake,
+                                     PrivCountProtocol.HANDSHAKE2,
+                                     PrivCountProtocol.ROLE_CLIENT):
+            return False
+        parts = handshake.strip().split()
+        if len(parts) != PrivCountProtocol.HANDSHAKE2_PARTS:
+            logging.warning("Invalid handshake: wrong number of parts {} expected {}"
+                            .format(len(parts),
+                                    PrivCountProtocol.HANDSHAKE2_PARTS))
+            return False
+        client_cookie = PrivCountProtocol.handshake_cookie_verify(
+            parts[PrivCountProtocol.HANDSHAKE_PREFIX_PARTS])
+        if not client_cookie:
+            return False
+        # choosing the same cookie is extremely unlikely, unless the client
+        # just re-used the server cookie
+        # The hadshake is immune from this kind of attack by construction:
+        #  - the client and server HMACs use a distinct prefix
+        #  - the server provides its cookie before its HMAC, so it can't
+        #    copy the client cookie and HMAC
+        #  - the client provides its HMAC before the server HMAC, so it can't
+        #    copy the server cookie and HMAC
+        # but we do the check anyway, because it's just weird if this happens
+        if client_cookie == server_cookie:
+            logging.warning("Invalid handshake: client cookie matches server cookie")
+            return False
+        hmac = parts[PrivCountProtocol.HANDSHAKE_PREFIX_PARTS + 1]
+        prefix = PrivCountProtocol.handshake_prefix_str(
+                                       PrivCountProtocol.HANDSHAKE2,
+                                       PrivCountProtocol.ROLE_CLIENT)
+        if not PrivCountProtocol.handshake_hmac_verify(hmac,
+                                                       prefix,
+                                                       server_cookie,
+                                                       client_cookie):
+            return False
+        return client_cookie
+
+    def handshake3_str(self):
+        '''
+        Return a string for server handshake stage 3:
+        HANDSHAKE3 VERSION SERVER TYPE
+        HMAC(Key, HandshakePrefix3 | ServerCookie | ClientCookie)
+        '''
+        assert self.privcount_role == PrivCountProtocol.ROLE_SERVER
+        prefix = self.handshake_prefix_str(PrivCountProtocol.HANDSHAKE3,
+                                           self.privcount_role)
+        h3 = "{} {}".format(prefix,
+                            self.handshake_hmac_get(prefix,
+                                                    self.server_cookie,
+                                                    self.client_cookie))
+        assert self.handshake3_verify(h3,
+                                      self.server_cookie,
+                                      self.client_cookie)
+        return h3
+
+    @staticmethod
+    def handshake3_verify(handshake, server_cookie, client_cookie):
+        '''
+        If handshake matches the expected format for HANDSHAKE3,
+        and the HMAC verifies, return True.
+        Otherwise, return False.
+        Raises an exception if the HMAC is not correctly padded base64.
+        '''
+        if not PrivCountProtocol.handshake_prefix_verify(
+                                     handshake,
+                                     PrivCountProtocol.HANDSHAKE3,
+                                     PrivCountProtocol.ROLE_SERVER):
+            return False
+        parts = handshake.strip().split()
+        if len(parts) != PrivCountProtocol.HANDSHAKE3_PARTS:
+            logging.warning("Invalid handshake: wrong number of parts {} expected {}"
+                            .format(len(parts),
+                                    PrivCountProtocol.HANDSHAKE3_PARTS))
+            return False
+        hmac = parts[PrivCountProtocol.HANDSHAKE_PREFIX_PARTS]
+        prefix = PrivCountProtocol.handshake_prefix_str(
+                                       PrivCountProtocol.HANDSHAKE3,
+                                       PrivCountProtocol.ROLE_SERVER)
+        if not PrivCountProtocol.handshake_hmac_verify(hmac,
+                                                       prefix,
+                                                       server_cookie,
+                                                       client_cookie):
+            return False
+        return True
+
+    def handshake4_str(self):
+        '''
+        Return a string for client handshake stage 4:
+        HANDSHAKE4 VERSION CLIENT TYPE SUCCESS
+        '''
+        assert self.privcount_role == PrivCountProtocol.ROLE_CLIENT
+        prefix = self.handshake_prefix_str(PrivCountProtocol.HANDSHAKE4,
+                                           self.privcount_role)
+        h4 = "{} {}".format(prefix,
+                            PrivCountProtocol.HANDSHAKE_SUCCESS)
+        assert self.handshake4_verify(h4)
+        return h4
+
+    @staticmethod
+    def handshake4_verify(handshake):
+        '''
+        If handshake matches the expected format for HANDSHAKE4,
+        and the message is SUCCESS, return True.
+        Otherwise, return False.
+        '''
+        if not PrivCountProtocol.handshake_prefix_verify(
+                                     handshake,
+                                     PrivCountProtocol.HANDSHAKE4,
+                                     PrivCountProtocol.ROLE_CLIENT):
+            return False
+        parts = handshake.strip().split()
+        if len(parts) != PrivCountProtocol.HANDSHAKE4_PARTS:
+            logging.warning("Invalid handshake: wrong number of parts {} expected {}"
+                            .format(len(parts),
+                                    PrivCountProtocol.HANDSHAKE4_PARTS))
+            return False
+        message = parts[PrivCountProtocol.HANDSHAKE_PREFIX_PARTS]
+        if message != PrivCountProtocol.HANDSHAKE_SUCCESS:
+            logging.warning("Invalid handshake: message was not SUCCESS")
+            return False
+        return True
+
+    def handshake_fail_str(self, handshake_stage):
+        '''
+        Return a string for handshake stage failure:
+        HANDSHAKEN VERSION ROLE TYPE FAIL
+        '''
+        prefix = self.handshake_prefix_str(handshake_stage,
+                                           self.privcount_role)
+        hf = "{} {}".format(prefix,
+                            PrivCountProtocol.HANDSHAKE_FAIL)
+        # A failed handshake should not verify as any other handshake type
+        # (we don't expect a failed handshake1, but check anyway)
+        assert not self.handshake1_verify(hf)
+        dummy_cookie = self.handshake_cookie_get()
+        assert not self.handshake2_verify(hf, dummy_cookie)
+        assert not self.handshake3_verify(hf, dummy_cookie, dummy_cookie)
+        assert not self.handshake4_verify(hf)
+        # Check that it verifies as a correctly formatted failure message
+        assert self.handshake_fail_verify(hf)
+        return hf
+
+    @staticmethod
+    def handshake_fail_verify(handshake):
+        '''
+        If handshake matches the expected format for a failed handshake at
+        any stage, return True.
+        Otherwise, return False.
+
+        Usage note:
+        If a handshake does not match any expected format (including the
+        fail format), it should be considered a failure.
+        '''
+        # Handshakes 2-4 can contain failure responses
+        # These calls lead to spurious log messages
+        if (not PrivCountProtocol.handshake_prefix_verify(
+                                      handshake,
+                                      PrivCountProtocol.HANDSHAKE2,
+                                      PrivCountProtocol.ROLE_CLIENT) and
+            not PrivCountProtocol.handshake_prefix_verify(
+                                      handshake,
+                                      PrivCountProtocol.HANDSHAKE3,
+                                      PrivCountProtocol.ROLE_SERVER) and
+            not PrivCountProtocol.handshake_prefix_verify(
+                                      handshake,
+                                      PrivCountProtocol.HANDSHAKE4,
+                                      PrivCountProtocol.ROLE_CLIENT)):
+            logging.warning("Invalid handshake: failure message did not match any possible handshake format")
+            return False
+        parts = handshake.strip().split()
+        # A handshake fail consists of the prefix and a fail message
+        if len(parts) != PrivCountProtocol.HANDSHAKE_FAIL_PARTS:
+            logging.warning("Invalid handshake: wrong number of parts {} expected {}"
+                            .format(len(parts),
+                                    PrivCountProtocol.HANDSHAKE_FAIL_PARTS))
+            return False
+        message = parts[PrivCountProtocol.HANDSHAKE_PREFIX_PARTS]
+        if message != PrivCountProtocol.HANDSHAKE_FAIL:
+            logging.warning("Invalid handshake: message was not FAIL")
+            return False
+        return True
 
     def handshake_succeeded(self):
         peer = self.transport.getPeer()
@@ -157,6 +639,7 @@ class PrivCountServerProtocol(PrivCountProtocol):
 
     def __init__(self, factory):
         PrivCountProtocol.__init__(self, factory)
+        self.privcount_role = PrivCountProtocol.ROLE_SERVER
         self.last_sent_time = 0.0
         self.client_uid = None
 
@@ -168,26 +651,36 @@ class PrivCountServerProtocol(PrivCountProtocol):
         '''
         initiate the handshake with the client
         '''
-        self.server_cookie = round(SystemRandom().random(), 6)
-        self.sendLine("HANDSHAKE1 {}".format(self.server_cookie))
+        self.server_cookie = self.handshake_cookie_get()
+        self.sendLine(self.handshake1_str())
 
     def handle_handshake_event(self, event_type, event_payload):
-        is_valid = False
-        parts = event_payload.strip().split()
+        '''
+        If the received handshake is valid, send the next handshake in the
+        sequence. Otherwise, fail the handshaking process.
+        '''
+        # reconstitute the event line
+        event_line = event_type + ' ' + event_payload
 
-        if event_type == "HANDSHAKE2" and len(parts) == 2:
-            is_valid = True
-            self.client_cookie = float(parts[0])
-            client_password = float(parts[1])
-            password = round(self.client_cookie * self.server_cookie * PRIVCOUNT_HANDSHAKE_MAGIC, 6)
-            if client_password == float(str(password)):
-                self.sendLine("HANDSHAKE3 SUCCESS")
+        if event_type == PrivCountProtocol.HANDSHAKE2:
+            self.client_cookie = self.handshake2_verify(event_line,
+                                                        self.server_cookie)
+            if self.client_cookie:
+                self.sendLine(self.handshake3_str())
+            else:
+                self.client_cookie = None
+                # We don't need to securely delete this cookie, because it
+                # is single-use, and used for authentication only
+                self.server_cookie = None
+                self.sendLine(self.handshake_fail_str(
+                                       PrivCountProtocol.HANDSHAKE3))
+                self.handshake_failed()
+        elif event_type == PrivCountProtocol.HANDSHAKE4:
+            if self.handshake4_verify(event_line):
                 self.handshake_succeeded()
             else:
-                self.sendLine("HANDSHAKE3 FAIL")
                 self.handshake_failed()
-
-        if not is_valid:
+        else:
             self.handshake_failed()
 
     def handshake_succeeded(self):
@@ -275,6 +768,10 @@ class PrivCountServerProtocol(PrivCountProtocol):
 
 class PrivCountClientProtocol(PrivCountProtocol):
 
+    def __init__(self, factory):
+        PrivCountProtocol.__init__(self, factory)
+        self.privcount_role = PrivCountProtocol.ROLE_CLIENT
+
     def handshake_succeeded(self):
         PrivCountProtocol.handshake_succeeded(self)
         # for a reconnecting client, reset the exp backoff delay
@@ -286,23 +783,34 @@ class PrivCountClientProtocol(PrivCountProtocol):
         self.factory.stopTrying()
 
     def handle_handshake_event(self, event_type, event_payload):
-        is_valid = False
-        parts = event_payload.split()
+        '''
+        If the received handshake is valid, send the next handshake in the
+        sequence. Otherwise, fail the handshaking process.
+        '''
+        # reconstitute the event line
+        event_line = event_type + ' ' + event_payload
 
-        if event_type == "HANDSHAKE1" and len(parts) == 1:
-            is_valid = True
-            self.server_cookie = float(parts[0])
-            self.client_cookie = round(SystemRandom().random(), 6)
-            password = round(self.client_cookie * self.server_cookie * PRIVCOUNT_HANDSHAKE_MAGIC, 6)
-            self.sendLine("HANDSHAKE2 {} {}".format(self.client_cookie, password))
-        elif event_type == "HANDSHAKE3" and len(parts) == 1:
-            is_valid = True
-            if parts[0] == "SUCCESS":
+        if event_type == PrivCountProtocol.HANDSHAKE1:
+            self.server_cookie = self.handshake1_verify(event_line)
+            if self.server_cookie:
+                self.client_cookie = self.handshake_cookie_get()
+                self.sendLine(self.handshake2_str())
+            else:
+                self.server_cookie = None
+                self.sendLine(self.handshake_fail_str(
+                                       PrivCountProtocol.HANDSHAKE2))
+                self.handshake_failed()
+        elif event_type == PrivCountProtocol.HANDSHAKE3:
+            if self.handshake3_verify(event_line,
+                                      self.server_cookie,
+                                      self.client_cookie):
+                self.sendLine(self.handshake4_str())
                 self.handshake_succeeded()
             else:
+                self.sendLine(self.handshake_fail_str(
+                                       PrivCountProtocol.HANDSHAKE4))
                 self.handshake_failed()
-
-        if not is_valid:
+        else:
             self.handshake_failed()
 
     def handle_status_event(self, event_type, event_payload):

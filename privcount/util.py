@@ -14,7 +14,7 @@ import json
 
 from random import SystemRandom
 from os import path
-from math import sqrt
+from math import sqrt, ceil
 from time import time, strftime, gmtime
 from copy import deepcopy
 from base64 import b64encode, b64decode
@@ -26,9 +26,9 @@ from cryptography.hazmat.primitives.hashes import SHA256 as CryptoHash
 from cryptography import x509
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives import serialization, hashes, hmac
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
-from cryptography.exceptions import UnsupportedAlgorithm
+from cryptography.exceptions import UnsupportedAlgorithm, InvalidSignature
 
 def load_private_key_string(key_string):
     return serialization.load_pem_private_key(key_string, password=None, backend=default_backend())
@@ -66,6 +66,67 @@ def get_serialized_public_key(key_path, is_private_key=True):
     with open(key_path, 'rb') as key_file:
         data = get_public_bytes(key_file.read(), is_private_key)
     return data
+
+def get_hmac(secret_key, unique_prefix, data):
+    '''
+    Perform a HMAC using the secret key, unique hash prefix, and data.
+    The key must be kept secret.
+    The prefix ensures hash uniqueness.
+    Returns HMAC-SHA256(secret_key, unique_prefix | data) as bytes.
+    '''
+    # If the secret key is shorter than the digest size, security is reduced
+    assert len(secret_key) >= CryptoHash.digest_size
+    h = hmac.HMAC(bytes(secret_key), CryptoHash(), backend=default_backend())
+    h.update(bytes(unique_prefix))
+    h.update(bytes(data))
+    return bytes(h.finalize())
+
+def verify_hmac(expected_result, secret_key, unique_prefix, data):
+    '''
+    Perform a HMAC using the secret key, unique hash prefix, and data, and
+    verify that the result of:
+    HMAC-SHA256(secret_key, unique_prefix | data)
+    matches the bytes in expected_result.
+    The key must be kept secret. The prefix ensures hash uniqueness.
+    Returns True if the signature matches, and False if it does not.
+    '''
+    # If the secret key is shorter than the digest size, security is reduced
+    assert len(secret_key) >= CryptoHash.digest_size
+    h = hmac.HMAC(bytes(secret_key), CryptoHash(), backend=default_backend())
+    h.update(bytes(unique_prefix))
+    h.update(bytes(data))
+    try:
+        h.verify(bytes(expected_result))
+        return True
+    except cryptography.exceptions.InvalidSignature:
+        return False
+
+def b64_raw_length(byte_count):
+    '''
+    Note: base64.b64encode returns b64_padded_length bytes of output.
+    Return the raw base64-encoded length of byte_count bytes.
+    '''
+    if byte_count < 0:
+        raise ValueError("byte_count must be non-negative")
+    return long(ceil(byte_count*8.0/6.0))
+
+B64_PAD_TO_MULTIPLE = 4
+
+def b64_padded_length(byte_count):
+    '''
+    Return the padded base64-encoded length of byte_count bytes, as produced
+    by base64.b64encode.
+    '''
+    raw_length = b64_raw_length(byte_count)
+    # base64 padding rounds up to the nearest multiple of 4
+    trailing_bytes = raw_length % B64_PAD_TO_MULTIPLE
+    if trailing_bytes > 0:
+        padding_bytes = B64_PAD_TO_MULTIPLE - trailing_bytes
+    else:
+        padding_bytes = 0
+    padded_length = raw_length + padding_bytes
+    assert padded_length % B64_PAD_TO_MULTIPLE == 0
+    return padded_length
 
 def encode_data(data_structure):
     """
