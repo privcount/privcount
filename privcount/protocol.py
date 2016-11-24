@@ -401,6 +401,7 @@ class PrivCountProtocol(LineOnlyReceiver):
                                            self.privcount_role)
         h1 = "{} {}".format(prefix,
                             b64encode(self.server_cookie))
+        logging.debug("Sent handshake: {}".format(h1))
         assert self.handshake1_verify(h1)
         return h1
 
@@ -446,6 +447,7 @@ class PrivCountProtocol(LineOnlyReceiver):
         assert self.handshake2_verify(h2,
                                       self.handshake_secret(),
                                       self.server_cookie)
+        logging.debug("Sent handshake: {}".format(h2))
         return h2
 
     @staticmethod
@@ -516,6 +518,7 @@ class PrivCountProtocol(LineOnlyReceiver):
                                       self.handshake_secret(),
                                       self.server_cookie,
                                       self.client_cookie)
+        logging.debug("Sent handshake: {}".format(h3))
         return h3
 
     @staticmethod
@@ -561,6 +564,7 @@ class PrivCountProtocol(LineOnlyReceiver):
         h4 = "{} {}".format(prefix,
                             PrivCountProtocol.HANDSHAKE_SUCCESS)
         assert self.handshake4_verify(h4)
+        logging.debug("Sent handshake: {}".format(h4))
         return h4
 
     @staticmethod
@@ -615,6 +619,7 @@ class PrivCountProtocol(LineOnlyReceiver):
         assert not self.handshake4_verify(hf)
         # Check that it verifies as a correctly formatted failure message
         assert self.handshake_fail_verify(hf)
+        logging.debug("Sent handshake: {}".format(hf))
         return hf
 
     @staticmethod
@@ -740,6 +745,7 @@ class PrivCountServerProtocol(PrivCountProtocol):
         '''
         # reconstitute the event line
         event_line = event_type + ' ' + event_payload
+        logging.debug("Received handshake: {}".format(event_line))
 
         if event_type == PrivCountProtocol.HANDSHAKE2:
             self.client_cookie = self.handshake2_verify(
@@ -870,6 +876,7 @@ class PrivCountClientProtocol(PrivCountProtocol):
         '''
         # reconstitute the event line
         event_line = event_type + ' ' + event_payload
+        logging.debug("Received handshake: {}".format(event_line))
 
         if event_type == PrivCountProtocol.HANDSHAKE1:
             self.server_cookie = self.handshake1_verify(event_line)
