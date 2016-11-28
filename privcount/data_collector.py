@@ -319,12 +319,9 @@ class Aggregator(ReconnectingClientFactory):
         self.rotator = task.LoopingCall(self._do_rotate).start(600, now=False)
         self.cli_ips_rotated = time()
 
-    def stop(self, counts_are_valid=True):
+    def _stop_protocol(self):
         '''
-        Stop counting, and stop connecting to the ControlPort and Tally Server.
-        Retrieve the counts, and delete the counters.
-        If counts_are_valid is True, return the counts.
-        Otherwise, return None.
+        Stop protocol and connection activities.
         '''
         # don't try to reconnect
         self.stopTrying()
@@ -337,15 +334,15 @@ class Aggregator(ReconnectingClientFactory):
         if self.connector is not None:
             self.connector.disconnect()
 
+    def _stop_secure_counters(self, counts_are_valid=True):
+        '''
+        If counts_are_valid, detach and return the counts from secure counters.
+        Otherwise, return None.
+        '''
         # if we've already stopped counting due to an error, there are no
         # counters
         if self.secure_counters is None:
             return None
-
-        # make sure we added noise
-        if self.noise_weight_value is None and counts_are_valid:
-            logging.warning("Noise was not added to counters when the control port connection was opened. Adding now.")
-            self.generate_noise()
 
         # return the final counts and make sure we cant be restarted
         counts = self.secure_counters.detach_counts()
@@ -356,6 +353,24 @@ class Aggregator(ReconnectingClientFactory):
             return counts
         else:
             return None
+
+    def stop(self, counts_are_valid=True):
+        '''
+        Stop counting, and stop connecting to the ControlPort and Tally Server.
+        Retrieve the counts, and delete the counters.
+        If counts_are_valid is True, return the counts.
+        Otherwise, return None.
+        '''
+        # make sure we added noise
+        if self.noise_weight_value is None and counts_are_valid:
+            logging.warning("Noise was not added to counters when the control port connection was opened. Adding now.")
+            self.generate_noise()
+
+        # stop trying to collect data
+        self._stop_protocol()
+
+        # stop using the counters
+        return self._stop_secure_counters(counts_are_valid=counts_are_valid)
 
     def get_shares(self):
         return self.secure_counters.detach_blinding_shares()
@@ -379,7 +394,9 @@ class Aggregator(ReconnectingClientFactory):
             logging.warning("Tally Server did not provide a noise weight for our fingerprint {} in noise weight config {}, we will not count in this round."
                             .format(self.fingerprint, self.noise_weight_config,
                                     self.noise_weight_value))
-            self.stop(counts_are_valid=False)
+            # stop collecting and stop counting
+            self._stop_protocol()
+            self._stop_secure_counters(counts_are_valid=False)
 
     def set_nickname(self, nickname):
         nickname = nickname.strip()
