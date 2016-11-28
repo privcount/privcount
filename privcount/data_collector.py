@@ -741,6 +741,7 @@ class Aggregator(ReconnectingClientFactory):
         elif not nextIsRelay:
             # prev hop is known relay but next is not, we are exit
             self.secure_counters.increment("CircuitsAll", 1)
+            self.secure_counters.increment("CircuitLifeTimeAll", end - start)
 
             # check if we have any stream info in this circuit
             circ_is_known, has_completed_stream = False, False
@@ -752,7 +753,7 @@ class Aggregator(ReconnectingClientFactory):
             if circ_is_known and has_completed_stream:
                 # we have circuit info and at least one stream ended on it
                 self.secure_counters.increment("CircuitsActive", 1)
-                self.secure_counters.increment("CircuitLifeTime", end - start)
+                self.secure_counters.increment("CircuitLifeTimeActive", end - start)
 
                 # convenience
                 counts = self.circ_info[chanid][circid]['num_streams']
@@ -788,6 +789,7 @@ class Aggregator(ReconnectingClientFactory):
             else:
                 # either we dont know circ, or no streams ended on it
                 self.secure_counters.increment("CircuitsInactive", 1)
+                self.secure_counters.increment("CircuitLifeTimeInactive", end - start)
 
             # cleanup
             if circ_is_known:

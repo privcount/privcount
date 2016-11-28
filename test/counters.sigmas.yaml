@@ -24,8 +24,14 @@ counters:
     # EXIT - circuit inter-stream creation times in seconds for HTTP/HTTPS
     CircuitInterStreamCreationTimeWeb:
         sigma: 0.0
-    # ENTRY - circuit times in seconds for active and inactive circuits
-    CircuitLifeTime:
+    # ENTRY - circuit times in seconds for all circuits
+    CircuitLifeTimeAll:
+        sigma: 0.0
+    # ENTRY - circuit times in seconds for active circuits
+    CircuitLifeTimeActive:
+        sigma: 0.0
+    # ENTRY - circuit times in seconds for inactive circuits
+    CircuitLifeTimeInactive:
         sigma: 0.0
     # EXIT - completed streams per active circuit
     CircuitStreamsAll:

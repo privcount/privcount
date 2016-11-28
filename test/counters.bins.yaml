@@ -101,8 +101,28 @@ counters:
         - [3.0, 30.0]
         - [30.0, 300.0]
         - [300.0, .inf]
-    # ENTRY - circuit times in seconds for active and inactive circuits
-    CircuitLifeTime:
+    # ENTRY - circuit times in seconds for all circuits
+    CircuitLifeTimeAll:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    # ENTRY - circuit times in seconds for active circuits
+    CircuitLifeTimeActive:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    # ENTRY - circuit times in seconds for inactive circuits
+    CircuitLifeTimeInactive:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
