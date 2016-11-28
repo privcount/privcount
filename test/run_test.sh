@@ -3,6 +3,8 @@
 set -e
 set -u
 
+PRIVCOUNT_ROUNDS=2
+
 # Process arguments
 if [ $# -lt 1 -o $# -gt 2 ]; then
   echo "usage: $0 [-I] <privcount-directory>"
@@ -81,6 +83,7 @@ privcount dc config.yaml &
 # Ideally, we'd want to use wait, or wait $job, but that only checks one job
 # at a time, so continuing processes can cause the script to run forever
 echo "Waiting for PrivCount to finish..."
+ROUNDS=0
 JOB_STATUS=`jobs`
 echo "$JOB_STATUS"
 while echo "$JOB_STATUS" | grep -q "Running"; do
@@ -93,7 +96,16 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   fi
   # succeed if an outcome file is produced
   if [ -f privcount.outcome.*.json ]; then
-    break
+    if [ $[$ROUNDS+1] -lt $PRIVCOUNT_ROUNDS ]; then
+      echo "Moving round $ROUNDS results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
+      mv privcount.* old/ || true
+      ROUNDS=$[$ROUNDS+1]
+      echo "Restarting injector for round $ROUNDS..."
+      privcount inject --simulate --port 20003 --log events.txt &
+    else
+      ROUNDS=$[$ROUNDS+1]
+      break
+    fi
   fi
   sleep 2
   JOB_STATUS=`jobs`
@@ -105,7 +117,7 @@ ENDDATE=`date`
 ENDSEC="`date +%s`"
 
 # And terminate all the privcount processes
-echo "Terminating privcount..."
+echo "Terminating privcount after $ROUNDS round(s)..."
 pkill -P $$
 
 # If an outcome file was produced, keep a link to the latest file
@@ -149,4 +161,4 @@ fi
 # Show how long it took
 echo "$ENDDATE"
 ELAPSEDSEC=$[ $ENDSEC - $STARTSEC ]
-echo "Seconds Elapsed: $ELAPSEDSEC"
+echo "Seconds Elapsed: $ELAPSEDSEC for $ROUNDS round(s)"

@@ -1216,6 +1216,34 @@ class SecureCounters(object):
         self.counters = None
         return counts
 
+def get_remaining_rounds(num_phases, continue_config):
+        '''
+        If the TS is configured to continue collecting a limited number of
+        rounds, return the number of rounds. Otherwise, if it will continue
+        forever, return None.
+        '''
+        if num_phases == 0:
+            return 1
+        if isinstance(continue_config, bool):
+            if continue_config:
+                return None
+            else:
+                return 0
+        else:
+            return continue_config - num_phases
+
+def continue_collecting(num_phases, continue_config):
+        '''
+        If the TS is configured to continue collecting more rounds,
+        return True. Otherwise, return False.
+        '''
+        if num_phases == 0:
+            return True
+        if isinstance(continue_config, bool):
+            return continue_config
+        else:
+            return continue_config > num_phases
+
 def log_tally_server_status(status):
     '''
     clients must only use the expected end time for logging: the tally
@@ -1241,6 +1269,22 @@ def log_tally_server_status(status):
     t, r = status['sks_total'], status['sks_required']
     a, i = status['sks_active'], status['sks_idle']
     logging.info("--server status: ShareKeepers: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
+    if continue_collecting(status['completed_phases'],
+                           status['continue']):
+        rem = get_remaining_rounds(status['completed_phases'],
+                                   status['continue'])
+        if rem is not None:
+            continue_str = "continue for {} more rounds".format(rem)
+        else:
+            continue_str = "continue indefinitely"
+        next_round_str = " as soon as clients are ready"
+    else:
+        continue_str = "stop"
+        next_round_str = " after this collection round"
+    logging.info("--server status: Rounds: completed {}, configured to {} collecting{}"
+                 .format(status['completed_phases'],
+                         continue_str,
+                         next_round_str))
 
 class PrivCountNode(object):
     '''

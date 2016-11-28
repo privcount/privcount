@@ -17,7 +17,7 @@ from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
 from statistics_noise import get_noise_allocation
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, choose_secret_handshake_path, PrivCountServer, log_tally_server_status
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, choose_secret_handshake_path, PrivCountServer, log_tally_server_status, continue_collecting
 import yaml
 
 # for warning about logging function and format # pylint: disable=W1202
@@ -89,6 +89,11 @@ class TallyServer(ServerFactory, PrivCountServer):
         reactor.run()
 
     def refresh_loop(self):
+        '''
+        Perform the TS event loop:
+        Refresh the config, check clients, check if we want to start or stop
+        collecting, and log a status update.
+        '''
         # make sure we have the latest config and counters
         self.refresh_config()
 
@@ -98,7 +103,8 @@ class TallyServer(ServerFactory, PrivCountServer):
         # check if we should start the next collection phase
         if self.collection_phase is None:
             num_phases = self.num_completed_collection_phases
-            if num_phases == 0 or self.config['continue']:
+            if continue_collecting(num_phases,
+                                   self.config['continue']):
                 dcs, sks = self.get_idle_dcs(), self.get_idle_sks()
                 if len(dcs) >= self.config['dc_threshold'] and len(sks) >= self.config['sk_threshold']:
                     logging.info("starting collection phase {} with {} DataCollectors and {} ShareKeepers".format((num_phases+1), len(dcs), len(sks)))
@@ -277,7 +283,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert ts_conf['collect_period'] > 0
             assert ts_conf['event_period'] > 0
             assert ts_conf['checkin_period'] > 0
-            assert ts_conf['continue'] == True or ts_conf['continue'] == False
+            assert (isinstance(ts_conf['continue'], bool) or
+                    ts_conf['continue'] >= 0)
             # check the hard-coded counter values are sane
             assert counter_modulus() > 0
             assert min_blinded_counter_value() == 0
@@ -375,7 +382,9 @@ class TallyServer(ServerFactory, PrivCountServer):
             'sks_idle' : sk_idle,
             'sks_active' : sk_active,
             'sks_total' : sk_idle+sk_active,
-            'sks_required' : self.config['sk_threshold']
+            'sks_required' : self.config['sk_threshold'],
+            'completed_phases' : self.num_completed_collection_phases,
+            'continue' : self.config['continue']
         }
 
         # we can't know the expected end time until we have started

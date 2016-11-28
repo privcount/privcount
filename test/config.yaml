@@ -20,14 +20,15 @@ tally_server:
     dc_threshold: 1 # number of data collector nodes required before starting
     # The elapsed test time is approximately:
     #     collect_period + 2*event_period
-    collect_period: 30 # (no default, 1 week = 604800 seconds) the safe time frame of stats collection for all stats
+    collect_period: 4 # (no default, 1 week = 604800 seconds) the safe time frame of stats collection for all stats
     # There must be at least two event periods in each collect period
-    event_period: 15 # (default: 60 seconds) how often the TS event loop runs
+    event_period: 2 # (default: 60 seconds) how often the TS event loop runs
     # There must be at least two checkin periods in each collect period
     # The checking period should also be less than or equal to the event
     # period, unless you are willing to wait a while for client status updates
-    checkin_period: 5 # (default: 60 seconds) number of seconds clients should wait before checking with TS for updates
-    continue: False # start another collection phase after finishing a previous
+    checkin_period: 2 # (default: 60 seconds) number of seconds clients should wait before checking with TS for updates
+    delay_period: 4 # (default: collect_period) the number of seconds the TS should wait between rounds that change noise allocations
+    continue: 2 # start another collection phase after finishing a previous collection phase. If this value is an integer, run that many rounds before stopping. (The TS always runs at least 1 round.)
     # optional overrides:
     key: 'keys/ts.pem' # path to the rsa private key
     cert: 'keys/ts.cert' # path to the public key certificate
