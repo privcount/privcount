@@ -1216,11 +1216,68 @@ class SecureCounters(object):
         self.counters = None
         return counts
 
+def log_tally_server_status(status):
+    '''
+    clients must only use the expected end time for logging: the tally
+    server may end the round early, or extend it slightly to allow for
+    network round trip times
+    '''
+    # until the collection round starts, the tally server doesn't know when it
+    # is expected to end
+    expected_end_msg = ""
+    if 'expected_end_time' in status:
+        stopping_ts = status['expected_end_time']
+        # we're waiting for the collection to stop
+        if stopping_ts > time():
+            expected_end_msg = ", expect collection to end in {}".format(format_delay_time_until(stopping_ts, 'at'))
+        # we expect the collection to have stopped, and the TS should be
+        # collecting results
+        else:
+            expected_end_msg = ", expect collection has ended for {}".format(format_elapsed_time_since(stopping_ts, 'since'))
+    logging.info("--server status: PrivCount is {} for {}{}".format(status['state'], format_elapsed_time_since(status['time'], 'since'), expected_end_msg))
+    t, r = status['dcs_total'], status['dcs_required']
+    a, i = status['dcs_active'], status['dcs_idle']
+    logging.info("--server status: DataCollectors: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
+    t, r = status['sks_total'], status['sks_required']
+    a, i = status['sks_active'], status['sks_idle']
+    logging.info("--server status: ShareKeepers: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
+
 class PrivCountNode(object):
     '''
     A mixin class that hosts common functionality for PrivCount client and
     server factories: TallyServer, ShareKeeper, and DataCollector.
     '''
+
+    def __init__(self, config_filepath):
+        '''
+        Initialise the common data structures used by all PrivCount nodes.
+        '''
+        self.config_filepath = normalise_path(config_filepath)
+        self.config = None
+
+    def load_state(self):
+        '''
+        Load the state from the saved state file
+        Return the loaded state, or None if there is no state file
+        '''
+        # load any state we may have from a previous run
+        state_filepath = normalise_path(self.config['state'])
+        if os.path.exists(state_filepath):
+            with open(state_filepath, 'r') as fin:
+                state = pickle.load(fin)
+                return state
+        return None
+
+    def dump_state(self, state):
+        '''
+        Dump the state dictionary to a saved state file.
+        If state is none or an empty dictionary, do not write a file.
+        '''
+        if state is None or len(state.keys()) == 0:
+            return
+        state_filepath = normalise_path(self.config['state'])
+        with open(state_filepath, 'w') as fout:
+            pickle.dump(state, fout)
 
     def get_secret_handshake_path(self):
         '''
@@ -1236,14 +1293,67 @@ class PrivCountNode(object):
         # whenever the config is loaded
         return self.config['secret_handshake']
 
+class PrivCountServer(PrivCountNode):
+    '''
+    A mixin class that hosts common functionality for PrivCount server
+    factories: TallyServer.
+    (Since there is only one server factory class, this class only hosts
+    generic functionality that is substantially similar to PrivCountClient,
+    but not identical - if it were identical, it would go in PrivCountNode.)
+    '''
+
+    def __init__(self, config_filepath):
+        '''
+        Initialise the common data structures used by all PrivCount clients.
+        '''
+        PrivCountNode.__init__(self, config_filepath)
+
 class PrivCountClient(PrivCountNode):
     '''
     A mixin class that hosts common functionality for PrivCount client
     factories: ShareKeeper and DataCollector.
-    (There is no equivalent server class, as TallyServer is the only PrivCount
-    server class.)
     '''
-    pass
+
+    def __init__(self, config_filepath):
+        '''
+        Initialise the common data structures used by all PrivCount clients.
+        '''
+        PrivCountNode.__init__(self, config_filepath)
+        self.start_config = None
+
+    def set_server_status(self, status):
+        '''
+        Called by protocol
+        status is a dictionary containing server status information
+        '''
+        log_tally_server_status(status)
+
+    def check_start_config(self, config):
+        '''
+        Perform the common client checks on the start config.
+        Return the combined counters if the config is valid,
+        or None if it is not.
+        '''
+        if ('counters' not in config or
+            'noise' not in config or
+            'noise_weight' not in config or
+            'dc_threshold' not in config):
+            logging.warning("start command from tally server cannot be completed due to missing data")
+            return None
+
+        # if the counters don't pass the validity checks, fail
+        if not check_counters_config(config['counters'],
+                                     config['noise']['counters']):
+            return None
+
+        # if the noise weights don't pass the validity checks, fail
+        if not check_noise_weight_config(config['noise_weight'],
+                                         config['dc_threshold']):
+            return None
+
+        # combine bins and sigmas
+        return combine_counters(config['counters'],
+                                config['noise']['counters'])
 
 """
 def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):
