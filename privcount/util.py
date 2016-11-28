@@ -893,6 +893,198 @@ def check_counters_config(bins, sigmas):
     return (check_bins_config(bins) and check_sigmas_config(sigmas) and
             check_combined_counters(bins, sigmas))
 
+class CollectionDelay(object):
+    '''
+    Ensures a configurable delay between rounds with different noise
+    allocations.
+    Usage:
+    (all nodes do these checks, but the nodes listed must enforce them)
+    TS: configures round
+        uses get_next_round_start_time() for status updates
+        checks round_start_permitted() before starting collection
+    TODO: DC: checks round_start_permitted() before sending blinding shares
+    TODO: SK: checks round_start_permitted() before accepting blinding shares
+    (round runs)
+    TODO: SK: set_stop_result() when round stops and blinding shares are sent
+    TODO: DC: set_stop_result() when round stops and counters are sent
+    TS: set_stop_result() when round ends successfully
+    (repeat for next round, if TS has continue set in its config)
+    '''
+
+    def __init__(self):
+        '''
+        Initialise the noise allocations and times required to track collection
+        delays.
+        '''
+        # The earliest noise allocation in a series of equivalent noise
+        # allocations
+        self.starting_noise_allocation = None
+        # The end time of the successful round to use an equivalent allocation
+        self.last_round_end_time = None
+
+    @staticmethod
+    def sigma_change_needs_delay(previous_sigma, proposed_sigma,
+                                 logging_label=None):
+        '''
+        Check if there should be a delay between rounds using the previous
+        and proposed sigma values for the same counter.
+        A counter can use two sigma values without a delay between them if:
+        - The values are equal, or
+        - The proposed value is greater than the previous value.
+        Returns True if the sigma values need a delay, False if they do not.
+        TODO: Allow small decreases within a configurable tolerance.
+        '''
+        if proposed_sigma < previous_sigma:
+            if logging_label is not None:
+                logging.warning("Delaying round because proposed sigma %.2f is less than previous sigma %.2f for counter %s",
+                                proposed_sigma,
+                                previous_sigma,
+                                logging_label)
+            return True
+        return False
+
+    # TODO: make this a configurable option?
+    TESTING_ALWAYS_DELAY = True
+
+    @staticmethod
+    def noise_change_needs_delay(previous_allocation, proposed_allocation):
+        '''
+        Check if there should be a delay between rounds using the previous
+        and proposed noise allocations.
+        Two allocations can be used without a delay between them if:
+        - They have the same keys, and
+        - The sigma values for those keys do not need a delay.
+        Returns True if the allocations need a delay, False if they do not.
+        '''
+        # No delay for the first round
+        if previous_allocation is None:
+            return False
+        # There must be an allocation for a valid round
+        assert proposed_allocation is not None
+
+        if CollectionDelay.TESTING_ALWAYS_DELAY:
+            logging.warning("Delaying round for testing purposes.")
+            return True
+
+        # Ignore and log missing sigmas
+        previous_sigmas = skip_missing_sigmas(
+            previous_allocation['counters'],
+            'proposed sigma')
+        proposed_sigmas = skip_missing_sigmas(
+            proposed_allocation['counters'],
+            'proposed sigma')
+
+        # Check that we have the same set of counters
+        common_sigmas = common_counters(previous_sigmas, proposed_sigmas,
+                                        'previous sigma', 'proposed sigma')
+        if len(common_sigmas) != len(previous_sigmas):
+            # ignore the extra counters return values, we just want the logging
+            extra_counters(previous_sigmas, proposed_sigmas,
+                           'previous sigmas', 'proposed sigmas')
+            return True
+        if len(common_sigmas) != len(proposed_sigmas):
+            # ignore the extra counters return values, we just want the logging
+            extra_counters(proposed_sigmas, previous_sigmas,
+                           'proposed sigmas', 'previous sigmas')
+            return True
+
+        # check the sigma values are the same
+        for key in sorted(common_sigmas):
+            if CollectionDelay.sigma_change_needs_delay(previous_sigmas[key],
+                                                        proposed_sigmas[key],
+                                                        key):
+                return True
+        return False
+
+    def get_next_round_start_time(self, noise_allocation, delay):
+        '''
+        Return the earliest time at which a round with noise allocation could
+        start, if delay is the configurable delay.
+        '''
+        # there must be a configured delay (or a default must be used)
+        assert delay is not None
+        # there must be a noise allocation for the next round
+        assert noise_allocation is not None
+        if self.noise_change_needs_delay(self.starting_noise_allocation,
+                                         noise_allocation):
+            # if there was a change, there must have been a previous allocation
+            assert self.starting_noise_allocation
+            # if there was a previous round, and we need to delay after it,
+            # there must have been an end time for that round
+            assert self.last_round_end_time
+            next_start_time = self.last_round_end_time + delay
+            if next_start_time > time():
+                logging.debug("Delaying round for %s because noise allocation changed",
+                              format_delay_time_until(next_start_time,
+                                                      'until'))
+            return next_start_time
+        elif self.last_round_end_time is not None:
+            # right now
+            return self.last_round_end_time
+        else:
+            # any time
+            return 0
+
+    def round_start_permitted(self, noise_allocation, start_time, delay):
+        '''
+        Check if we are permitted to start a round with noise allocation
+        at start time, with the configured delay.
+        Return True if starting the round is permitted, False if it is not.
+        '''
+        # there must be a start time
+        assert start_time
+        return start_time >= self.get_next_round_start_time(noise_allocation,
+                                                            delay)
+
+    def set_stop_result(self, noise_allocation, start_time, end_time, delay,
+                        round_successful):
+        '''
+        Called when a round ends.
+        If the new noise allocation is not equivalent to the stored noise,
+        update the stored noise. Update the stored last round end time.
+        No updates are performed for failed rounds.
+        '''
+        # make sure we haven't violated our own preconditions
+        assert noise_allocation
+        assert start_time < end_time
+        assert delay
+        # did we forget to check if we needed to delay this round?
+        # warn, because this can happen if the delay is reconfigured,
+        # or if another node fails a round because it starts sooner than its
+        # configured delay
+        if not self.round_start_permitted(noise_allocation,
+                                          start_time,
+                                          delay):
+            expected_start = self.get_next_round_start_time(noise_allocation,
+                                                            delay)
+            status = "successfully" if round_successful else "failed and"
+            logging.warning("Round that just {} stopped was started {} before enforced delay elapsed. Round started {}, expected start {}."
+                            .format(status,
+                                    format_period(expected_start - start_time),
+                                    format_elapsed_time_since(start_time,
+                                                              'at'),
+                                    format_elapsed_time_since(expected_start,
+                                                              'at')))
+        if round_successful:
+            # The end time is always updated
+            self.last_round_end_time = end_time
+            if self.starting_noise_allocation is None:
+                # It's the first noise allocation this run
+                self.starting_noise_allocation = noise_allocation
+            elif not self.noise_change_needs_delay(
+                              self.starting_noise_allocation,
+                              noise_allocation):
+                # The latest noise allocation could have been used immediately
+                # after the starting noise allocation.
+                # Keep the starting noise allocation, so that a TS can't
+                # gradually decrease the noise each round
+                pass
+            else:
+                # It's a noise allocation from a successful round, and it's
+                # different enough from the starting allocation. Assume we
+                # waited for the enforced delay before the round started.
+                self.starting_noise_allocation = noise_allocation
+
 def noise(sigma, sum_of_sq, p_exit):
     '''
     Sample noise from a gussian distribution
@@ -1342,7 +1534,12 @@ def log_tally_server_status(status):
             continue_str = "continue for {} more rounds".format(rem)
         else:
             continue_str = "continue indefinitely"
-        next_round_str = " as soon as clients are ready"
+        next_start_time = status['delay_until']
+        if next_start_time > time():
+            next_round_str = " in {}".format(format_delay_time_until(
+                                                 next_start_time, 'at'))
+        else:
+            next_round_str = " as soon as clients are ready"
     else:
         continue_str = "stop"
         next_round_str = " after this collection round"
