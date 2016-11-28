@@ -1216,6 +1216,35 @@ class SecureCounters(object):
         self.counters = None
         return counts
 
+class PrivCountNode(object):
+    '''
+    A mixin class that hosts common functionality for PrivCount client and
+    server factories: TallyServer, ShareKeeper, and DataCollector.
+    '''
+
+    def get_secret_handshake_path(self):
+        '''
+        Return the path of the secret handshake key file, or None if the config
+        has not been loaded.
+        Called by the protocol after a connection is opened.
+        '''
+        # The config must have been loaded by this point:
+        # - the server reads the config before opening a listener port
+        # - the clients read the config before opening a connection
+        assert self.config
+        # The secret handshake path should be loaded (or assigned a default)
+        # whenever the config is loaded
+        return self.config['secret_handshake']
+
+class PrivCountClient(PrivCountNode):
+    '''
+    A mixin class that hosts common functionality for PrivCount client
+    factories: ShareKeeper and DataCollector.
+    (There is no equivalent server class, as TallyServer is the only PrivCount
+    server class.)
+    '''
+    pass
+
 """
 def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):
     '''

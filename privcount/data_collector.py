@@ -10,8 +10,7 @@ from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters, choose_secret_handshake_path
-
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters, choose_secret_handshake_path, PrivCountClient
 import yaml
 
 from twisted.internet import task, reactor, ssl
@@ -21,7 +20,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 # method docstring missing: pylint: disable=C0111
 # line too long: pylint: disable=C0301
 
-class DataCollector(ReconnectingClientFactory):
+class DataCollector(ReconnectingClientFactory, PrivCountClient):
     '''
     receive key share data from the DC message receiver
     keep the shares during collection epoch
@@ -261,15 +260,6 @@ class DataCollector(ReconnectingClientFactory):
         except KeyError:
             logging.warning("problem reading config file: missing required keys")
             log_error()
-
-    def get_secret_handshake_path(self):
-        '''
-        Return the path of the secret handshake key file, or None if the config
-        has not been loaded.
-        '''
-        # The secret handshake path should be loaded (or assigned a default)
-        # whenever the config is loaded
-        return self.config.get('secret_handshake')
 
 class Aggregator(ReconnectingClientFactory):
     '''

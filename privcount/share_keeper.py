@@ -14,11 +14,11 @@ from twisted.internet.protocol import ReconnectingClientFactory
 
 from protocol import PrivCountClientProtocol
 from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters, choose_secret_handshake_path
+from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters, choose_secret_handshake_path, PrivCountClient
 
 import yaml
 
-class ShareKeeper(ReconnectingClientFactory):
+class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
     '''
     receive key share data from the DC message receiver
     keep the shares during collection epoch
@@ -235,12 +235,3 @@ class ShareKeeper(ReconnectingClientFactory):
         except KeyError:
             logging.warning("problem reading config file: missing required keys")
             log_error()
-
-    def get_secret_handshake_path(self):
-        '''
-        Return the path of the secret handshake key file, or None if the config
-        has not been loaded.
-        '''
-        # The secret handshake path should be loaded (or assigned a default)
-        # whenever the config is loaded
-        return self.config.get('secret_handshake')
