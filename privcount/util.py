@@ -769,6 +769,80 @@ def check_sigmas_config(sigmas):
             return False
     return True
 
+def _extra_counter_keys(first, second):
+    '''
+    Return the extra counter keys in first that are not in second.
+    '''
+    return set(first.keys()).difference(second.keys())
+
+def extra_counters(first, second, first_name, second_name):
+    '''
+    Return the extra counter keys in first that are not in second.
+    Warn about any missing counters.
+    '''
+    extra_keys = _extra_counter_keys(first, second)
+    # Log missing keys
+    # sort names alphabetically, so the logs are in a sensible order
+    for key in sorted(extra_keys):
+            logging.warning("skipping counter '{}' because it has a {}, but no {}".format(key, first, second))
+
+    return extra_keys
+
+def _common_counter_keys(first, second):
+    '''
+    Return the set of counter keys shared by first and second.
+    '''
+    return set(first.keys()).intersection(second.keys())
+
+def common_counters(first, second, first_name, second_name):
+    '''
+    Return the counter keys shared by first and second.
+    Warn about any missing counters.
+    '''
+    # ignore the extra counters return values, we just want the logging
+    extra_counters(first, second, first_name, second_name)
+    extra_counters(second, first, second_name, first_name)
+
+    # return common keys
+    return _common_counter_keys(first, second)
+
+def _skip_missing(counters, expected_subkey, detailed_source=None):
+    '''
+    Check that each key in counters has a subkey with the name expected_subkey.
+    If any key does not have a subkey named expected_subkey, skip it and log a
+    warning.
+    If detailed_source is not None, use it to describe the counters.
+    Otherwise, use expected_subkey.
+    Returns a copy of counters with invalid keys skipped.
+    '''
+    if detailed_source is None:
+        detailed_source = expected_subkey
+    valid_counters = {}
+    # sort names alphabetically, so the logs are in a sensible order
+    for key in sorted(counters.keys()):
+        if expected_subkey in counters[key]:
+            valid_counters[key] = counters[key]
+        else:
+            logging.warning("skipping counter '{}' because it is configured as a {} counter, but it does not have any {} value"
+                            .format(key, detailed_source, expected_subkey))
+    return valid_counters
+
+def skip_missing_bins(bins, detailed_source=None):
+    '''
+    Check each key in bins has a bins list.
+    If any key does not have a bins list, skip it and log a warning.
+    Returns a copy of counters with invalid keys skipped.
+    '''
+    return _skip_missing(bins, 'bins', detailed_source)
+
+def skip_missing_sigmas(sigmas, detailed_source=None):
+    '''
+    Check each key in sigmas has a sigma value.
+    If any key does not have a sigma, skip it and log a warning.
+    Returns a copy of counters with invalid keys skipped.
+    '''
+    return _skip_missing(sigmas, 'sigma')
+
 def combine_counters(bins, sigmas):
     '''
     Combine the counters in bins and sigmas, excluding any counters that are
@@ -778,33 +852,24 @@ def combine_counters(bins, sigmas):
     (Both bins and sigmas are configured at the tally server.)
     Return a dictionary containing the combined keys.
     '''
+    # Remove invalid counters
+    bins = skip_missing_bins(bins)
+    sigmas = skip_missing_sigmas(sigmas)
+
     # we allow the tally server to update the set of counters
     # (we can't count keys for which we don't have both bins and sigmas)
-    common_keys = set(bins.keys()).intersection(sigmas.keys())
-
-    # warn about missing bins and sigmas
-    # sort names alphabetically, so the logs are in a sensible order
-    for key in sorted(set(bins.keys()).difference(common_keys)):
-            logging.warning("skipping counter '{}' because it has a bin, but no sigma".format(key))
-    for key in sorted(set(sigmas.keys()).difference(common_keys)):
-            logging.warning("skipping counter '{}' because it has a sigma, but no bin".format(key))
+    common_keys = common_counters(bins, sigmas, 'bins', 'sigmas')
 
     counters_combined = {}
-    # sort names alphabetically, so the logs are in a sensible order
-    for key in sorted(common_keys):
-        if 'bins' in bins[key] and 'sigma' in sigmas[key]:
-            # Use the values from the sigmas
-            counters_combined[key] = deepcopy(sigmas[key])
-            # Except for the bin values, which come from bins
-            # we allow the tally server to update the bin widths
-            counters_combined[key]['bins'] = deepcopy(bins[key]['bins'])
-        elif 'bins' not in bins[key]:
-            logging.warning("skipping counter '{}' because we have a bin counter, but it does not have any bins configured".format(key))
-        elif 'sigma' not in sigmas[key]:
-            logging.warning("skipping counter '{}' because we have a sigma counter, but it does not have any sigmas configured".format(key))
-        else:
-            # if we've correctly handled all the cases, then...
-            logging.error("this line should be unreachable")
+    for key in common_keys:
+        # skip_missing_* ensures these exist
+        assert 'bins' in bins[key]
+        assert 'sigma' in sigmas[key]
+        # Use the values from the sigmas
+        counters_combined[key] = deepcopy(sigmas[key])
+        # Except for the bin values, which come from bins
+        # we allow the tally server to update the bin widths
+        counters_combined[key]['bins'] = deepcopy(bins[key]['bins'])
     return counters_combined
 
 def check_combined_counters(bins, sigmas):
