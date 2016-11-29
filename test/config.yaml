@@ -28,6 +28,7 @@ tally_server:
     # period, unless you are willing to wait a while for client status updates
     checkin_period: 2 # (default: 60 seconds) number of seconds clients should wait before checking with TS for updates
     delay_period: 4 # (default: collect_period) the number of seconds the TS should wait between rounds that change noise allocations
+    always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
     continue: 2 # start another collection phase after finishing a previous collection phase. If this value is an integer, run that many rounds before stopping. (The TS always runs at least 1 round.)
     # optional overrides:
     key: 'keys/ts.pem' # path to the rsa private key

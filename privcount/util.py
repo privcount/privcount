@@ -943,9 +943,6 @@ class CollectionDelay(object):
             return True
         return False
 
-    # TODO: make this a configurable option?
-    TESTING_ALWAYS_DELAY = True
-
     @staticmethod
     def noise_change_needs_delay(previous_allocation, proposed_allocation):
         '''
@@ -961,10 +958,6 @@ class CollectionDelay(object):
             return False
         # There must be an allocation for a valid round
         assert proposed_allocation is not None
-
-        if CollectionDelay.TESTING_ALWAYS_DELAY:
-            logging.warning("Delaying round for testing purposes.")
-            return True
 
         # Ignore and log missing sigmas
         previous_sigmas = skip_missing_sigmas(
@@ -996,67 +989,95 @@ class CollectionDelay(object):
                 return True
         return False
 
-    def get_next_round_start_time(self, noise_allocation, delay):
+    def get_next_round_start_time(self, noise_allocation, delay_period,
+                                  always_delay=False):
         '''
         Return the earliest time at which a round with noise allocation could
-        start, if delay is the configurable delay.
+        start, where delay_period is the configurable delay.
+        If always_delay is True, always delay the round by delay_period.
+        (This is intended for use while testing.)
         '''
-        # there must be a configured delay (or a default must be used)
-        assert delay is not None
+        # there must be a configured delay_period (or a default must be used)
+        assert delay_period is not None
+        assert always_delay is not None
         # there must be a noise allocation for the next round
         assert noise_allocation is not None
-        if self.noise_change_needs_delay(self.starting_noise_allocation,
-                                         noise_allocation):
+
+        noise_change_delay = self.noise_change_needs_delay(
+                                      self.starting_noise_allocation,
+                                      noise_allocation)
+        needs_delay = always_delay or noise_change_delay
+
+        if noise_change_delay:
             # if there was a change, there must have been a previous allocation
             assert self.starting_noise_allocation
+
+        if self.last_round_end_time is None:
+            # a delay is meaningless, there have been no previous successful
+            # rounds
+            # we can start any time
+            return 0
+        elif needs_delay:
             # if there was a previous round, and we need to delay after it,
             # there must have been an end time for that round
-            assert self.last_round_end_time
-            next_start_time = self.last_round_end_time + delay
+            next_start_time = self.last_round_end_time + delay_period
             if next_start_time > time():
-                logging.debug("Delaying round for %s because noise allocation changed",
+                if always_delay:
+                    delay_reason = "we are configured to always delay"
+                else:
+                    delay_reason = "noise allocation changed"
+                logging.debug("Delaying round for %s because %s",
                               format_delay_time_until(next_start_time,
-                                                      'until'))
+                                                      'until'),
+                              delay_reason)
             return next_start_time
-        elif self.last_round_end_time is not None:
-            # right now
-            return self.last_round_end_time
         else:
-            # any time
-            return 0
+            # we can start any time after the last round ended
+            return self.last_round_end_time
 
-    def round_start_permitted(self, noise_allocation, start_time, delay):
+    def round_start_permitted(self, noise_allocation, start_time, delay_period,
+                              always_delay=False):
         '''
         Check if we are permitted to start a round with noise allocation
-        at start time, with the configured delay.
+        at start time, with the configured delay_period.
+        If always_delay is True, always delay the round by delay_period.
+        (This is intended for use while testing.)
         Return True if starting the round is permitted, False if it is not.
         '''
         # there must be a start time
         assert start_time
         return start_time >= self.get_next_round_start_time(noise_allocation,
-                                                            delay)
+                                                            delay_period,
+                                                            always_delay)
 
-    def set_stop_result(self, noise_allocation, start_time, end_time, delay,
-                        round_successful):
+    def set_stop_result(self, round_successful, noise_allocation,
+                        start_time, end_time, delay_period,
+                        always_delay=False):
         '''
         Called when a round ends.
         If the new noise allocation is not equivalent to the stored noise,
         update the stored noise. Update the stored last round end time.
         No updates are performed for failed rounds.
+        Log a warning if it appears that the round was started too early.
+        (This can also occur if the config is changed mid-round.)
+        If always_delay is True, assume the round was delayed, regardless of
+        the noise allocation. (This is intended for use while testing.)
         '''
         # make sure we haven't violated our own preconditions
         assert noise_allocation
         assert start_time < end_time
-        assert delay
+        assert delay_period
         # did we forget to check if we needed to delay this round?
         # warn, because this can happen if the delay is reconfigured,
         # or if another node fails a round because it starts sooner than its
         # configured delay
         if not self.round_start_permitted(noise_allocation,
                                           start_time,
-                                          delay):
+                                          delay_period,
+                                          always_delay):
             expected_start = self.get_next_round_start_time(noise_allocation,
-                                                            delay)
+                                                            delay_period,
+                                                            always_delay)
             status = "successfully" if round_successful else "failed and"
             logging.warning("Round that just {} stopped was started {} before enforced delay elapsed. Round started {}, expected start {}."
                             .format(status,
@@ -1068,8 +1089,9 @@ class CollectionDelay(object):
         if round_successful:
             # The end time is always updated
             self.last_round_end_time = end_time
-            if self.starting_noise_allocation is None:
-                # It's the first noise allocation this run
+            if self.starting_noise_allocation is None or always_delay:
+                # It's the first noise allocation this run, or it's a
+                # noise allocation for which we've delayed collection
                 self.starting_noise_allocation = noise_allocation
             elif not self.noise_change_needs_delay(
                               self.starting_noise_allocation,
