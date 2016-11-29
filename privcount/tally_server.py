@@ -16,7 +16,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from statistics_noise import get_noise_allocation
+from statistics_noise import get_noise_allocation, DEFAULT_SIGMA_TOLERANCE
 
 # split lines to help with diffs and readability
 from util import log_error, log_tally_server_status
@@ -26,7 +26,7 @@ from util import generate_keypair, generate_cert
 from util import normalise_path, choose_secret_handshake_path
 from util import check_noise_weight_config, check_counters_config
 from util import PrivCountServer
-from util import CollectionDelay, continue_collecting
+from util import CollectionDelay, continue_collecting, float_accuracy
 
 import yaml
 
@@ -119,10 +119,11 @@ class TallyServer(ServerFactory, PrivCountServer):
                 dcs, sks = self.get_idle_dcs(), self.get_idle_sks()
                 if len(dcs) >= self.config['dc_threshold'] and len(sks) >= self.config['sk_threshold']:
                     if self.collection_delay.round_start_permitted(
-                                                 self.config['noise'],
-                                                 time(),
-                                                 self.config['delay_period'],
-                                                 self.config['always_delay']):
+                            self.config['noise'],
+                            time(),
+                            self.config['delay_period'],
+                            self.config['always_delay'],
+                            self.config['sigma_decrease_tolerance']):
                         # we've passed all the checks, start the collection
                         num_phases = self.num_completed_collection_phases
                         logging.info("starting collection phase {} with {} DataCollectors and {} ShareKeepers".format((num_phases+1), len(dcs), len(sks)))
@@ -305,6 +306,29 @@ class TallyServer(ServerFactory, PrivCountServer):
 
             assert isinstance(ts_conf['always_delay'], bool)
 
+            ts_conf.setdefault(
+                'sigma_decrease_tolerance',
+                DEFAULT_SIGMA_TOLERANCE)
+            # we can't guarantee that floats are transmitted with any more
+            # accuracy than approximately 1 part in 1e-14, due to python
+            # float to string conversion
+            # so we limit the tolerance to an absolute value of ~1e-14,
+            # which assumes the sigma values are close to 1.
+            # larger sigma values should have a larger absolute limit, because
+            # float_accuracy() is a proportion of the value,
+            # but we can't do that calculation here
+            assert ts_conf['sigma_decrease_tolerance'] >= float_accuracy()
+            # it makes no sense to have a sigma decrease tolerance that is
+            # less than the sigma calculation tolerance
+            # (if we use hard-coded sigmas, calculation accuracy is not
+            # an issue - skip this check)
+            if 'sigma_tolerance' in ts_conf['noise'].get('privacy',{}):
+                assert (ts_conf['sigma_decrease_tolerance'] >=
+                        ts_conf['noise']['privacy']['sigma_tolerance'])
+            elif 'privacy' in ts_conf['noise']:
+                assert (ts_conf['sigma_decrease_tolerance'] >=
+                        DEFAULT_SIGMA_TOLERANCE)
+
             assert ts_conf['listen_port'] > 0
             assert ts_conf['sk_threshold'] > 0
             assert ts_conf['dc_threshold'] > 0
@@ -419,7 +443,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             'delay_until' : self.collection_delay.get_next_round_start_time(
                 self.config['noise'],
                 self.config['delay_period'],
-                self.config['always_delay'])
+                self.config['always_delay'],
+                self.config['sigma_decrease_tolerance'])
         }
 
         # we can't know the expected end time until we have started
@@ -537,7 +562,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # if config['delay_period'] has changed, we use it, and warn
                 # if it would have made a difference
                 self.config['delay_period'],
-                self.config['always_delay'])
+                self.config['always_delay'],
+                self.config['sigma_decrease_tolerance'])
             self.collection_phase = None
             self.idle_time = time()
 

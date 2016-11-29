@@ -30,6 +30,8 @@ from cryptography.hazmat.primitives import serialization, hashes, hmac
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.exceptions import UnsupportedAlgorithm, InvalidSignature
 
+from statistics_noise import DEFAULT_SIGMA_TOLERANCE
+
 def load_private_key_string(key_string):
     return serialization.load_pem_private_key(key_string, password=None, backend=default_backend())
 
@@ -893,6 +895,63 @@ def check_counters_config(bins, sigmas):
     return (check_bins_config(bins) and check_sigmas_config(sigmas) and
             check_combined_counters(bins, sigmas))
 
+def float_representation_accuracy():
+    '''
+    When converting an exact number to a python float, the maximum possible
+    proportional change in the value of the float.
+    For the exact number n, converting n to a float could change the value by
+    at most +/- n * float_representation_accuracy().
+    Returns a floating point number representing the maximum relative increase
+    or decrease in the value of the original exact number.
+    '''
+    # When converting an exact value to a python float, the maximum possible
+    # proportional change is half the distance between one float value and the
+    # next largest or smallest float value.
+    # Conventiently, the distance between adjacent floats is at most the float
+    # epsilon multiplied by the value of the float, as the distance between
+    # adjacent floats scales as they get larger or smaller.
+    # On most platforms, the float epsilon is 2 ** -53.
+    return sys.float_info.epsilon/2.0
+
+def float_string_accuracy():
+    '''
+    When converting a python float to a string and back, the maximum possible
+    proportional change in the value of the float.
+    For the float f, converting f to a string and back could change the value
+    by at most +/- f * float_string_accuracy().
+    Returns a floating point number representing the maximum relative increase
+    or decrease in the value of the original float.
+    '''
+    # sys.float_info.dig is the number of significant figures that are
+    # guaranteed to be preserved when converting a float to a string and
+    # then back to a float (PrivCount does this when sending sigma between
+    # the TS and the SKs/DCs).
+    # This is based on python's float repr() rule, introduced in versions 2.7
+    # and 3.1:
+    # Python "displays a value based on the shortest decimal fraction that
+    # rounds correctly back to the true binary value"
+    # On most 32 and 64-bit platforms, sys.float_info.dig is 15 digits.
+    # Therefore, the maximum change in value that can occur is the 15th digit
+    # (of least significance) changing by +/- 1.
+    # But we can't just multiply the original value by 10 ** -15, because
+    # the (significand of the) float can have any value in [0.1, 0.999...].
+    # Therefore, we need to multiply the tolerance by another 10x.
+    # This gives us a tolerance of 10 ** -14 on most systems.
+    return 10.0 ** (-sys.float_info.dig + 1)
+
+def float_accuracy():
+    '''
+    The maximum proportional change in an exact value when converted to a
+    float, then a string, then back to a float.
+    For the exact number n, converting n to a float then string then float
+    could change the value by at most +/- n * float_accuracy().
+    Returns a floating point number representing the maximum relative increase
+    or decrease in the value of the original exact number.
+    '''
+    # If the inaccuracies are both in the same direction, the total inaccuracy
+    # is the sum of all inaccuracies
+    return float_representation_accuracy() + float_string_accuracy()
+
 class CollectionDelay(object):
     '''
     Ensures a configurable delay between rounds with different noise
@@ -922,42 +981,58 @@ class CollectionDelay(object):
         # The end time of the successful round to use an equivalent allocation
         self.last_round_end_time = None
 
+    DEFAULT_SIGMA_DECREASE_TOLERANCE = DEFAULT_SIGMA_TOLERANCE
+
     @staticmethod
-    def sigma_change_needs_delay(previous_sigma, proposed_sigma,
-                                 logging_label=None):
+    def sigma_change_needs_delay(
+            previous_sigma, proposed_sigma,
+            tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE,
+            logging_label=None):
         '''
         Check if there should be a delay between rounds using the previous
         and proposed sigma values for the same counter.
         A counter can use two sigma values without a delay between them if:
-        - The values are equal, or
+        - The values are equal (within a small tolerance), or
         - The proposed value is greater than the previous value.
         Returns True if the sigma values need a delay, False if they do not.
-        TODO: Allow small decreases within a configurable tolerance.
         '''
-        if proposed_sigma < previous_sigma:
-            if logging_label is not None:
-                logging.warning("Delaying round because proposed sigma %.2f is less than previous sigma %.2f for counter %s",
-                                proposed_sigma,
-                                previous_sigma,
-                                logging_label)
-            return True
-        return False
+        assert previous_sigma is not None
+        assert proposed_sigma is not None
+        assert tolerance is not None
+        if proposed_sigma >= previous_sigma:
+            # the sigma has increased: no delay requires
+            return False
+        elif proposed_sigma - previous_sigma <= tolerance:
+            # the sigma has decreased, but not by enough to matter
+            return False
+        # the sigma has decreased too much - enforce a delay
+        if logging_label is not None:
+            logging.warning("Delaying round: proposed sigma %.2g is less than previous sigma %.2g, and not within tolerance %.2g, in counter %s",
+                            proposed_sigma,
+                            previous_sigma,
+                            tolerance,
+                            logging_label)
+        return True
 
     @staticmethod
-    def noise_change_needs_delay(previous_allocation, proposed_allocation):
+    def noise_change_needs_delay(
+            previous_allocation, proposed_allocation,
+            tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE):
         '''
         Check if there should be a delay between rounds using the previous
         and proposed noise allocations.
         Two allocations can be used without a delay between them if:
         - They have the same keys, and
-        - The sigma values for those keys do not need a delay.
+        - The sigma values for those keys do not need a delay, using the
+          acceptable sigma decrease tolerance.
         Returns True if the allocations need a delay, False if they do not.
         '''
+        # There must be an allocation for a valid round
+        assert proposed_allocation is not None
+        assert tolerance is not None
         # No delay for the first round
         if previous_allocation is None:
             return False
-        # There must be an allocation for a valid round
-        assert proposed_allocation is not None
 
         # Ignore and log missing sigmas
         previous_sigmas = skip_missing_sigmas(
@@ -985,27 +1060,32 @@ class CollectionDelay(object):
         for key in sorted(common_sigmas):
             if CollectionDelay.sigma_change_needs_delay(previous_sigmas[key],
                                                         proposed_sigmas[key],
+                                                        tolerance,
                                                         key):
                 return True
         return False
 
-    def get_next_round_start_time(self, noise_allocation, delay_period,
-                                  always_delay=False):
+    def get_next_round_start_time(
+            self, noise_allocation, delay_period, always_delay=False,
+            tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE):
         '''
         Return the earliest time at which a round with noise allocation could
         start, where delay_period is the configurable delay.
         If always_delay is True, always delay the round by delay_period.
         (This is intended for use while testing.)
+        tolerance is the acceptable sigma decrease.
         '''
         # there must be a configured delay_period (or a default must be used)
         assert delay_period is not None
         assert always_delay is not None
         # there must be a noise allocation for the next round
         assert noise_allocation is not None
+        assert tolerance is not None
 
         noise_change_delay = self.noise_change_needs_delay(
                                       self.starting_noise_allocation,
-                                      noise_allocation)
+                                      noise_allocation,
+                                      tolerance)
         needs_delay = always_delay or noise_change_delay
 
         if noise_change_delay:
@@ -1035,24 +1115,30 @@ class CollectionDelay(object):
             # we can start any time after the last round ended
             return self.last_round_end_time
 
-    def round_start_permitted(self, noise_allocation, start_time, delay_period,
-                              always_delay=False):
+    def round_start_permitted(
+            self, noise_allocation, start_time, delay_period,
+            always_delay=False,
+            tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE):
         '''
         Check if we are permitted to start a round with noise allocation
         at start time, with the configured delay_period.
         If always_delay is True, always delay the round by delay_period.
         (This is intended for use while testing.)
+        tolerance is the acceptable sigma decrease.
         Return True if starting the round is permitted, False if it is not.
         '''
         # there must be a start time
-        assert start_time
+        assert start_time is not None
+        # all the other assertions are at the top of the called function
         return start_time >= self.get_next_round_start_time(noise_allocation,
                                                             delay_period,
-                                                            always_delay)
+                                                            always_delay,
+                                                            tolerance)
 
-    def set_stop_result(self, round_successful, noise_allocation,
-                        start_time, end_time, delay_period,
-                        always_delay=False):
+    def set_stop_result(
+            self, round_successful, noise_allocation, start_time, end_time,
+            delay_period, always_delay=False,
+            tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE):
         '''
         Called when a round ends.
         If the new noise allocation is not equivalent to the stored noise,
@@ -1062,11 +1148,15 @@ class CollectionDelay(object):
         (This can also occur if the config is changed mid-round.)
         If always_delay is True, assume the round was delayed, regardless of
         the noise allocation. (This is intended for use while testing.)
+        tolerance is the acceptable sigma decrease.
         '''
         # make sure we haven't violated our own preconditions
-        assert noise_allocation
+        assert round_successful is not None
+        assert noise_allocation is not None
         assert start_time < end_time
-        assert delay_period
+        assert delay_period > 0
+        assert always_delay is not None
+        assert tolerance is not None
         # did we forget to check if we needed to delay this round?
         # warn, because this can happen if the delay is reconfigured,
         # or if another node fails a round because it starts sooner than its
@@ -1074,10 +1164,12 @@ class CollectionDelay(object):
         if not self.round_start_permitted(noise_allocation,
                                           start_time,
                                           delay_period,
-                                          always_delay):
+                                          always_delay,
+                                          tolerance):
             expected_start = self.get_next_round_start_time(noise_allocation,
                                                             delay_period,
-                                                            always_delay)
+                                                            always_delay,
+                                                            tolerance)
             status = "successfully" if round_successful else "failed and"
             logging.warning("Round that just {} stopped was started {} before enforced delay elapsed. Round started {}, expected start {}."
                             .format(status,
@@ -1095,7 +1187,8 @@ class CollectionDelay(object):
                 self.starting_noise_allocation = noise_allocation
             elif not self.noise_change_needs_delay(
                               self.starting_noise_allocation,
-                              noise_allocation):
+                              noise_allocation,
+                              tolerance):
                 # The latest noise allocation could have been used immediately
                 # after the starting noise allocation.
                 # Keep the starting noise allocation, so that a TS can't
