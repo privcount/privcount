@@ -74,7 +74,7 @@ def get_differentially_private_std(sensitivity, epsilon, delta,
     most delta.
     '''
 
-    # std upper bound determined by improving result in literature, 
+    # std upper bound determined by improving result in literature,
     # Hardt and Roth, "Beating Randomized Response on Incoherent Matrices"
     # Thm. 2.6 (and the Lemma in App. A) can be improved to provide the
     # following upper bound
@@ -83,7 +83,7 @@ def get_differentially_private_std(sensitivity, epsilon, delta,
     std_lower_bound = tol # use small but non-zero value for std lower-bound
     if (satisfies_dp(sensitivity, epsilon, delta, std_lower_bound) is True):
         raise ValueError('Could not find lower bound for std interval.')
-    
+
     std = interval_boolean_binary_search(\
         lambda x: satisfies_dp(sensitivity, epsilon, delta, x), std_lower_bound,
         std_upper_bound, tol, return_true=True)
@@ -490,7 +490,7 @@ num_p2p_circuits_per_day = 571087.0/2
 num_circuits_per_day = 8131540.0/2
 num_p2p_kibytes_per_day = 93522051.0/2
 
-# taken from initial data collection on 4/29/16 and 
+# taken from initial data collection on 4/29/16 and
 num_web_streams_per_day = 31335162.0
 num_interactive_streams_per_day = 8905.0
 num_other_streams_per_day = 1863013.0
@@ -538,7 +538,7 @@ initial_stats_parameters = {\
     'CircuitsOther' : (sensitivity_other_circuits,
         extrainfo_num_circuits_per_day * (float(extrainfo_num_other_streams_per_day)/extrainfo_num_streams_per_day) * initial_epoch_days), # est same fraction of other circuits as other streams
     'CircuitsP2P' : (sensitivity_p2p_circuits,
-         (float(num_p2p_circuits_per_day))*initial_epoch_days), 
+         (float(num_p2p_circuits_per_day))*initial_epoch_days),
     'CircuitsWeb' : (sensitivity_web_circuits, # est 50 streams / web circ
         (float(extrainfo_num_web_streams_per_day) / 50) * initial_epoch_days),
     'ClientIPsUnique' : (\
@@ -641,7 +641,9 @@ stats_parameters = {\
     'CircuitInterStreamCreationTime' : stream_histogram_parameters,
     'CircuitInterStreamCreationTimeOther' : other_stream_histogram_parameters,
     'CircuitInterStreamCreationTimeWeb' : web_stream_histogram_parameters,
-    'CircuitLifeTime' : circuit_histogram_parameters,
+    'CircuitLifeTimeAll' : circuit_histogram_parameters,
+    'CircuitLifeTimeActive' : (2*sensitivity_circuits, num_active_circuits_per_day * epoch_days),
+    'CircuitLifeTimeInactive' : (2*sensitivity_circuits, num_inactive_circuits_per_day * epoch_days),
     'CircuitStreamsAll' : circuit_histogram_parameters,
     'CircuitStreamsOther' : (2 * sensitivity_other_circuits,
         num_other_circuits_per_day * epoch_days),
@@ -693,12 +695,12 @@ def print_privacy_allocation(stats_parameters, sigmas, epsilons, excess_noise_ra
                                          stats[1])
         print('Ratio of sigma value to expected value: {}'.format(ratio))
         break
-        
+
     # print allocation of privacy budget
     sigma_params_sorted = sigmas.keys()
     # add dummy counter for full counters.noise.yaml
     dummy_counter = DEFAULT_DUMMY_COUNTER_NAME
-    sigma_params_sorted.append(dummy_counter) 
+    sigma_params_sorted.append(dummy_counter)
     sigmas[dummy_counter] = get_sanity_check_counter()['sigma']
     epsilons[dummy_counter] = get_sanity_check_counter()['epsilon']
     sigma_params_sorted.sort()
@@ -743,7 +745,7 @@ if __name__ == '__main__':
     print('\nnoise config\n')
     print yaml.dump(p2p_initial_noise_parameters, default_flow_style=False)
     ####
-    
+
     ## initial statistics ##
     # get optimal noise allocation for initial statistics
     (initial_epsilons, initial_sigmas, initial_sigma_ratio) =  get_opt_privacy_allocation(epsilon,
@@ -769,7 +771,7 @@ if __name__ == '__main__':
     print('\nnoise config\n')
     print yaml.dump(initial_noise_parameters, default_flow_style=False)
     ####
-    
+
     ## full statistics ##
     # get optimal noise allocation for full statistics
     full_epsilons, full_sigmas, full_sigma_ratio = get_opt_privacy_allocation(epsilon, delta,

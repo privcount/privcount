@@ -51,8 +51,16 @@ counters:
     CircuitInterStreamCreationTimeWeb:
         estimated_value: 0.0
         sensitivity: 0
-    # ENTRY - circuit times in seconds for active and inactive circuits
-    CircuitLifeTime:
+    # ENTRY - circuit times in seconds for all circuits
+    CircuitLifeTimeAll:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - circuit times in seconds for active circuits
+    CircuitLifeTimeActive:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - circuit times in seconds for inactive circuits
+    CircuitLifeTimeInactive:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit
