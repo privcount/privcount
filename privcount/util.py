@@ -14,7 +14,7 @@ import json
 
 from random import SystemRandom
 from os import path
-from math import sqrt
+from math import sqrt, ceil
 from time import time, strftime, gmtime
 from copy import deepcopy
 from base64 import b64encode, b64decode
@@ -26,9 +26,9 @@ from cryptography.hazmat.primitives.hashes import SHA256 as CryptoHash
 from cryptography import x509
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives import serialization, hashes, hmac
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
-from cryptography.exceptions import UnsupportedAlgorithm
+from cryptography.exceptions import UnsupportedAlgorithm, InvalidSignature
 
 def load_private_key_string(key_string):
     return serialization.load_pem_private_key(key_string, password=None, backend=default_backend())
@@ -66,6 +66,86 @@ def get_serialized_public_key(key_path, is_private_key=True):
     with open(key_path, 'rb') as key_file:
         data = get_public_bytes(key_file.read(), is_private_key)
     return data
+
+def choose_secret_handshake_path(local_conf, global_conf):
+    '''
+    Determine the secret handshake path using the first path from:
+    - local_conf,
+    - global_conf, or
+    - the default hard-coded path,
+    and return that path.
+    '''
+    if 'secret_handshake' in local_conf:
+        return normalise_path(local_conf['secret_handshake'])
+    # unlike other top-level configs, this is a file path, not data
+    elif 'secret_handshake' in global_conf:
+        return normalise_path(global_conf['secret_handshake'])
+    # if the path is not specified, use the default path
+    else:
+        return normalise_path('privcount.secret_handshake.yaml')
+
+def get_hmac(secret_key, unique_prefix, data):
+    '''
+    Perform a HMAC using the secret key, unique hash prefix, and data.
+    The key must be kept secret.
+    The prefix ensures hash uniqueness.
+    Returns HMAC-SHA256(secret_key, unique_prefix | data) as bytes.
+    '''
+    # If the secret key is shorter than the digest size, security is reduced
+    assert secret_key
+    assert len(secret_key) >= CryptoHash.digest_size
+    h = hmac.HMAC(bytes(secret_key), CryptoHash(), backend=default_backend())
+    h.update(bytes(unique_prefix))
+    h.update(bytes(data))
+    return bytes(h.finalize())
+
+def verify_hmac(expected_result, secret_key, unique_prefix, data):
+    '''
+    Perform a HMAC using the secret key, unique hash prefix, and data, and
+    verify that the result of:
+    HMAC-SHA256(secret_key, unique_prefix | data)
+    matches the bytes in expected_result.
+    The key must be kept secret. The prefix ensures hash uniqueness.
+    Returns True if the signature matches, and False if it does not.
+    '''
+    # If the secret key is shorter than the digest size, security is reduced
+    assert secret_key
+    assert len(secret_key) >= CryptoHash.digest_size
+    h = hmac.HMAC(bytes(secret_key), CryptoHash(), backend=default_backend())
+    h.update(bytes(unique_prefix))
+    h.update(bytes(data))
+    try:
+        h.verify(bytes(expected_result))
+        return True
+    except cryptography.exceptions.InvalidSignature:
+        return False
+
+def b64_raw_length(byte_count):
+    '''
+    Note: base64.b64encode returns b64_padded_length bytes of output.
+    Return the raw base64-encoded length of byte_count bytes.
+    '''
+    if byte_count < 0:
+        raise ValueError("byte_count must be non-negative")
+    return long(ceil(byte_count*8.0/6.0))
+
+B64_PAD_TO_MULTIPLE = 4
+
+def b64_padded_length(byte_count):
+    '''
+    Return the padded base64-encoded length of byte_count bytes, as produced
+    by base64.b64encode.
+    '''
+    raw_length = b64_raw_length(byte_count)
+    # base64 padding rounds up to the nearest multiple of 4
+    trailing_bytes = raw_length % B64_PAD_TO_MULTIPLE
+    if trailing_bytes > 0:
+        padding_bytes = B64_PAD_TO_MULTIPLE - trailing_bytes
+    else:
+        padding_bytes = 0
+    padded_length = raw_length + padding_bytes
+    assert padded_length % B64_PAD_TO_MULTIPLE == 0
+    return padded_length
 
 def encode_data(data_structure):
     """
@@ -1135,6 +1215,145 @@ class SecureCounters(object):
         counts = self.counters
         self.counters = None
         return counts
+
+def log_tally_server_status(status):
+    '''
+    clients must only use the expected end time for logging: the tally
+    server may end the round early, or extend it slightly to allow for
+    network round trip times
+    '''
+    # until the collection round starts, the tally server doesn't know when it
+    # is expected to end
+    expected_end_msg = ""
+    if 'expected_end_time' in status:
+        stopping_ts = status['expected_end_time']
+        # we're waiting for the collection to stop
+        if stopping_ts > time():
+            expected_end_msg = ", expect collection to end in {}".format(format_delay_time_until(stopping_ts, 'at'))
+        # we expect the collection to have stopped, and the TS should be
+        # collecting results
+        else:
+            expected_end_msg = ", expect collection has ended for {}".format(format_elapsed_time_since(stopping_ts, 'since'))
+    logging.info("--server status: PrivCount is {} for {}{}".format(status['state'], format_elapsed_time_since(status['time'], 'since'), expected_end_msg))
+    t, r = status['dcs_total'], status['dcs_required']
+    a, i = status['dcs_active'], status['dcs_idle']
+    logging.info("--server status: DataCollectors: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
+    t, r = status['sks_total'], status['sks_required']
+    a, i = status['sks_active'], status['sks_idle']
+    logging.info("--server status: ShareKeepers: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
+
+class PrivCountNode(object):
+    '''
+    A mixin class that hosts common functionality for PrivCount client and
+    server factories: TallyServer, ShareKeeper, and DataCollector.
+    '''
+
+    def __init__(self, config_filepath):
+        '''
+        Initialise the common data structures used by all PrivCount nodes.
+        '''
+        self.config_filepath = normalise_path(config_filepath)
+        self.config = None
+
+    def load_state(self):
+        '''
+        Load the state from the saved state file
+        Return the loaded state, or None if there is no state file
+        '''
+        # load any state we may have from a previous run
+        state_filepath = normalise_path(self.config['state'])
+        if os.path.exists(state_filepath):
+            with open(state_filepath, 'r') as fin:
+                state = pickle.load(fin)
+                return state
+        return None
+
+    def dump_state(self, state):
+        '''
+        Dump the state dictionary to a saved state file.
+        If state is none or an empty dictionary, do not write a file.
+        '''
+        if state is None or len(state.keys()) == 0:
+            return
+        state_filepath = normalise_path(self.config['state'])
+        with open(state_filepath, 'w') as fout:
+            pickle.dump(state, fout)
+
+    def get_secret_handshake_path(self):
+        '''
+        Return the path of the secret handshake key file, or None if the config
+        has not been loaded.
+        Called by the protocol after a connection is opened.
+        '''
+        # The config must have been loaded by this point:
+        # - the server reads the config before opening a listener port
+        # - the clients read the config before opening a connection
+        assert self.config
+        # The secret handshake path should be loaded (or assigned a default)
+        # whenever the config is loaded
+        return self.config['secret_handshake']
+
+class PrivCountServer(PrivCountNode):
+    '''
+    A mixin class that hosts common functionality for PrivCount server
+    factories: TallyServer.
+    (Since there is only one server factory class, this class only hosts
+    generic functionality that is substantially similar to PrivCountClient,
+    but not identical - if it were identical, it would go in PrivCountNode.)
+    '''
+
+    def __init__(self, config_filepath):
+        '''
+        Initialise the common data structures used by all PrivCount clients.
+        '''
+        PrivCountNode.__init__(self, config_filepath)
+
+class PrivCountClient(PrivCountNode):
+    '''
+    A mixin class that hosts common functionality for PrivCount client
+    factories: ShareKeeper and DataCollector.
+    '''
+
+    def __init__(self, config_filepath):
+        '''
+        Initialise the common data structures used by all PrivCount clients.
+        '''
+        PrivCountNode.__init__(self, config_filepath)
+        self.start_config = None
+
+    def set_server_status(self, status):
+        '''
+        Called by protocol
+        status is a dictionary containing server status information
+        '''
+        log_tally_server_status(status)
+
+    def check_start_config(self, config):
+        '''
+        Perform the common client checks on the start config.
+        Return the combined counters if the config is valid,
+        or None if it is not.
+        '''
+        if ('counters' not in config or
+            'noise' not in config or
+            'noise_weight' not in config or
+            'dc_threshold' not in config):
+            logging.warning("start command from tally server cannot be completed due to missing data")
+            return None
+
+        # if the counters don't pass the validity checks, fail
+        if not check_counters_config(config['counters'],
+                                     config['noise']['counters']):
+            return None
+
+        # if the noise weights don't pass the validity checks, fail
+        if not check_noise_weight_config(config['noise_weight'],
+                                         config['dc_threshold']):
+            return None
+
+        # combine bins and sigmas
+        return combine_counters(config['counters'],
+                                config['noise']['counters'])
 
 """
 def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):

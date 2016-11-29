@@ -9,9 +9,7 @@ from copy import deepcopy
 from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
-from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters
-
+from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters, choose_secret_handshake_path, PrivCountClient
 import yaml
 
 from twisted.internet import task, reactor, ssl
@@ -21,7 +19,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 # method docstring missing: pylint: disable=C0111
 # line too long: pylint: disable=C0301
 
-class DataCollector(ReconnectingClientFactory):
+class DataCollector(ReconnectingClientFactory, PrivCountClient):
     '''
     receive key share data from the DC message receiver
     keep the shares during collection epoch
@@ -29,38 +27,43 @@ class DataCollector(ReconnectingClientFactory):
     '''
 
     def __init__(self, config_filepath):
-        self.config_filepath = normalise_path(config_filepath)
-        self.config = None
-        self.start_config = None
+        PrivCountClient.__init__(self, config_filepath)
         self.aggregator = None
         self.aggregator_defer_id = None
         self.context = {}
 
     def buildProtocol(self, addr):
+        '''
+        Called by twisted
+        '''
         return PrivCountClientProtocol(self)
 
     def startFactory(self):
+        '''
+        Called by twisted
+        '''
         # TODO
         return
-        # load any state we may have from a previous run
-        state_filepath = normalise_path(self.config['state'])
-        if os.path.exists(state_filepath):
-            with open(state_filepath, 'r') as fin:
-                state = pickle.load(fin)
-                self.aggregator = state['aggregator']
-                self.aggregator_defer_id = state['aggregator_defer_id']
+        state = self.load_state()
+        if state is not None:
+            self.aggregator = state['aggregator']
+            self.aggregator_defer_id = state['aggregator_defer_id']
 
     def stopFactory(self):
+        '''
+        Called by twisted
+        '''
         # TODO
         return
-        state_filepath = normalise_path(self.config['state'])
         if self.aggregator is not None:
             # export everything that would be needed to survive an app restart
             state = {'aggregator': self.aggregator, 'aggregator_defer_id': self.aggregator_defer_id}
-            with open(state_filepath, 'w') as fout:
-                pickle.dump(state, fout)
+            self.dump_state(state)
 
     def run(self):
+        '''
+        Called by twisted
+        '''
         # load iniital config
         self.refresh_config()
         if self.config is None:
@@ -71,7 +74,11 @@ class DataCollector(ReconnectingClientFactory):
         self.do_checkin()
         reactor.run()
 
-    def get_status(self): # called by protocol
+    def get_status(self):
+        '''
+        Called by protocol
+        Returns a dictionary containing status information
+        '''
         status = {'type':'DataCollector', 'name':self.config['name'],
                   'state': 'active' if self.aggregator is not None else 'idle'}
         # store the latest context, so we have it even when the aggregator goes away
@@ -81,50 +88,43 @@ class DataCollector(ReconnectingClientFactory):
         status.update(self.context)
         return status
 
-    def set_server_status(self, status): # called by protocol
-        log_tally_server_status(status)
-
-    def do_checkin(self): # called by protocol
+    def do_checkin(self):
+        '''
+        Called by protocol
+        Refresh the config, and try to connect to the server
+        '''
+        # TODO: Refactor common client code - issue #121
         self.refresh_config()
-        # turn on reconnecting mode and reset backoff
-        self.resetDelay()
         ts_ip = self.config['tally_server_info']['ip']
         ts_port = self.config['tally_server_info']['port']
+        # turn on reconnecting mode and reset backoff
+        self.resetDelay()
         logging.info("checking in with TallyServer at {}:{}".format(ts_ip, ts_port))
         reactor.connectSSL(ts_ip, ts_port, self, ssl.ClientContextFactory()) # pylint: disable=E1101
 
-    def do_start(self, config): # called by protocol
+    def do_start(self, config):
         '''
-        start the node running
+        this is called by the protocol when we receive a command from the TS
+        to start a new collection phase
         return None if failure, otherwise json will encode result
         '''
         # keep the start config to send to the TS at the end of the collection
         # deepcopy in case we make any modifications later
         self.start_config = deepcopy(config)
 
-        if ('sharekeepers' not in config or 'counters' not in config or
-            'noise' not in config or 'noise_weight' not in config or
-            'dc_threshold' not in config):
+        if ('sharekeepers' not in config):
+            logging.warning("start command from tally server cannot be completed due to missing sharekeepers")
             return None
 
-        # if the counters don't pass the validity checks, fail
-        if not check_counters_config(config['counters'],
-                                     config['noise']['counters']):
-            return None
+        dc_counters = self.check_start_config(config)
 
-        # if the noise weights don't pass the validity checks, fail
-        if not check_noise_weight_config(config['noise_weight'],
-                                         config['dc_threshold']):
+        if dc_counters is None:
             return None
 
         # if we are still running from a previous incarnation, we need to stop
         # first
         if self.aggregator is not None:
             return None
-
-        # combine the bins and sigmas
-        dc_counters = combine_counters(config['counters'],
-                                       config['noise']['counters'])
 
         # we require that only the configured share keepers be used in the
         # collection phase, because we must be able to encrypt messages to them
@@ -177,12 +177,14 @@ class DataCollector(ReconnectingClientFactory):
         self.aggregator_defer_id = None
         self.aggregator.start()
 
-    def do_stop(self, config): # called by protocol
+    def do_stop(self, config):
         '''
+        called by protocol
         stop the node from running
         return a dictionary consisting of the DC's Config, and, if counting
         was successful, and the TS wants the counters, return the Counts
         '''
+        # TODO: refactor common code: see ticket #121
         logging.info("got command to stop collection phase")
         wants_counters = config.get('send_counters', False)
         logging.info("tally server {} final counts".format("wants" if wants_counters else "does not want"))
@@ -217,6 +219,7 @@ class DataCollector(ReconnectingClientFactory):
         '''
         re-read config and process any changes
         '''
+        # TODO: refactor common code: see ticket #121
         try:
             logging.debug("reading config file from '%s'", self.config_filepath)
 
@@ -224,6 +227,10 @@ class DataCollector(ReconnectingClientFactory):
             with open(self.config_filepath, 'r') as fin:
                 conf = yaml.load(fin)
             dc_conf = conf['data_collector']
+
+            # find the path for the secret handshake file
+            dc_conf['secret_handshake'] = choose_secret_handshake_path(
+                dc_conf, conf)
 
             # the state file
             dc_conf['state'] = normalise_path(dc_conf['state'])

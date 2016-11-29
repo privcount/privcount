@@ -17,41 +17,13 @@ from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
 from statistics_noise import get_noise_allocation
-from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config
-
+from util import log_error, SecureCounters, generate_keypair, generate_cert, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, normalise_path, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, choose_secret_handshake_path, PrivCountServer, log_tally_server_status
 import yaml
 
 # for warning about logging function and format # pylint: disable=W1202
 # for calling methods on reactor # pylint: disable=E1101
 
-def log_tally_server_status(status):
-    '''
-    clients must only use the expected end time for logging: the tally
-    server may end the round early, or extend it slightly to allow for
-    network round trip times
-    '''
-
-    # until the collection round starts, the tally server doesn't know when it
-    # is expected to end
-    expected_end_msg = ""
-    if 'expected_end_time' in status:
-        stopping_ts = status['expected_end_time']
-        # we're waiting for the collection to stop
-        if stopping_ts > time():
-            expected_end_msg = ", expect collection to end in {}".format(format_delay_time_until(stopping_ts, 'at'))
-        # we expect the collection to have stopped, and the TS should be
-        # collecting results
-        else:
-            expected_end_msg = ", expect collection has ended for {}".format(format_elapsed_time_since(stopping_ts, 'since'))
-    logging.info("--server status: PrivCount is {} for {}{}".format(status['state'], format_elapsed_time_since(status['time'], 'since'), expected_end_msg))
-    t, r = status['dcs_total'], status['dcs_required']
-    a, i = status['dcs_active'], status['dcs_idle']
-    logging.info("--server status: DataCollectors: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
-    t, r = status['sks_total'], status['sks_required']
-    a, i = status['sks_active'], status['sks_idle']
-    logging.info("--server status: ShareKeepers: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
-
-class TallyServer(ServerFactory):
+class TallyServer(ServerFactory, PrivCountServer):
     '''
     receive blinded counts from the DCs
     receive key shares from the SKs
@@ -60,42 +32,46 @@ class TallyServer(ServerFactory):
     '''
 
     def __init__(self, config_filepath):
-        self.config_filepath = normalise_path(config_filepath)
-        self.config = None
+        PrivCountServer.__init__(self, config_filepath)
         self.clients = {}
         self.collection_phase = None
         self.idle_time = time()
         self.num_completed_collection_phases = 0
 
     def buildProtocol(self, addr):
+        '''
+        Called by twisted
+        '''
         return PrivCountServerProtocol(self)
 
     def startFactory(self):
+        '''
+        Called by twisted
+        '''
         # TODO
         return
-        # load any state we may have from a previous run
-        state_filepath = normalise_path(self.config['state'])
-        if os.path.exists(state_filepath):
-            with open(state_filepath, 'r') as fin:
-                state = pickle.load(fin)
-                self.clients = state['clients']
-                self.collection_phase = state['collection_phase']
-                self.idle_time = state['idle_time']
+        state = self.load_state()
+        if state is not None:
+            self.clients = state['clients']
+            self.collection_phase = state['collection_phase']
+            self.idle_time = state['idle_time']
 
     def stopFactory(self):
         # TODO
         return
-        state_filepath = normalise_path(self.config['state'])
         if self.collection_phase is not None or len(self.clients) > 0:
             # export everything that would be needed to survive an app restart
             state = {'clients': self.clients, 'collection_phase': self.collection_phase, 'idle_time': self.idle_time}
-            with open(state_filepath, 'w') as fout:
-                pickle.dump(state, fout)
+            self.dump_state(state)
 
     def run(self):
+        '''
+        Called by twisted
+        '''
         # load initial config
         self.refresh_config()
         if self.config is None:
+            logging.critical("cannot start due to error in config file")
             return
 
         # refresh and check status every event_period seconds
@@ -147,6 +123,7 @@ class TallyServer(ServerFactory):
         '''
         re-read config and process any changes
         '''
+        # TODO: refactor common code: see ticket #121
         try:
             logging.debug("reading config file from '%s'", self.config_filepath)
 
@@ -154,6 +131,17 @@ class TallyServer(ServerFactory):
             with open(self.config_filepath, 'r') as fin:
                 conf = yaml.load(fin)
             ts_conf = conf['tally_server']
+
+            # find the path for the secret handshake file
+            ts_conf['secret_handshake'] = choose_secret_handshake_path(
+                ts_conf, conf)
+            # check we can load the secret handshake file, creating if needed
+            # (but ignore the actual secret, it never forms part of our config)
+            # we can't use PrivCountProtocol.handshake_secret(), because
+            # our own self.config is either None or outdated at this point
+            assert PrivCountServerProtocol.handshake_secret_load(
+                ts_conf['secret_handshake'],
+                create=True)
 
             # the counter bin file
             if 'counters' in ts_conf:

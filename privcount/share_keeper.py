@@ -13,12 +13,11 @@ from twisted.internet import reactor, ssl
 from twisted.internet.protocol import ReconnectingClientFactory
 
 from protocol import PrivCountClientProtocol
-from tally_server import log_tally_server_status
-from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters
+from util import SecureCounters, log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters, choose_secret_handshake_path, PrivCountClient
 
 import yaml
 
-class ShareKeeper(ReconnectingClientFactory):
+class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
     '''
     receive key share data from the DC message receiver
     keep the shares during collection epoch
@@ -26,35 +25,40 @@ class ShareKeeper(ReconnectingClientFactory):
     '''
 
     def __init__(self, config_filepath):
-        self.config_filepath = normalise_path(config_filepath)
-        self.config = None
-        self.start_config = None
+        PrivCountClient.__init__(self, config_filepath)
         self.keystore = None
 
     def buildProtocol(self, addr):
+        '''
+        Called by twisted
+        '''
         return PrivCountClientProtocol(self)
 
     def startFactory(self):
+        '''
+        Called by twisted
+        '''
         # TODO
         return
-        # load any state we may have from a previous run
-        state_filepath = normalise_path(self.config['state'])
-        if os.path.exists(state_filepath):
-            with open(state_filepath, 'r') as fin:
-                state = pickle.load(fin)
-                self.keystore = state['keystore']
+        state = self.load_state()
+        if state is not None:
+            self.keystore = state['keystore']
 
     def stopFactory(self):
+        '''
+        Called by twisted
+        '''
         # TODO
         return
-        state_filepath = normalise_path(self.config['state'])
         if self.keystore is not None:
             # export everything that would be needed to survive an app restart
             state = {'keystore': self.keystore}
-            with open(state_filepath, 'w') as fout:
-                pickle.dump(state, fout)
+            self.dump_state(state)
 
     def run(self):
+        '''
+        Called by twisted
+        '''
         # load initial config
         self.refresh_config()
         if self.config is None:
@@ -67,26 +71,32 @@ class ShareKeeper(ReconnectingClientFactory):
         self.do_checkin()
         reactor.run() # pylint: disable=E1101
 
-    def get_status(self): # called by protocol
+    def get_status(self):
+        '''
+        Called by protocol
+        Returns a dictionary containing status information
+        '''
         return {'type':'ShareKeeper', 'name':self.config['name'],
         'state': 'active' if self.keystore is not None else 'idle', 'public_key':get_serialized_public_key(self.config['key'])}
 
-    def set_server_status(self, status): # called by protocol
-        log_tally_server_status(status)
-
-    def do_checkin(self): # called by protocol
-        # turn on reconnecting mode and reset backoff
-        self.resetDelay()
+    def do_checkin(self):
+        '''
+        Called by protocol
+        Refresh the config, and try to connect to the server
+        '''
+        # TODO: Refactor common client code - issue #121
         self.refresh_config()
         ts_ip = self.config['tally_server_info']['ip']
         ts_port = self.config['tally_server_info']['port']
+        # turn on reconnecting mode and reset backoff
+        self.resetDelay()
         logging.info("checking in with TallyServer at {}:{}".format(ts_ip, ts_port))
         reactor.connectSSL(ts_ip, ts_port, self, ssl.ClientContextFactory()) # pylint: disable=E1101
 
-    def do_start(self, config): # called by protocol
+    def do_start(self, config):
         '''
-        this is called when we receive a command from the TS to start a new
-        collection phase
+        this is called by the protocol when we receive a command from the TS
+        to start a new collection phase
         return None if failure, otherwise the protocol will encode the result
         in json and send it back to TS
         '''
@@ -101,25 +111,16 @@ class ShareKeeper(ReconnectingClientFactory):
             del share['secret']
             share['secret'] = "(encrypted blinding share, deleted by share keeper)"
 
-        if ('shares' not in config or 'counters' not in config or
-            'noise' not in config or 'noise_weight' not in config or
-            'dc_threshold' not in config):
-            logging.warning("start command from tally server cannot be completed due to missing data")
+        if ('shares' not in config):
+            logging.warning("start command from tally server cannot be completed due to missing shares")
             return None
 
-        # if the counters don't pass the validity checks, fail
-        if not check_counters_config(config['counters'],
-                                     config['noise']['counters']):
-            return None
+        combined_counters = self.check_start_config(config)
 
-        # if the noise weights don't pass the validity checks, fail
-        if not check_noise_weight_config(config['noise_weight'],
-                                         config['dc_threshold']):
+        if combined_counters is None:
             return None
-
-        # combine the bins and sigmas
-        config['counters'] = combine_counters(config['counters'],
-                                              config['noise']['counters'])
+        else:
+            config['counters'] = combined_counters
 
         self.keystore = SecureCounters(config['counters'], counter_modulus())
         share_list = config['shares']
@@ -147,12 +148,15 @@ class ShareKeeper(ReconnectingClientFactory):
         del private_key
         return {}
 
-    def do_stop(self, config): # called by protocol
+    def do_stop(self, config):
         '''
+        called by protocol
         the TS wants us to stop the current collection phase
         they may or may not want us to send back our counters
-        return None if failure, otherwise json will encode result back to the TS
+        return None if failure, otherwise json will encode result back to the
+        TS
         '''
+        # TODO: refactor common code: see ticket #121
         logging.info("got command to stop collection phase")
         if 'send_counters' not in config:
             return None
@@ -186,6 +190,7 @@ class ShareKeeper(ReconnectingClientFactory):
         '''
         re-read config and process any changes
         '''
+        # TODO: refactor common code: see ticket #121
         try:
             logging.debug("reading config file from '%s'", self.config_filepath)
 
@@ -193,6 +198,10 @@ class ShareKeeper(ReconnectingClientFactory):
             with open(self.config_filepath, 'r') as fin:
                 conf = yaml.load(fin)
             sk_conf = conf['share_keeper']
+
+            # find the path for the secret handshake file
+            sk_conf['secret_handshake'] = choose_secret_handshake_path(
+                sk_conf, conf)
 
             # if key path is not specified, use default path
             if 'key' in sk_conf:

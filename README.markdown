@@ -68,13 +68,27 @@ If the encryption unit tests fail with an "UnsupportedAlgorithm" exception, make
 
 # running
 
-To run PrivCount, simply activate the virtual environment that you created earlier and then run
-PrivCount as normal. For example:
+To run PrivCount, simply activate the virtual environment that you created earlier and then run PrivCount as normal. For example:
 
     source venv/bin/activate # enter the virtual environment
     privcount --help
     ...
     deactivate # exit the virtual environment
+
+# deployment
+
+## keys
+
+On first run, PrivCount creates the keys that it needs to run:
+
+The TallyServer creates a RSA key pair for SSL encryption:
+    * the clients do not check the fingerprint of the certificate
+
+The TallyServer creates a PrivCount secret handshake key:
+    * each ShareKeeper and DataCollector needs to know this key to successfully handshake with the TallyServer.
+
+Each ShareKeeper creates a RSA key pair for public key encryption:
+     * each DataCollector needs to know the SHA256 hash of the public key of each ShareKeeper
 
 # testing
 
