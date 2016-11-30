@@ -228,6 +228,7 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             # (if not, we use the value of the collect period from the TS)
             assert dc_conf.get('delay_period', 1) > 0
 
+            dc_conf.setdefault('always_delay', False)
             assert isinstance(dc_conf['always_delay'], bool)
 
             dc_conf['sigma_decrease_tolerance'] = \

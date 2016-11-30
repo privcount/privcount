@@ -1818,10 +1818,10 @@ class PrivCountServer(PrivCountNode):
         # (if we use hard-coded sigmas, calculation accuracy is not
         # an issue - skip this check)
         if 'sigma_tolerance' in conf['noise'].get('privacy',{}):
-            assert (conf['sigma_decrease_tolerance'] >=
+            assert (tolerance >=
                     conf['noise']['privacy']['sigma_tolerance'])
         elif 'privacy' in conf['noise']:
-            assert (conf['sigma_decrease_tolerance'] >=
+            assert (tolerance >=
                     DEFAULT_SIGMA_TOLERANCE)
         else:
             # no extra checks

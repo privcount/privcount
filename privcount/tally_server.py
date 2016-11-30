@@ -298,6 +298,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                 ts_conf['collect_period']
                 )
 
+            ts_conf.setdefault('always_delay', False)
             assert isinstance(ts_conf['always_delay'], bool)
 
             ts_conf['sigma_decrease_tolerance'] = \
