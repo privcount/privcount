@@ -1954,6 +1954,10 @@ class PrivCountClient(PrivCountNode):
         if self.start_config is not None:
             response['Config']['Start'] = self.start_config
 
+        # and include the config sent by the tally server to stop
+        if stop_config is not None:
+            response['Config']['Stop'] = stop_config
+
         # if we never started, there's no point in registering end of round
         if (self.collect_period is None or
             self.delay_period is None or
@@ -1975,6 +1979,12 @@ class PrivCountClient(PrivCountNode):
         # - the TS collect period and the config at start time, and
         # - the actual collect period and the current config.
         delay = max(self.delay_period, actual_delay)
+
+        # add this info to the context
+        response['Config']['Time'] = {}
+        response['Config']['Time']['Start'] = self.collection_start_time
+        response['Config']['Time']['Stop'] = end_time
+        response['Config']['Time']['Delay'] = actual_delay
 
         # Register the stop with the collection delay
         self.collection_delay.set_stop_result(

@@ -150,7 +150,7 @@ if [ -e privcount.outcome.latest.json -a \
   # events falling before or after data collection stops in short runs
   diff --minimal \
       -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
-      -I "delay" \
+      -I "[Dd]elay" \
       old/privcount.outcome.latest.json privcount.outcome.latest.json || true
 else
   # Since we need old/latest and latest, it takes two runs to generate the
