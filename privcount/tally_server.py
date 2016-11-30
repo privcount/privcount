@@ -931,9 +931,19 @@ class CollectionPhase(object):
             result_context['TallyServer']['Config']['key'] = "(key path)"
         if 'state' in result_context['TallyServer']['Config']:
             result_context['TallyServer']['Config']['state'] = "(state path)"
+        if 'secret_handshake' in result_context['TallyServer']['Config']:
+            result_context['TallyServer']['Config']['secret_handshake'] = \
+                "(secret_handshake path)"
+        if 'allocation' in result_context['TallyServer']['Config']:
+            result_context['TallyServer']['Config']['allocation'] = \
+                "(allocation path)"
+        if 'results' in result_context['TallyServer']['Config']:
+            result_context['TallyServer']['Config']['results'] = \
+                "(results path)"
         # And we don't need the bins, they're duplicated in 'Tally'
         if 'counters' in result_context['TallyServer']['Config']:
-            result_context['TallyServer']['Config']['counters'] = "(counters, no counts)"
+            result_context['TallyServer']['Config']['counters'] = "(counter bins, no counts)"
+        # but we want the noise, because it's not in Tally
 
         return result_context
 
