@@ -957,15 +957,16 @@ class CollectionDelay(object):
     Ensures a configurable delay between rounds with different noise
     allocations.
     Usage:
-    (all nodes do these checks, but the nodes listed must enforce them)
+    (the SKs must enforce these checks for the protocol to be secure
+     the TS does these checks for convenience, the DCs for defence in depth)
     TS: configures round
         uses get_next_round_start_time() for status updates
         checks round_start_permitted() before starting collection
-    TODO: DC: checks round_start_permitted() before sending blinding shares
-    TODO: SK: checks round_start_permitted() before accepting blinding shares
+    DC: checks round_start_permitted() before sending blinding shares
+    SK: checks round_start_permitted() before accepting blinding shares
     (round runs)
-    TODO: SK: set_stop_result() when round stops and blinding shares are sent
-    TODO: DC: set_stop_result() when round stops and counters are sent
+    DC: set_stop_result() when round stops and counters are sent
+    SK: set_stop_result() when round stops and blinding shares are sent
     TS: set_stop_result() when round ends successfully
     (repeat for next round, if TS has continue set in its config)
     '''
@@ -1101,15 +1102,6 @@ class CollectionDelay(object):
             # if there was a previous round, and we need to delay after it,
             # there must have been an end time for that round
             next_start_time = self.last_round_end_time + delay_period
-            if next_start_time > time():
-                if always_delay:
-                    delay_reason = "we are configured to always delay"
-                else:
-                    delay_reason = "noise allocation changed"
-                logging.debug("Delaying round for %s because %s",
-                              format_delay_time_until(next_start_time,
-                                                      'until'),
-                              delay_reason)
             return next_start_time
         else:
             # we can start any time after the last round ended
@@ -1118,22 +1110,36 @@ class CollectionDelay(object):
     def round_start_permitted(
             self, noise_allocation, start_time, delay_period,
             always_delay=False,
-            tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE):
+            tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE,
+            logging_function=logging.debug):
         '''
         Check if we are permitted to start a round with noise allocation
         at start time, with the configured delay_period.
         If always_delay is True, always delay the round by delay_period.
         (This is intended for use while testing.)
         tolerance is the acceptable sigma decrease.
-        Return True if starting the round is permitted, False if it is not.
+        Return True if starting the round is permitted.
+        If it is not, return False, and log a message using logging_function.
         '''
         # there must be a start time
         assert start_time is not None
-        # all the other assertions are at the top of the called function
-        return start_time >= self.get_next_round_start_time(noise_allocation,
-                                                            delay_period,
-                                                            always_delay,
-                                                            tolerance)
+        # all the other assertions are in this function
+        next_start_time = self.get_next_round_start_time(noise_allocation,
+                                                         delay_period,
+                                                         always_delay,
+                                                         tolerance)
+        if start_time >= next_start_time:
+            return True
+        else:
+            if always_delay:
+                delay_reason = "we are configured to always delay"
+            else:
+                delay_reason = "noise allocation changed"
+            logging_function("Delaying round for %s because %s",
+                             format_delay_time_until(next_start_time,
+                                                     'until'),
+                             delay_reason)
+            return False
 
     def set_stop_result(
             self, round_successful, noise_allocation, start_time, end_time,
@@ -1675,6 +1681,7 @@ class PrivCountNode(object):
         '''
         self.config_filepath = normalise_path(config_filepath)
         self.config = None
+        self.collection_delay = CollectionDelay()
 
     def load_state(self):
         '''
@@ -1714,6 +1721,74 @@ class PrivCountNode(object):
         # whenever the config is loaded
         return self.config['secret_handshake']
 
+    @staticmethod
+    def get_valid_sigma_decrease_tolerance(conf):
+        '''
+        Read sigma_decrease_tolerance from conf (if present), and check that
+        it is within a valid range.
+        Returns the configured sigma tolerance, or the default tolerance.
+        Asserts on failure.
+        '''
+        tolerance = conf.get('sigma_decrease_tolerance',
+                             DEFAULT_SIGMA_TOLERANCE)
+
+        # we can't guarantee that floats are transmitted with any more
+        # accuracy than approximately 1 part in 1e-14, due to python
+        # float to string conversion
+        # so we limit the tolerance to an absolute value of ~1e-14,
+        # which assumes the sigma values are close to 1.
+        # larger sigma values should have a larger absolute limit, because
+        # float_accuracy() is a proportion of the value,
+        # but we can't do that calculation here
+        assert tolerance >= float_accuracy()
+        return tolerance
+
+    @staticmethod
+    def get_valid_delay_period(delay_period, collect_period):
+        '''
+        Validate and return the delay period, comparing it with the collect
+        period.
+        Returns a (potentially modified) valid value.
+        Asserts if the collect period is invalid.
+        '''
+        assert collect_period is not None
+        assert collect_period > 0
+        if delay_period is None:
+            logging.warning("delay_period not specified, using collect_period %d",
+                            collect_period)
+            return collect_period
+        if delay_period < 0:
+            logging.warning("delay_period invalidd, using collect_period %d",
+                            collect_period)
+            return collect_period
+        # The delay period must be greater than or equal to the collect
+        # period
+        delay_min = collect_period
+        delay_increase = delay_min - delay_period
+        # if we're increasing the delay, log something
+        if delay_increase > 0.0:
+            # adjust the log level based on the severity of the increase
+            # we have to use absolute and relative checks to account for
+            # both local test networks and globe-spanning networks
+            if (delay_increase < 2.0 and
+                delay_increase < collect_period/100.0):
+                # probably just network latency
+                logging_function = logging.debug
+            elif (delay_increase < 60.0 and
+                  delay_increase < collect_period/10.0):
+                # interesting, but not bad
+                logging_function = logging.info
+            else:
+                logging_function = logging.warning
+
+            logging_function("delay_period %.1f too small for collect_period %.1f, increasing to %.1f",
+                            delay_period,
+                            collect_period,
+                            delay_min)
+            return delay_min
+        # If it passes all the checks
+        return delay_period
+
 class PrivCountServer(PrivCountNode):
     '''
     A mixin class that hosts common functionality for PrivCount server
@@ -1729,6 +1804,31 @@ class PrivCountServer(PrivCountNode):
         '''
         PrivCountNode.__init__(self, config_filepath)
 
+    @staticmethod
+    def get_valid_sigma_decrease_tolerance(conf):
+        '''
+        Read sigma_decrease_tolerance from conf (if present), and check that
+        it is withing a valid range, taking the noise allocation config into
+        account (if present).
+        '''
+        tolerance = PrivCountNode.get_valid_sigma_decrease_tolerance(conf)
+
+        # it makes no sense to have a sigma decrease tolerance that is
+        # less than the sigma calculation tolerance
+        # (if we use hard-coded sigmas, calculation accuracy is not
+        # an issue - skip this check)
+        if 'sigma_tolerance' in conf['noise'].get('privacy',{}):
+            assert (conf['sigma_decrease_tolerance'] >=
+                    conf['noise']['privacy']['sigma_tolerance'])
+        elif 'privacy' in conf['noise']:
+            assert (conf['sigma_decrease_tolerance'] >=
+                    DEFAULT_SIGMA_TOLERANCE)
+        else:
+            # no extra checks
+            pass
+
+        return tolerance
+
 class PrivCountClient(PrivCountNode):
     '''
     A mixin class that hosts common functionality for PrivCount client
@@ -1741,6 +1841,14 @@ class PrivCountClient(PrivCountNode):
         '''
         PrivCountNode.__init__(self, config_filepath)
         self.start_config = None
+        # the collect period supplied by the tally server
+        self.collect_period = None
+        # the delay period after the current collection, if any
+        self.delay_period = None
+        # the noise config used to start the most recent round
+        self.last_noise_config = None
+        # the start time of the most recent round
+        self.collection_start_time = None
 
     def set_server_status(self, status):
         '''
@@ -1749,32 +1857,139 @@ class PrivCountClient(PrivCountNode):
         '''
         log_tally_server_status(status)
 
-    def check_start_config(self, config):
+    def set_delay_period(self, collect_period):
+        '''
+        Set the delay period to a valid value, based on the configured
+        delay period and the supplied collect period.
+        '''
+        self.delay_period = \
+            self.get_valid_delay_period(self.config.get('delay_period'),
+                                        collect_period)
+
+    def set_round_start(self, start_config):
+        '''
+        Set the round start variables:
+         - the delay period after this round,
+         - the noise config,
+         - the start time,
+         based on the start config and loaded config.
+        '''
+        self.collect_period = start_config['collect_period']
+        self.set_delay_period(start_config['collect_period'])
+        self.last_noise_config = start_config['noise']
+        self.collection_start_time = time()
+
+    def check_start_config(self, start_config):
         '''
         Perform the common client checks on the start config.
-        Return the combined counters if the config is valid,
+        Return the combined counters if the start_config is valid,
         or None if it is not.
         '''
-        if ('counters' not in config or
-            'noise' not in config or
-            'noise_weight' not in config or
-            'dc_threshold' not in config):
+        if ('counters' not in start_config or
+            'noise' not in start_config or
+            'noise_weight' not in start_config or
+            'dc_threshold' not in start_config or
+            'collect_period' not in start_config):
             logging.warning("start command from tally server cannot be completed due to missing data")
             return None
 
         # if the counters don't pass the validity checks, fail
-        if not check_counters_config(config['counters'],
-                                     config['noise']['counters']):
+        if not check_counters_config(start_config['counters'],
+                                     start_config['noise']['counters']):
             return None
 
         # if the noise weights don't pass the validity checks, fail
-        if not check_noise_weight_config(config['noise_weight'],
-                                         config['dc_threshold']):
+        if not check_noise_weight_config(start_config['noise_weight'],
+                                         start_config['dc_threshold']):
             return None
 
+        delay = self.delay_period
+        # if it's the first round, there won't be a delay anyway
+        if delay is None:
+            delay = 0
+
+        # check if we need to delay this round
+        if not self.collection_delay.round_start_permitted(
+            start_config['noise'],
+            time(),
+            delay,
+            self.config['always_delay'],
+            self.config['sigma_decrease_tolerance']):
+            # we can't start the round yet
+            return None
+
+        # save various config items for the end of the round
+        self.set_round_start(start_config)
+
         # combine bins and sigmas
-        return combine_counters(config['counters'],
-                                config['noise']['counters'])
+        return combine_counters(start_config['counters'],
+                                start_config['noise']['counters'])
+
+    def check_stop_config(self, stop_config, counts):
+        '''
+        When the round stops, perform common client actions:
+        - log a message
+        - tell the collection_delay
+        '''
+        end_time = time()
+        response = {}
+        round_successful = False
+
+        wants_counters = stop_config.get('send_counters', False)
+        logging.info("tally server {} final counts"
+                     .format("wants" if wants_counters else "does not want"))
+
+        if wants_counters and counts is not None:
+            logging.info("sending counts from {} counters".format(len(counts)))
+            response['Counts'] = counts
+            # only delay a round if we have sent our counters
+            round_successful = True
+        else:
+            logging.info("No counts available")
+
+        # even though the counter limits are hard-coded, include them anyway
+        response['Config'] = add_counter_limits_to_config(self.config)
+
+        # and include the config sent by the tally server in do_start
+        if self.start_config is not None:
+            response['Config']['Start'] = self.start_config
+
+        # if we never started, there's no point in registering end of round
+        if (self.collect_period is None or
+            self.delay_period is None or
+            self.last_noise_config is None or
+            self.collection_start_time is None):
+            logging.warning("TS sent stop command before start command")
+            return response
+
+        # We use the collect_period if the delay_period is not configured.
+        # But using the collect_period from the tally server is insecure,
+        # because the DCs and SKs do not check that the actual collection time
+        # matches the collection period
+        config_delay = self.config.get('delay_period')
+        actual_collect = end_time - self.collection_start_time
+        actual_delay = self.get_valid_delay_period(config_delay,
+                                                   actual_collect)
+
+        # so we use the maximum of the delay period from:
+        # - the TS collect period and the config at start time, and
+        # - the actual collect period and the current config.
+        delay = max(self.delay_period, actual_delay)
+
+        # Register the stop with the collection delay
+        self.collection_delay.set_stop_result(
+            round_successful,
+            # set when the round started
+            self.last_noise_config,
+            self.collection_start_time,
+            end_time,
+            delay,
+            self.config['always_delay'],
+            self.config['sigma_decrease_tolerance'])
+
+        logging.info("collection phase was stopped")
+
+        return response
 
 """
 def prob_exit(consensus_path, my_fingerprint, fingerprint_pool=None):

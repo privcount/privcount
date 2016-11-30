@@ -50,6 +50,9 @@ share_keeper:
         port: 20001
     # optional overrides:
     key: 'keys/sk.pem' # path to the rsa private key
+    delay_period: 4 # (default: the previous round's collect_period from the tally server) the number of seconds of enforced delay between rounds that change noise allocations
+    always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
+    sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
     # all nodes must agree on this key to handshake correctly
     secret_handshake: 'keys/secret_handshake.yaml'
 
@@ -63,5 +66,9 @@ data_collector:
         port: 20001
     share_keepers: # share keepers' public key hashes (`openssl rsa -pubout < keys/sk.pem | sha256sum`)
         - 'e79ea9173e28e6a54f6d2ec6494c1723a330811652acebbe8d98098ce347d679'
+    # optional overrides:
+    delay_period: 4 # (default: the previous round's collect_period from the tally server) the number of seconds of enforced delay between rounds that change noise allocations
+    always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
+    sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
     # all nodes must agree on this key to handshake correctly
     secret_handshake: 'keys/secret_handshake.yaml'

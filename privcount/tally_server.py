@@ -47,7 +47,6 @@ class TallyServer(ServerFactory, PrivCountServer):
         self.collection_phase = None
         self.idle_time = time()
         self.num_completed_collection_phases = 0
-        self.collection_delay = CollectionDelay()
 
     def buildProtocol(self, addr):
         '''
@@ -294,40 +293,15 @@ class TallyServer(ServerFactory, PrivCountServer):
                              ts_conf['checkin_period'],
                              ts_conf['event_period'])
 
-            # The delay period must be greater than or equal to the collect
-            # period
-            delay_min = ts_conf['collect_period']
-            if (ts_conf['delay_period'] < delay_min):
-                logging.warning("delay_period %d too small for collect_period %d, increasing to %d",
-                                ts_conf['delay_period'],
-                                ts_conf['collect_period'],
-                                delay_min)
-                ts_conf['delay_period'] = delay_min
+            ts_conf['delay_period'] = self.get_valid_delay_period(
+                ts_conf['delay_period'],
+                ts_conf['collect_period']
+                )
 
             assert isinstance(ts_conf['always_delay'], bool)
 
-            ts_conf.setdefault(
-                'sigma_decrease_tolerance',
-                DEFAULT_SIGMA_TOLERANCE)
-            # we can't guarantee that floats are transmitted with any more
-            # accuracy than approximately 1 part in 1e-14, due to python
-            # float to string conversion
-            # so we limit the tolerance to an absolute value of ~1e-14,
-            # which assumes the sigma values are close to 1.
-            # larger sigma values should have a larger absolute limit, because
-            # float_accuracy() is a proportion of the value,
-            # but we can't do that calculation here
-            assert ts_conf['sigma_decrease_tolerance'] >= float_accuracy()
-            # it makes no sense to have a sigma decrease tolerance that is
-            # less than the sigma calculation tolerance
-            # (if we use hard-coded sigmas, calculation accuracy is not
-            # an issue - skip this check)
-            if 'sigma_tolerance' in ts_conf['noise'].get('privacy',{}):
-                assert (ts_conf['sigma_decrease_tolerance'] >=
-                        ts_conf['noise']['privacy']['sigma_tolerance'])
-            elif 'privacy' in ts_conf['noise']:
-                assert (ts_conf['sigma_decrease_tolerance'] >=
-                        DEFAULT_SIGMA_TOLERANCE)
+            ts_conf['sigma_decrease_tolerance'] = \
+                self.get_valid_sigma_decrease_tolerance(ts_conf)
 
             assert ts_conf['listen_port'] > 0
             assert ts_conf['sk_threshold'] > 0
@@ -702,6 +676,8 @@ class CollectionPhase(object):
 
     def store_data(self, client_uid, data):
         if data == None:
+            # this can happen if the SK (or DC) is enforcing a delay because
+            # the noise allocation has changed
             logging.warning("received error response from {} while in state {}".format(client_uid, self.state))
             return
 
@@ -798,6 +774,7 @@ class CollectionPhase(object):
             config['noise_weight'] = self.noise_weight_config
             config['dc_threshold'] = self.dc_threshold_config
             config['defer_time'] = self.clock_padding
+            config['collect_period'] = self.period
             logging.info("sending start comand with {} counters and requesting {} shares to data collector {}"
                          .format(len(config['counters']),
                                  len(config['sharekeepers']),
@@ -810,6 +787,7 @@ class CollectionPhase(object):
             config['noise'] = self.noise_config
             config['noise_weight'] = self.noise_weight_config
             config['dc_threshold'] = self.dc_threshold_config
+            config['collect_period'] = self.period
             logging.info("sending start command with {} counters and {} shares to share keeper {}"
                          .format(len(config['counters']),
                                  len(config['shares']),
@@ -911,9 +889,13 @@ class CollectionPhase(object):
             # We don't need the paths from the configs
             if 'state' in dc.get('Config', {}):
                 dc['Config']['state'] = "(state path)"
+            if 'secret_handshake' in dc.get('Config', {}):
+                dc['Config']['secret_handshake'] = "(secret_handshake path)"
             # or the counters
             if 'counters' in dc.get('Config', {}).get('Start',{}):
-                dc['Config']['Start']['counters'] = "(counters, no counts)"
+                dc['Config']['Start']['counters'] = "(counter bins, no counts)"
+            if 'counters' in dc.get('Config', {}).get('Start',{}).get('noise',{}):
+                dc['Config']['Start']['noise']['counters'] = "(counter sigmas, no counts)"
             # or the sk public keys
             if 'sharekeepers' in dc.get('Config', {}).get('Start',{}):
                 for uid in dc['Config']['Start']['sharekeepers']:
@@ -925,11 +907,15 @@ class CollectionPhase(object):
                 sk['Config']['key'] = "(key path)"
             if 'state' in sk.get('Config', {}):
                 sk['Config']['state'] = "(state path)"
+            if 'secret_handshake' in sk.get('Config', {}):
+                sk['Config']['secret_handshake'] = "(secret_handshake path)"
             if 'public_key' in sk.get('Status', {}):
                 sk['Status']['public_key'] = "(public key)"
             # or the counters
             if 'counters' in sk.get('Config', {}).get('Start',{}):
-                sk['Config']['Start']['counters'] = "(counters, no counts)"
+                sk['Config']['Start']['counters'] = "(counter bins, no counts)"
+            if 'counters' in sk.get('Config', {}).get('Start',{}).get('noise',{}):
+                sk['Config']['Start']['noise']['counters'] = "(counter sigmas, no counts)"
 
         # add the status and config for the tally server itself
         result_context['TallyServer'] = {}

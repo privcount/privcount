@@ -153,38 +153,24 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
         called by protocol
         the TS wants us to stop the current collection phase
         they may or may not want us to send back our counters
-        return None if failure, otherwise json will encode result back to the
-        TS
+        stop the node from running
+        return a dictionary containing counters (if available and wanted)
+        and the local and start configs
         '''
-        # TODO: refactor common code: see ticket #121
         logging.info("got command to stop collection phase")
-        if 'send_counters' not in config:
-            return None
-
-        wants_counters = 'send_counters' in config and config['send_counters'] is True
-        logging.info("tally server {} final counts".format("wants" if wants_counters else "does not want"))
 
         response_counts = None
-        if wants_counters:
-            # send our counts, its an error if we dont have any
-            if self.keystore is not None:
-                response_counts = self.keystore.detach_counts()
-                logging.info("sending counts from {} counters".format(len(response_counts)))
+        # send our counts
+        if self.keystore is not None:
+            response_counts = self.keystore.detach_counts()
         else:
-            # this is never an error, but they dont want anything
-            response_counts = {}
+            # let the TS decide what to do if the counts are missing
+            logging.info("No keystore, counts never started")
 
         del self.keystore
         self.keystore = None
-        logging.info("collection phase was stopped")
-        response = {}
-        response['Counts'] = response_counts
-        # even though the counter limits are hard-coded, include them anyway
-        response['Config'] = add_counter_limits_to_config(self.config)
-        # and include the config sent by the tally server in do_start
-        if self.start_config is not None:
-            response['Config']['Start'] = self.start_config
-        return response
+
+        return self.check_stop_config(config, response_counts)
 
     def refresh_config(self):
         '''
@@ -217,6 +203,15 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
             # the state file
             sk_conf['state'] = normalise_path(sk_conf['state'])
             assert os.path.exists(os.path.dirname(sk_conf['state']))
+
+            # if the delay period is specified, it must be greater than 0
+            # (if not, we use the value of the collect period from the TS)
+            assert sk_conf.get('delay_period', 1) > 0
+
+            assert isinstance(sk_conf['always_delay'], bool)
+
+            sk_conf['sigma_decrease_tolerance'] = \
+                self.get_valid_sigma_decrease_tolerance(sk_conf)
 
             assert sk_conf['tally_server_info']['ip'] is not None
             assert sk_conf['tally_server_info']['port'] > 0

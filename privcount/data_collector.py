@@ -180,16 +180,15 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
     def do_stop(self, config):
         '''
         called by protocol
+        the TS wants us to stop the current collection phase
+        they may or may not want us to send back our counters
         stop the node from running
-        return a dictionary consisting of the DC's Config, and, if counting
-        was successful, and the TS wants the counters, return the Counts
+        return a dictionary containing counters (if available and wanted)
+        and the local and start configs
         '''
-        # TODO: refactor common code: see ticket #121
         logging.info("got command to stop collection phase")
-        wants_counters = config.get('send_counters', False)
-        logging.info("tally server {} final counts".format("wants" if wants_counters else "does not want"))
 
-        response = {}
+        counts = None
         if self.aggregator_defer_id is not None:
             self.aggregator_defer_id.cancel()
             self.aggregator_defer_id = None
@@ -199,21 +198,10 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             counts = self.aggregator.stop()
             del self.aggregator
             self.aggregator = None
-            if wants_counters and counts is not None:
-                logging.info("sending counts from {} counters".format(len(counts)))
-                response['Counts'] = counts
-            else:
-                logging.info("No counts available from aggregator")
         else:
             logging.info("No aggregator, counts never started")
 
-        logging.info("collection phase was stopped")
-        # even though the counter limits are hard-coded, include them anyway
-        response['Config'] = add_counter_limits_to_config(self.config)
-        # and include the config sent by the tally server in do_start
-        if self.start_config is not None:
-            response['Config']['Start'] = self.start_config
-        return response
+        return self.check_stop_config(config, counts)
 
     def refresh_config(self):
         '''
@@ -235,6 +223,15 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             # the state file
             dc_conf['state'] = normalise_path(dc_conf['state'])
             assert os.path.exists(os.path.dirname(dc_conf['state']))
+
+            # if the delay period is specified, it must be greater than 0
+            # (if not, we use the value of the collect period from the TS)
+            assert dc_conf.get('delay_period', 1) > 0
+
+            assert isinstance(dc_conf['always_delay'], bool)
+
+            dc_conf['sigma_decrease_tolerance'] = \
+                self.get_valid_sigma_decrease_tolerance(dc_conf)
 
             assert dc_conf['name'] != ''
             assert dc_conf['tally_server_info']['ip'] is not None
