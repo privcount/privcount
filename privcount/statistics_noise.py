@@ -1,3 +1,4 @@
+import logging
 import math
 import scipy.stats
 import yaml
@@ -225,6 +226,13 @@ def get_opt_privacy_allocation(epsilon, delta, stats_parameters,
     opt_sigmas = dict()
     for param, (sensitivity, val) in stats_parameters.iteritems():
         opt_sigma = get_sigma(excess_noise_ratio, opt_sigma_ratio, val)
+        # Check if the sigma is too small
+        if opt_sigma == 0.0:
+            pass
+        elif opt_sigma < DEFAULT_SIGMA_TOLERANCE:
+            logging.warning("sigma {} for {} is less than the sigma tolerance {}, the calculated value may be inaccurate and may vary each time it is calculated"
+                            .format(opt_sigma, param, sigma_tol))
+
         opt_sigmas[param] = opt_sigma
 
     return (opt_epsilons, opt_sigmas, opt_sigma_ratio)

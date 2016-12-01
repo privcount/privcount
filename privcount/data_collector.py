@@ -180,16 +180,15 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
     def do_stop(self, config):
         '''
         called by protocol
+        the TS wants us to stop the current collection phase
+        they may or may not want us to send back our counters
         stop the node from running
-        return a dictionary consisting of the DC's Config, and, if counting
-        was successful, and the TS wants the counters, return the Counts
+        return a dictionary containing counters (if available and wanted)
+        and the local and start configs
         '''
-        # TODO: refactor common code: see ticket #121
         logging.info("got command to stop collection phase")
-        wants_counters = config.get('send_counters', False)
-        logging.info("tally server {} final counts".format("wants" if wants_counters else "does not want"))
 
-        response = {}
+        counts = None
         if self.aggregator_defer_id is not None:
             self.aggregator_defer_id.cancel()
             self.aggregator_defer_id = None
@@ -199,21 +198,10 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             counts = self.aggregator.stop()
             del self.aggregator
             self.aggregator = None
-            if wants_counters and counts is not None:
-                logging.info("sending counts from {} counters".format(len(counts)))
-                response['Counts'] = counts
-            else:
-                logging.info("No counts available from aggregator")
         else:
             logging.info("No aggregator, counts never started")
 
-        logging.info("collection phase was stopped")
-        # even though the counter limits are hard-coded, include them anyway
-        response['Config'] = add_counter_limits_to_config(self.config)
-        # and include the config sent by the tally server in do_start
-        if self.start_config is not None:
-            response['Config']['Start'] = self.start_config
-        return response
+        return self.check_stop_config(config, counts)
 
     def refresh_config(self):
         '''
@@ -235,6 +223,16 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             # the state file
             dc_conf['state'] = normalise_path(dc_conf['state'])
             assert os.path.exists(os.path.dirname(dc_conf['state']))
+
+            # if the delay period is specified, it must be greater than 0
+            # (if not, we use the value of the collect period from the TS)
+            assert dc_conf.get('delay_period', 1) > 0
+
+            dc_conf.setdefault('always_delay', False)
+            assert isinstance(dc_conf['always_delay'], bool)
+
+            dc_conf['sigma_decrease_tolerance'] = \
+                self.get_valid_sigma_decrease_tolerance(dc_conf)
 
             assert dc_conf['name'] != ''
             assert dc_conf['tally_server_info']['ip'] is not None
@@ -319,12 +317,9 @@ class Aggregator(ReconnectingClientFactory):
         self.rotator = task.LoopingCall(self._do_rotate).start(600, now=False)
         self.cli_ips_rotated = time()
 
-    def stop(self, counts_are_valid=True):
+    def _stop_protocol(self):
         '''
-        Stop counting, and stop connecting to the ControlPort and Tally Server.
-        Retrieve the counts, and delete the counters.
-        If counts_are_valid is True, return the counts.
-        Otherwise, return None.
+        Stop protocol and connection activities.
         '''
         # don't try to reconnect
         self.stopTrying()
@@ -337,15 +332,15 @@ class Aggregator(ReconnectingClientFactory):
         if self.connector is not None:
             self.connector.disconnect()
 
+    def _stop_secure_counters(self, counts_are_valid=True):
+        '''
+        If counts_are_valid, detach and return the counts from secure counters.
+        Otherwise, return None.
+        '''
         # if we've already stopped counting due to an error, there are no
         # counters
         if self.secure_counters is None:
             return None
-
-        # make sure we added noise
-        if self.noise_weight_value is None and counts_are_valid:
-            logging.warning("Noise was not added to counters when the control port connection was opened. Adding now.")
-            self.generate_noise()
 
         # return the final counts and make sure we cant be restarted
         counts = self.secure_counters.detach_counts()
@@ -356,6 +351,24 @@ class Aggregator(ReconnectingClientFactory):
             return counts
         else:
             return None
+
+    def stop(self, counts_are_valid=True):
+        '''
+        Stop counting, and stop connecting to the ControlPort and Tally Server.
+        Retrieve the counts, and delete the counters.
+        If counts_are_valid is True, return the counts.
+        Otherwise, return None.
+        '''
+        # make sure we added noise
+        if self.noise_weight_value is None and counts_are_valid:
+            logging.warning("Noise was not added to counters when the control port connection was opened. Adding now.")
+            self.generate_noise()
+
+        # stop trying to collect data
+        self._stop_protocol()
+
+        # stop using the counters
+        return self._stop_secure_counters(counts_are_valid=counts_are_valid)
 
     def get_shares(self):
         return self.secure_counters.detach_blinding_shares()
@@ -379,7 +392,9 @@ class Aggregator(ReconnectingClientFactory):
             logging.warning("Tally Server did not provide a noise weight for our fingerprint {} in noise weight config {}, we will not count in this round."
                             .format(self.fingerprint, self.noise_weight_config,
                                     self.noise_weight_value))
-            self.stop(counts_are_valid=False)
+            # stop collecting and stop counting
+            self._stop_protocol()
+            self._stop_secure_counters(counts_are_valid=False)
 
     def set_nickname(self, nickname):
         nickname = nickname.strip()
