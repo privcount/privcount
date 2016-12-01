@@ -2,7 +2,8 @@ from twisted.internet import reactor
 from twisted.internet.protocol import ReconnectingClientFactory
 from privcount.protocol import TorControlClientProtocol
 
-TOR_CONTROL_PORT=9050
+# The typical control port listed in the tor manual
+TOR_CONTROL_PORT=9051
 
 class TorCtlClient(ReconnectingClientFactory):
     '''
