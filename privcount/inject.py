@@ -77,7 +77,7 @@ class PrivCountDataInjector(ServerFactory):
             now = time()
             alive = this_time_end - this_time_start
             msg_adjusted_times = self._set_event_times(msg, now-alive, now)
-            event = "650 PRIVCOUNT {}".format(msg_adjusted_times)
+            event = "650 {}".format(msg_adjusted_times)
             logging.info("sending event '{}'".format(event))
             self.protocol.sendLine(event)
 
@@ -119,21 +119,21 @@ class PrivCountDataInjector(ServerFactory):
 
     def _get_event_times(self, msg):
         parts = msg.split()
-        if parts[0] == 'c' and len(parts) > 10:
+        if parts[0] == 'PRIVCOUNT_CIRCUIT_ENDED' and len(parts) > 10:
             return float(parts[9]), float(parts[10])
-        elif parts[0] == 's' and len(parts) > 8:
+        elif parts[0] == 'PRIVCOUNT_STREAM_ENDED' and len(parts) > 8:
             return float(parts[7]), float(parts[8])
-        elif parts[0] == 't' and len(parts) > 3:
+        elif parts[0] == 'PRIVCOUNT_CONNECTION_ENDED' and len(parts) > 3:
             return float(parts[2]), float(parts[3])
         return 0.0, 0.0
 
     def _set_event_times(self, msg, start_time, end_time):
         parts = msg.split()
-        if parts[0] == 'c' and len(parts) > 10:
+        if parts[0] == 'PRIVCOUNT_CIRCUIT_ENDED' and len(parts) > 10:
             parts[9], parts[10] = start_time, end_time
-        elif parts[0] == 's' and len(parts) > 8:
+        elif parts[0] == 'PRIVCOUNT_STREAM_ENDED' and len(parts) > 8:
             parts[7], parts[8] = start_time, end_time
-        elif parts[0] == 't' and len(parts) > 3:
+        elif parts[0] == 'PRIVCOUNT_CONNECTION_ENDED' and len(parts) > 3:
             parts[2], parts[3] = start_time, end_time
         return ' '.join([str(p) for p in parts])
 

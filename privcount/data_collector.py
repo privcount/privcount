@@ -596,25 +596,26 @@ class Aggregator(ReconnectingClientFactory):
         if not self.secure_counters:
             return False
 
-        event_code, line_remaining = [v.strip() for v in event.split(' ', 1)]
+        # ignore empty events
+        if len(event) <= 1:
+            return False
+
+        event_code, items = event[0], event[1:]
         self.last_event_time = time()
 
         # hand valid events off to the aggregator
-        if event_code == 's':
-            # 's', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
-            items = [v.strip() for v in line_remaining.split(' ', 10)]
+        if event_code == 'PRIVCOUNT_STREAM_ENDED':
+            # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
             if len(items) == 10:
                 self._handle_stream_event(items[0:10])
 
-        elif event_code == 'c':
-            # 'c', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
-            items = [v.strip() for v in line_remaining.split(' ', 16)]
+        elif event_code == 'PRIVCOUNT_CIRCUIT_ENDED':
+            # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
             if len(items) == 16:
                 self._handle_circuit_event(items[0:16])
 
-        elif event_code == 't':
-            # 't', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
-            items = [v.strip() for v in line_remaining.split(' ', 6)]
+        elif event_code == 'PRIVCOUNT_CONNECTION_ENDED':
+            # 'PRIVCOUNT_CONNECTION_ENDED', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
             if len(items) == 6:
                 self._handle_connection_event(items[0:6])
 

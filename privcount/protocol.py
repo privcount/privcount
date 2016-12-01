@@ -1083,11 +1083,19 @@ class TorControlClientProtocol(LineOnlyReceiver):
             else:
                 logging.warning("Connection with {}:{}:{} failed: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line))
                 self.quit()
-        elif self.state == 'processing' and line.startswith("650 PRIVCOUNT "):
-            _, _, event = line.partition(" PRIVCOUNT ") # returns: part1, separator, part2
-            if event != '':
-                if not self.factory.handle_event(event):
-                    self.quit()
+        elif self.state == 'processing' and line.startswith("650 PRIVCOUNT_"):
+            parts = line.split(" ")
+            assert len(parts) > 1
+            # skip unknown events
+            known_events = get_privcount_events()
+            if not parts[1] in known_events:
+                logging.warning("Unrecognised event {}".format(line))
+            # skip empty events
+            elif len(parts) <= 2:
+                # send the event, including the event type
+                logging.warning("Event with no data {}".format(line))
+            elif not self.factory.handle_event(parts[1:]):
+                self.quit()
         # log any non-privcount responses at an appropriate level
         elif line == "250 OK":
             logging.debug("Connection with {}:{}:{}: ok response: '{}'".format(peer.type, peer.host, peer.port, line))

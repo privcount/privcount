@@ -22,7 +22,7 @@ class TorCtlClient(ReconnectingClientFactory):
     def buildProtocol(self, addr):
         return TorControlClientProtocol(self)
     def handle_event(self, event):
-        print "got PRIVCOUNT_* event: " + event
+        print "got PRIVCOUNT_* event: " + " ".join(event)
         return True
 
 reactor.connectTCP("127.0.0.1", TOR_CONTROL_PORT, TorCtlClient())
