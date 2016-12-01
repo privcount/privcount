@@ -957,6 +957,22 @@ class TorControlClientProtocol(LineOnlyReceiver):
         self.sendLine("AUTHENTICATE")
         self.state = 'authenticating'
 
+    def setDiscoveredValue(self, function_name, value, value_name, peer):
+        '''
+        When we discover value from the relay, call set_function to set it,
+        and log a message containing value_name if this fails.
+        '''
+        try:
+            # Equivalent to self.factory.set_*(value)
+            if not getattr(self.factory, function_name)(value):
+                logging.warning("Connection with {}:{}:{}: bad {}: {}"
+                                .format(peer.type, peer.host, peer.port,
+                                        value_name, value))
+        except AttributeError as e:
+            logging.warning("Connection with {}:{}:{}: sent {}: {}, but factory raised {}"
+                            .format(peer.type, peer.host, peer.port,
+                                    value_name, value, e))
+
     def lineReceived(self, line): # overrides twisted function
         peer = self.transport.getPeer()
         line = line.strip()
@@ -976,8 +992,8 @@ class TorControlClientProtocol(LineOnlyReceiver):
             # It's a relay, and it's just told us its Nickname
             if line.startswith("250 Nickname="):
                 _, _, nickname = line.partition("Nickname=") # returns: part1, separator, part2
-                if not self.factory.set_nickname(nickname):
-                    logging.warning("Connection with {}:{}:{}: bad nickname {}".format(peer.type, peer.host, peer.port, nickname))
+                self.setDiscoveredValue('set_nickname', nickname, 'Nickname',
+                                        peer)
             # It doesn't have a Nickname, maybe it's a client?
             # But we'll catch that when we check the fingerprint, so just ignore this response
             elif line == "250 Nickname":
@@ -985,8 +1001,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
             # It's a relay, and it's just told us its ORPort
             elif line.startswith("250 ORPort="):
                 _, _, orport = line.partition("ORPort=") # returns: part1, separator, part2
-                if not self.factory.set_orport(orport):
-                    logging.warning("Connection with {}:{}:{}: bad ORPort {}".format(peer.type, peer.host, peer.port, orport))
+                self.setDiscoveredValue('set_orport', orport, 'ORPort', peer)
             # It doesn't have an ORPort, maybe it's a client?
             # But we'll catch that when we check the fingerprint, so just ignore this response
             elif line == "250 ORPort":
@@ -994,23 +1009,22 @@ class TorControlClientProtocol(LineOnlyReceiver):
             # It's a relay, and it's just told us its DirPort
             elif line.startswith("250 DirPort="):
                 _, _, dirport = line.partition("DirPort=") # returns: part1, separator, part2
-                if not self.factory.set_dirport(dirport):
-                    logging.warning("Connection with {}:{}:{}: bad DirPort {}".format(peer.type, peer.host, peer.port, dirport))
-            # It doesn't have an DirPort, just ignore the response
+                self.setDiscoveredValue('set_dirport', dirport, 'DirPort',
+                                        peer)
             elif line == "250 DirPort":
                 logging.info("Connection with {}:{}:{}: no DirPort".format(peer.type, peer.host, peer.port))
             # It's just told us its version
             # The control spec assumes that Tor always has a version, so there's no error case
             elif line.startswith("250-version="):
                 _, _, version = line.partition("version=") # returns: part1, separator, part2
-                if not self.factory.set_version(version):
-                    logging.warning("Connection with {}:{}:{}: bad version {}".format(peer.type, peer.host, peer.port, version))
+                self.setDiscoveredValue('set_version', version, 'version',
+                                        peer)
                 self.state = 'skip_ok'
             # It's just told us its address
             elif line.startswith("250-address="):
                 _, _, address = line.partition("address=") # returns: part1, separator, part2
-                if not self.factory.set_address(address):
-                    logging.warning("Connection with {}:{}:{}: bad address {}".format(peer.type, peer.host, peer.port, address))
+                self.setDiscoveredValue('set_address', address, 'address',
+                                        peer)
                 self.state = 'skip_ok'
             # We asked for its address, and it couldn't find it. That's weird.
             elif line == "551 Address unknown":
@@ -1019,8 +1033,8 @@ class TorControlClientProtocol(LineOnlyReceiver):
             # It's a relay, and it's just told us its fingerprint
             elif line.startswith("250-fingerprint="):
                 _, _, fingerprint = line.partition("fingerprint=") # returns: part1, separator, part2
-                if not self.factory.set_fingerprint(fingerprint):
-                    logging.warning("Connection with {}:{}:{}: bad fingerprint {}".format(peer.type, peer.host, peer.port, fingerprint))
+                self.setDiscoveredValue('set_fingerprint', fingerprint,
+                                        'fingerprint', peer)
                 # processing mode will skip any unrecognised lines, such as "250 OK"
                 self.state = 'processing'
             # We asked for its fingerprint, and it said it's a client
