@@ -944,6 +944,22 @@ class PrivCountClientProtocol(PrivCountProtocol):
                 return True
         return False
 
+def get_privcount_events():
+    '''
+    Return a set containing the name of each privcount event, in uppercase
+    '''
+    event_set = {'PRIVCOUNT_DNS_RESOLVED',
+                 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED',
+                 'PRIVCOUNT_STREAM_ENDED',
+                 'PRIVCOUNT_CIRCUIT_ENDED',
+                 'PRIVCOUNT_CONNECTION_ENDED'}
+
+    assert isinstance(event_set, (set, frozenset))
+    for event in event_set:
+        assert event == event.upper()
+
+    return event_set
+
 class TorControlClientProtocol(LineOnlyReceiver):
 
     def __init__(self, factory):
@@ -1056,7 +1072,10 @@ class TorControlClientProtocol(LineOnlyReceiver):
 
             # we're done with discovering context, let's start processing events
             if self.state == 'processing':
-                self.sendLine("SETEVENTS PRIVCOUNT")
+                event_set = get_privcount_events()
+                # sort list of events into alphabetical order for consistency
+                event_str = " ".join(sorted(event_set))
+                self.sendLine("SETEVENTS " + event_str)
         elif self.state == 'skip_ok':
             # just skip one OK line
             if line == "250 OK":
@@ -1113,8 +1132,8 @@ class TorControlServerProtocol(LineOnlyReceiver):
     250 Nickname=Unnamed
     GETCONF foo
     552 Unrecognized configuration key "foo"
-    SETEVENTS PRIVCOUNT
-    552 Unrecognized event "PRIVCOUNT"
+    SETEVENTS PRIVCOUNT_STREAM_BYTES_TRANSFERRED PRIVCOUNT_STREAM_ENDED
+    552 Unrecognized event "PRIVCOUNT_STREAM_BYTES_TRANSFERRED"
     SETEVENTS BW
     250 OK
     650 BW 422670 576069
@@ -1153,15 +1172,25 @@ class TorControlServerProtocol(LineOnlyReceiver):
                 self.transport.loseConnection()
         elif len(parts) > 0:
             if parts[0] == "SETEVENTS":
-                if len(parts) == 2:
-                    if parts[1] == "PRIVCOUNT":
-                        self.sendLine("250 OK")
-                        self.factory.start_injecting()
-                    else:
-                        self.sendLine('552 Unrecognized event "{}"'.format(parts[1]))
-                        self.factory.stop_injecting()
+                # events are case-insensitive, so convert to uppercase
+                upper_setevents = map(str.upper, parts[1:])
+                # already uppercase
+                upper_known_events = get_privcount_events()
+                # if every requested event is in the known events
+                # if there are no requested events, that's ok, it turns events
+                # off
+                if set(upper_setevents).issubset(upper_known_events):
+                    self.sendLine("250 OK")
+                    self.factory.start_injecting()
                 else:
-                    self.sendLine('552 Unrecognized event ""')
+                    unknown_events = set(upper_setevents).difference(
+                        upper_known_events)
+                    assert len(unknown_events) > 0
+                    # this line displays the event name uppercased
+                    # that's a minor, irrelevant protocol difference
+                    self.sendLine('552 Unrecognized event "{}"'
+                                  .format(unknown_events[0]))
+                    self.factory.stop_injecting()
             elif parts[0] == "GETINFO":
                 # the correct response to an empty GETINFO is an empty OK
                 if len(parts) == 1:
