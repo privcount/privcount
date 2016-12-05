@@ -275,6 +275,7 @@ class Aggregator(ReconnectingClientFactory):
     def __init__(self, counters, sk_uids, noise_weight, modulus,
                  tor_control_port):
         self.secure_counters = SecureCounters(counters, modulus)
+        self.collection_counters = counters
         # we can't generate the noise yet, because we don't know the
         # DC fingerprint
         self.secure_counters.generate_blinding_shares(sk_uids)
@@ -302,6 +303,9 @@ class Aggregator(ReconnectingClientFactory):
 
     def buildProtocol(self, addr):
         self.protocol = TorControlClientProtocol(self)
+        # if we didn't build the protocol until after starting
+        if self.connector is not None:
+            self.protocol.startCollection(self.collection_counters)
         return self.protocol
 
     def startFactory(self):
@@ -316,6 +320,9 @@ class Aggregator(ReconnectingClientFactory):
         self.connector = reactor.connectTCP("127.0.0.1", self.tor_control_port, self)
         self.rotator = task.LoopingCall(self._do_rotate).start(600, now=False)
         self.cli_ips_rotated = time()
+        # if we've already built the protocol before starting
+        if self.protocol is not None:
+            self.protocol.startCollection(self.collection_counters)
 
     def _stop_protocol(self):
         '''
@@ -326,11 +333,15 @@ class Aggregator(ReconnectingClientFactory):
 
         # stop reading from Tor control port
         if self.protocol is not None:
+            self.protocol.stopCollection()
             self.protocol.quit()
+            self.protocol = None
         if self.rotator is not None:
             self.rotator.cancel()
+            self.rotator = None
         if self.connector is not None:
             self.connector.disconnect()
+            self.connector = None
 
     def _stop_secure_counters(self, counts_are_valid=True):
         '''

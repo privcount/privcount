@@ -944,7 +944,32 @@ class PrivCountClientProtocol(PrivCountProtocol):
                 return True
         return False
 
-def get_privcount_events():
+def check_event_set_case(event_set):
+    '''
+    Check that event_set is a set, and each event in it has the correct case
+    Returns True if all checks pass, and False if any check fails
+    '''
+    if not isinstance(event_set, (set, frozenset)):
+        return False
+    for event in event_set:
+        if event != event.upper():
+            return False
+    return True
+
+def check_event_set_valid(event_set):
+    '''
+    Check that event_set passes check_event_set_case, and also that each event
+    is in the set of valid events
+    Returns True if all checks pass, and False if any check fails
+    '''
+    if not check_event_set_case(event_set):
+        return False
+    for event in event_set:
+        if event not in get_valid_events():
+            return False
+    return True
+
+def get_valid_events():
     '''
     Return a set containing the name of each privcount event, in uppercase
     '''
@@ -953,11 +978,28 @@ def get_privcount_events():
                  'PRIVCOUNT_STREAM_ENDED',
                  'PRIVCOUNT_CIRCUIT_ENDED',
                  'PRIVCOUNT_CONNECTION_ENDED'}
+    assert check_event_set_case(event_set)
+    return event_set
 
-    assert isinstance(event_set, (set, frozenset))
-    for event in event_set:
-        assert event == event.upper()
+def get_events_for_counter(counter):
+    '''
+    Return the set of events required by counter
+    '''
+    # TODO: stub, ignores counter
+    event_set = get_valid_events()
+    assert check_event_set_valid(event_set)
+    return event_set
 
+def get_events_for_counters(counter_list):
+    '''
+    Return the set of events required by any of the counters in counter_list
+    '''
+    event_set = set()
+    if counter_list is not None:
+        for counter in counter_list:
+            counter_events = get_events_for_counter(counter)
+            event_set = event_set.union(counter_events)
+    assert check_event_set_valid(event_set)
     return event_set
 
 class TorControlClientProtocol(LineOnlyReceiver):
@@ -965,6 +1007,8 @@ class TorControlClientProtocol(LineOnlyReceiver):
     def __init__(self, factory):
         self.factory = factory
         self.state = None
+        self.collection_events = None
+        self.active_events = None
 
     def connectionMade(self):
         '''
@@ -974,9 +1018,79 @@ class TorControlClientProtocol(LineOnlyReceiver):
         '''
         peer = self.transport.getPeer()
         logging.debug("Connection with {}:{}:{} was made".format(peer.type, peer.host, peer.port))
-
+        # we must authenticate first, before doing anything else
         self.sendLine("AUTHENTICATE")
         self.state = 'authenticating'
+
+    def startCollection(self, counter_list, event_list=None):
+        '''
+        Enable events for all the events required by counter_list, and all
+        events explictly specified in event_list. After every successful
+        control port connection, re-enable the events.
+        '''
+        self.collection_events = set()
+        if counter_list is not None:
+            self.collection_events |= get_events_for_counters(counter_list)
+        if event_list is not None:
+            for event in event_list:
+                upper_event = event.upper()
+                if upper_event in get_valid_events():
+                    self.collection_events.add(upper_event)
+                else:
+                    logging.warning("Ignored unknown event: {}".format(event))
+        logging.warning("Starting PrivCount collection with events: {} from counters: {} and events: {}"
+                        .format(" ".join(self.collection_events),
+                                "(none)" if counter_list is None else
+                                " ".join(counter_list),
+                                "(none)" if event_list is None else
+                                " ".join(event_list)))
+        self.enableEvents()
+
+    def stopCollection(self):
+        '''
+        Disable all events. Remain connected to the control port, but wait for
+        the next collection to start.
+        '''
+        self.collection_events = None
+        self.disableEvents()
+        # let the user know that we're waiting
+        logging.warning("Waiting for PrivCount collection to start")
+
+    def enableEvents(self):
+        '''
+        If we are ready to handle events, and we know which events we want
+        to process, turn privcount internals on, and turn on the events for
+        the stored list of counters.
+        '''
+        # only start PrivCount if we are ready to handle events,
+        # and know which events we want to handle
+        if self.collection_events is None:
+            return
+        if self.state is None:
+            return
+        if self.state == 'waiting' or self.state == 'processing':
+            self.active_events = self.collection_events
+            self.sendLine("SETCONF EnablePrivCount=1")
+            self.sendLine("SETEVENTS {}".format(" ".join(self.active_events)))
+            self.state = 'processing'
+            logging.info("Enabled PrivCount events: {}"
+                         .format(" ".join(self.active_events)))
+
+    def disableEvents(self):
+        '''
+        Turn privcount events and privcount internals off
+        '''
+        # try to turn events off regardless of the state, as long as we have
+        # connected and authenticated, this will work
+        # (and if it doesn't, we haven't lost anything)
+        if self.state is not None:
+            if self.active_events is not None:
+                logging.info("Disabled PrivCount events: {}"
+                             .format(" ".join(self.active_events)))
+            self.sendLine("SETCONF EnablePrivCount=0")
+            self.sendLine("SETEVENTS")
+            self.active_events = None
+            self.state = 'waiting'
 
     def setDiscoveredValue(self, function_name, value, value_name, peer):
         '''
@@ -999,8 +1113,10 @@ class TorControlClientProtocol(LineOnlyReceiver):
         Check that authentication was successful.
         If so, put the protocol in the 'discovering' state, and ask the relay
         for information about itself.
-        When the fingerprint is receved, put the protocol in the 'processing'
-        state, and send the list of events we want.
+        When the fingerprint is receved, put the protocol in the 'waiting'
+        state.
+        When the round is started, put the protocol in the 'processing' state,
+        and send the list of events we want.
         When events are received, process them.
         Overrides twisted function.
         '''
@@ -1009,6 +1125,8 @@ class TorControlClientProtocol(LineOnlyReceiver):
         logging.debug("Received line '{}' from {}:{}:{}".format(line, peer.type, peer.host, peer.port))
 
         if self.state == 'authenticating' and line == "250 OK":
+            # Turn off privcount events, so we don't get spurious responses
+            self.disableEvents()
             # Just ask for all the info all at once
             self.sendLine("GETCONF Nickname")
             self.sendLine("GETCONF ORPort")
@@ -1018,9 +1136,13 @@ class TorControlClientProtocol(LineOnlyReceiver):
             self.sendLine("GETINFO fingerprint")
             self.state = 'discovering'
         elif self.state == 'discovering':
-            # -- These are the continuing cases, they can continue discovering, skip_ok, or quit() --
+            # -- These cases continue discovering, or quit() -- #
+            # It doesn't have PrivCount
+            if line.startswith("552 Unrecognized option"):
+                logging.critical("Connection with {}:{}:{}: does not support PrivCount".format(peer.type, peer.host, peer.port))
+                self.quit()
             # It's a relay, and it's just told us its Nickname
-            if line.startswith("250 Nickname="):
+            elif line.startswith("250 Nickname="):
                 _, _, nickname = line.partition("Nickname=") # returns: part1, separator, part2
                 self.setDiscoveredValue('set_nickname', nickname, 'Nickname',
                                         peer)
@@ -1049,74 +1171,71 @@ class TorControlClientProtocol(LineOnlyReceiver):
                 _, _, version = line.partition("version=") # returns: part1, separator, part2
                 self.setDiscoveredValue('set_version', version, 'version',
                                         peer)
-                self.state = 'skip_ok'
             # It's just told us its address
             elif line.startswith("250-address="):
                 _, _, address = line.partition("address=") # returns: part1, separator, part2
                 self.setDiscoveredValue('set_address', address, 'address',
                                         peer)
-                self.state = 'skip_ok'
             # We asked for its address, and it couldn't find it. That's weird.
             elif line == "551 Address unknown":
                 logging.info("Connection with {}:{}:{}: does not know its own address".format(peer.type, peer.host, peer.port))
-            # -- These are the terminating cases, they must end in processing or quit() --
+            # -- fingerprint discovery ends in waiting or quit() --
             # It's a relay, and it's just told us its fingerprint
             elif line.startswith("250-fingerprint="):
                 _, _, fingerprint = line.partition("fingerprint=") # returns: part1, separator, part2
                 self.setDiscoveredValue('set_fingerprint', fingerprint,
                                         'fingerprint', peer)
-                # processing mode will skip any unrecognised lines, such as "250 OK"
-                self.state = 'processing'
+                # waiting mode will skip all further lines, until collection
+                self.state = 'waiting'
             # We asked for its fingerprint, and it said it's a client
             elif line == "551 Not running in server mode":
                 logging.warning("Connection with {}:{}:{} failed: not a relay".format(peer.type, peer.host, peer.port))
                 self.quit()
-            # something unexpectedly bad happened
-            elif line.startswith("5"):
-                logging.warning("Connection with {}:{}:{} failed: unexpected error response: '{}'".format(peer.type, peer.host, peer.port, line))
-                self.quit()
-            # something unexpected, but ok happened
-            elif line.startswith("2"):
-                logging.info("Connection with {}:{}:{}: unexpected OK response: '{}'".format(peer.type, peer.host, peer.port, line))
-                self.state = 'processing'
-            # something unexpected happened, let's assume it's ok
             else:
-                logging.warning("Connection with {}:{}:{} failed: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line))
-                self.state = 'processing'
+                self.handleUnexpectedLine(line, peer)
 
-            # we're done with discovering context, let's start processing events
-            if self.state == 'processing':
-                event_set = get_privcount_events()
-                # sort list of events into alphabetical order for consistency
-                event_str = " ".join(sorted(event_set))
-                self.sendLine("SETEVENTS " + event_str)
-        elif self.state == 'skip_ok':
-            # just skip one OK line
-            if line == "250 OK":
-                self.state = 'discovering'
-            else:
-                logging.warning("Connection with {}:{}:{} failed: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line))
-                self.quit()
+            # If we already know what events we should have enabled, start
+            # processing them
+            if self.state == 'waiting':
+                self.enableEvents()
+        elif self.state == 'waiting' and line.startswith("2"):
+            # log ok events while we're waiting for round start
+            self.handleUnexpectedLine(line, peer)
         elif self.state == 'processing' and line.startswith("650 PRIVCOUNT_"):
             parts = line.split(" ")
             assert len(parts) > 1
-            # skip unknown events
-            known_events = get_privcount_events()
-            if not parts[1] in known_events:
-                logging.warning("Unrecognised event {}".format(line))
+            # skip unwanted events
+            if not parts[1] in self.active_events:
+                if not parts[1] in get_valid_events():
+                    logging.warning("Unknown event type {}".format(line))
+                else:
+                    logging.warning("Unwanted event type {}".format(line))
             # skip empty events
             elif len(parts) <= 2:
                 # send the event, including the event type
                 logging.warning("Event with no data {}".format(line))
             elif not self.factory.handle_event(parts[1:]):
                 self.quit()
-        # log any non-privcount responses at an appropriate level
-        elif line == "250 OK":
+        else:
+            self.handleUnexpectedLine(line, peer)
+
+    def handleUnexpectedLine(self, line, peer):
+        '''
+        Log any unexpected responses at an appropriate level.
+        Quit on error responses.
+        '''
+        if line == "250 OK":
             logging.debug("Connection with {}:{}:{}: ok response: '{}'".format(peer.type, peer.host, peer.port, line))
-        elif self.state == 'processing' and line.startswith("5"):
+        elif line.startswith("650 PRIVCOUNT_"):
+            logging.warning("Connection with {}:{}:{}: unexpected event: '{}'".format(peer.type, peer.host, peer.port, line))
+        elif line.startswith("5"):
             logging.warning("Connection with {}:{}:{}: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line))
-        elif self.state == 'processing' and line.startswith("2"):
+            self.quit()
+        elif line.startswith("2"):
             logging.info("Connection with {}:{}:{}: ok response: '{}'".format(peer.type, peer.host, peer.port, line))
+        else:
+            logging.warning("Connection with {}:{}:{}: unexpected response: '{}'".format(peer.type, peer.host, peer.port, line))
+            self.quit()
 
     def quit(self):
         self.sendLine("QUIT")
@@ -1142,6 +1261,8 @@ class TorControlServerProtocol(LineOnlyReceiver):
     Connected to localhost.
     Escape character is '^]'.
     AUTHENTICATE
+    250 OK
+    SETCONF EnablePrivCount=1
     250 OK
     GETINFO
     250 OK
@@ -1185,6 +1306,7 @@ class TorControlServerProtocol(LineOnlyReceiver):
 
         logging.debug("Received line '{}' from {}:{}:{}".format(line, peer.type, peer.host, peer.port))
 
+        # We use " quotes, but tor uses ' quotes. This should not matter.
         if not self.authenticated:
             if line == "AUTHENTICATE":
                 self.sendLine("250 OK")
@@ -1197,7 +1319,7 @@ class TorControlServerProtocol(LineOnlyReceiver):
                 # events are case-insensitive, so convert to uppercase
                 upper_setevents = map(str.upper, parts[1:])
                 # already uppercase
-                upper_known_events = get_privcount_events()
+                upper_known_events = get_valid_events()
                 # if every requested event is in the known events
                 # if there are no requested events, that's ok, it turns events
                 # off
@@ -1250,6 +1372,19 @@ class TorControlServerProtocol(LineOnlyReceiver):
                 else:
                     # Like GETINFO, our GETCONF does not accept multiple words
                     self.sendLine('552 Unrecognized configuration key "{}"'.format(parts[1]))
+            elif parts[0] == "SETCONF":
+                # the correct response to an empty SETCONF is an empty OK
+                if len(parts) == 1:
+                    self.sendLine("250 OK")
+                # Like GETCONF, SETCONF is case-insensitive, and returns one
+                # line: "250 OK"
+                elif len(parts) == 2 and parts[1].lower().startswith("enableprivcount"):
+                    # just ignore the value
+                    self.sendLine("250 OK")
+                else:
+                    # Like GETINFO, our GETCONF does not accept multiple words
+                    # and it doesn't bother to strip the =
+                    self.sendLine('552 Unrecognized option: Unknown option "{}". Failing.'.format(parts[1]))
             elif parts[0] == "QUIT":
                 self.factory.stop_injecting()
                 self.sendLine("250 closing connection")

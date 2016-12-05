@@ -1,13 +1,13 @@
 from twisted.internet import reactor
 from twisted.internet.protocol import ReconnectingClientFactory
-from privcount.protocol import TorControlClientProtocol
+from privcount.protocol import TorControlClientProtocol, get_valid_events
 
 import sys
 
 # Usage:
 # cd privcount/tor
 # ./configure && make check && make test-network-all
-# src/or/tor PublishServerDescriptor 0 ControlPort 9051 ORPort 9001 DirPort 9030 ExitRelay 0 EnablePrivCount 1 DataDirectory `mktemp -d`
+# src/or/tor PublishServerDescriptor 0 ControlPort 9051 ORPort 9001 DirPort 9030 ExitRelay 0 DataDirectory `mktemp -d`
 # source venv/bin/activate
 # python test/test_tor_ctl_event.py
 # wait a few minutes for the first events to arrive
@@ -31,7 +31,10 @@ class TorCtlClient(ReconnectingClientFactory):
         '''
         Called by twisted
         '''
-        return TorControlClientProtocol(self)
+        client = TorControlClientProtocol(self)
+        # ask for all the events
+        client.startCollection(None, event_list=get_valid_events())
+        return client
 
     def set_nickname(self, nickname):
         '''
