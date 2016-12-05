@@ -966,7 +966,12 @@ class TorControlClientProtocol(LineOnlyReceiver):
         self.factory = factory
         self.state = None
 
-    def connectionMade(self): # overrides twisted function
+    def connectionMade(self):
+        '''
+        Initiate authentication with the control port, and put the protocol in
+        the 'authenticating' state.
+        Overrides twisted function.
+        '''
         peer = self.transport.getPeer()
         logging.debug("Connection with {}:{}:{} was made".format(peer.type, peer.host, peer.port))
 
@@ -989,7 +994,16 @@ class TorControlClientProtocol(LineOnlyReceiver):
                             .format(peer.type, peer.host, peer.port,
                                     value_name, value, e))
 
-    def lineReceived(self, line): # overrides twisted function
+    def lineReceived(self, line):
+        '''
+        Check that authentication was successful.
+        If so, put the protocol in the 'discovering' state, and ask the relay
+        for information about itself.
+        When the fingerprint is receved, put the protocol in the 'processing'
+        state, and send the list of events we want.
+        When events are received, process them.
+        Overrides twisted function.
+        '''
         peer = self.transport.getPeer()
         line = line.strip()
         logging.debug("Received line '{}' from {}:{}:{}".format(line, peer.type, peer.host, peer.port))
