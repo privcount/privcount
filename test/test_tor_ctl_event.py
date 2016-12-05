@@ -2,6 +2,8 @@ from twisted.internet import reactor
 from twisted.internet.protocol import ReconnectingClientFactory
 from privcount.protocol import TorControlClientProtocol
 
+import sys
+
 # Usage:
 # cd privcount/tor
 # ./configure && make check && make test-network-all
@@ -11,7 +13,7 @@ from privcount.protocol import TorControlClientProtocol
 # wait a few minutes for the first events to arrive
 
 # The typical control port listed in the tor manual
-TOR_CONTROL_PORT=9051
+TOR_CONTROL_PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 9051
 
 class TorCtlClient(ReconnectingClientFactory):
     '''
