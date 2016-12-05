@@ -19,10 +19,44 @@ class TorCtlClient(ReconnectingClientFactory):
     'PRIVCOUNT_*' are properly exported by Tor.
     '''
 
+    def __init__(self):
+        '''
+        Make sure the stored nickname is initialised
+        '''
+        self.nickname = None
+
     def buildProtocol(self, addr):
+        '''
+        Called by twisted
+        '''
         return TorControlClientProtocol(self)
+
+    def set_nickname(self, nickname):
+        '''
+        Called when the relay provides its nickname
+        '''
+        self.nickname = nickname
+        return True
+
+    def set_fingerprint(self, fingerprint):
+        '''
+        Called when the relay provides its fingerprint
+        '''
+        print "Relay fingerprint: {}".format(fingerprint)
+        if self.nickname is not None:
+            print "Relay nickname: {}".format(self.nickname)
+        return True
+
     def handle_event(self, event):
-        print "got PRIVCOUNT_* event: " + " ".join(event)
+        '''
+        Called when an event occurs.
+        event is a space-separated list of tokens from the event line
+        '''
+        if self.nickname is None:
+            nickname = ""
+        else:
+            nickname = self.nickname + " "
+        print "{}got PRIVCOUNT_* event: {}".format(nickname, " ".join(event))
         return True
 
 reactor.connectTCP("127.0.0.1", TOR_CONTROL_PORT, TorCtlClient())
