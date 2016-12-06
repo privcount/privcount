@@ -12,7 +12,7 @@ from copy import deepcopy
 from math import sqrt
 
 from privcount.statistics_noise import DEFAULT_SIGMA_TOLERANCE, DEFAULT_DUMMY_COUNTER_NAME
-from privcount.util import format_period, format_elapsed_time_since, format_delay_time_until
+from privcount.log import format_period, format_elapsed_time_since, format_delay_time_until
 
 def counter_modulus():
     '''

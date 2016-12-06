@@ -13,9 +13,10 @@ from copy import deepcopy
 from twisted.internet import reactor, ssl
 from twisted.internet.protocol import ReconnectingClientFactory
 
-from protocol import PrivCountClientProtocol
-from counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters
-from util import log_error, get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, choose_secret_handshake_path, PrivCountClient
+from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters
+from privcount.log import log_error
+from privcount.protocol import PrivCountClientProtocol
+from util import get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt, normalise_path, choose_secret_handshake_path, PrivCountClient
 
 class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
     '''
