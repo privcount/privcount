@@ -1,8 +1,11 @@
-from twisted.internet import reactor
-from twisted.internet.protocol import ReconnectingClientFactory
-from privcount.protocol import TorControlClientProtocol, get_valid_events
+# Test that a local control port provides PrivCount events
 
 import sys
+
+from twisted.internet import reactor
+from twisted.internet.protocol import ReconnectingClientFactory
+
+from privcount.protocol import TorControlClientProtocol, get_valid_events
 
 # Usage:
 # cd privcount/tor

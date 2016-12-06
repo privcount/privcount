@@ -8,8 +8,9 @@ from twisted.internet import reactor
 from twisted.protocols.basic import LineOnlyReceiver
 
 from cryptography.hazmat.primitives.hashes import SHA256
-from privcount.util import CryptoHash, get_hmac, verify_hmac, b64_padded_length
+
 from privcount.counter import get_events_for_counters, get_valid_events
+from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
 
 class PrivCountProtocol(LineOnlyReceiver):
     '''
