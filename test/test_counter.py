@@ -3,7 +3,7 @@
 # this test will fail if any counter inconsistencies are detected
 # 
 
-from privcount.util import SecureCounters, adjust_count_signed, counter_modulus, add_counter_limits_to_config
+from privcount.counter import SecureCounters, adjust_count_signed, counter_modulus, add_counter_limits_to_config, get_events_for_known_counters
 from math import sqrt
 from random import SystemRandom
 
@@ -264,6 +264,9 @@ def try_counters(counters, modulus, N, X=None, multi_bin=True):
         X_random = SystemRandom().randrange(0, min(modulus_random, X))
     run_counters(counters, modulus_random, N_random, X_random, multi_bin)
     run_counters(counters, modulus, N, X, multi_bin)
+
+# Check the counter table is valid, and perform internal checks
+assert len(get_events_for_known_counters()) > 0
 
 # Check that unsigned to signed conversion works with odd and even modulus
 logging.info("Unsigned to signed counter conversion, modulus = 3:")
