@@ -12,11 +12,9 @@ import datetime
 import uuid
 import json
 
-from random import SystemRandom
 from os import path
-from math import sqrt, ceil
+from math import ceil
 from time import time, strftime, gmtime
-from copy import deepcopy
 from base64 import b64encode, b64decode
 
 from hashlib import sha256 as DigestHash
@@ -567,7 +565,7 @@ def format_last_event_time_since(last_event_timestamp):
         return "last Tor event was {}".format(format_elapsed_time_since(
                                                   last_event_timestamp, 'at'))
 
-## Calculation ##
+## Counters ##
 
 def counter_modulus():
     '''
@@ -714,6 +712,180 @@ def check_noise_weight_config(noise_weight_config, dc_threshold):
         return False
     return True
 
+def check_event_set_case(event_set):
+    '''
+    Check that event_set is a set, and each event in it has the correct case
+    Returns True if all checks pass, and False if any check fails
+    '''
+    if not isinstance(event_set, (set, frozenset)):
+        return False
+    for event in event_set:
+        if event != event.upper():
+            return False
+    return True
+
+def check_event_set_valid(event_set):
+    '''
+    Check that event_set passes check_event_set_case, and also that each event
+    is in the set of valid events
+    Returns True if all checks pass, and False if any check fails
+    '''
+    if not check_event_set_case(event_set):
+        return False
+    for event in event_set:
+        if event not in get_valid_events():
+            return False
+    return True
+
+# internal
+DNS_EVENT = 'PRIVCOUNT_DNS_RESOLVED'
+BYTES_EVENT = 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED'
+STREAM_EVENT = 'PRIVCOUNT_STREAM_ENDED'
+CIRCUIT_EVENT = 'PRIVCOUNT_CIRCUIT_ENDED'
+CONNECTION_EVENT = 'PRIVCOUNT_CONNECTION_ENDED'
+
+def get_valid_events():
+    '''
+    Return a set containing the name of each privcount event, in uppercase
+    '''
+    event_set = { DNS_EVENT,
+                  BYTES_EVENT,
+                  STREAM_EVENT,
+                  CIRCUIT_EVENT,
+                  CONNECTION_EVENT }
+    assert check_event_set_case(event_set)
+    return event_set
+
+PRIVCOUNT_COUNTER_EVENTS = {
+# these counters depend on stream end
+# they are updated in _handle_stream_event
+'StreamsAll' : { STREAM_EVENT },
+'StreamBytesAll' : { STREAM_EVENT },
+'StreamBytesOutAll' : { STREAM_EVENT },
+'StreamBytesInAll' : { STREAM_EVENT },
+'StreamBytesRatioAll' : { STREAM_EVENT },
+'StreamsWeb' : { STREAM_EVENT },
+'StreamBytesWeb' : { STREAM_EVENT },
+'StreamBytesOutWeb' : { STREAM_EVENT },
+'StreamBytesInWeb' : { STREAM_EVENT },
+'StreamBytesRatioWeb' : { STREAM_EVENT },
+'StreamLifeTimeWeb' : { STREAM_EVENT },
+'StreamsInteractive' : { STREAM_EVENT },
+'StreamBytesInteractive' : { STREAM_EVENT },
+'StreamBytesOutInteractive' : { STREAM_EVENT },
+'StreamBytesInInteractive' : { STREAM_EVENT },
+'StreamBytesRatioInteractive' : { STREAM_EVENT },
+'StreamLifeTimeInteractive' : { STREAM_EVENT },
+'StreamsP2P' : { STREAM_EVENT },
+'StreamBytesP2P' : { STREAM_EVENT },
+'StreamBytesOutP2P' : { STREAM_EVENT },
+'StreamBytesInP2P' : { STREAM_EVENT },
+'StreamBytesRatioP2P' : { STREAM_EVENT },
+'StreamLifeTimeP2P' : { STREAM_EVENT },
+'StreamsOther' : { STREAM_EVENT },
+'StreamBytesOther' : { STREAM_EVENT },
+'StreamBytesOutOther' : { STREAM_EVENT },
+'StreamBytesInOther' : { STREAM_EVENT },
+'StreamBytesRatioOther' : { STREAM_EVENT },
+'StreamLifeTimeOther' : { STREAM_EVENT },
+# these counters depend on circuit end
+# they are updated in _do_rotate,
+# and use data updated in _handle_circuit_event
+'ClientIPsUnique' : { CIRCUIT_EVENT },
+'ClientIPsActive' : { CIRCUIT_EVENT },
+'ClientIPsInactive' : { CIRCUIT_EVENT },
+'ClientIPCircuitsActive' : { CIRCUIT_EVENT },
+'ClientIPCircuitsInactive' : { CIRCUIT_EVENT },
+# these counters depend on circuit end
+# they are updated in _handle_circuit_event
+'CircuitsAllEntry' : { CIRCUIT_EVENT },
+'CircuitsActiveEntry' : { CIRCUIT_EVENT },
+'CircuitCellsIn' : { CIRCUIT_EVENT },
+'CircuitCellsOut' : { CIRCUIT_EVENT },
+'CircuitCellsRatio' : { CIRCUIT_EVENT },
+'CircuitsInactiveEntry' : { CIRCUIT_EVENT },
+'CircuitsAll' : { CIRCUIT_EVENT },
+'CircuitLifeTimeAll' : { CIRCUIT_EVENT },
+# these counters depend on stream end and circuit end
+# they are updated in _handle_circuit_event,
+# and use data updated in _handle_stream_event
+'CircuitsActive' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitsInactive' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitLifeTimeActive' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitLifeTimeInactive' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitStreamsAll' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitsWeb' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitStreamsWeb' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitInterStreamCreationTimeWeb' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitsInteractive' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitStreamsInteractive' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitInterStreamCreationTimeInteractive' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitsP2P' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitStreamsP2P' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitInterStreamCreationTimeP2P' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitsOther' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitStreamsOther' : { STREAM_EVENT, CIRCUIT_EVENT },
+'CircuitInterStreamCreationTimeOther' : { STREAM_EVENT, CIRCUIT_EVENT },
+# these counters depend on connection end
+'ConnectionsAll' : { CONNECTION_EVENT },
+'ConnectionLifeTime' : { CONNECTION_EVENT },
+# the sanity check counter doesn't depend on any events
+DEFAULT_DUMMY_COUNTER_NAME : set(),
+}
+
+def get_valid_counters():
+    '''
+    Return a set containing the name of each privcount counter, in titlecase.
+    (Or whatever the canonical case of the counter name is.)
+    '''
+    counter_set = set(PRIVCOUNT_COUNTER_EVENTS.keys())
+    # we can't check case consistency, so just return the set
+    return counter_set
+
+def get_events_for_counter(counter):
+    '''
+    Return the set of events required by counter
+    '''
+    # when you add an event, but forget to update the table above,
+    # you will get an error here
+    event_set = PRIVCOUNT_COUNTER_EVENTS[counter]
+    assert check_event_set_valid(event_set)
+    return event_set
+
+def get_events_for_counters(counter_list):
+    '''
+    Return the set of events required by at least one of the counters in
+    counter_list.
+    '''
+    event_set = set()
+    if counter_list is not None:
+        for counter in counter_list:
+            counter_events = get_events_for_counter(counter)
+            event_set = event_set.union(counter_events)
+    assert check_event_set_valid(event_set)
+    return event_set
+
+def get_events_for_known_counters():
+    '''
+    Return the set of events required by at least one of the counters we know
+    about.
+    '''
+    return get_events_for_counters(PRIVCOUNT_COUNTER_EVENTS.keys())
+
+def check_counter_names(counters):
+    '''
+    Check that each counter's name is in the set of valid counter names.
+    Returns False if any counter name is unknown, True if all are known.
+    '''
+    # sort names alphabetically, so the logs are in a sensible order
+    for counter_name in sorted(counters.keys()):
+        if counter_name not in get_valid_counters():
+            logging.warning("counter name {} is unknown"
+                            .format(counter_name))
+            return False
+    return True
+
 def check_bins_config(bins):
     '''
     Check that bins are non-overlapping.
@@ -721,6 +893,8 @@ def check_bins_config(bins):
     Raises an exception if any counter does not have bins, or if any bin does
     not have a lower and upper bound
     '''
+    if not check_counter_names(bins):
+        return False
     # sort names alphabetically, so the logs are in a sensible order
     for key in sorted(bins.keys()):
         # this sorts the bins by the first element in ascending order
@@ -764,6 +938,8 @@ def check_sigmas_config(sigmas):
     Returns True if all sigma values are valid, and False if any are invalid.
     Raises an exception if any sigma value is missing.
     '''
+    if not check_counter_names(sigmas):
+        return False
     # sort names alphabetically, so the logs are in a sensible order
     for key in sorted(sigmas.keys()):
         if sigmas[key]['sigma'] < 0.0:
@@ -1593,6 +1769,8 @@ class SecureCounters(object):
         counts = self.counters
         self.counters = None
         return counts
+
+## Nodes
 
 def get_remaining_rounds(num_phases, continue_config):
         '''

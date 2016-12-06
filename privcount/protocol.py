@@ -944,64 +944,6 @@ class PrivCountClientProtocol(PrivCountProtocol):
                 return True
         return False
 
-def check_event_set_case(event_set):
-    '''
-    Check that event_set is a set, and each event in it has the correct case
-    Returns True if all checks pass, and False if any check fails
-    '''
-    if not isinstance(event_set, (set, frozenset)):
-        return False
-    for event in event_set:
-        if event != event.upper():
-            return False
-    return True
-
-def check_event_set_valid(event_set):
-    '''
-    Check that event_set passes check_event_set_case, and also that each event
-    is in the set of valid events
-    Returns True if all checks pass, and False if any check fails
-    '''
-    if not check_event_set_case(event_set):
-        return False
-    for event in event_set:
-        if event not in get_valid_events():
-            return False
-    return True
-
-def get_valid_events():
-    '''
-    Return a set containing the name of each privcount event, in uppercase
-    '''
-    event_set = {'PRIVCOUNT_DNS_RESOLVED',
-                 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED',
-                 'PRIVCOUNT_STREAM_ENDED',
-                 'PRIVCOUNT_CIRCUIT_ENDED',
-                 'PRIVCOUNT_CONNECTION_ENDED'}
-    assert check_event_set_case(event_set)
-    return event_set
-
-def get_events_for_counter(counter):
-    '''
-    Return the set of events required by counter
-    '''
-    # TODO: stub, ignores counter
-    event_set = get_valid_events()
-    assert check_event_set_valid(event_set)
-    return event_set
-
-def get_events_for_counters(counter_list):
-    '''
-    Return the set of events required by any of the counters in counter_list
-    '''
-    event_set = set()
-    if counter_list is not None:
-        for counter in counter_list:
-            counter_events = get_events_for_counter(counter)
-            event_set = event_set.union(counter_events)
-    assert check_event_set_valid(event_set)
-    return event_set
-
 class TorControlClientProtocol(LineOnlyReceiver):
 
     def __init__(self, factory):
