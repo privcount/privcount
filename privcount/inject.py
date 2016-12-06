@@ -11,6 +11,7 @@ from time import time
 
 from twisted.internet import reactor
 from twisted.internet.protocol import ServerFactory
+from twisted.internet.error import ReactorNotRunning
 
 from privcount.protocol import TorControlServerProtocol
 from privcount.util import normalise_path
@@ -92,8 +93,12 @@ class PrivCountDataInjector(ServerFactory):
                 # close the connection from our server side
                 if self.protocol is not None and self.protocol.transport is not None:
                     self.protocol.transport.loseConnection()
-                # we should no longer be listening, so the reactor should end here
-                reactor.stop()
+                try:
+                    # we should no longer be listening, so the reactor should end here
+                    reactor.stop()
+                except ReactorNotRunning:
+                    # it's ok if the reactor stopped before we told it to
+                    pass
                 return
 
             msg = line.strip()
