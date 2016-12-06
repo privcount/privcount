@@ -3,14 +3,15 @@ import logging
 import math
 import string
 import cPickle as pickle
+import yaml
 
 from time import time
 from copy import deepcopy
 from base64 import b64decode
 
 from protocol import PrivCountClientProtocol, TorControlClientProtocol
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters, choose_secret_handshake_path, PrivCountClient
-import yaml
+from counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters
+from util import log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, choose_secret_handshake_path, PrivCountClient
 
 from twisted.internet import task, reactor, ssl
 from twisted.internet.protocol import ReconnectingClientFactory

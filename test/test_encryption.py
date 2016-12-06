@@ -12,7 +12,8 @@ from random import SystemRandom
 import string
 import sys
 
-from privcount.util import load_public_key_file, load_private_key_file, encrypt_pk, decrypt_pk, generate_symmetric_key, encrypt_symmetric, decrypt_symmetric, encode_data, decode_data, encrypt, decrypt, counter_modulus
+from privcount.util import load_public_key_file, load_private_key_file, encrypt_pk, decrypt_pk, generate_symmetric_key, encrypt_symmetric, decrypt_symmetric, encode_data, decode_data, encrypt, decrypt
+from privcount.counter import counter_modulus
 
 import logging
 # DEBUG logs every check: use it on failure

@@ -7,6 +7,7 @@ import os
 import json
 import logging
 import cPickle as pickle
+import yaml
 
 from time import time
 from copy import deepcopy
@@ -16,19 +17,15 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from protocol import PrivCountServerProtocol
-from statistics_noise import get_noise_allocation, DEFAULT_SIGMA_TOLERANCE
+from statistics_noise import get_noise_allocation
+from counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy
 
 # split lines to help with diffs and readability
 from util import log_error, log_tally_server_status
-from util import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config
 from util import format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since
 from util import generate_keypair, generate_cert
 from util import normalise_path, choose_secret_handshake_path
-from util import check_noise_weight_config, check_counters_config
-from util import PrivCountServer
-from util import CollectionDelay, continue_collecting, float_accuracy
-
-import yaml
+from util import PrivCountServer, continue_collecting
 
 # for warning about logging function and format # pylint: disable=W1202
 # for calling methods on reactor # pylint: disable=E1101

@@ -1,4 +1,5 @@
 __all__ = [
+   'counter',
    'data_collector',
    'inject',
    'plot',

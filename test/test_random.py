@@ -8,7 +8,7 @@
 # MAX_DIVERGENCE from the full range or equal bin counts
 
 from random import SystemRandom
-from privcount.util import sample, sample_randint, derive_blinding_factor, counter_modulus
+from privcount.counter import sample, sample_randint, derive_blinding_factor, counter_modulus
 
 # Allow this much divergence from the full range and equal bin counts
 MAX_DIVERGENCE = 0.02
