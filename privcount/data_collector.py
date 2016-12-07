@@ -228,9 +228,7 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             dc_conf['state'] = normalise_path(dc_conf['state'])
             assert os.path.exists(os.path.dirname(dc_conf['state']))
 
-            # if the delay period is specified, it must be greater than 0
-            # (if not, we use the value of the collect period from the TS)
-            assert dc_conf.get('delay_period', 1) > 0
+            dc_conf['delay_period'] = self.get_valid_delay_period(dc_conf)
 
             dc_conf.setdefault('always_delay', False)
             assert isinstance(dc_conf['always_delay'], bool)

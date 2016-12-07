@@ -700,7 +700,7 @@ class CollectionDelay(object):
         tolerance is the acceptable sigma decrease.
         '''
         # there must be a configured delay_period (or a default must be used)
-        assert delay_period is not None
+        assert delay_period >= 0
         assert always_delay is not None
         # there must be a noise allocation for the next round
         assert noise_allocation is not None
@@ -783,7 +783,7 @@ class CollectionDelay(object):
         assert round_successful is not None
         assert noise_allocation is not None
         assert start_time < end_time
-        assert delay_period > 0
+        assert delay_period >= 0
         assert always_delay is not None
         assert tolerance is not None
         # did we forget to check if we needed to delay this round?

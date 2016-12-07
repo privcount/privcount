@@ -256,7 +256,6 @@ class TallyServer(ServerFactory, PrivCountServer):
             # Set the default periods
             ts_conf.setdefault('event_period', 60)
             ts_conf.setdefault('checkin_period', 60)
-            ts_conf.setdefault('delay_period', ts_conf['collect_period'])
 
             # The event period should be less than or equal to half the
             # collect period, otherwise privcount sometimes takes an extra
@@ -287,10 +286,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                              ts_conf['checkin_period'],
                              ts_conf['event_period'])
 
-            ts_conf['delay_period'] = self.get_valid_delay_period(
-                ts_conf['delay_period'],
-                ts_conf['collect_period']
-                )
+            ts_conf['delay_period'] = self.get_valid_delay_period(ts_conf)
 
             ts_conf.setdefault('always_delay', False)
             assert isinstance(ts_conf['always_delay'], bool)
@@ -520,7 +516,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             # slightly before the TS allows it, which is a good thing.
             end_time = time()
             self.num_completed_collection_phases += 1
-            self.collection_phase.write_results(self.config['results'])
+            self.collection_phase.write_results(self.config['results'],
+                                                end_time)
             self.collection_delay.set_stop_result(
                 not self.collection_phase.is_error(),
                 # we can't use config['noise'], because it might have changed
@@ -853,7 +850,7 @@ class CollectionPhase(object):
                         contexts[type][uid]['Config'] = self.client_config[uid]
         return contexts
 
-    def get_result_context(self):
+    def get_result_context(self, end_time):
         '''
         the context is written out with the tally results
         '''
@@ -864,7 +861,11 @@ class CollectionPhase(object):
         # Do we want to round these times?
         # (That is, use begin and end instead?)
         result_time['Start'] = self.starting_ts
-        result_time['Stop'] = self.stopping_ts
+        result_time['Stopping'] = self.stopping_ts
+        result_time['End'] = end_time
+        result_time['CollectStopping'] = self.stopping_ts - self.starting_ts
+        result_time['CollectEnd'] = end_time - self.starting_ts
+        result_time['StoppingDelay'] = end_time - self.stopping_ts
         # the collect, event, and checkin periods are in the tally server config
         result_time['ClockPadding'] = self.clock_padding
         result_context['Time'] = result_time
@@ -942,7 +943,11 @@ class CollectionPhase(object):
 
         return result_context
 
-    def write_results(self, path_prefix):
+    def write_results(self, path_prefix, end_time):
+        '''
+        Write collections results to a file in path_prefix, including end_time
+        in the context.
+        '''
         # this should already have been done, but let's make sure
         path_prefix = normalise_path(path_prefix)
 
@@ -979,7 +984,7 @@ class CollectionPhase(object):
         result_info['Tally'] = tallied_counts
 
         # add the context of the outcome as another item
-        result_info['Context'] = self.get_result_context()
+        result_info['Context'] = self.get_result_context(end_time)
 
         filepath = os.path.join(path_prefix, "privcount.outcome.{}-{}.json".format(begin, end))
         with open(filepath, 'w') as fout:

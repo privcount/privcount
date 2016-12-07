@@ -162,51 +162,33 @@ class PrivCountNode(object):
         assert tolerance >= float_accuracy()
         return tolerance
 
-    @staticmethod
-    def get_valid_delay_period(delay_period, collect_period):
-        '''
-        Validate and return the delay period, comparing it with the collect
-        period.
-        Returns a (potentially modified) valid value.
-        Asserts if the collect period is invalid.
-        '''
-        assert collect_period is not None
-        assert collect_period > 0
-        if delay_period is None:
-            logging.warning("delay_period not specified, using collect_period %d",
-                            collect_period)
-            return collect_period
-        if delay_period < 0:
-            logging.warning("delay_period invalidd, using collect_period %d",
-                            collect_period)
-            return collect_period
-        # The delay period must be greater than or equal to the collect
-        # period
-        delay_min = collect_period
-        delay_increase = delay_min - delay_period
-        # if we're increasing the delay, log something
-        if delay_increase > 0.0:
-            # adjust the log level based on the severity of the increase
-            # we have to use absolute and relative checks to account for
-            # both local test networks and globe-spanning networks
-            if (delay_increase < 2.0 and
-                delay_increase < collect_period/100.0):
-                # probably just network latency
-                logging_function = logging.debug
-            elif (delay_increase < 60.0 and
-                  delay_increase < collect_period/10.0):
-                # interesting, but not bad
-                logging_function = logging.info
-            else:
-                logging_function = logging.warning
+    # 24 hours is a safe default for protecting user activity between rounds
+    DEFAULT_DELAY_PERIOD = 24*60*60
 
-            logging_function("delay_period %.1f too small for collect_period %.1f, increasing to %.1f",
-                            delay_period,
-                            collect_period,
-                            delay_min)
-            return delay_min
+    @staticmethod
+    def get_valid_delay_period(conf):
+        '''
+        Validate and return the delay period from conf
+        Returns a (potentially modified) valid value.
+        '''
+        # Validity checks
+        if 'delay_period' not in conf:
+            logging.warning("delay_period not specified, using default %d",
+                            PrivCountNode.DEFAULT_DELAY_PERIOD)
+            return PrivCountNode.DEFAULT_DELAY_PERIOD
+        if conf['delay_period'] < 0:
+            logging.warning("delay_period %d invalid, using default %d",
+                            conf['delay_period'],
+                            PrivCountNode.DEFAULT_DELAY_PERIOD)
+            return PrivCountNode.DEFAULT_DELAY_PERIOD
+        # Privacy warning (but keep the value)
+        if conf['delay_period'] < PrivCountNode.DEFAULT_DELAY_PERIOD:
+            logging.warning("delay_period %d is less than the default %d, this only protects %d seconds of user activity",
+                            conf['delay_period'],
+                            PrivCountNode.DEFAULT_DELAY_PERIOD,
+                            conf['delay_period'])
         # If it passes all the checks
-        return delay_period
+        return conf['delay_period']
 
 class PrivCountServer(PrivCountNode):
     '''
@@ -262,8 +244,6 @@ class PrivCountClient(PrivCountNode):
         self.start_config = None
         # the collect period supplied by the tally server
         self.collect_period = None
-        # the delay period after the current collection, if any
-        self.delay_period = None
         # the noise config used to start the most recent round
         self.last_noise_config = None
         # the start time of the most recent round
@@ -276,15 +256,6 @@ class PrivCountClient(PrivCountNode):
         '''
         log_tally_server_status(status)
 
-    def set_delay_period(self, collect_period):
-        '''
-        Set the delay period to a valid value, based on the configured
-        delay period and the supplied collect period.
-        '''
-        self.delay_period = \
-            self.get_valid_delay_period(self.config.get('delay_period'),
-                                        collect_period)
-
     def set_round_start(self, start_config):
         '''
         Set the round start variables:
@@ -294,7 +265,6 @@ class PrivCountClient(PrivCountNode):
          based on the start config and loaded config.
         '''
         self.collect_period = start_config['collect_period']
-        self.set_delay_period(start_config['collect_period'])
         self.last_noise_config = start_config['noise']
         self.collection_start_time = time()
 
@@ -322,16 +292,11 @@ class PrivCountClient(PrivCountNode):
                                          start_config['dc_threshold']):
             return None
 
-        delay = self.delay_period
-        # if it's the first round, there won't be a delay anyway
-        if delay is None:
-            delay = 0
-
         # check if we need to delay this round
         if not self.collection_delay.round_start_permitted(
             start_config['noise'],
             time(),
-            delay,
+            self.config['delay_period'],
             self.config['always_delay'],
             self.config['sigma_decrease_tolerance']):
             # we can't start the round yet
@@ -379,31 +344,21 @@ class PrivCountClient(PrivCountNode):
 
         # if we never started, there's no point in registering end of round
         if (self.collect_period is None or
-            self.delay_period is None or
             self.last_noise_config is None or
             self.collection_start_time is None):
             logging.warning("TS sent stop command before start command")
             return response
 
-        # We use the collect_period if the delay_period is not configured.
-        # But using the collect_period from the tally server is insecure,
+        # Using the collect_period from the tally server is inaccurate,
         # because the DCs and SKs do not check that the actual collection time
-        # matches the collection period
-        config_delay = self.config.get('delay_period')
+        # requested by the TS matches the collection period it claims
         actual_collect = end_time - self.collection_start_time
-        actual_delay = self.get_valid_delay_period(config_delay,
-                                                   actual_collect)
-
-        # so we use the maximum of the delay period from:
-        # - the TS collect period and the config at start time, and
-        # - the actual collect period and the current config.
-        delay = max(self.delay_period, actual_delay)
 
         # add this info to the context
         response['Config']['Time'] = {}
         response['Config']['Time']['Start'] = self.collection_start_time
         response['Config']['Time']['Stop'] = end_time
-        response['Config']['Time']['Delay'] = actual_delay
+        response['Config']['Time']['Collect'] = actual_collect
 
         # Register the stop with the collection delay
         self.collection_delay.set_stop_result(
@@ -412,7 +367,7 @@ class PrivCountClient(PrivCountNode):
             self.last_noise_config,
             self.collection_start_time,
             end_time,
-            delay,
+            self.config['delay_period'],
             self.config['always_delay'],
             self.config['sigma_decrease_tolerance'])
 

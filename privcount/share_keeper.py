@@ -207,9 +207,7 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
             sk_conf['state'] = normalise_path(sk_conf['state'])
             assert os.path.exists(os.path.dirname(sk_conf['state']))
 
-            # if the delay period is specified, it must be greater than 0
-            # (if not, we use the value of the collect period from the TS)
-            assert sk_conf.get('delay_period', 1) > 0
+            sk_conf['delay_period'] = self.get_valid_delay_period(sk_conf)
 
             sk_conf.setdefault('always_delay', False)
             assert isinstance(sk_conf['always_delay'], bool)
