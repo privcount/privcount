@@ -954,25 +954,32 @@ class CollectionPhase(object):
         if not self.is_stopped():
             logging.warning("trying to write results before collection phase is stopped")
             return
+
+        # keep going, we want the context for debugging
+        tally_was_successful = False
         if len(self.final_counts) <= 0:
             logging.warning("no tally results to write!")
-            return
+        else:
+            tallied_counter = SecureCounters(self.counters_config,
+                                             self.modulus)
+            tally_was_successful = tallied_counter.tally_counters(
+                self.final_counts.values())
 
-        tallied_counter = SecureCounters(self.counters_config, self.modulus)
-        tally_was_successful = tallied_counter.tally_counters(self.final_counts.values())
-
+        # keep going, we want the context for debugging
         if not tally_was_successful:
             logging.warning("problem tallying counters, did all counters and bins match!?")
-            return
+        else:
+            tallied_counts = tallied_counter.detach_counts()
 
-        tallied_counts = tallied_counter.detach_counts()
-
-        # For backwards compatibility, write out a "tallies" file
-        # This file only has the counts
-        begin, end = int(round(self.starting_ts)), int(round(self.stopping_ts))
-        filepath = os.path.join(path_prefix, "privcount.tallies.{}-{}.json".format(begin, end))
-        with open(filepath, 'w') as fout:
-            json.dump(tallied_counts, fout, sort_keys=True, indent=4)
+            # For backwards compatibility, write out a "tallies" file
+            # This file only has the counts
+            begin = int(round(self.starting_ts))
+            end = int(round(self.stopping_ts))
+            filepath = os.path.join(path_prefix,
+                                    "privcount.tallies.{}-{}.json"
+                                    .format(begin, end))
+            with open(filepath, 'w') as fout:
+                json.dump(tallied_counts, fout, sort_keys=True, indent=4)
 
         #logging.info("tally was successful, counts for phase from %d to %d were written to file '%s'", begin, end, filepath)
 
@@ -980,17 +987,23 @@ class CollectionPhase(object):
         # This makes it easier to interpret results later on
         result_info = {}
 
-        # add the existing list of counts as its own item
-        result_info['Tally'] = tallied_counts
+        if tally_was_successful:
+            # add the existing list of counts as its own item
+            result_info['Tally'] = tallied_counts
 
         # add the context of the outcome as another item
         result_info['Context'] = self.get_result_context(end_time)
 
-        filepath = os.path.join(path_prefix, "privcount.outcome.{}-{}.json".format(begin, end))
+        filepath = os.path.join(path_prefix, "privcount.outcome.{}-{}.json"
+                                .format(begin, end))
         with open(filepath, 'w') as fout:
             json.dump(result_info, fout, sort_keys=True, indent=4)
 
-        logging.info("tally was successful, outcome of phase of {} was written to file '{}'".format(format_interval_time_between(begin, 'from', end), filepath))
+        logging.info("tally {}, outcome of phase of {} was written to file '{}'"
+                     .format(
+                     "was successful" if tally_was_successful else "failed",
+                     format_interval_time_between(begin, 'from', end),
+                     filepath))
         self.final_counts = {}
 
     def log_status(self):
