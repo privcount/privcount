@@ -53,7 +53,7 @@ python test_random.py
 echo ""
 
 echo "Testing counters:"
-python test_counters.py
+python test_counter.py
 echo ""
 
 echo "Testing noise:"

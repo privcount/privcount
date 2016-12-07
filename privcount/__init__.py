@@ -1,6 +1,9 @@
 __all__ = [
+   'counter',
+   'crypto',
    'data_collector',
    'inject',
+   'log',
    'plot',
    'protocol',
    'share_keeper',

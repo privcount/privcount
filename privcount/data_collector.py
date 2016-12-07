@@ -3,17 +3,21 @@ import logging
 import math
 import string
 import cPickle as pickle
+import yaml
 
 from time import time
 from copy import deepcopy
 from base64 import b64decode
 
-from protocol import PrivCountClientProtocol, TorControlClientProtocol
-from util import SecureCounters, log_error, get_public_digest_string, load_public_key_string, encrypt, format_delay_time_wait, format_last_event_time_since, normalise_path, counter_modulus, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, combine_counters, choose_secret_handshake_path, PrivCountClient
-import yaml
-
 from twisted.internet import task, reactor, ssl
 from twisted.internet.protocol import ReconnectingClientFactory
+
+from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters
+from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
+from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since
+from privcount.node import PrivCountClient
+from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol
+from privcount.util import normalise_path, choose_secret_handshake_path
 
 # using reactor: pylint: disable=E1101
 # method docstring missing: pylint: disable=C0111
@@ -275,6 +279,7 @@ class Aggregator(ReconnectingClientFactory):
     def __init__(self, counters, sk_uids, noise_weight, modulus,
                  tor_control_port):
         self.secure_counters = SecureCounters(counters, modulus)
+        self.collection_counters = counters
         # we can't generate the noise yet, because we don't know the
         # DC fingerprint
         self.secure_counters.generate_blinding_shares(sk_uids)
@@ -302,6 +307,9 @@ class Aggregator(ReconnectingClientFactory):
 
     def buildProtocol(self, addr):
         self.protocol = TorControlClientProtocol(self)
+        # if we didn't build the protocol until after starting
+        if self.connector is not None:
+            self.protocol.startCollection(self.collection_counters)
         return self.protocol
 
     def startFactory(self):
@@ -316,6 +324,9 @@ class Aggregator(ReconnectingClientFactory):
         self.connector = reactor.connectTCP("127.0.0.1", self.tor_control_port, self)
         self.rotator = task.LoopingCall(self._do_rotate).start(600, now=False)
         self.cli_ips_rotated = time()
+        # if we've already built the protocol before starting
+        if self.protocol is not None:
+            self.protocol.startCollection(self.collection_counters)
 
     def _stop_protocol(self):
         '''
@@ -326,11 +337,15 @@ class Aggregator(ReconnectingClientFactory):
 
         # stop reading from Tor control port
         if self.protocol is not None:
+            self.protocol.stopCollection()
             self.protocol.quit()
+            self.protocol = None
         if self.rotator is not None:
             self.rotator.cancel()
+            self.rotator = None
         if self.connector is not None:
             self.connector.disconnect()
+            self.connector = None
 
     def _stop_secure_counters(self, counts_are_valid=True):
         '''
@@ -596,25 +611,26 @@ class Aggregator(ReconnectingClientFactory):
         if not self.secure_counters:
             return False
 
-        event_code, line_remaining = [v.strip() for v in event.split(' ', 1)]
+        # ignore empty events
+        if len(event) <= 1:
+            return False
+
+        event_code, items = event[0], event[1:]
         self.last_event_time = time()
 
         # hand valid events off to the aggregator
-        if event_code == 's':
-            # 's', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
-            items = [v.strip() for v in line_remaining.split(' ', 10)]
+        if event_code == 'PRIVCOUNT_STREAM_ENDED':
+            # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
             if len(items) == 10:
                 self._handle_stream_event(items[0:10])
 
-        elif event_code == 'c':
-            # 'c', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
-            items = [v.strip() for v in line_remaining.split(' ', 16)]
+        elif event_code == 'PRIVCOUNT_CIRCUIT_ENDED':
+            # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
             if len(items) == 16:
                 self._handle_circuit_event(items[0:16])
 
-        elif event_code == 't':
-            # 't', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
-            items = [v.strip() for v in line_remaining.split(' ', 6)]
+        elif event_code == 'PRIVCOUNT_CONNECTION_ENDED':
+            # 'PRIVCOUNT_CONNECTION_ENDED', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
             if len(items) == 6:
                 self._handle_connection_event(items[0:6])
 
