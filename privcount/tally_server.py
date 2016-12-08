@@ -256,7 +256,6 @@ class TallyServer(ServerFactory, PrivCountServer):
             # Set the default periods
             ts_conf.setdefault('event_period', 60)
             ts_conf.setdefault('checkin_period', 60)
-            ts_conf.setdefault('delay_period', ts_conf['collect_period'])
 
             # The event period should be less than or equal to half the
             # collect period, otherwise privcount sometimes takes an extra
@@ -287,10 +286,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                              ts_conf['checkin_period'],
                              ts_conf['event_period'])
 
-            ts_conf['delay_period'] = self.get_valid_delay_period(
-                ts_conf['delay_period'],
-                ts_conf['collect_period']
-                )
+            ts_conf['delay_period'] = self.get_valid_delay_period(ts_conf)
 
             ts_conf.setdefault('always_delay', False)
             assert isinstance(ts_conf['always_delay'], bool)
@@ -520,7 +516,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             # slightly before the TS allows it, which is a good thing.
             end_time = time()
             self.num_completed_collection_phases += 1
-            self.collection_phase.write_results(self.config['results'])
+            self.collection_phase.write_results(self.config['results'],
+                                                end_time)
             self.collection_delay.set_stop_result(
                 not self.collection_phase.is_error(),
                 # we can't use config['noise'], because it might have changed
@@ -853,7 +850,7 @@ class CollectionPhase(object):
                         contexts[type][uid]['Config'] = self.client_config[uid]
         return contexts
 
-    def get_result_context(self):
+    def get_result_context(self, end_time):
         '''
         the context is written out with the tally results
         '''
@@ -864,7 +861,11 @@ class CollectionPhase(object):
         # Do we want to round these times?
         # (That is, use begin and end instead?)
         result_time['Start'] = self.starting_ts
-        result_time['Stop'] = self.stopping_ts
+        result_time['Stopping'] = self.stopping_ts
+        result_time['End'] = end_time
+        result_time['CollectStopping'] = self.stopping_ts - self.starting_ts
+        result_time['CollectEnd'] = end_time - self.starting_ts
+        result_time['StoppingDelay'] = end_time - self.stopping_ts
         # the collect, event, and checkin periods are in the tally server config
         result_time['ClockPadding'] = self.clock_padding
         result_context['Time'] = result_time
@@ -942,32 +943,43 @@ class CollectionPhase(object):
 
         return result_context
 
-    def write_results(self, path_prefix):
+    def write_results(self, path_prefix, end_time):
+        '''
+        Write collections results to a file in path_prefix, including end_time
+        in the context.
+        '''
         # this should already have been done, but let's make sure
         path_prefix = normalise_path(path_prefix)
 
         if not self.is_stopped():
             logging.warning("trying to write results before collection phase is stopped")
             return
+
+        # keep going, we want the context for debugging
+        tally_was_successful = False
         if len(self.final_counts) <= 0:
             logging.warning("no tally results to write!")
-            return
+        else:
+            tallied_counter = SecureCounters(self.counters_config,
+                                             self.modulus)
+            tally_was_successful = tallied_counter.tally_counters(
+                self.final_counts.values())
 
-        tallied_counter = SecureCounters(self.counters_config, self.modulus)
-        tally_was_successful = tallied_counter.tally_counters(self.final_counts.values())
-
+        # keep going, we want the context for debugging
         if not tally_was_successful:
             logging.warning("problem tallying counters, did all counters and bins match!?")
-            return
+        else:
+            tallied_counts = tallied_counter.detach_counts()
 
-        tallied_counts = tallied_counter.detach_counts()
-
-        # For backwards compatibility, write out a "tallies" file
-        # This file only has the counts
-        begin, end = int(round(self.starting_ts)), int(round(self.stopping_ts))
-        filepath = os.path.join(path_prefix, "privcount.tallies.{}-{}.json".format(begin, end))
-        with open(filepath, 'w') as fout:
-            json.dump(tallied_counts, fout, sort_keys=True, indent=4)
+            # For backwards compatibility, write out a "tallies" file
+            # This file only has the counts
+            begin = int(round(self.starting_ts))
+            end = int(round(self.stopping_ts))
+            filepath = os.path.join(path_prefix,
+                                    "privcount.tallies.{}-{}.json"
+                                    .format(begin, end))
+            with open(filepath, 'w') as fout:
+                json.dump(tallied_counts, fout, sort_keys=True, indent=4)
 
         #logging.info("tally was successful, counts for phase from %d to %d were written to file '%s'", begin, end, filepath)
 
@@ -975,17 +987,23 @@ class CollectionPhase(object):
         # This makes it easier to interpret results later on
         result_info = {}
 
-        # add the existing list of counts as its own item
-        result_info['Tally'] = tallied_counts
+        if tally_was_successful:
+            # add the existing list of counts as its own item
+            result_info['Tally'] = tallied_counts
 
         # add the context of the outcome as another item
-        result_info['Context'] = self.get_result_context()
+        result_info['Context'] = self.get_result_context(end_time)
 
-        filepath = os.path.join(path_prefix, "privcount.outcome.{}-{}.json".format(begin, end))
+        filepath = os.path.join(path_prefix, "privcount.outcome.{}-{}.json"
+                                .format(begin, end))
         with open(filepath, 'w') as fout:
             json.dump(result_info, fout, sort_keys=True, indent=4)
 
-        logging.info("tally was successful, outcome of phase of {} was written to file '{}'".format(format_interval_time_between(begin, 'from', end), filepath))
+        logging.info("tally {}, outcome of phase of {} was written to file '{}'"
+                     .format(
+                     "was successful" if tally_was_successful else "failed",
+                     format_interval_time_between(begin, 'from', end),
+                     filepath))
         self.final_counts = {}
 
     def log_status(self):
