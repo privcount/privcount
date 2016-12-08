@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Test that a local control port provides PrivCount events
 
 import sys
