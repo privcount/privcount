@@ -13,8 +13,8 @@ from twisted.internet import reactor
 from twisted.internet.protocol import ServerFactory
 from twisted.internet.error import ReactorNotRunning
 
+from privcount.config import normalise_path
 from privcount.protocol import TorControlServerProtocol
-from privcount.util import normalise_path
 
 listener = None
 
