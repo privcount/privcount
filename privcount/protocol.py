@@ -1,7 +1,7 @@
 import logging, json, math
 
 from time import time
-from os import _exit, urandom, path
+from os import urandom, path
 from base64 import b64encode, b64decode
 
 from twisted.internet import reactor
@@ -47,15 +47,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             logging.error(
                 "Exception {} while initialising PrivCountProtocol instance"
                 .format(e))
-            # die immediately using os._exit()
-            # we can't use sys.exit() here, because twisted catches and logs it
-            _exit(1)
-        except:
-            # catch exceptions that don't derive from BaseException
-            logging.error(
-                "Unknown Exception while processing event type: {} payload: {}"
-                .format(event_type, event_payload))
-            _exit(1)
+            reactor.stop()
 
     def connectionMade(self): # overrides twisted function
         peer = self.transport.getPeer()
@@ -116,16 +108,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             # bring down the privcount network.
             # Since we ignore unrecognised events, the client would have to be
             # maliciously crafted, not just a port scanner.
-
-            # die immediately using os._exit()
-            # we can't use sys.exit() here, because twisted catches and logs it
-            _exit(1)
-        except:
-            # catch exceptions that don't derive from BaseException
-            logging.error(
-                "Unknown Exception while processing event type: {} payload: {}"
-                .format(event_type, event_payload))
-            _exit(1)
+            reactor.stop()
 
         if not self.is_valid_connection:
             self.protocol_failed()
