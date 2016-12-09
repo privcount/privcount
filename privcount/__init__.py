@@ -1,5 +1,6 @@
 __all__ = [
    'config',
+   'connection',
    'counter',
    'crypto',
    'data_collector',
