@@ -41,9 +41,9 @@ Run the unit tests: (optional)
     python test_random.py
     python test_counter.py
 
-If you have a local privcount-patched Tor instance on control port 9050, you can test that it supports PRIVCOUNT events: (optional)
+If you have a local privcount-patched Tor instance, you can test that it is returning PRIVCOUNT events:
 
-    python test_counters.py
+    python test_tor_ctl_event.py <control-port-or-path>
 
 #### Integration Tests
 

@@ -13,6 +13,7 @@ from twisted.internet import task, reactor, ssl
 from twisted.internet.protocol import ReconnectingClientFactory
 
 from privcount.config import normalise_path, choose_secret_handshake_path
+from privcount.connection import connect
 from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since
@@ -319,7 +320,13 @@ class Aggregator(ReconnectingClientFactory):
         return
 
     def start(self):
-        self.connector = reactor.connectTCP("127.0.0.1", self.tor_control_port, self)
+        '''
+        start the aggregator, and connect to the control port
+        '''
+        self.connector = connect(self,
+                                 { 'port' : self.tor_control_port }
+                                 #{ 'unix' : '/var/run/tor/control' }
+                                 )
         self.rotator = task.LoopingCall(self._do_rotate).start(600, now=False)
         self.cli_ips_rotated = time()
         # if we've already built the protocol before starting

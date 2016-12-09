@@ -14,6 +14,7 @@ from twisted.internet.protocol import ServerFactory
 from twisted.internet.error import ReactorNotRunning
 
 from privcount.config import normalise_path
+from privcount.connection import listen
 from privcount.protocol import TorControlServerProtocol
 
 listener = None
@@ -149,9 +150,19 @@ def main():
     run_inject(args)
 
 def run_inject(args):
+    '''
+    start the injector, and start it listening
+    '''
     # pylint: disable=E1101
     injector = PrivCountDataInjector(args.log, args.simulate, int(args.prune_before), int(args.prune_after))
-    listener = reactor.listenTCP(int(args.port), injector, interface="127.0.0.1")
+    # The injector listens on all of IPv4, IPv6, and a control socket, and
+    # injects events into the first client to connect
+    # Since these are synthetic events, it is safe to use /tmp for the socket
+    # path
+    listeners = listen(injector,
+                       [ { 'port' : int(args.port) },
+                         { 'unix' : '/tmp/privcount-inject' } ],
+                       ip_version_default = [4, 6])
     reactor.run()
 
 def add_inject_args(parser):
