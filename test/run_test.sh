@@ -73,7 +73,7 @@ mkdir -p old
 mv privcount.* old/ || true
 
 # Then run the injector, ts, sk, and dc
-echo "Launching injector, tally server, share keeper, and data collector..."
+echo "Launching injector (IP), tally server, share keeper, and data collector..."
 privcount inject --simulate --port 20003 --log events.txt &
 privcount ts config.yaml &
 privcount sk config.yaml &
@@ -100,8 +100,9 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       echo "Moving round $ROUNDS results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
       mv privcount.* old/ || true
       ROUNDS=$[$ROUNDS+1]
-      echo "Restarting injector for round $ROUNDS..."
-      privcount inject --simulate --port 20003 --log events.txt &
+      echo "Restarting injector (unix path) for round $ROUNDS..."
+      privcount inject --simulate --unix /tmp/privcount-inject \
+          --log events.txt &
     else
       ROUNDS=$[$ROUNDS+1]
       break
@@ -150,7 +151,7 @@ if [ -e privcount.outcome.latest.json -a \
   # events falling before or after data collection stops in short runs
   diff --minimal \
       -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
-      -I "[Dd]elay" -I "Collect" -I "End" \
+      -I "[Dd]elay" -I "Collect" -I "End" -I "peer" \
       old/privcount.outcome.latest.json privcount.outcome.latest.json || true
 else
   # Since we need old/latest and latest, it takes two runs to generate the

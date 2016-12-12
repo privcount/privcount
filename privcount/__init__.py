@@ -1,4 +1,6 @@
 __all__ = [
+   'config',
+   'connection',
    'counter',
    'crypto',
    'data_collector',
@@ -9,5 +11,4 @@ __all__ = [
    'share_keeper',
    'statistics_noise',
    'tally_server',
-   'util',
 ]
