@@ -95,37 +95,35 @@ class TorCtlClient(ReconnectingClientFactory):
                                                       " ".join(event))
         return True
 
-# Set defaults
-control_path = TOR_CONTROL_PATH
-control_port = TOR_CONTROL_PORT
-
+config_list = []
 # Process command-line arguments
 if len(sys.argv) > 1:
-    # UNIX socket path
-    if path.exists(sys.argv[1]):
-        control_path = sys.argv[1]
-    else:
-        control_path = None
+    # Just try every possible method, and let the ones that don't work fail
+    # (if they all succeed, it will be terribly confusing)
+    # Don't use multiple configs in production, it's only useful for testing
+    for arg in sys.argv[1:]:
+        # UNIX socket path
+        if path.exists(arg):
+            logging.warning("Trying unix socket: {}".format(arg))
+            path_config = { 'unix' : arg }
+            config_list.append(path_config)
+        # IP port
+        try:
+            control_port = int(arg)
+            # We could use TOR_CONTROL_IP_VERSION to be more specific about
+            # exactly which localhost we're trying
+            logging.warning("Trying localhost port: {}".format(control_port))
+            port_config = { 'port' : control_port }
+            config_list.append(port_config)
+        except ValueError:
+            pass
 
-    # IP port
-    try:
-        control_port = int(sys.argv[1])
-    except ValueError:
-        control_port = None
-
-# Just try every possible method, and let the ones that don't work fail
-# (if they all succeed, it will be terribly confusing)
-# Don't use multiple configs in production, it's only useful for testing
-config_list = []
-
-if control_path is not None:
-    path_config = { 'unix' : control_path }
+# Set defaults if there is nothing in the config list
+if len(config_list) == 0:
+    path_config = { 'unix' : TOR_CONTROL_PATH }
     config_list.append(path_config)
-
-if control_port is not None:
-    port_config = { 'port' : control_port }
+    port_config = { 'port' : TOR_CONTROL_PORT }
     config_list.append(port_config)
-
 
 # Trying localhost is sufficient: a service bound to all ports will answer
 # on localhost (and expose control of your tor to the entire world).
@@ -134,8 +132,5 @@ connector = connect(TorCtlClient(),
                     ip_version_default = TOR_CONTROL_IP_VERSION)
 
 if isinstance(connector, (Sequence)):
-    logging.warning("If you have ControlPorts listening on both path {} and IPv{} localhost port {}, some events may be attributed to the wrong address, or duplicated."
-                    .format(TOR_CONTROL_IP_VERSION,
-                            control_path,
-                            control_port))
+    logging.warning("If you have ControlPorts listening on multiple IP ports or unix paths, some events may be attributed to the wrong address, or duplicated.")
 reactor.run()

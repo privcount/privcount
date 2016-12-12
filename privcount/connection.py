@@ -34,10 +34,10 @@ def listen(factory, config, ip_local_default=True, ip_version_default=4):
     dictionary containing listening configuration information.
     IP addresses:
       port: IP port
-      interface: IPv4 or IPv6 address (optional)
+      ip: IPv4 or IPv6 address (optional)
     UNIX sockets:
       unix: Unix socket path
-    If there is a port, but no interface:
+    If there is a port, but no ip:
     - if ip_local_default is True, IP listeners listen on localhost, otherwise
     - if it is False, they listen on all interfaces, and
     - ip_version_default is the IP version they listen on.
@@ -77,6 +77,9 @@ def listen_unix(factory, config):
     # now process the list
     listeners = []
     for item in config:
+        if not validate_connection_config(item):
+            # warn but skip invalid configs
+            continue
         if 'unix' in item:
             path = item['unix']
             listeners.append(reactor.listenUNIX(path, factory))
@@ -93,17 +96,20 @@ def listen_ip(factory, config, ip_local_default=True, ip_version_default=4):
     # now process the list
     listeners = []
     for item in config:
+        if not validate_connection_config(item):
+            # warn but skip invalid configs
+            continue
         if 'port' in item:
             port = int(item['port'])
-            if 'interface' in item:
-                interface = item['interface']
+            if 'ip' in item:
+                ip = item['ip']
                 listeners.append(reactor.listenTCP(port, factory,
-                                                   interface=interface))
+                                                   interface=ip))
             else:
                 for ip_version in ip_version_default:
-                    interface = IP_LISTEN_DEFAULT[ip_version][ip_local_default]
+                    ip = IP_LISTEN_DEFAULT[ip_version][ip_local_default]
                     listeners.append(reactor.listenTCP(port, factory,
-                                                       interface=interface))
+                                                       interface=ip))
     return _unlistify(listeners)
 
 def connect(factory, config, ip_local_default=True, ip_version_default=4):
@@ -113,13 +119,13 @@ def connect(factory, config, ip_local_default=True, ip_version_default=4):
     Known config keys are:
     IP addresses:
       port: IP port
-      interface: IPv4 or IPv6 address (optional)
+      ip: IPv4 or IPv6 address (optional)
     UNIX sockets:
       unix: Unix socket path
-    If there is a port, but no interface:
+    If there is a port, but no ip:
     - if ip_local_default is True, IP connections connect to localhost on
       IP version ip_version_default.
-    - if ip_local_default is False, IP connections must have an interface
+    - if ip_local_default is False, IP connections must have an ip
       address.
     The default is to try IPv4 localhost.
     Returns a connector object.
@@ -159,6 +165,9 @@ def connect_unix(factory, config):
     # now process the list
     connectors = []
     for item in config:
+        if not validate_connection_config(item):
+            # warn but skip invalid configs
+            continue
         if 'unix' in item:
             path = item['unix']
             connectors.append(reactor.connectUNIX(path, factory))
@@ -175,17 +184,98 @@ def connect_ip(factory, config, ip_local_default=True, ip_version_default=4):
     # now process the list
     connectors = []
     for item in config:
+        if not validate_connection_config(item,
+                                       must_have_ip=(not ip_local_default)):
+            # warn but skip invalid configs
+            continue
         if 'port' in item:
             port = int(item['port'])
-            if 'interface' in item:
-                interface = item['interface']
-                connectors.append(reactor.connectTCP(interface, port, factory))
+            if 'ip' in item:
+                ip = item['ip']
+                connectors.append(reactor.connectTCP(ip, port, factory))
             elif ip_local_default:
                 for ip_version in ip_version_default:
-                    interface = IP_CONNECT_DEFAULT[ip_version]
-                    connectors.append(reactor.connectTCP(interface, port,
-                                                         factory))
+                    ip = IP_CONNECT_DEFAULT[ip_version]
+                    connectors.append(reactor.connectTCP(ip, port, factory))
     return _unlistify(connectors)
+
+def disconnect(connector):
+    '''
+    Disconnect all connectors in connector.
+    '''
+    # upgrade the connector to a list if it has been passed as a single item
+    connector = _listify(connector)
+    # now process the list
+    for item in connector:
+        item.disconnect()
+
+def validate_connection_config(config, must_have_ip=False):
+    '''
+    Check that config is valid.
+    If must_have_ip is True, config must have an IP address if it has a port.
+    Returns False if config is invalid, True otherwise.
+    Logs a warning for the first invalid config item found.
+    '''
+    if config is None:
+        logging.warning("Invalid config: None")
+        return False
+    # upgrade config to a list if it has been passed as a single item
+    config = _listify(config)
+    # now process the list
+    for item in config:
+        if item is None:
+            logging.warning("Invalid config item: None")
+            return False
+        if 'port' in item:
+            if _config_missing(item, 'port', False):
+                logging.warning("Invalid port: missing value")
+                return False
+            try:
+                port = int(item['port'])
+            except ValueError as e:
+                logging.warning("Invalid port {}: {}".format(port, e))
+                return False
+            if port <= 0:
+                logging.warning("Port {} must be positive".format(port))
+                return False
+            if must_have_ip and _config_missing(item, 'ip'):
+                logging.warning("Port {} must have an IP address".format(port))
+                return False
+            if 'ip' in item:
+                if _config_missing(item, 'ip'):
+                    logging.warning("Invalid ip: missing value")
+                    return False
+                # let the libraries catch other errors later
+        elif 'ip' in item:
+            logging.warning("IP {} must have a port".format(ip))
+            return False
+        if 'unix' in item:
+            if _config_missing(item, 'unix'):
+                logging.warning("Invalid unix path: missing value")
+                return False
+            # let the libraries catch other errors later
+    return True
+
+def choose_a_connection(arg):
+    '''
+    If arg is a sequence, return an arbitrary item from that sequence.
+    Otherwise, return arg.
+    '''
+    arg = _listify(arg)
+    return arg[0]
+
+def _config_missing(config, key, check_len=True):
+    '''
+    Return True if config is missing key, or if config[key] is None.
+    If check_len is True, also return True if len(config[key]) is 0.
+    '''
+    if key not in config:
+        return True
+    if config[key] is None:
+        return True
+    if check_len and len(config[key]) == 0:
+        return True
+    return False
 
 def _listify(arg):
     '''

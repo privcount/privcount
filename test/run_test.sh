@@ -73,7 +73,7 @@ mkdir -p old
 mv privcount.* old/ || true
 
 # Then run the injector, ts, sk, and dc
-echo "Launching injector, tally server, share keeper, and data collector..."
+echo "Launching injector (IP), tally server, share keeper, and data collector..."
 privcount inject --simulate --port 20003 --log events.txt &
 privcount ts config.yaml &
 privcount sk config.yaml &
@@ -100,8 +100,9 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       echo "Moving round $ROUNDS results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
       mv privcount.* old/ || true
       ROUNDS=$[$ROUNDS+1]
-      echo "Restarting injector for round $ROUNDS..."
-      privcount inject --simulate --port 20003 --log events.txt &
+      echo "Restarting injector (unix path) for round $ROUNDS..."
+      privcount inject --simulate --unix /tmp/privcount-inject \
+          --log events.txt &
     else
       ROUNDS=$[$ROUNDS+1]
       break

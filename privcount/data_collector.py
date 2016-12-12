@@ -13,7 +13,7 @@ from twisted.internet import task, reactor, ssl
 from twisted.internet.protocol import ReconnectingClientFactory
 
 from privcount.config import normalise_path, choose_secret_handshake_path
-from privcount.connection import connect
+from privcount.connection import connect, disconnect, validate_connection_config, choose_a_connection
 from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since
@@ -238,11 +238,10 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                 self.get_valid_sigma_decrease_tolerance(dc_conf)
 
             assert dc_conf['name'] != ''
-            assert dc_conf['tally_server_info']['ip'] is not None
-            assert dc_conf['tally_server_info']['port'] > 0
 
-            assert dc_conf['event_source'] is not None
-            assert dc_conf['event_source'] > 0
+            assert validate_connection_config(dc_conf['tally_server_info'],
+                                           must_have_ip=True)
+            assert validate_connection_config(dc_conf['event_source'])
 
             assert 'share_keepers' in dc_conf
 
@@ -286,6 +285,7 @@ class Aggregator(ReconnectingClientFactory):
         self.noise_weight_value = None
 
         self.connector = None
+        self.connector_list = None
         self.protocol = None
         self.rotator = None
         self.tor_control_port = tor_control_port
@@ -323,10 +323,10 @@ class Aggregator(ReconnectingClientFactory):
         '''
         start the aggregator, and connect to the control port
         '''
-        self.connector = connect(self,
-                                 { 'port' : self.tor_control_port }
-                                 #{ 'unix' : '/var/run/tor/control' }
-                                 )
+        # This call can return a list of connectors, or a single connector
+        self.connector_list = connect(self, self.tor_control_port)
+        # Twisted doesn't want a list of connectors, it only wants one
+        self.connector = choose_a_connection(self.connector_list)
         self.rotator = task.LoopingCall(self._do_rotate).start(600, now=False)
         self.cli_ips_rotated = time()
         # if we've already built the protocol before starting
@@ -348,8 +348,9 @@ class Aggregator(ReconnectingClientFactory):
         if self.rotator is not None:
             self.rotator.cancel()
             self.rotator = None
-        if self.connector is not None:
-            self.connector.disconnect()
+        if self.connector_list is not None:
+            disconnect(self.connector_list)
+            self.connector_list = None
             self.connector = None
 
     def _stop_secure_counters(self, counts_are_valid=True):
