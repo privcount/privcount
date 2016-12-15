@@ -17,6 +17,8 @@ from privcount.config import normalise_path
 from privcount.connection import listen
 from privcount.protocol import TorControlServerProtocol
 
+# We can't have the injector listen on a port by default, because it might
+# conflict with a running tor instance
 DEFAULT_PRIVCOUNT_INJECT_SOCKET = '/tmp/privcount-inject'
 
 listener = None
@@ -177,7 +179,7 @@ def add_inject_args(parser):
                         help="port on which to listen for PrivCount connections(default: no IP listener)",
                         required=False)
     parser.add_argument('-i', '--ip',
-                        help="IPv4 or IPv6 address on which to listen for PrivCount connections (default: both 127.0.0.1 and ::1)",
+                        help="IPv4 or IPv6 address on which to listen for PrivCount connections (default: both 127.0.0.1 and ::1, if a port is specified)",
                         required=False)
     parser.add_argument('-u', '--unix',
                         help="Unix socket on which to listen for PrivCount connections (default: '{}')"
