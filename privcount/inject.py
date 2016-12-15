@@ -192,8 +192,7 @@ def add_inject_args(parser):
                         default='-')
     parser.add_argument('-s', '--simulate',
                         action='store_true',
-                        help="add pauses between each event injection to simulate the inter-arrival times from the source data",
-                        default=True)
+                        help="add pauses between each event injection to simulate the inter-arrival times from the source data")
     parser.add_argument('--prune-before',
                         help="do not inject events that occurred before the given unix timestamp",
                         default=0)
