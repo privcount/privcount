@@ -66,3 +66,7 @@ If you have matplotlib installed, you can then visualize the results:
     privcount plot -d privcount.tallies.*.json test
 
 and open the PDF file that was created.
+
+The full results, including context, are in:
+
+    privcount.outcome.*.json
