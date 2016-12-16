@@ -13,6 +13,9 @@ from twisted.internet.protocol import ReconnectingClientFactory
 from privcount.connection import connect, transport_info
 from privcount.protocol import TorControlClientProtocol, get_valid_events
 
+# set the log level
+#logging.basicConfig(level=logging.DEBUG)
+
 ## Usage:
 #
 ## Setup

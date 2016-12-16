@@ -17,6 +17,9 @@ from privcount.config import normalise_path
 from privcount.connection import listen
 from privcount.protocol import TorControlServerProtocol
 
+# set the log level
+#logging.basicConfig(level=logging.DEBUG)
+
 # We can't have the injector listen on a port by default, because it might
 # conflict with a running tor instance
 DEFAULT_PRIVCOUNT_INJECT_SOCKET = '/tmp/privcount-inject'
