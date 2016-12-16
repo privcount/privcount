@@ -35,7 +35,8 @@ from privcount.protocol import TorControlClientProtocol, get_valid_events
 ## Testing
 # source venv/bin/activate
 # python test/test_tor_ctl_event.py
-## wait a few minutes for the first events to arrive
+## wait a few minutes for the first events to arrive, or just terminate tor
+## using a SIGINT after it has made some connections
 
 # The default control socket path used by Debian
 TOR_CONTROL_PATH = '/var/run/tor/control'
