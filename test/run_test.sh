@@ -74,7 +74,9 @@ mv privcount.* old/ || true
 
 # Then run the injector, ts, sk, and dc
 echo "Launching injector (IP), tally server, share keeper, and data collector..."
-privcount inject --simulate --port 20003 --log events.txt &
+# We can either test --simulate, and get partial data, or get full data
+# It's better to get full data
+privcount inject --port 20003 --log events.txt &
 privcount ts config.yaml &
 privcount sk config.yaml &
 privcount dc config.yaml &
@@ -101,7 +103,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       mv privcount.* old/ || true
       ROUNDS=$[$ROUNDS+1]
       echo "Restarting injector (unix path) for round $ROUNDS..."
-      privcount inject --simulate --unix /tmp/privcount-inject \
+      privcount inject --unix /tmp/privcount-inject \
           --log events.txt &
     else
       ROUNDS=$[$ROUNDS+1]
