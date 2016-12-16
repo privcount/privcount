@@ -152,12 +152,18 @@ class PrivCountDataInjector(ServerFactory):
                 do_wait = True if self.last_time_end != 0.0 and wait_time > 0.0 else False
                 self.last_time_end = this_time_end
 
-            if do_wait:
-                # we cant sleep or twisted wont work correctly, we must use callLater instead
-                reactor.callLater(wait_time, self._flush_later, msg) # pylint: disable=E1101
-                return
-            else:
-                self._flush_now(msg)
+            # ensure wait_time is sensible
+            if wait_time < 0.0:
+                logging.warning("Out of sequence event times")
+                wait_time = 0.0
+
+            # we can't dump the entire file at once: it fills up the buffers
+            # without giving the twisted event loop time to flush them
+            # instead, use callLater with a zero delay
+            # we cant sleep or twisted wont work correctly, we must use callLater instead
+            reactor.callLater(wait_time, self._flush_later, msg) # pylint: disable=E1101
+            # _flush_later will inject the next event when called
+            return
 
     def _get_event_times(self, msg):
         parts = msg.split()
