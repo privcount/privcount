@@ -1070,6 +1070,14 @@ class TorControlClientProtocol(LineOnlyReceiver):
                             .format(transport_info(self.transport),
                                     value_name, value, e))
 
+    def sendLine(self, line):
+        '''
+        overrides twisted function
+        '''
+        logging.debug("Sending line '{}' to {}"
+                      .format(line, transport_info(self.transport)))
+        return LineOnlyReceiver.sendLine(self, line)
+
     def lineReceived(self, line):
         '''
         Check that authentication was successful.
@@ -1268,6 +1276,14 @@ class TorControlServerProtocol(LineOnlyReceiver):
         '''
         logging.debug("Connection with {} was made"
                       .format(transport_info(self.transport)))
+
+    def sendLine(self, line):
+        '''
+        overrides twisted function
+        '''
+        logging.debug("Sending line '{}' to {}"
+                      .format(line, transport_info(self.transport)))
+        return LineOnlyReceiver.sendLine(self, line)
 
     def lineReceived(self, line):
         '''
