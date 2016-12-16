@@ -49,7 +49,7 @@ If you have a local privcount-patched Tor instance, you can test that it is retu
 
 Start the event server that will supply events to the data collector:
 
-    privcount inject --simulate --port 20003 --log events.txt
+    privcount inject --port 20003 --log events.txt
 
 Start the PrivCount components:
 
@@ -66,3 +66,7 @@ If you have matplotlib installed, you can then visualize the results:
     privcount plot -d privcount.tallies.*.json test
 
 and open the PDF file that was created.
+
+The full results, including context, are in:
+
+    privcount.outcome.*.json
