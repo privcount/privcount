@@ -34,6 +34,7 @@ class PrivCountDataInjector(ServerFactory):
         self.protocol = None
         self.event_file = None
         self.last_time_end = 0.0
+        self.injecting = False
         self.listeners = None
 
     def startFactory(self):
@@ -59,6 +60,7 @@ class PrivCountDataInjector(ServerFactory):
         self.listeners = listener_list
 
     def start_injecting(self):
+        self.injecting = True
         if self.listeners is not None:
             logging.info("Injector is no longer listening")
             stopListening(self.listeners)
@@ -75,14 +77,26 @@ class PrivCountDataInjector(ServerFactory):
 
     def stop_injecting(self):
         if not self.injecting:
-            logging.debug("Ignoring request to stop injecting before injection has started")
+            logging.debug("Ignoring request to stop injecting when injection is not in progress")
             return
+        self.injecting = False
         if self.listeners is not None:
             stopListening(self.listeners)
             self.listeners = None
+        # close the event log file
         if self.event_file is not None:
             self.event_file.close()
             self.event_file = None
+        # close the connection from our server side
+        if self.protocol is not None and self.protocol.transport is not None:
+            self.protocol.transport.loseConnection()
+        # stop the reactor
+        try:
+            # we should no longer be listening, so the reactor should end here
+            reactor.stop()
+        except ReactorNotRunning:
+            # it's ok if the reactor stopped before we told it to
+            pass
 
     def _get_line(self):
         if self.event_file == None:
@@ -114,15 +128,14 @@ class PrivCountDataInjector(ServerFactory):
         while True:
             line = self._get_line()
             if line is None:
-                # close the connection from our server side
-                if self.protocol is not None and self.protocol.transport is not None:
-                    self.protocol.transport.loseConnection()
-                try:
-                    # we should no longer be listening, so the reactor should end here
-                    reactor.stop()
-                except ReactorNotRunning:
-                    # it's ok if the reactor stopped before we told it to
-                    pass
+                # twisted's loseConnection says:
+                # "Close my connection, after writing all pending data"
+                # But it often closes the connection before sending data.
+                # So we allow the event loop to run before we stop injecting
+                # otherwise, the connection may be closed before the final line
+                # is received
+                # A zero delay is sufficient for localhost
+                reactor.callLater(0.0, self.stop_injecting) # pylint: disable=E1101
                 return
 
             msg = line.strip()

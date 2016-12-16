@@ -1309,14 +1309,17 @@ class TorControlServerProtocol(LineOnlyReceiver):
                 upper_setevents = map(str.upper, parts[1:])
                 # already uppercase
                 upper_known_events = get_valid_events()
-                # if every requested event is in the known events
-                # if there are no requested events, that's ok, it turns events
-                # off
-                if set(upper_setevents).issubset(upper_known_events):
+                upper_setevents = set(upper_setevents)
+                if len(upper_setevents) == 0:
+                    # if there are no requested events, turn events off
+                    self.sendLine("250 OK")
+                    self.factory.stop_injecting()
+                elif upper_setevents.issubset(upper_known_events):
+                    # if every requested event is in the known events
                     self.sendLine("250 OK")
                     self.factory.start_injecting()
                 else:
-                    unknown_events = set(upper_setevents).difference(
+                    unknown_events = upper_setevents.difference(
                         upper_known_events)
                     assert len(unknown_events) > 0
                     # this line displays the event name uppercased
