@@ -14,7 +14,7 @@ from twisted.internet.protocol import ServerFactory
 from twisted.internet.error import ReactorNotRunning
 
 from privcount.config import normalise_path
-from privcount.connection import listen
+from privcount.connection import listen, stopListening
 from privcount.protocol import TorControlServerProtocol
 
 # set the log level
@@ -23,8 +23,6 @@ from privcount.protocol import TorControlServerProtocol
 # We can't have the injector listen on a port by default, because it might
 # conflict with a running tor instance
 DEFAULT_PRIVCOUNT_INJECT_SOCKET = '/tmp/privcount-inject'
-
-listener = None
 
 class PrivCountDataInjector(ServerFactory):
 
@@ -36,6 +34,7 @@ class PrivCountDataInjector(ServerFactory):
         self.protocol = None
         self.event_file = None
         self.last_time_end = 0.0
+        self.listeners = None
 
     def startFactory(self):
         # TODO
@@ -50,10 +49,21 @@ class PrivCountDataInjector(ServerFactory):
         self.protocol = TorControlServerProtocol(self)
         return self.protocol
 
+    def set_listeners(self, listener_list):
+        '''
+        Set the listeners for this factory to listener_list
+        '''
+        # Since the listeners hold a reference to the factory, this causes a
+        # (temporary) reference loop. Perhaps there is a better way of
+        # retrieving all the listeners for a factory?
+        self.listeners = listener_list
+
     def start_injecting(self):
-        if listener is not None:
+        if self.listeners is not None:
             logging.info("Injector is no longer listening")
-            listener.stopListening()
+            stopListening(self.listeners)
+            # This breaks the reference loop
+            self.listeners = None
         if self.do_pause:
             logging.info("We will pause between the injection of each event to simulate actual event inter-arrival times, so this may take a while")
 
@@ -64,6 +74,12 @@ class PrivCountDataInjector(ServerFactory):
         self._inject_events()
 
     def stop_injecting(self):
+        if not self.injecting:
+            logging.debug("Ignoring request to stop injecting before injection has started")
+            return
+        if self.listeners is not None:
+            stopListening(self.listeners)
+            self.listeners = None
         if self.event_file is not None:
             self.event_file.close()
             self.event_file = None
@@ -175,6 +191,7 @@ def run_inject(args):
     if args.unix is not None:
         listener_config['unix']= args.unix
     listeners = listen(injector, listener_config, ip_version_default = [4, 6])
+    injector.set_listeners(listeners)
     reactor.run()
 
 def add_inject_args(parser):
