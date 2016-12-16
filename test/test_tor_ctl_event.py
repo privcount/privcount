@@ -86,7 +86,7 @@ class TorCtlClient(ReconnectingClientFactory):
     def handle_event(self, event):
         '''
         Called when an event occurs.
-        event is a space-separated list of tokens from the event line
+        event is a list of tokens from the event line, split on spaces
         '''
         if self.nickname is None:
             nickname = ""
