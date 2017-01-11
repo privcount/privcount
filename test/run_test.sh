@@ -72,14 +72,19 @@ echo "Moving old results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
 mkdir -p old
 mv privcount.* old/ || true
 
-# Then run the injector, ts, sk, and dc
-echo "Launching injector (IP), tally server, share keeper, and data collector..."
+# Injector commands for re-use
 # We can either test --simulate, and get partial data, or get full data
 # It's better to get full data
-privcount inject --port 20003 --log events.txt &
+INJECTOR_BASE_CMD="privcount inject --log events.txt"
+INJECTOR_PORT_CMD="$INJECTOR_BASE_CMD --port 20003"
+INJECTOR_UNIX_CMD="$INJECTOR_BASE_CMD --unix /tmp/privcount-inject"
+
+# Then run the ts, sk, dc, and injector
+echo "Launching injector (IP), tally server, share keeper, and data collector..."
 privcount ts config.yaml &
 privcount sk config.yaml &
 privcount dc config.yaml &
+$INJECTOR_PORT_CMD &
 
 # Then wait for each job, terminating if any job produces an error
 # Ideally, we'd want to use wait, or wait $job, but that only checks one job
@@ -103,8 +108,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       mv privcount.* old/ || true
       ROUNDS=$[$ROUNDS+1]
       echo "Restarting injector (unix path) for round $ROUNDS..."
-      privcount inject --unix /tmp/privcount-inject \
-          --log events.txt &
+      $INJECTOR_UNIX_CMD &
     else
       ROUNDS=$[$ROUNDS+1]
       break
