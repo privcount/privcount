@@ -169,9 +169,9 @@ if [ -e privcount.outcome.latest.json -a \
   # some minor numeric differences are expected due to noise, and due to
   # events falling before or after data collection stops in short runs
   diff --minimal \
-      -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
-      -I "[Dd]elay" -I "Collect" -I "End" -I "peer" \
-      old/privcount.outcome.latest.json privcount.outcome.latest.json || true
+    -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
+    -I "[Dd]elay" -I "Collect" -I "End" -I "peer" \
+    old/privcount.outcome.latest.json privcount.outcome.latest.json || true
 else
   # Since we need old/latest and latest, it takes two runs to generate the
   # first outcome file comparison
