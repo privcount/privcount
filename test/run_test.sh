@@ -139,24 +139,35 @@ ENDSEC="`$TIMESTAMP_COMMAND`"
 echo "Terminating privcount after $ROUNDS round(s)..."
 pkill -P $$
 
+# Symlink a timestamped file to a similarly-named "latest" file
+# Usage:
+# link_latest prefix suffix
+# Takes two arguments: the prefix and the suffix, in a filename like:
+# privcount.prefix.timestamp.suffix
+# Doesn't handle arguments with spaces
+function link_latest() {
+  PREFIX="$1"
+  SUFFIX="$2"
+  GLOB_PATTERN=privcount.$PREFIX.*.$SUFFIX
+  LATEST_NAME=privcount.$PREFIX.latest.$SUFFIX
+  if [ -f $GLOB_PATTERN ]; then
+    ln -s $GLOB_PATTERN $LATEST_NAME
+  else
+    echo "Error: No $PREFIX $SUFFIX file produced."
+    exit 1
+  fi
+}
+
 # If an outcome file was produced, keep a link to the latest file
-if [ -f privcount.outcome.*.json ]; then
-  ln -s privcount.outcome.*.json privcount.outcome.latest.json
-else
-  echo "Error: No outcome file produced."
-  exit 1
-fi
+link_latest outcome json
 
 # If a tallies file was produced, keep a link to the latest file, and plot it
-if [ -f privcount.tallies.*.json ]; then
-  ln -s privcount.tallies.*.json privcount.tallies.latest.json
+link_latest tallies json
+if [ -f privcount.tallies.latest.json ]; then
   echo "Plotting results..."
   # plot will fail if the optional dependencies are not installed
   # tolerate this failure, and shut down the privcount processes
   privcount plot -d privcount.tallies.latest.json data || true
-else
-  echo "Error: No tallies file produced."
-  exit 1
 fi
 
 # Show the differences between the latest and old latest outcome files
