@@ -73,7 +73,15 @@ STARTSEC="`$TIMESTAMP_COMMAND`"
 # Move aside the old result files
 echo "Moving old results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
 mkdir -p old
-mv privcount.* old/ || true
+# Save the commands for re-use during multiple round tests
+MOVE_JSON_COMMAND="mv privcount.*.json old/"
+MOVE_PDF_COMMAND="mv privcount.*.pdf old/"
+MOVE_LOG_COMMAND="mv privcount.*.log old/"
+# Clean up before running the test
+$MOVE_JSON_COMMAND || true
+# If the plot libraries are not installed, this will always fail
+$MOVE_PDF_COMMAND 2> /dev/null || true
+$MOVE_LOG_COMMAND || true
 
 # Injector commands for re-use
 # We can either test --simulate, and get partial data, or get full data
@@ -108,7 +116,9 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   if [ -f privcount.outcome.*.json ]; then
     if [ $[$ROUNDS+1] -lt $PRIVCOUNT_ROUNDS ]; then
       echo "Moving round $ROUNDS results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
-      mv privcount.* old/ || true
+      $MOVE_JSON_COMMAND || true
+      # If the plot libraries are not installed, this will always fail
+      $MOVE_PDF_COMMAND 2> /dev/null || true
       ROUNDS=$[$ROUNDS+1]
       echo "Restarting injector (unix path) for round $ROUNDS..."
       $INJECTOR_UNIX_CMD &
