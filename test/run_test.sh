@@ -90,13 +90,46 @@ INJECTOR_BASE_CMD="privcount inject --log events.txt"
 INJECTOR_PORT_CMD="$INJECTOR_BASE_CMD --port 20003"
 INJECTOR_UNIX_CMD="$INJECTOR_BASE_CMD --unix /tmp/privcount-inject"
 
+# Generate a log file name
+# Usage:
+# > `log_file_name privcount_command timestamp` 2>&1
+# 2>&1 | tee `log_file_name privcount_command timestamp`
+# Takes two arguments: the privcount command (inject, ts, sk, dc) and the unix
+# timestamp for the log
+# Outputs a string containing the log file name
+# Doesn't handle arguments with spaces
+function log_file_name() {
+  PRIVCOUNT_COMMAND="$1"
+  FILE_TIMESTAMP="$2"
+  echo "privcount.$PRIVCOUNT_COMMAND.$FILE_TIMESTAMP.log"
+}
+
+# Save a command's output in a log file
+# Usage:
+# privcount privcount_command args 2&>1 | `save_to_log privcount_command timestamp`
+# Takes two arguments: the privcount command (inject, ts, sk, dc) and the unix
+# timestamp for the log
+# Outputs a command that logs the output of a command to a file, and also
+# echoes it to standard output
+# Doesn't handle arguments with spaces
+function save_to_log() {
+  SAVE_LOG_COMMAND="tee"
+  PRIVCOUNT_COMMAND="$1"
+  FILE_TIMESTAMP="$2"
+  FILE_NAME=`log_file_name "$PRIVCOUNT_COMMAND" "$FILE_TIMESTAMP"`
+  echo "$SAVE_LOG_COMMAND $FILE_NAME"
+}
+
 # Then run the ts, sk, dc, and injector
 echo "Launching injector (IP), tally server, share keeper, and data collector..."
-privcount ts config.yaml &
-privcount sk config.yaml &
-privcount dc config.yaml &
-$INJECTOR_PORT_CMD &
+# This won't match the timestamp logged by the TS, because the TS waits before
+# starting the round
+LOG_TIMESTAMP="$STARTSEC"
+privcount ts config.yaml 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
+privcount sk config.yaml 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
+privcount dc config.yaml 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
 ROUNDS=1
+$INJECTOR_PORT_CMD 2>&1 | `save_to_log inject.$ROUNDS $LOG_TIMESTAMP` &
 
 # Then wait for each job, terminating if any job produces an error
 # Ideally, we'd want to use wait, or wait $job, but that only checks one job
@@ -121,7 +154,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       $MOVE_PDF_COMMAND 2> /dev/null || true
       ROUNDS=$[$ROUNDS+1]
       echo "Restarting injector (unix path) for round $ROUNDS..."
-      $INJECTOR_UNIX_CMD &
+      $INJECTOR_UNIX_CMD 2>&1 | `save_to_log inject.$ROUNDS $LOG_TIMESTAMP` &
     else
       break
     fi
@@ -167,8 +200,16 @@ if [ -f privcount.tallies.latest.json ]; then
   echo "Plotting results..."
   # plot will fail if the optional dependencies are not installed
   # tolerate this failure, and shut down the privcount processes
-  privcount plot -d privcount.tallies.latest.json data || true
+  privcount plot -d privcount.tallies.latest.json data 2>&1 | `save_to_log plot $LOG_TIMESTAMP` || true
 fi
+
+# If log files were produced, keep a link to the latest files
+link_latest ts log
+link_latest sk log
+link_latest dc log
+for round_number in `seq $PRIVCOUNT_ROUNDS`; do
+  link_latest inject.$round_number log
+done
 
 # Show the differences between the latest and old latest outcome files
 if [ -e privcount.outcome.latest.json -a \
@@ -188,6 +229,15 @@ else
   echo "Warning: Outcomes files could not be compared."
   echo "$0 must be run twice to produce the first comparison."
 fi
+
+# Grep the warnings out of the log files
+# We don't diff the previous log files with the latest log files, because many
+# of the timestamps and other irrelevant details are different
+echo "Extracting warnings from privcount output..."
+grep -v -e NOTICE -e INFO -e DEBUG \
+  -e "seconds of user activity" -e "delay_period not specified" \
+  privcount.*.latest.log \
+  || true
 
 # Show how long it took
 echo "$ENDDATE"
