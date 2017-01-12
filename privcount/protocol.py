@@ -1016,7 +1016,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
         self.collection_events = None
         self.disableEvents()
         # let the user know that we're waiting
-        logging.warning("Waiting for PrivCount collection to start")
+        logging.info("Waiting for PrivCount collection to start")
 
     def enableEvents(self):
         '''
