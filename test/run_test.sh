@@ -63,9 +63,12 @@ python ../privcount/statistics_noise.py
 # Requires a local privcount-patched Tor instance
 #python test_tor_ctl_event.py
 
+# Execute this command to produce a numeric unix timestamp in seconds
+TIMESTAMP_COMMAND="date +%s"
+DATE_COMMAND="date"
 # Record how long the tests take to run
-date
-STARTSEC="`date +%s`"
+"$DATE_COMMAND"
+STARTSEC="`$TIMESTAMP_COMMAND`"
 
 # Move aside the old result files
 echo "Moving old results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
@@ -120,8 +123,8 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
 done
 
 # Measure how long the actual tests took
-ENDDATE=`date`
-ENDSEC="`date +%s`"
+ENDDATE="`$DATE_COMMAND`"
+ENDSEC="`$TIMESTAMP_COMMAND`"
 
 # And terminate all the privcount processes
 echo "Terminating privcount after $ROUNDS round(s)..."
