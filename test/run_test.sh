@@ -96,12 +96,12 @@ privcount ts config.yaml &
 privcount sk config.yaml &
 privcount dc config.yaml &
 $INJECTOR_PORT_CMD &
+ROUNDS=1
 
 # Then wait for each job, terminating if any job produces an error
 # Ideally, we'd want to use wait, or wait $job, but that only checks one job
 # at a time, so continuing processes can cause the script to run forever
 echo "Waiting for PrivCount to finish..."
-ROUNDS=0
 JOB_STATUS=`jobs`
 echo "$JOB_STATUS"
 while echo "$JOB_STATUS" | grep -q "Running"; do
@@ -114,7 +114,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   fi
   # succeed if an outcome file is produced
   if [ -f privcount.outcome.*.json ]; then
-    if [ $[$ROUNDS+1] -lt $PRIVCOUNT_ROUNDS ]; then
+    if [ $ROUNDS -lt $PRIVCOUNT_ROUNDS ]; then
       echo "Moving round $ROUNDS results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
       $MOVE_JSON_COMMAND || true
       # If the plot libraries are not installed, this will always fail
@@ -123,7 +123,6 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       echo "Restarting injector (unix path) for round $ROUNDS..."
       $INJECTOR_UNIX_CMD &
     else
-      ROUNDS=$[$ROUNDS+1]
       break
     fi
   fi
