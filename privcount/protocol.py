@@ -1114,7 +1114,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
                 self.quit()
             # It's a relay, and it's just told us its Nickname
             elif line.startswith("250 Nickname="):
-                _, _, nickname = line.partition("Nickname=") # returns: part1, separator, part2
+                _, _, nickname = line.partition("Nickname=")
                 self.setDiscoveredValue('set_nickname', nickname, 'Nickname')
             # It doesn't have a Nickname, maybe it's a client?
             # But we'll catch that when we check the fingerprint, so just ignore this response
@@ -1123,7 +1123,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
                              .format(transport_info(self.transport)))
             # It's a relay, and it's just told us its ORPort
             elif line.startswith("250 ORPort="):
-                _, _, orport = line.partition("ORPort=") # returns: part1, separator, part2
+                _, _, orport = line.partition("ORPort=")
                 self.setDiscoveredValue('set_orport', orport, 'ORPort')
             # It doesn't have an ORPort, maybe it's a client?
             # But we'll catch that when we check the fingerprint, so just ignore this response
@@ -1132,7 +1132,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
                                 .format(transport_info(self.transport)))
             # It's a relay, and it's just told us its DirPort
             elif line.startswith("250 DirPort="):
-                _, _, dirport = line.partition("DirPort=") # returns: part1, separator, part2
+                _, _, dirport = line.partition("DirPort=")
                 self.setDiscoveredValue('set_dirport', dirport, 'DirPort')
             elif line == "250 DirPort":
                 logging.info("Connection with {}: no DirPort"
@@ -1140,11 +1140,11 @@ class TorControlClientProtocol(LineOnlyReceiver):
             # It's just told us its version
             # The control spec assumes that Tor always has a version, so there's no error case
             elif line.startswith("250-version="):
-                _, _, version = line.partition("version=") # returns: part1, separator, part2
+                _, _, version = line.partition("version=")
                 self.setDiscoveredValue('set_version', version, 'version')
             # It's just told us its address
             elif line.startswith("250-address="):
-                _, _, address = line.partition("address=") # returns: part1, separator, part2
+                _, _, address = line.partition("address=")
                 self.setDiscoveredValue('set_address', address, 'address')
             # We asked for its address, and it couldn't find it. That's weird.
             elif line == "551 Address unknown":
@@ -1153,7 +1153,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
             # -- fingerprint discovery ends in waiting or quit() --
             # It's a relay, and it's just told us its fingerprint
             elif line.startswith("250-fingerprint="):
-                _, _, fingerprint = line.partition("fingerprint=") # returns: part1, separator, part2
+                _, _, fingerprint = line.partition("fingerprint=")
                 self.setDiscoveredValue('set_fingerprint', fingerprint,
                                         'fingerprint')
                 # waiting mode will skip all further lines, until collection
