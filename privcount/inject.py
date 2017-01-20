@@ -221,10 +221,8 @@ def add_inject_args(parser):
                         help="IPv4 or IPv6 address on which to listen for PrivCount connections (default: both 127.0.0.1 and ::1, if a port is specified)",
                         required=False)
     parser.add_argument('-u', '--unix',
-                        help="Unix socket on which to listen for PrivCount connections (default: '{}')"
-                        .format(DEFAULT_PRIVCOUNT_INJECT_SOCKET),
-                        required=False,
-                        default=DEFAULT_PRIVCOUNT_INJECT_SOCKET)
+                        help="Unix socket on which to listen for PrivCount connections (default: no unix listener)",
+                        required=False)
     parser.add_argument('-l', '--log',
                         help="a file PATH to a PrivCount event log file, may be '-' for STDIN (default: STDIN)",
                         required=True,
