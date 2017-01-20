@@ -516,7 +516,15 @@ class Aggregator(ReconnectingClientFactory):
         # Are we replacing an existing version?
         if self.version is not None:
             if self.version != version:
-                logging.warning("Replacing version %s with %s", self.version, version)
+                if self.version.lower() in version.lower():
+                    # we just added a git tag to the version
+                    # this happens because GETINFO version has the tag, but
+                    # PROTOCOLINFO does not
+                    logging_level = logging.debug
+                else:
+                    # did someone just restart tor with a new version?
+                    logging_level = logging.warning
+                logging_level("Replacing version %s with %s", self.version, version)
             else:
                 logging.debug("Duplicate version received %s", version)
 

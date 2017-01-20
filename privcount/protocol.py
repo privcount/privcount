@@ -969,20 +969,21 @@ class TorControlClientProtocol(LineOnlyReceiver):
     def __init__(self, factory):
         self.factory = factory
         self.state = None
+        self.auth_methods = None
+        self.cookie_file = None
         self.collection_events = None
         self.active_events = None
 
     def connectionMade(self):
         '''
-        Initiate authentication with the control port, and put the protocol in
-        the 'authenticating' state.
+        Ask for the available authentication methods over the control port,
+        and put the protocol in the 'protocolinfo' state.
         Overrides twisted function.
         '''
-        logging.debug("Connection with {} was made"
-                      .format(transport_info(self.transport)))
-        # we must authenticate first, before doing anything else
-        self.sendLine("AUTHENTICATE")
-        self.state = 'authenticating'
+        logging.info("Connection with {} was made"
+                     .format(transport_info(self.transport)))
+        self.sendLine("PROTOCOLINFO 1")
+        self.state = 'protocolinfo'
 
     def startCollection(self, counter_list, event_list=None):
         '''
@@ -1080,8 +1081,9 @@ class TorControlClientProtocol(LineOnlyReceiver):
 
     def lineReceived(self, line):
         '''
-        Check that authentication was successful.
-        If so, put the protocol in the 'discovering' state, and ask the relay
+        Check that protocolinfo was successful.
+        If so, authenticate using the best authentication method.
+        Then, put the protocol in the 'discovering' state, and ask the relay
         for information about itself.
         When the fingerprint is receved, put the protocol in the 'waiting'
         state.
@@ -1094,8 +1096,58 @@ class TorControlClientProtocol(LineOnlyReceiver):
         logging.debug("Received line '{}' from {}"
                       .format(line, transport_info(self.transport)))
 
-        if self.state == 'authenticating' and line == "250 OK":
+        if self.state == 'protocolinfo':
+            if line.startswith("250-PROTOCOLINFO"):
+                # 250-PROTOCOLINFO 1
+                # ignore the protocolinfo version
+                pass
+            elif line.startswith("250-AUTH"):
+                # 250-AUTH METHODS=AuthMethod,AuthMethod,... COOKIEFILE="AuthCookieFile"
+                _, _, suffix = line.partition("METHODS=")
+                methods, sep, cookie_file = suffix.partition("COOKIEFILE=")
+                # if there is no cookie file
+                if len(sep) == 0:
+                    methods = suffix
+                # save the supported methods for later
+                self.auth_methods = methods.strip().split(",")
+                # warn the user about security
+                if "NULL" in self.auth_methods:
+                    logging.warning("Your Tor control port has no authentication. Please configure CookieAuthentication or HashedControlPassword.")
+                # if there is a cookie file that is not a quoted empty string
+                if len(cookie_file) > 2:
+                    # save the cookie file for later, stripping off trailing
+                    # spaces and quotes (in that order, and only that order)
+                    self.cookie_file = cookie_file.strip().strip("\"")
+            elif line.startswith("250-VERSION"):
+                # This version does *not* have the git tag
+                # 250-VERSION Tor="TorVersion" OptArguments
+                _, _, suffix = line.partition("Tor=")
+                version, _, _ = suffix.partition(" ")
+                # if there is a version that is not a quoted empty string
+                if len(version) > 2:
+                    version = version.strip("\"")
+                    # tell the factory
+                    self.setDiscoveredValue('set_version', version,
+                                            'PROTOCOLINFO version')
+            elif line == "250 OK":
+                # we must authenticate as soon as we can
+                # TODO: support SAFECOOKIE, PASSWORD
+                # Authenticate without a password or cookie
+                if "NULL" in self.auth_methods:
+                    logging.info("Authenticating with {} using {} method"
+                                 .format(transport_info(self.transport),
+                                         "NULL"))
+                    self.sendLine("AUTHENTICATE")
+                else:
+                    raise NotImplementedError("Authentication methods {} not implemented".format(",".join(self.auth_methods)))
+                self.state = "authenticating"
+            else:
+                # log any other lines at the appropriate level
+                self.handleUnexpectedLine(line)
+        elif self.state == 'authenticating' and line == "250 OK":
             # Turn off privcount events, so we don't get spurious responses
+            # We can't do this until we've authenticated (and we shouldn't
+            # need to - there are no events sent before authentication)
             self.disableEvents()
             # Just ask for all the info all at once
             self.sendLine("GETCONF Nickname")
@@ -1139,9 +1191,14 @@ class TorControlClientProtocol(LineOnlyReceiver):
                              .format(transport_info(self.transport)))
             # It's just told us its version
             # The control spec assumes that Tor always has a version, so there's no error case
+            # This version *might* have a git tag, unlike the version
+            # provided by PROTOCOLINFO. We want the git tag if possible,
+            # because it uniquely identifies a privcount-patched tor version
+            # (the data collector and tally server accept version changes)
             elif line.startswith("250-version="):
                 _, _, version = line.partition("version=")
-                self.setDiscoveredValue('set_version', version, 'version')
+                self.setDiscoveredValue('set_version', version,
+                                        'GETINFO version')
             # It's just told us its address
             elif line.startswith("250-address="):
                 _, _, address = line.partition("address=")
@@ -1241,6 +1298,11 @@ class TorControlServerProtocol(LineOnlyReceiver):
     telnet localhost 9051
     Connected to localhost.
     Escape character is '^]'.
+    PROTOCOLINFO 1
+    250-PROTOCOLINFO 1
+    250-AUTH METHODS=SAFECOOKIE COOKIEFILE="/var/run/tor/control.authcookie"
+    250-VERSION Tor="0.2.8.9"
+    250 OK
     AUTHENTICATE
     250 OK
     SETCONF EnablePrivCount=1
@@ -1297,7 +1359,16 @@ class TorControlServerProtocol(LineOnlyReceiver):
 
         # We use " quotes, but tor uses ' quotes. This should not matter.
         if not self.authenticated:
-            if line == "AUTHENTICATE":
+            # PROTOCOLINFO is allowed before AUTHENTICATE, but technically
+            # only once (we do not enforce this requirement)
+            if len(parts) > 0 and parts[0] == "PROTOCOLINFO":
+                # Assume the protocolinfo version is OK
+                self.sendLine("250-PROTOCOLINFO 1")
+                # We don't do COOKIE authentication, it's not secure
+                self.sendLine("250-AUTH METHODS=SAFECOOKIE,PASSWORD,NULL COOKIEFILE=\"/var/run/tor/control.authcookie\"")
+                self.sendLine("250-VERSION Tor=\"0.2.8.6\"")
+                self.sendLine("250 OK")
+            elif line == "AUTHENTICATE":
                 self.sendLine("250 OK")
                 self.authenticated = True
             else:

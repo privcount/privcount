@@ -236,6 +236,7 @@ fi
 echo "Extracting warnings from privcount output..."
 grep -v -e NOTICE -e INFO -e DEBUG \
   -e "seconds of user activity" -e "delay_period not specified" \
+  -e "control port has no authentication" \
   privcount.*.latest.log \
   || true
 
