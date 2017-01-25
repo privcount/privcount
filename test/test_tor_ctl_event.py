@@ -34,7 +34,7 @@ from privcount.protocol import TorControlClientProtocol, get_valid_events
 #
 ## Testing
 # source venv/bin/activate
-# python test/test_tor_ctl_event.py
+# python test/test_tor_ctl_event.py [ unix_socket_path | control_port ]
 ## wait a few minutes for the first events to arrive, or just terminate tor
 ## using a SIGINT after it has made some connections
 
