@@ -1055,21 +1055,21 @@ class TorControlClientProtocol(LineOnlyReceiver):
             self.active_events = None
             self.state = 'waiting'
 
-    def setDiscoveredValue(self, function_name, value, value_name):
+    def setDiscoveredValue(self, set_function_name, value, value_name):
         '''
-        When we discover value from the relay, call set_function to set it,
-        and log a message containing value_name if this fails.
+        When we discover value from the relay, call factory.set_function_name
+        to set it, and log a message containing value_name if this fails.
         '''
         try:
-            # Equivalent to self.factory.set_*(value)
-            if not getattr(self.factory, function_name)(value):
-                logging.warning("Connection with {}: bad {}: {}"
+            # Equivalent to self.factory.set_function_name(value)
+            if not getattr(self.factory, set_function_name)(value):
+                logging.warning("Connection with {}: bad {} set via {}: {}"
                                 .format(transport_info(self.transport),
-                                        value_name, value))
+                                        value_name, set_function_name, value))
         except AttributeError as e:
-            logging.warning("Connection with {}: sent {}: {}, but factory raised {}"
+            logging.warning("Connection with {}: tried to set {} via {}: {}, but factory raised {}"
                             .format(transport_info(self.transport),
-                                    value_name, value, e))
+                                    value_name, set_function_name, value, e))
 
     def sendLine(self, line):
         '''
