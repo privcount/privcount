@@ -965,6 +965,8 @@ class CollectionPhase(object):
             tally_was_successful = tallied_counter.tally_counters(
                 self.final_counts.values())
 
+        begin = int(round(self.starting_ts))
+        end = int(round(self.stopping_ts))
         # keep going, we want the context for debugging
         if not tally_was_successful:
             logging.warning("problem tallying counters, did all counters and bins match!?")
@@ -973,8 +975,6 @@ class CollectionPhase(object):
 
             # For backwards compatibility, write out a "tallies" file
             # This file only has the counts
-            begin = int(round(self.starting_ts))
-            end = int(round(self.stopping_ts))
             filepath = os.path.join(path_prefix,
                                     "privcount.tallies.{}-{}.json"
                                     .format(begin, end))
