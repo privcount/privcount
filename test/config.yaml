@@ -71,6 +71,10 @@ data_collector:
         port: 20003
         #ip: 127.0.0.1 # optional (default 127.0.0.1), use ::1 for IPv6
         unix: '/tmp/privcount-inject' # control socket path. Tor defaults to /var/run/tor/control in many common distributions.
+        #control_password: ''
+        # a password for tor controller authentication
+        # set HashedControlPassword with the output of tor --hash-password ...
+        # passwords are not supported with multiple connection methods
     tally_server_info: # where the tally server is located
         ip: 127.0.0.1
         port: 20001

@@ -1071,6 +1071,20 @@ class TorControlClientProtocol(LineOnlyReceiver):
                             .format(transport_info(self.transport),
                                     value_name, set_function_name, value, e))
 
+    def getConfiguredValue(self, get_function_name, value_name):
+        '''
+        Retrieve a value to send to the relay: call factory.get_function_name
+        to get it, and log a message containing value_name if this fails.
+        '''
+        try:
+            # Equivalent to self.factory.get_function_name()
+            return getattr(self.factory, get_function_name)()
+        except AttributeError as e:
+            logging.warning("Connection with {}: tried to get {} via {}, but factory raised {}, returning None"
+                            .format(transport_info(self.transport),
+                                    value_name, get_function_name, e))
+            return None
+
     def sendLine(self, line):
         '''
         overrides twisted function
@@ -1131,9 +1145,18 @@ class TorControlClientProtocol(LineOnlyReceiver):
                                             'PROTOCOLINFO version')
             elif line == "250 OK":
                 # we must authenticate as soon as we can
-                # TODO: support SAFECOOKIE, PASSWORD
-                # Authenticate without a password or cookie
-                if "NULL" in self.auth_methods:
+                # TODO: support SAFECOOKIE (and not COOKIE, it's not secure)
+                password = self.getConfiguredValue('get_control_password',
+                                                   'ControlPassword')
+                if ("HASHEDPASSWORD" in self.auth_methods and
+                    password is not None):
+                    # password is a quoted string with escaped \ and "
+                    password = password.replace("\\", "\\\\")
+                    password = password.replace("\"", "\\\"")
+                    password = "\"" + password + "\""
+                    self.sendLine("AUTHENTICATE " + password)
+                elif "NULL" in self.auth_methods:
+                    # Authenticate without a password or cookie
                     logging.info("Authenticating with {} using {} method"
                                  .format(transport_info(self.transport),
                                          "NULL"))
@@ -1368,7 +1391,8 @@ class TorControlServerProtocol(LineOnlyReceiver):
                 self.sendLine("250-AUTH METHODS=SAFECOOKIE,HASHEDPASSWORD,NULL COOKIEFILE=\"/var/run/tor/control.authcookie\"")
                 self.sendLine("250-VERSION Tor=\"0.2.8.6\"")
                 self.sendLine("250 OK")
-            elif line == "AUTHENTICATE":
+            elif line.startswith("AUTHENTICATE"):
+                # Accept any password or cookie hash
                 self.sendLine("250 OK")
                 self.authenticated = True
             else:
