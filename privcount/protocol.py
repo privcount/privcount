@@ -1365,7 +1365,7 @@ class TorControlServerProtocol(LineOnlyReceiver):
                 # Assume the protocolinfo version is OK
                 self.sendLine("250-PROTOCOLINFO 1")
                 # We don't do COOKIE authentication, it's not secure
-                self.sendLine("250-AUTH METHODS=SAFECOOKIE,PASSWORD,NULL COOKIEFILE=\"/var/run/tor/control.authcookie\"")
+                self.sendLine("250-AUTH METHODS=SAFECOOKIE,HASHEDPASSWORD,NULL COOKIEFILE=\"/var/run/tor/control.authcookie\"")
                 self.sendLine("250-VERSION Tor=\"0.2.8.6\"")
                 self.sendLine("250 OK")
             elif line == "AUTHENTICATE":
