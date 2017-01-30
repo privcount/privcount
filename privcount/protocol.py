@@ -1450,9 +1450,22 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                 self.sendLine("250-VERSION Tor=\"0.2.8.6\"")
                 self.sendLine("250 OK")
             elif line.startswith("AUTHENTICATE"):
-                # Accept any password or cookie hash
-                self.sendLine("250 OK")
-                self.authenticated = True
+                config_password = self.getConfiguredValue(
+                    'get_control_password',
+                    'ControlPassword')
+                _, _, client_password = line.partition("AUTHENTICATE ")
+                client_password = TorControlProtocol.decodeControllerString(
+                    client_password)
+                # If there is no set password, accept any password or cookie
+                # hash: this is safe, because this tor control protocol stub
+                # does not handle any sensitive information
+                if (config_password is None or
+                    config_password == client_password):
+                    self.sendLine("250 OK")
+                    self.authenticated = True
+                else:
+                    self.sendLine("515 Authentication failed: Password did not match HashedControlPassword *or* authentication cookie.")
+                    self.transport.loseConnection()
             else:
                 self.sendLine("514 Authentication required.")
                 self.transport.loseConnection()

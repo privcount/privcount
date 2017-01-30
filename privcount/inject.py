@@ -26,7 +26,8 @@ DEFAULT_PRIVCOUNT_INJECT_SOCKET = '/tmp/privcount-inject'
 
 class PrivCountDataInjector(ServerFactory):
 
-    def __init__(self, logpath, do_pause, prune_before, prune_after):
+    def __init__(self, logpath, do_pause, prune_before, prune_after,
+                 control_password = None):
         self.logpath = logpath
         self.do_pause = do_pause
         self.prune_before = prune_before
@@ -36,6 +37,7 @@ class PrivCountDataInjector(ServerFactory):
         self.last_time_end = 0.0
         self.injecting = False
         self.listeners = None
+        self.control_password = control_password
 
     def startFactory(self):
         # TODO
@@ -58,6 +60,14 @@ class PrivCountDataInjector(ServerFactory):
         # (temporary) reference loop. Perhaps there is a better way of
         # retrieving all the listeners for a factory?
         self.listeners = listener_list
+
+    def get_control_password(self):
+        '''
+        Return the configured control password, or None if there is no control
+        password.
+        '''
+        # Configuring multiple passwords is not supported
+        return self.control_password
 
     def start_injecting(self):
         self.injecting = True
@@ -196,7 +206,7 @@ def run_inject(args):
     start the injector, and start it listening
     '''
     # pylint: disable=E1101
-    injector = PrivCountDataInjector(args.log, args.simulate, int(args.prune_before), int(args.prune_after))
+    injector = PrivCountDataInjector(args.log, args.simulate, int(args.prune_before), int(args.prune_after), args.control_password)
     # The injector listens on all of IPv4, IPv6, and a control socket, and
     # injects events into the first client to connect
     # Since these are synthetic events, it is safe to use /tmp for the socket
@@ -236,6 +246,8 @@ def add_inject_args(parser):
     parser.add_argument('--prune-after',
                         help="do not inject events that occurred after the given unix timestamp",
                         default=2147483647)
+    parser.add_argument('--control-password',
+                        help="The tor control password, set via tor --hash-password and HashedControlPassword")
 
 if __name__ == "__main__":
     sys.exit(main())
