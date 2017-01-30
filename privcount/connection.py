@@ -293,6 +293,8 @@ def get_a_control_password(config):
         # Using different passwords on different items is not supported
         # (we don't match up the connection info)
         item = choose_a_connection_with(config, 'control_password')
+        if item is None:
+            return None
         return item.get('control_password', None)
 
 def choose_a_connection_with(config, attribute):
