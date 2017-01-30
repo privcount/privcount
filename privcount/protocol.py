@@ -3,6 +3,7 @@ import logging, json, math
 from time import time
 from os import urandom, path
 from base64 import b64encode, b64decode
+from binascii import hexlify, unhexlify
 
 from twisted.internet import reactor
 from twisted.protocols.basic import LineOnlyReceiver
@@ -964,10 +965,97 @@ class PrivCountClientProtocol(PrivCountProtocol):
                 return True
         return False
 
-class TorControlClientProtocol(LineOnlyReceiver):
+class TorControlProtocol(object):
+    '''
+    A mixin class containing common Tor Control Protocol code
+    '''
 
     def __init__(self, factory):
         self.factory = factory
+
+    @staticmethod
+    def encodeControllerString(str, hex_encode = True):
+        '''
+        Encode a string for transmission over the control port.
+        If hex_encode is True, encode in hexadecimal, otherwise, encode
+        in the Tor Control Protocol QuotedString format.
+        Does not support the CString encoding.
+        Only some strings in the tor control protocol need encoding.
+        The same encodings are used by tor and the controller.
+        '''
+        if hex_encode:
+            # hex encoded strings do not have an 0x prefix
+            encoded = hexlify(str)
+        else: # QuotedString
+            # quoted strings escape \ and " with \, then quote with "
+            # the order of these replacements is important: they ensure that
+            # " becomes \" rather than \\"
+            str = str.replace("\\", "\\\\")
+            str = str.replace("\"", "\\\"")
+            encoded = "\"" + str + "\""
+        # sanity check
+        assert TorControlProtocol.decodeControllerString(encoded) == str
+        return encoded
+
+    @staticmethod
+    def decodeControllerString(str):
+        '''
+        Decode an encoded string received via the control port.
+        Decodes hexadecimal, and the Tor Control Protocol QuotedString format,
+        depending on the format of the input string.
+        Does not support the CString encoding, or raw strings that aren't in
+        one of the two supported formats.
+        Throws TypeError when presented with an invalid format.
+        Only some strings in the tor control protocol need encoding.
+        The same encodings are used by tor and the controller.
+        '''
+        str = str.strip()
+        if str.startswith("\"") and str.endswith("\"") and len(str) >= 2:
+            # quoted strings escape \ and " with \, then quote with "
+            # this is safe, because we check the string is "*"
+            str = str[1:-1]
+            # the order of these replacements is important: they ensure that
+            # \\" becomes \" rather than "
+            str = str.replace("\\\"", "\"")
+            return str.replace("\\\\", "\\")
+        else:
+            # assume hex, throws TypeError on invalid hex
+            return unhexlify(str)
+
+    def setDiscoveredValue(self, set_function_name, value, value_name):
+        '''
+        When we discover a value, call factory.set_function_name to set it,
+        and log a message containing value_name if this fails.
+        '''
+        try:
+            # Equivalent to self.factory.set_function_name(value)
+            if not getattr(self.factory, set_function_name)(value):
+                logging.warning("Connection with {}: bad {} set via {}: {}"
+                                .format(transport_info(self.transport),
+                                        value_name, set_function_name, value))
+        except AttributeError as e:
+            logging.warning("Connection with {}: tried to set {} via {}: {}, but factory raised {}"
+                            .format(transport_info(self.transport),
+                                    value_name, set_function_name, value, e))
+
+    def getConfiguredValue(self, get_function_name, value_name):
+        '''
+        When we need a value, call factory.get_function_name to get it, and
+        log a message containing value_name if this fails.
+        '''
+        try:
+            # Equivalent to self.factory.get_function_name()
+            return getattr(self.factory, get_function_name)()
+        except AttributeError as e:
+            logging.warning("Connection with {}: tried to get {} via {}, but factory raised {}, returning None"
+                            .format(transport_info(self.transport),
+                                    value_name, get_function_name, e))
+            return None
+
+class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
+
+    def __init__(self, factory):
+        TorControlProtocol.__init__(self, factory)
         self.state = None
         self.auth_methods = None
         self.cookie_file = None
@@ -1055,36 +1143,6 @@ class TorControlClientProtocol(LineOnlyReceiver):
             self.active_events = None
             self.state = 'waiting'
 
-    def setDiscoveredValue(self, set_function_name, value, value_name):
-        '''
-        When we discover value from the relay, call factory.set_function_name
-        to set it, and log a message containing value_name if this fails.
-        '''
-        try:
-            # Equivalent to self.factory.set_function_name(value)
-            if not getattr(self.factory, set_function_name)(value):
-                logging.warning("Connection with {}: bad {} set via {}: {}"
-                                .format(transport_info(self.transport),
-                                        value_name, set_function_name, value))
-        except AttributeError as e:
-            logging.warning("Connection with {}: tried to set {} via {}: {}, but factory raised {}"
-                            .format(transport_info(self.transport),
-                                    value_name, set_function_name, value, e))
-
-    def getConfiguredValue(self, get_function_name, value_name):
-        '''
-        Retrieve a value to send to the relay: call factory.get_function_name
-        to get it, and log a message containing value_name if this fails.
-        '''
-        try:
-            # Equivalent to self.factory.get_function_name()
-            return getattr(self.factory, get_function_name)()
-        except AttributeError as e:
-            logging.warning("Connection with {}: tried to get {} via {}, but factory raised {}, returning None"
-                            .format(transport_info(self.transport),
-                                    value_name, get_function_name, e))
-            return None
-
     def sendLine(self, line):
         '''
         overrides twisted function
@@ -1131,7 +1189,8 @@ class TorControlClientProtocol(LineOnlyReceiver):
                 if len(cookie_file) > 2:
                     # save the cookie file for later, stripping off trailing
                     # spaces and quotes (in that order, and only that order)
-                    self.cookie_file = cookie_file.strip().strip("\"")
+                    self.cookie_file = \
+                        TorControlProtocol.decodeControllerString(cookie_file)
             elif line.startswith("250-VERSION"):
                 # This version does *not* have the git tag
                 # 250-VERSION Tor="TorVersion" OptArguments
@@ -1139,7 +1198,8 @@ class TorControlClientProtocol(LineOnlyReceiver):
                 version, _, _ = suffix.partition(" ")
                 # if there is a version that is not a quoted empty string
                 if len(version) > 2:
-                    version = version.strip("\"")
+                    version = \
+                        TorControlProtocol.decodeControllerString(version)
                     # tell the factory
                     self.setDiscoveredValue('set_version', version,
                                             'PROTOCOLINFO version')
@@ -1150,11 +1210,9 @@ class TorControlClientProtocol(LineOnlyReceiver):
                                                    'ControlPassword')
                 if ("HASHEDPASSWORD" in self.auth_methods and
                     password is not None):
-                    # password is a quoted string with escaped \ and "
-                    password = password.replace("\\", "\\\\")
-                    password = password.replace("\"", "\\\"")
-                    password = "\"" + password + "\""
-                    self.sendLine("AUTHENTICATE " + password)
+                    encoded_password = \
+                        TorControlProtocol.encodeControllerString(password)
+                    self.sendLine("AUTHENTICATE " + encoded_password)
                 elif "NULL" in self.auth_methods:
                     # Authenticate without a password or cookie
                     logging.info("Authenticating with {} using {} method"
@@ -1305,7 +1363,7 @@ class TorControlClientProtocol(LineOnlyReceiver):
                       .format(transport_info(self.transport),
                               reason.getErrorMessage()))
 
-class TorControlServerProtocol(LineOnlyReceiver):
+class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
     '''
     The server side of the Tor control protocol as exercised by PrivCount.
 
@@ -1352,7 +1410,7 @@ class TorControlServerProtocol(LineOnlyReceiver):
     '''
 
     def __init__(self, factory):
-        self.factory = factory
+        TorControlProtocol.__init__(self, factory)
         self.authenticated = False
 
     def connectionMade(self):
