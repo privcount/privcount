@@ -1247,6 +1247,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                 logging.critical("Connection with {}: does not support PrivCount"
                                  .format(transport_info(self.transport)))
                 self.quit()
+                return
             # It's a relay, and it's just told us its Nickname
             elif line.startswith("250 Nickname="):
                 _, _, nickname = line.partition("Nickname=")
@@ -1303,6 +1304,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                 logging.warning("Connection with {} failed: not a relay"
                                 .format(transport_info(self.transport)))
                 self.quit()
+                return
             else:
                 self.handleUnexpectedLine(line)
 
@@ -1328,6 +1330,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                 logging.warning("Event with no data {}".format(line))
             elif not self.factory.handle_event(parts[1:]):
                 self.quit()
+                return
         else:
             self.handleUnexpectedLine(line)
 
@@ -1468,9 +1471,11 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                 else:
                     self.sendLine("515 Authentication failed: Password did not match HashedControlPassword *or* authentication cookie.")
                     self.transport.loseConnection()
+                    return
             else:
                 self.sendLine("514 Authentication required.")
                 self.transport.loseConnection()
+                return
         elif len(parts) > 0:
             if parts[0] == "SETEVENTS":
                 # events are case-insensitive, so convert to uppercase
@@ -1549,6 +1554,7 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                 self.factory.stop_injecting()
                 self.sendLine("250 closing connection")
                 self.transport.loseConnection()
+                return
             else:
                 self.sendLine('510 Unrecognized command "{}"'.format(parts[0]))
         else:
