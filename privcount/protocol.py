@@ -974,6 +974,30 @@ class TorControlProtocol(object):
 
     def __init__(self, factory):
         self.factory = factory
+        self.cookie_string = None
+        self.client_nonce = None
+        self.server_nonce = None
+
+    SAFECOOKIE_LENGTH = 32
+
+    SAFECOOKIE_SERVER_NONCE_LENGTH = 32
+    SAFECOOKIE_SERVER_HASH_LENGTH = 32
+
+    SAFECOOKIE_CLIENT_NONCE_MIN_VALID_LENGTH = 0
+    # An arbitrary limit, 1 kilobyte is quite enough to hash
+    SAFECOOKIE_CLIENT_NONCE_MAX_VALID_LENGTH = 1024
+    SAFECOOKIE_CLIENT_NONCE_GENERATED_LENGTH = 32
+    assert (SAFECOOKIE_CLIENT_NONCE_GENERATED_LENGTH >=
+            SAFECOOKIE_CLIENT_NONCE_MIN_VALID_LENGTH)
+    assert (SAFECOOKIE_CLIENT_NONCE_GENERATED_LENGTH <=
+            SAFECOOKIE_CLIENT_NONCE_MAX_VALID_LENGTH)
+
+    SAFECOOKIE_CLIENT_HASH_LENGTH = 32
+
+    SAFECOOKIE_SERVER_HASH_KEY = \
+        "Tor safe cookie authentication server-to-controller hash"
+    SAFECOOKIE_CLIENT_HASH_KEY = \
+        "Tor safe cookie authentication controller-to-server hash"
 
     @staticmethod
     def encodeControllerString(str, hex_encode = True):
@@ -1024,6 +1048,186 @@ class TorControlProtocol(object):
             # assume hex, throws TypeError on invalid hex
             return unhexlify(str)
 
+    @staticmethod
+    def generateNonce(len):
+        '''
+        Generate a nonce len bytes long.
+        '''
+        assert len > 0
+        return urandom(len)
+
+    @staticmethod
+    def generateClientNonce():
+        '''
+        Generate a client nonce.
+        '''
+        return TorControlProtocol.generateNonce(
+            TorControlProtocol.SAFECOOKIE_CLIENT_NONCE_GENERATED_LENGTH)
+
+    @staticmethod
+    def generateServerNonce():
+        '''
+        Generate a server nonce.
+        '''
+        return TorControlProtocol.generateNonce(
+            TorControlProtocol.SAFECOOKIE_SERVER_NONCE_LENGTH)
+
+    # The ClientNonce, ServerHash, and ServerNonce values are
+    # encoded/decoded in the same way as the argument passed to the
+    # AUTHENTICATE command.
+
+    @staticmethod
+    def encodeNonce(nonce_bytes):
+        '''
+        Encode a nonce for transmission.
+        '''
+        encoded_nonce = TorControlProtocol.encodeControllerString(nonce_bytes)
+        # sanity check
+        assert (TorControlProtocol.decodeNonce(
+                encoded_nonce, len(nonce_bytes), len(nonce_bytes)) ==
+                nonce_bytes)
+        return encoded_nonce
+
+    # Use aliases for documentation purposes, and to match decoding functions
+    encodeHash = encodeNonce
+    encodeClientNonce = encodeNonce
+    encodeServerNonce = encodeNonce
+    encodeClientHash = encodeHash
+    encodeServerHash = encodeHash
+
+    @staticmethod
+    def decodeNonce(encoded_str, min_len, max_len):
+        '''
+        Decode and check a received nonce.
+        Returns the nonce if valid, or None if not valid.
+        '''
+        assert min_len >= 0
+        assert max_len >= min_len
+        decoded_bytes = TorControlProtocol.decodeControllerString(encoded_str)
+        if len(decoded_bytes) < min_len:
+            logging.warning("Received nonce was {} bytes, wanted at least {} bytes"
+                            .format(len(decoded_bytes), min_len))
+            return None
+        if len(decoded_bytes) > max_len:
+            logging.warning("Received nonce was {} bytes, wanted no more than {} bytes"
+                            .format(len(decoded_bytes), max_len))
+            return None
+        return decoded_bytes
+
+    # Use aliases for documentation purposes, and to match decoding functions
+    decodeHash = decodeNonce
+
+    @staticmethod
+    def decodeClientNonce(encoded_str):
+        '''
+        Decode and check a received client nonce.
+        Returns the nonce if valid, or None if not valid.
+        '''
+        return TorControlProtocol.decodeNonce(encoded_str,
+                   TorControlProtocol.SAFECOOKIE_CLIENT_NONCE_MIN_VALID_LENGTH,
+                   TorControlProtocol.SAFECOOKIE_CLIENT_NONCE_MAX_VALID_LENGTH)
+
+    @staticmethod
+    def decodeServerNonce(encoded_str):
+        '''
+        Decode and check a received server nonce.
+        Returns the nonce if valid, or None if not valid.
+        '''
+        # ServerNonce MUST be 32 bytes long.
+        return TorControlProtocol.decodeNonce(encoded_str,
+                           TorControlProtocol.SAFECOOKIE_SERVER_NONCE_LENGTH,
+                           TorControlProtocol.SAFECOOKIE_SERVER_NONCE_LENGTH)
+
+    @staticmethod
+    def decodeClientHash(encoded_str):
+        '''
+        Decode and check a received client hash.
+        Returns the hash if valid, or None if not valid.
+        '''
+        # ClientHash MUST be 32 bytes long.
+        return TorControlProtocol.decodeHash(encoded_str,
+                              TorControlProtocol.SAFECOOKIE_CLIENT_HASH_LENGTH,
+                              TorControlProtocol.SAFECOOKIE_CLIENT_HASH_LENGTH)
+
+    @staticmethod
+    def decodeServerHash(encoded_str):
+        '''
+        Decode and check a received server hash.
+        Returns the hash if valid, or None if not valid.
+        '''
+        # ServerHash MUST be 32 bytes long.
+        return TorControlProtocol.decodeHash(encoded_str,
+                              TorControlProtocol.SAFECOOKIE_SERVER_HASH_LENGTH,
+                              TorControlProtocol.SAFECOOKIE_SERVER_HASH_LENGTH)
+
+    @staticmethod
+    def getServerHash(cookie_string, client_nonce, server_nonce):
+        '''
+        Returns a SAFECOOKIE server hash using cookie_string, client_nonce,
+        and server_nonce.
+        '''
+        # ServerHash is computed as:
+        # HMAC-SHA256(
+        #   "Tor safe cookie authentication server-to-controller hash",
+        #   CookieString | ClientNonce | ServerNonce)
+        server_hash = get_hmac(
+            TorControlProtocol.SAFECOOKIE_SERVER_HASH_KEY,
+            cookie_string, client_nonce + server_nonce)
+        assert TorControlProtocol.verifyServerHash(server_hash, cookie_string,
+                                                   client_nonce, server_nonce)
+        return server_hash
+
+    @staticmethod
+    def verifyServerHash(server_hash, cookie_string, client_nonce,
+                         server_nonce):
+        '''
+        Verifies a SAFECOOKIE server_hash using cookie_string, client_nonce,
+        and server_nonce.
+        Returns True if valid, False if invalid.
+        '''
+        if (server_hash is None or cookie_string is None or
+            client_nonce is None or server_nonce is None):
+            return False
+        # Check using a timing-safe function
+        # (the rest of the code is likely not timing-safe)
+        return verify_hmac(server_hash,
+                           TorControlProtocol.SAFECOOKIE_SERVER_HASH_KEY,
+                           cookie_string, client_nonce + server_nonce)
+
+    @staticmethod
+    def getClientHash(cookie_string, client_nonce, server_nonce):
+        '''
+        Returns a SAFECOOKIE client hash using cookie_string, client_nonce,
+        and server_nonce.
+        '''
+        # ClientHash is computed as:
+        # HMAC-SHA256(
+        #   "Tor safe cookie authentication controller-to-server hash",
+        #   CookieString | ClientNonce | ServerNonce)
+        client_hash = get_hmac(
+            TorControlProtocol.SAFECOOKIE_CLIENT_HASH_KEY,
+            cookie_string, client_nonce + server_nonce)
+        assert TorControlProtocol.verifyClientHash(client_hash, cookie_string,
+                                                   client_nonce, server_nonce)
+        return client_hash
+
+    @staticmethod
+    def verifyClientHash(client_hash, cookie_string, client_nonce,
+                         server_nonce):
+        '''
+        Verifies a SAFECOOKIE client_hash using cookie_string, client_nonce,
+        and server_nonce.
+        Returns True if valid, False if invalid.
+        '''
+        if (client_hash is None or cookie_string is None or
+            client_nonce is None or server_nonce is None):
+            return False
+        # Check using a timing-safe function
+        # (the rest of the code is likely not timing-safe)
+        return verify_hmac(client_hash,
+                           TorControlProtocol.SAFECOOKIE_CLIENT_HASH_KEY,
+                           cookie_string, client_nonce + server_nonce)
+
     def setDiscoveredValue(self, set_function_name, value, value_name):
         '''
         When we discover a value, call factory.set_function_name to set it,
@@ -1052,6 +1256,70 @@ class TorControlProtocol(object):
             logging.warning("Connection with {}: tried to get {} via {}, but factory raised {}, returning None"
                             .format(transport_info(self.transport),
                                     value_name, get_function_name, e))
+            return None
+
+    def getConfiguredCookieFile(self):
+        '''
+        Return the configured path to the cookie file.
+        Configuring more than one cookie file is not supported.
+        '''
+        return self.getConfiguredValue('get_control_cookie_file',
+                                       'AuthCookieFile')
+
+    def writeConfiguredCookieFile(self, cookie_string = None):
+        '''
+        Write a random 32-byte value to the configured cookie file.
+        If cookie_string is not None, use that value.
+        Return the value written to the file, or None if there is no cookie
+        file, or if writing the file fails.
+        '''
+        cookie_file = self.getConfiguredCookieFile()
+        if cookie_file is not None:
+            if cookie_string is None:
+                cookie_string = urandom(TorControlProtocol.SAFECOOKIE_LENGTH)
+            try:
+                with open(cookie_file, 'w') as f:
+                    f.write(cookie_string)
+            except IOError as e:
+                logging.warning("Disabling SAFECOOKIE authentication, writing cookie file '{}' failed with error: {}"
+                                .format(cookie_file, e))
+                return None
+            # sanity check: this will fail in write-only environments
+            assert cookie_string == TorControlProtocol.readCookieFile(
+                cookie_file)
+            return cookie_string
+        else:
+            return None
+
+    @staticmethod
+    def readCookieFile(cookie_file):
+        '''
+        Read a 32-byte value from cookie_file.
+        Return the value read from the file, or None if there is no cookie
+        file, or reading from the file fails, or the cookie is not 32 bytes.
+        '''
+        if cookie_file is not None:
+            try:
+                with open(cookie_file, 'r') as f:
+                    # Read one more byte to check that the file is actually
+                    # the right length
+                    cookie_string = f.read(TorControlProtocol.SAFECOOKIE_LENGTH
+                                           + 1)
+            except IOError as e:
+                logging.warning("SAFECOOKIE authentication failed, reading cookie file '{}' failed with error: {}"
+                                .format(cookie_file, e))
+                return None
+            # All authentication cookies are 32 bytes long.  Controllers
+            # MUST NOT use the contents of a non-32-byte-long file as an
+            # authentication cookie.
+            if len(cookie_string) != TorControlProtocol.SAFECOOKIE_LENGTH:
+                logging.warning("SAFECOOKIE authentication failed, cookie file '{}' was wrong length {}, wanted {}"
+                                .format(cookie_file,
+                                        len(cookie_string),
+                                        TorControlProtocol.SAFECOOKIE_LENGTH))
+                return None
+            return cookie_string
+        else:
             return None
 
 class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
@@ -1207,26 +1475,70 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                                             'PROTOCOLINFO version')
             elif line == "250 OK":
                 # we must authenticate as soon as we can
-                # TODO: support SAFECOOKIE (and not COOKIE, it's not secure)
                 password = self.getConfiguredValue('get_control_password',
                                                    'ControlPassword')
-                if ("HASHEDPASSWORD" in self.auth_methods and
+                if ("SAFECOOKIE" in self.auth_methods and
+                    self.cookie_file is not None):
+                    # send AUTHCHALLENGE, then AUTHENTICATE in response to
+                    # AUTHCHALLENGE
+                    self.client_nonce = \
+                        TorControlProtocol.generateClientNonce()
+                    encoded_client_nonce = \
+                        TorControlProtocol.encodeClientNonce(self.client_nonce)
+                    self.sendLine("AUTHCHALLENGE SAFECOOKIE {}"
+                                  .format(encoded_client_nonce))
+                    self.state = "authchallenge"
+                elif ("HASHEDPASSWORD" in self.auth_methods and
                     password is not None):
                     encoded_password = \
                         TorControlProtocol.encodeControllerString(password)
                     self.sendLine("AUTHENTICATE " + encoded_password)
+                    self.state = "authenticating"
                 elif "NULL" in self.auth_methods:
                     # Authenticate without a password or cookie
                     logging.info("Authenticating with {} using {} method"
                                  .format(transport_info(self.transport),
                                          "NULL"))
                     self.sendLine("AUTHENTICATE")
+                    self.state = "authenticating"
                 else:
-                    raise NotImplementedError("Authentication methods {} not implemented".format(",".join(self.auth_methods)))
-                self.state = "authenticating"
+                    raise NotImplementedError("Authentication methods {} not implemented"
+                                              .format(",".join(self.auth_methods)))
             else:
                 # log any other lines at the appropriate level
                 self.handleUnexpectedLine(line)
+        elif (self.state == 'authchallenge' and
+              line.startswith("250 AUTHCHALLENGE SERVERHASH=")):
+            _, _, suffix = line.partition("250 AUTHCHALLENGE SERVERHASH=")
+            server_hash, _, server_nonce = suffix.partition(" SERVERNONCE=")
+            self.server_nonce = TorControlProtocol.decodeServerNonce(
+                server_nonce)
+            server_hash = TorControlProtocol.decodeServerHash(
+                server_hash)
+            # if the nonce or hash are invalid, we don't want to read the file
+            if self.server_nonce is None or server_hash is None:
+                logging.warning("Connection with {}: invalid AUTHCHALLENGE line: '{}'"
+                            .format(transport_info(self.transport), line))
+                self.quit()
+                return
+            self.cookie_string = TorControlProtocol.readCookieFile(
+                self.cookie_file)
+            server_hash_matches = TorControlProtocol.verifyServerHash(
+                server_hash, self.cookie_string,
+                self.client_nonce, self.server_nonce)
+            if server_hash_matches:
+                # Now we can authenticate
+                client_hash = TorControlProtocol.getClientHash(
+                    self.cookie_string, self.client_nonce, self.server_nonce)
+                encoded_client_hash = \
+                    TorControlProtocol.encodeClientHash(client_hash)
+                self.sendLine("AUTHENTICATE " + encoded_client_hash)
+                self.state = "authenticating"
+            else:
+                logging.warning("Connection with {}: bad AUTHCHALLENGE server hash or cookie file: '{}'"
+                            .format(transport_info(self.transport), line))
+                self.quit()
+                return
         elif self.state == 'authenticating' and line == "250 OK":
             # Turn off privcount events, so we don't get spurious responses
             # We can't do this until we've authenticated (and we shouldn't
@@ -1443,28 +1755,102 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
         logging.debug("Received line '{}' from {}"
                       .format(line, transport_info(self.transport)))
 
-        # We use " quotes, but tor uses ' quotes. This should not matter.
+        # We use " quotes in some places where tor uses ' quotes.
+        # This should not matter: where it is significant, we match tor's
+        # use of " quotes.
         if not self.authenticated:
-            # PROTOCOLINFO is allowed before AUTHENTICATE, but technically
-            # only once (we do not enforce this requirement)
+            config_password = self.getConfiguredValue('get_control_password',
+                                                      'ControlPassword')
+            # The controller is meant to do PROTOCOLINFO, AUTHCHALLENGE,
+            # AUTHENTICATE. We don't enforce the order, or require that each
+            # request is only made once.
             if len(parts) > 0 and parts[0] == "PROTOCOLINFO":
                 # Assume the protocolinfo version is OK
                 self.sendLine("250-PROTOCOLINFO 1")
-                # We don't do COOKIE authentication, it's not secure
-                self.sendLine("250-AUTH METHODS=SAFECOOKIE,HASHEDPASSWORD,NULL COOKIEFILE=\"/var/run/tor/control.authcookie\"")
+                auth_methods = []
+                # We don't do COOKIE authentication, it's not secure,
+                # instead, we do SAFECOOKIE
+                self.cookie_string = self.writeConfiguredCookieFile(
+                    self.cookie_string)
+                if self.cookie_string is not None:
+                    auth_methods.append("SAFECOOKIE")
+                if config_password is not None:
+                    auth_methods.append("HASHEDPASSWORD")
+                # We don't do NULL authentication unless there are no other
+                # options (what would be the point, otherwise?)
+                if len(auth_methods) == 0:
+                    auth_methods.append("NULL")
+                if self.cookie_string is not None:
+                    encoded_cookie_file = \
+                        TorControlProtocol.encodeControllerString(
+                        self.getConfiguredCookieFile())
+                    cookie_part = " COOKIEFILE={}".format(encoded_cookie_file)
+                else:
+                    cookie_part = ""
+                self.sendLine("250-AUTH METHODS={}{}".format(",".join(auth_methods), cookie_part))
                 self.sendLine("250-VERSION Tor=\"0.2.8.6\"")
                 self.sendLine("250 OK")
+            elif line.startswith("AUTHCHALLENGE SAFECOOKIE"):
+                if self.cookie_string is None:
+                    self.sendLine("513 SAFECOOKIE authentication is not enabled")
+                    self.transport.loseConnection()
+                    return
+                else:
+                    _, _, client_nonce = line.partition(
+                        "AUTHCHALLENGE SAFECOOKIE")
+                    decoded_client_nonce = None
+                    try:
+                        decoded_client_nonce = \
+                            TorControlProtocol.decodeClientNonce(client_nonce)
+                    except TypeError:
+                        # it's an invalid nonce and will fail the next check
+                        pass
+                    if decoded_client_nonce is None:
+                        self.sendLine("513 Invalid base16 client nonce")
+                        self.transport.loseConnection()
+                        return
+                    self.client_nonce = decoded_client_nonce
+                    self.server_nonce = \
+                        TorControlProtocol.generateServerNonce()
+                    server_hash = TorControlProtocol.getServerHash(
+                        self.cookie_string, self.client_nonce,
+                        self.server_nonce)
+                    encoded_server_hash = TorControlProtocol.encodeServerHash(
+                        server_hash)
+                    encoded_server_nonce = \
+                        TorControlProtocol.encodeServerNonce(self.server_nonce)
+                    self.sendLine(
+                        "250 AUTHCHALLENGE SERVERHASH={} SERVERNONCE={}"
+                        .format(encoded_server_hash, encoded_server_nonce))
+            elif line.startswith("AUTHCHALLENGE"):
+                self.sendLine("513 AUTHCHALLENGE only supports SAFECOOKIE authentication")
+                self.transport.loseConnection()
+                return
             elif line.startswith("AUTHENTICATE"):
-                config_password = self.getConfiguredValue(
-                    'get_control_password',
-                    'ControlPassword')
-                _, _, client_password = line.partition("AUTHENTICATE ")
-                client_password = TorControlProtocol.decodeControllerString(
-                    client_password)
+                _, _, client_password = line.partition("AUTHENTICATE")
+                client_password = client_password.strip()
+                try:
+                    client_password = \
+                        TorControlProtocol.decodeControllerString(
+                        client_password)
+                except TypeError:
+                    self.sendLine("551 Invalid quoted string.  You need to put the password in double quotes.")
+                    self.transport.loseConnection()
+                    return
+                client_hash_matches = False
+                # Check the length before verifying: like decodeClientHash,
+                # but doesn't warn on bad hashes
+                if (len(client_password) ==
+                    TorControlProtocol.SAFECOOKIE_CLIENT_HASH_LENGTH):
+                    client_hash_matches = TorControlProtocol.verifyClientHash(
+                        client_password, self.cookie_string,
+                        self.client_nonce, self.server_nonce)
                 # If there is no set password, accept any password or cookie
                 # hash: this is safe, because this tor control protocol stub
                 # does not handle any sensitive information
-                if (config_password is None or
+                if ((self.getConfiguredCookieFile() is None and
+                     config_password is None) or
+                    client_hash_matches or
                     config_password == client_password):
                     self.sendLine("250 OK")
                     self.authenticated = True
