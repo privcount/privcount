@@ -27,7 +27,7 @@ DEFAULT_PRIVCOUNT_INJECT_SOCKET = '/tmp/privcount-inject'
 class PrivCountDataInjector(ServerFactory):
 
     def __init__(self, logpath, do_pause, prune_before, prune_after,
-                 control_password = None):
+                 control_password = None, control_cookie_file = None):
         self.logpath = logpath
         self.do_pause = do_pause
         self.prune_before = prune_before
@@ -38,6 +38,7 @@ class PrivCountDataInjector(ServerFactory):
         self.injecting = False
         self.listeners = None
         self.control_password = control_password
+        self.control_cookie_file = control_cookie_file
 
     def startFactory(self):
         # TODO
@@ -68,6 +69,14 @@ class PrivCountDataInjector(ServerFactory):
         '''
         # Configuring multiple passwords is not supported
         return self.control_password
+
+    def get_control_cookie_file(self):
+        '''
+        Return the configured control cookie file path, or None if there is no
+        control cookie file.
+        '''
+        # Configuring multiple cookie files is not supported
+        return self.control_cookie_file
 
     def start_injecting(self):
         self.injecting = True
@@ -206,7 +215,7 @@ def run_inject(args):
     start the injector, and start it listening
     '''
     # pylint: disable=E1101
-    injector = PrivCountDataInjector(args.log, args.simulate, int(args.prune_before), int(args.prune_after), args.control_password)
+    injector = PrivCountDataInjector(args.log, args.simulate, int(args.prune_before), int(args.prune_after), args.control_password, args.control_cookie_file)
     # The injector listens on all of IPv4, IPv6, and a control socket, and
     # injects events into the first client to connect
     # Since these are synthetic events, it is safe to use /tmp for the socket
@@ -247,7 +256,9 @@ def add_inject_args(parser):
                         help="do not inject events that occurred after the given unix timestamp",
                         default=2147483647)
     parser.add_argument('--control-password',
-                        help="The tor control password, set via tor --hash-password and HashedControlPassword")
+                        help="The tor control password. Set this in tor using tor --hash-password and HashedControlPassword")
+    parser.add_argument('--control-cookie-file',
+                        help="The tor control cookie file. Set this in tor using CookieAuthentication and CookieAuthFile")
 
 if __name__ == "__main__":
     sys.exit(main())
