@@ -129,6 +129,8 @@ class PrivCountProtocol(LineOnlyReceiver):
 
     # PrivCount uses a HMAC-SHA256-based handshake to verify that client and
     # server both know a shared secret key, without revealing the key itself
+    # The handshake's construction is similar to the Tor Control Port's
+    # SAFECOOKIE authentication method.
 
     # The numbers of space-seprated parts on various protocol handshake lines
 
