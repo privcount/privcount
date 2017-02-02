@@ -72,7 +72,7 @@ class PrivCountDataInjector(ServerFactory):
     def start_injecting(self):
         self.injecting = True
         if self.listeners is not None:
-            logging.info("Injector is no longer listening")
+            logging.info("Injector has connected: no longer listening for new connections")
             stopListening(self.listeners)
             # This breaks the reference loop
             self.listeners = None
