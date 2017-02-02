@@ -87,8 +87,11 @@ $MOVE_LOG_COMMAND || true
 # We can either test --simulate, and get partial data, or get full data
 # It's better to get full data
 INJECTOR_BASE_CMD="privcount inject --log events.txt"
-INJECTOR_PORT_CMD="$INJECTOR_BASE_CMD --port 20003"
-INJECTOR_UNIX_CMD="$INJECTOR_BASE_CMD --unix /tmp/privcount-inject"
+# Use NULL authentication, because password authentication requires hard-coding
+# a value, and people might re-use it without thinking of security
+INJECTOR_PORT_CMD="$INJECTOR_BASE_CMD --port 20003" # --control-password
+# Use safecookie authentication (our client prefers SAFECOOKIE to PASSWORD)
+INJECTOR_UNIX_CMD="$INJECTOR_BASE_CMD --unix /tmp/privcount-inject --control-cookie-file /tmp/privcount-control-auth-cookie"
 
 # Generate a log file name
 # Usage:
