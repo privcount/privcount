@@ -999,6 +999,12 @@ class TorControlProtocol(object):
     SAFECOOKIE_CLIENT_HASH_KEY = \
         "Tor safe cookie authentication controller-to-server hash"
 
+    # Any file shorter than this is probably a config error
+    # (PrivCount does not accept zero-length passwords, even though tor does.)
+    PASSWORD_MIN_VALID_LENGTH = 8
+    # An arbitrary limit, 1 kilobyte is quite enough to hash
+    PASSWORD_MAX_VALID_LENGTH = 1024
+
     @staticmethod
     def encodeControllerString(str, hex_encode = True):
         '''
@@ -1258,6 +1264,39 @@ class TorControlProtocol(object):
                                     value_name, get_function_name, e))
             return None
 
+    @staticmethod
+    def readFile(secret_file, min_len, max_len):
+        '''
+        Read a value between min_len and max_len from secret_file.
+        Return the value read from the file, or None if there is no file, or
+        reading from the file fails, or the read secret is not an acceptable
+        length.
+        '''
+        if secret_file is not None:
+            try:
+                with open(secret_file, 'r') as f:
+                    # Read one more byte to check that the file is actually
+                    # the right length
+                    secret_string = f.read(max_len + 1)
+            except IOError as e:
+                logging.warning("Authentication failed: reading file '{}' failed with error: {}"
+                                .format(secret_file, e))
+                return None
+            if len(secret_string) < min_len:
+                logging.warning("Authentication failed, file '{}' was wrong length {}, wanted at least {}"
+                                .format(secret_file,
+                                        len(secret_string),
+                                        min_len))
+            if len(secret_string) > max_len:
+                logging.warning("Authentication failed, file '{}' was wrong length {}, wanted at most {}"
+                                .format(secret_file,
+                                        len(secret_string),
+                                        max_len))
+                return None
+            return secret_string
+        else:
+            return None
+
     def getConfiguredCookieFile(self):
         '''
         Return the configured path to the cookie file.
@@ -1298,29 +1337,37 @@ class TorControlProtocol(object):
         Return the value read from the file, or None if there is no cookie
         file, or reading from the file fails, or the cookie is not 32 bytes.
         '''
-        if cookie_file is not None:
-            try:
-                with open(cookie_file, 'r') as f:
-                    # Read one more byte to check that the file is actually
-                    # the right length
-                    cookie_string = f.read(TorControlProtocol.SAFECOOKIE_LENGTH
-                                           + 1)
-            except IOError as e:
-                logging.warning("SAFECOOKIE authentication failed, reading cookie file '{}' failed with error: {}"
-                                .format(cookie_file, e))
-                return None
-            # All authentication cookies are 32 bytes long.  Controllers
-            # MUST NOT use the contents of a non-32-byte-long file as an
-            # authentication cookie.
-            if len(cookie_string) != TorControlProtocol.SAFECOOKIE_LENGTH:
-                logging.warning("SAFECOOKIE authentication failed, cookie file '{}' was wrong length {}, wanted {}"
-                                .format(cookie_file,
-                                        len(cookie_string),
-                                        TorControlProtocol.SAFECOOKIE_LENGTH))
-                return None
-            return cookie_string
-        else:
-            return None
+        # All authentication cookies are 32 bytes long.  Controllers
+        # MUST NOT use the contents of a non-32-byte-long file as an
+        # authentication cookie.
+        return TorControlProtocol.readFile(
+            cookie_file,
+            TorControlProtocol.SAFECOOKIE_LENGTH,
+            TorControlProtocol.SAFECOOKIE_LENGTH)
+
+    def getConfiguredPasswordFile(self):
+        '''
+        Return the configured path to the password file.
+        Configuring more than one password file is not supported.
+        '''
+        return self.getConfiguredValue('get_control_password',
+                                       'password file')
+
+    def getConfiguredPassword(self):
+        '''
+        Read a string from the configured password file.
+        Return the value read from the file, or None if there is no password
+        file, or reading from the file fails, or the password is too short
+        (or too long).
+        '''
+        # PrivCount expects passwords between 8 bytes and 1 kilobyte
+        # The hash used by tor outputs 20 bytes
+        password_file = self.getConfiguredPasswordFile()
+        return TorControlProtocol.readFile(
+            password_file,
+            TorControlProtocol.PASSWORD_MIN_VALID_LENGTH,
+            TorControlProtocol.PASSWORD_MAX_VALID_LENGTH)
+
 
 class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
 
@@ -1475,8 +1522,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                                             'PROTOCOLINFO version')
             elif line == "250 OK":
                 # we must authenticate as soon as we can
-                password = self.getConfiguredValue('get_control_password',
-                                                   'ControlPassword')
+                password = self.getConfiguredPassword()
                 if ("SAFECOOKIE" in self.auth_methods and
                     self.cookie_file is not None):
                     # send AUTHCHALLENGE, then AUTHENTICATE in response to
@@ -1759,8 +1805,7 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
         # This should not matter: where it is significant, we match tor's
         # use of " quotes.
         if not self.authenticated:
-            config_password = self.getConfiguredValue('get_control_password',
-                                                      'ControlPassword')
+            config_password = self.getConfiguredPassword()
             # The controller is meant to do PROTOCOLINFO, AUTHCHALLENGE,
             # AUTHENTICATE. We don't enforce the order, or require that each
             # request is only made once.

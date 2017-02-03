@@ -87,10 +87,16 @@ $MOVE_LOG_COMMAND || true
 # We can either test --simulate, and get partial data, or get full data
 # It's better to get full data
 INJECTOR_BASE_CMD="privcount inject --log events.txt"
-# Use NULL authentication, because password authentication requires hard-coding
-# a value, and people might re-use it without thinking of security
-INJECTOR_PORT_CMD="$INJECTOR_BASE_CMD --port 20003" # --control-password
-# Use safecookie authentication (our client prefers SAFECOOKIE to PASSWORD)
+
+# Prepare for password authentication: the data collector and injector both
+# read this file
+echo "Generating random password file..."
+cat /dev/random | hexdump -e '"%x"' -n 32 -v > keys/control_password.txt
+# The command for password authentication
+INJECTOR_PORT_CMD="$INJECTOR_BASE_CMD --port 20003 --control-password keys/control_password.txt"
+
+# The injector automatically writes its own cookie file, just like tor
+# The command for safecookie authentication
 INJECTOR_UNIX_CMD="$INJECTOR_BASE_CMD --unix /tmp/privcount-inject --control-cookie-file /tmp/privcount-control-auth-cookie"
 
 # Generate a log file name

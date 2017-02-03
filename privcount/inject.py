@@ -256,7 +256,7 @@ def add_inject_args(parser):
                         help="do not inject events that occurred after the given unix timestamp",
                         default=2147483647)
     parser.add_argument('--control-password',
-                        help="The tor control password. Set this in tor using tor --hash-password and HashedControlPassword")
+                        help="A file containing the tor control password. Set this in tor using tor --hash-password and HashedControlPassword")
     parser.add_argument('--control-cookie-file',
                         help="The tor control cookie file. Set this in tor using CookieAuthentication and CookieAuthFile")
 
