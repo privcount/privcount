@@ -983,6 +983,8 @@ class TorControlProtocol(object):
     SAFECOOKIE_SERVER_NONCE_LENGTH = 32
     SAFECOOKIE_SERVER_HASH_LENGTH = 32
 
+    # The security of SAFECOOKIE authentication does not depend on the client
+    # nonce
     SAFECOOKIE_CLIENT_NONCE_MIN_VALID_LENGTH = 0
     # An arbitrary limit, 1 kilobyte is quite enough to hash
     SAFECOOKIE_CLIENT_NONCE_MAX_VALID_LENGTH = 1024
