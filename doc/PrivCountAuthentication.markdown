@@ -21,7 +21,7 @@ The TallyServer creates a PrivCount secret handshake key:
       ShareKeeper and DataCollector operators: encrypted, signed emails are a
       good choice
     * the client and server prove knowledge of the key without revealing it,
-      using a hash construction similar to tor's SAFECOOKIE authentication 
+      using a hash construction similar to tor's SAFECOOKIE authentication
       (for more details, see privcount/protocol.py)
     * this key must be kept secret: it is equivalent to a symmetric secret key
 
