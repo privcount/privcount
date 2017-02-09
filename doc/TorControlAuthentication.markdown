@@ -20,25 +20,46 @@ Unix sockets are secured by filesystem permissions, but are a bit more complex
 to set up. Some OSs configure them automatically.
 
 #### Configure Control Socket in the torrc:
+
+```
   echo "ControlPort unix:/var/run/tor/control" >> torrc
-  (Your OS may have a different default, check the documentation)
+```
+(Your OS may have a different default, check the documentation)
 
 #### If you have separate PrivCount and Tor users:
+
 ##### Add the PrivCount user to the tor user's group:
-  (These user names depend on your distribution and PrivCount config)
+
+(These user names depend on your distribution and PrivCount config)
+```
   adduser privcount tor
-  Add the following flags to the end of the ControlPort line in the torrc:
+```
+
+#### Make the Control Port socket group writeable:
+
+Add the following flags to the end of the ControlPort unix socket
+line in the torrc:
+```
   GroupWritable
+```
 
 #### If you still get permissions errors:
+
 ##### Relax Directory Permissions
-  Add the following flags to the end of the ControlPort line in the torrc:
+
+Add the following flags to the end of the ControlPort line in the torrc:
+```
   RelaxDirModeCheck
+```
 
 #### Configure Control Socket in PrivCount
+
+Add the following item to config.yaml:
+```
   data_collector:
     event_source:
       unix: '/var/run/tor/control'
+```
 
 ### Control Port
 
@@ -47,12 +68,19 @@ attacks (for example, web browsers) and privilege escalation from local
 processes.
 
 #### Configure Control Port in the torrc:
+
+```
   echo "ControlPort 9051" >> torrc
+```
 
 #### Configure Control Port in PrivCount
+
+Add the following item to config.yaml:
+```
   data_collector:
     event_source:
       port: 9051
+```
 
 ## Configuring Cookie File Authentication
 
@@ -63,14 +91,25 @@ This is the simplest and most secure authentication method to configure, but
 relies on filesystem and user/group security.
 
 ### Configure Cookie Authentication in the torrc:
+
+```
   echo "CookieAuthentication 1" >> torrc
+```
 
 ### If you have separate PrivCount and Tor users:
+
 #### Add the PrivCount user to the tor user's group:
-  (These user names depend on your distribution and PrivCount config)
+
+(These user names depend on your distribution and PrivCount config)
+```
   adduser privcount tor
+```
+
 #### Make the CookieAuthFile group-readable:
+
+```
   echo "CookieAuthFileGroupReadable 1" >> torrc
+```
 
 ## Configuring Password Authentication
 
@@ -78,15 +117,28 @@ Password authentication requires a shared secret configured using the
 event_source's control_password option.
 
 ### Generate a random 32-byte hexadecimal password using:
+
+```
   cat /dev/random | hexdump -e '"%x"' -n 32 -v > keys/control_password.txt
+```
+
 ### Configure your data collector with the plain text password file:
+
+Add the following item to config.yaml:
+```
   data_collector:
     event_source:
       control_password: 'keys/control_password.txt'
-  (PrivCount will fail if given an empty or non-existent password file.)
+```
+(PrivCount will fail if given an empty or non-existent password file, or a
+password file that's too short.)
+
 ### Hash the password and add it to the torrc
+
+```
   echo -n "HashedControlPassword " >> torrc
   tor --hash-password `cat keys/control_password.txt` >> torrc
+```
 
 ## Implementation Details
 
