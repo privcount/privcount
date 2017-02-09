@@ -56,6 +56,10 @@ echo "Testing counters:"
 python test_counter.py
 echo ""
 
+echo "Testing traffic model:"
+python test_traffic_model.py
+echo ""
+
 echo "Testing noise:"
 # The noise script contains its own main function, which we use as a test
 python ../privcount/tools/compute_noise.py
@@ -203,6 +207,9 @@ function link_latest() {
 # If an outcome file was produced, keep a link to the latest file
 link_latest outcome json
 
+# If a traffic model file was produced, keep a link to the latest file
+link_latest traffic.model json
+
 # If a tallies file was produced, keep a link to the latest file, and plot it
 link_latest tallies json
 if [ -f privcount.tallies.latest.json ]; then
@@ -236,6 +243,19 @@ else
   # Since we need old/latest and latest, it takes two runs to generate the
   # first outcome file comparison
   echo "Warning: Outcomes files could not be compared."
+  echo "$0 must be run twice to produce the first comparison."
+fi
+
+# Show the differences between the latest and old latest traffic model files
+if [ -e privcount.traffic.model.latest.json -a \
+     -e old/privcount.traffic.model.latest.json ]; then
+  echo "Comparing latest traffic model file with previous traffic model file..."
+  diff --minimal \
+    old/privcount.traffic.model.latest.json privcount.traffic.model.latest.json || true
+else
+  # Since we need old/latest and latest, it takes two runs to generate the
+  # first traffic model file comparison
+  echo "Warning: traffic model files could not be compared."
   echo "$0 must be run twice to produce the first comparison."
 fi
 
