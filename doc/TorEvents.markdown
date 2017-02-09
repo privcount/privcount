@@ -8,29 +8,29 @@ Controller interfaces.
 
 ### Initialisation
 
-#### PrivCount authenticates to the Control Port (PROTOCOLINFO, AUTHENTICATE),
-     using one of the following methods:
-     * SAFECOOKIE (AUTHCHALLENGE)
-     * HASHEDPASSWORD
-     * NULL (if neither other method is available, and tor offers NULL
-       authentication)
+1. PrivCount authenticates to the Control Port (PROTOCOLINFO, AUTHENTICATE),
+   using one of the following methods:
+   * SAFECOOKIE (AUTHCHALLENGE)
+   * HASHEDPASSWORD
+   * NULL (if neither other method is available, and tor offers NULL
+     authentication)
 
-#### PrivCount discovers some relay information (GETINFO, GETCONF)
+2. PrivCount discovers some relay information (GETINFO, GETCONF)
 
 ### Collection
 
-#### PrivCount waits for the collection round to start
-#### PrivCount turns on the tor PrivCount code (SETCONF EnablePrivCount 1)
-#### PrivCount turns on the tor events required for the collection round
-     (SETEVENTS PRIVCOUNT_...)
-#### Tor starts sending events as they occur, and PrivCount processes these
-     events
+1. PrivCount waits for the collection round to start
+2. PrivCount turns on the tor PrivCount code (SETCONF EnablePrivCount 1)
+3. PrivCount turns on the tor events required for the collection round
+   (SETEVENTS PRIVCOUNT_...)
+4. Tor starts sending events as they occur, and PrivCount processes these
+   events
 
 ### Cleanup
 
-#### PrivCount waits for the collection round to stop
-#### PrivCount turns off EnablePrivCount and all tor events (SETCONF,
-     SETEVENTS)
+1. PrivCount waits for the collection round to stop
+2. PrivCount turns off EnablePrivCount and all tor events (SETCONF,
+   SETEVENTS)
 
 ## PrivCount Event Overview
 
@@ -43,7 +43,7 @@ This event is sent when an exit receives a client request, including:
 * both connect and resolve requests,
 * for DNS names, and IPv4 and IPv6 addresses,
 * whether the DNS name is in Tor's local DNS cache or not,
-* with limited checks on whether the address is a valid DNS name or IP address.
+* with limited checks on whether the address is a valid DNS name or IP address.  
   (Tor clients and Tor Exits perform some sanity checks before sending an
   address for resolution).
 
@@ -62,13 +62,13 @@ It includes the following fields:
 It has the following known issues:
 * There is no indication in the event whether the request was successful or
   not, so this event can not be used to count client connections (only client
-  requests).
+  requests)  
   https://github.com/privcount/privcount/issues/184
-* The resolved address is not included in the event.
+* The resolved address is not included in the event  
   https://github.com/privcount/privcount/issues/184
-* The time is not included in the event.
+* The time is not included in the event  
   https://github.com/privcount/privcount/issues/187
-* These events include relay DirPort self-checks to their own IPv4 addresses
+* These events include relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
 
 ### PRIVCOUNT_STREAM_BYTES_TRANSFERRED
@@ -84,8 +84,9 @@ Client BEGINDIR (ORPort directory) requests trigger this event, but client
 HTTP (DirPort directory) requests do not.
 
 Relay DirPort self-checks by remote relays do trigger this event, even though
-they are not client traffic. The self-testing traffic and connections are
-neglible compared with all tor network traffic, but may be significant for
+they are not client traffic. The 
+traffic and connections are
+negligible compared with all tor network traffic, but may be significant for
 small counters that include IPv4 ports 80 or 9030.
 
 Some tor-side filtering of this event may be necessary for performance
@@ -104,14 +105,14 @@ It includes the following fields:
 * Current Timestamp
 
 It has the following known issues:
-* This event includes client BEGINDIR (ORPort directory) requests
+* This event includes client BEGINDIR (ORPort directory) requests  
   https://github.com/privcount/privcount/issues/191
-* This event includes relay DirPort self-checks to their own IPv4 addresses
+* This event includes relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
 * This event uses a string for a flag, a number is more efficient and
-  consistent with other events
+  consistent with other events  
   https://github.com/privcount/privcount/issues/189
-* The channel and circuit fields in this event may be missing in some cases
+* The channel and circuit fields in this event may be missing in some cases  
   https://github.com/privcount/privcount/issues/193
 
 ### PRIVCOUNT_STREAM_ENDED
@@ -126,7 +127,7 @@ Directory Request" flag, but client HTTP (DirPort directory) requests do not.
 
 Relay DirPort self-checks by remote relays do trigger this event, even though
 they are not client traffic. The self-testing traffic and connections are
-neglible compared with all tor network traffic, but may be significant for
+negligible compared with all tor network traffic, but may be significant for
 small counters that include IPv4 ports 80 or 9030.
 
 The end stream event is used by the PrivCount stream, circuit stream, and
@@ -145,11 +146,11 @@ It includes the following fields:
 * Is Directory Request Flag
 
 It has the following known issues:
-* The is_dir flag has false positives on client connections to port 1
+* The is_dir flag has false positives on client connections to port 1  
   https://github.com/privcount/privcount/issues/190
-* This event includes relay DirPort self-checks to their own IPv4 addresses
+* This event includes relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
-* The channel and circuit fields in this event may be missing in some cases
+* The channel and circuit fields in this event may be missing in some cases  
   https://github.com/privcount/privcount/issues/193
 
 ### PRIVCOUNT_CIRCUIT_ENDED
@@ -165,7 +166,7 @@ HTTP (DirPort directory) requests do not.
 
 Relay DirPort self-checks by remote relays do trigger this event, even though
 they are not client traffic. The self-testing traffic and connections are
-neglible compared with all tor network traffic, but may be significant for
+negligible compared with all tor network traffic, but may be significant for
 small counters that include IPv4 ports 80 or 9030.
 
 The circuit ended event is used by the PrivCount circuit, circuit stream, and
@@ -190,17 +191,17 @@ It includes the following fields:
 * Next Hop Is Relay Flag
 
 It has the following known issues:
-* This event includes client BEGINDIR (ORPort directory) requests
+* This event includes client BEGINDIR (ORPort directory) requests  
   https://github.com/privcount/privcount/issues/191
-* This event includes relay DirPort self-checks to their own IPv4 addresses
+* This event includes relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
-* The channel field in this event may be missing in some cases
+* The channel field in this event may be missing in some cases  
   https://github.com/privcount/privcount/issues/193
-* The cell counts in this event are not protected against overflow
+* The cell counts in this event are not protected against overflow  
   https://github.com/privcount/privcount/issues/195
-* If a Remote IP Address is missing, 0.0.0.0 is used as a placeholder
+* If a Remote IP Address is missing, 0.0.0.0 is used as a placeholder  
   https://github.com/privcount/privcount/issues/196
-* The Is Client flag does not identify all clients
+* The Is Client flag does not identify all clients  
   https://github.com/privcount/privcount/issues/199
 
 ### PRIVCOUNT_CONNECTION_ENDED
@@ -212,7 +213,7 @@ event, including client BEGINDIR (ORPort directory) requests. But client
 HTTP (DirPort directory) requests do not.
 
 Relay DirPort self-checks by remote relays do trigger this event, even though
-they are not client traffic. The self-testing connections are neglible
+they are not client traffic. The self-testing connections are negligible
 compared with all tor network traffic: it is unlikely they would add many
 additional connections from middle to exit relays.
 
@@ -228,15 +229,15 @@ It includes the following fields:
 * Remote Is Relay Flag
 
 It has the following known issues:
-* This event includes client BEGINDIR (ORPort directory) requests
+* This event includes client BEGINDIR (ORPort directory) requests  
   https://github.com/privcount/privcount/issues/191
-* This event includes relay DirPort self-checks to their own IPv4 addresses
+* This event includes relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
-* The channel field in this event may be missing in some cases
+* The channel field in this event may be missing in some cases  
   https://github.com/privcount/privcount/issues/193
-* If a Remote IP Address is missing, 0.0.0.0 is used as a placeholder
+* If a Remote IP Address is missing, 0.0.0.0 is used as a placeholder  
   https://github.com/privcount/privcount/issues/196
-* The Is Client flag does not identify all clients
+* The Is Client flag does not identify all clients  
   https://github.com/privcount/privcount/issues/199
 
 ## PrivCount Event Field Detail
