@@ -57,7 +57,9 @@ The periods determine how often nodes communicate, and how long rounds last.
 
 #### Collect Period
 
-Data Collectors collect events for collect period seconds.
+Data Collectors collect events for collect period seconds. Tor generates these
+events in response to network activity, and PrivCount increments counter(s) in
+response to the events it receives.
 
 ```
 tally_server:
@@ -69,7 +71,9 @@ tally_server:
 
 #### Event Period
 
-The tally server checks for new events every event period.
+The tally server runs its main loop every event period. The main loop checks
+for config file changes, responds to Data Collector and Share Keeper status
+updates, and initiates or terminates rounds.
 
 ```
 tally_server:
@@ -82,7 +86,9 @@ tally_server:
 
 #### Checkin Period
 
-Data Collectors and Share Keepers check in every checkin period.
+Data Collectors and Share Keepers connect to the Tally Server and tell it they
+are still active every checkin period. These status events also contain
+information about the client's state.
 
 ```
 tally_server:
@@ -115,8 +121,10 @@ share_keeper:
 
 ### Node Thresholds
 
-The node thresholds determine when rounds are run.
-The Tally Server does not start the round until both node thresholds are met.
+The node thresholds determine when rounds are run. The Tally Server does not
+start the round until both node thresholds are met: that is, the number of
+ShareKeepers and Data Collectors is greater than or equal to their respective
+thresholds.
 
 ### Data Collector Threshold
 
