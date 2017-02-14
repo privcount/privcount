@@ -36,6 +36,7 @@ class PrivCountDataInjector(ServerFactory):
         self.event_file = None
         self.last_time_end = 0.0
         self.injecting = False
+        self.pending_stop = False
         self.listeners = None
         self.control_password = control_password
         self.control_cookie_file = control_cookie_file
@@ -98,10 +99,28 @@ class PrivCountDataInjector(ServerFactory):
         self._inject_events()
 
     def stop_injecting(self):
+        '''
+        Stop sending events to the data collector, close all connections.
+        Depending on the protocol, closing the connection can erase all unread
+        data. So we stop sending events, but delay the actual close for a
+        short amount of time.
+        '''
         if not self.injecting:
             logging.debug("Ignoring request to stop injecting when injection is not in progress")
             return
         self.injecting = False
+        if not self.pending_stop:
+            self.pending_stop = True
+            logging.debug("Scheduling injector stop after a short delay")
+            # twisted's loseConnection says:
+            # "Close my connection, after writing all pending data"
+            # But it often closes the connection before sending data.
+            # So we allow the event loop to run before we stop injecting.
+            # IP retains unread data in the network stack, but unix
+            # sockets don't. So we need to delay closing unix sockets, for
+            # the data collector to finish reading.
+            reactor.callLater(1.0, self.stop_injecting) # pylint: disable=E1101
+            return
         if self.listeners is not None:
             stopListening(self.listeners)
             self.listeners = None
@@ -137,35 +156,36 @@ class PrivCountDataInjector(ServerFactory):
             self.event_file = None
             return None
         else:
+            self.input_line_count += 1
             return line
 
     def _flush_now(self, msg):
-        if self.protocol is not None and self.protocol.transport is not None and self.protocol.transport.connected:
+        if (self.protocol is not None and self.protocol.transport is not None
+            and self.protocol.transport.connected and self.injecting):
             # update event times so the data seems fresh to privcount
             this_time_start, this_time_end = self._get_event_times(msg)
             now = time()
             alive = this_time_end - this_time_start
             msg_adjusted_times = self._set_event_times(msg, now-alive, now)
             event = "650 {}".format(msg_adjusted_times)
-            logging.info("sending event '{}'".format(event))
+            self.output_event_count += 1
+            logging.info("sending event {} '{}'".format(
+                    self.output_event_count, event))
             self.protocol.sendLine(event)
+        elif self.injecting:
+            # No connection: stop sending
+            self.stop_injecting()
 
     def _flush_later(self, msg):
         self._flush_now(msg)
         self._inject_events()
 
     def _inject_events(self):
-        while True:
+        while self.injecting:
             line = self._get_line()
             if line is None:
-                # twisted's loseConnection says:
-                # "Close my connection, after writing all pending data"
-                # But it often closes the connection before sending data.
-                # So we allow the event loop to run before we stop injecting
-                # otherwise, the connection may be closed before the final line
-                # is received
-                # A zero delay is sufficient for localhost
-                reactor.callLater(0.0, self.stop_injecting) # pylint: disable=E1101
+                # We're done
+                self.stop_injecting()
                 return
 
             msg = line.strip()
