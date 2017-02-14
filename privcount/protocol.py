@@ -1380,6 +1380,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         self.cookie_file = None
         self.collection_events = None
         self.active_events = None
+        self.received_event_count = 0
 
     def connectionMade(self):
         '''
@@ -1398,6 +1399,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         events explictly specified in event_list. After every successful
         control port connection, re-enable the events.
         '''
+        if self.received_event_count != 0:
+            logging.warning("startCollection called multiple times without stopCollection")
+            self.received_event_count = 0
         self.collection_events = set()
         if counter_list is not None:
             self.collection_events |= get_events_for_counters(counter_list)
@@ -1421,10 +1425,13 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         Disable all events. Remain connected to the control port, but wait for
         the next collection to start.
         '''
+        logging.info("Stopping collection, collected {} events."
+                     .format(self.received_event_count))
+        self.received_event_count = 0
         self.collection_events = None
         self.disableEvents()
         # let the user know that we're waiting
-        logging.info("Waiting for PrivCount collection to start")
+        logging.info("Waiting for next PrivCount collection to start")
 
     def enableEvents(self):
         '''
@@ -1678,6 +1685,10 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         elif self.state == 'processing' and line.startswith("650 PRIVCOUNT_"):
             parts = line.split(" ")
             assert len(parts) > 1
+            # log the event
+            self.received_event_count += 1
+            logging.debug("receiving event {} '{}'"
+                          .format(self.received_event_count, line))
             # skip unwanted events
             if not parts[1] in self.active_events:
                 if not parts[1] in get_valid_events():

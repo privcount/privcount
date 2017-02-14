@@ -39,6 +39,9 @@ class PrivCountDataInjector(ServerFactory):
         self.listeners = None
         self.control_password = control_password
         self.control_cookie_file = control_cookie_file
+        self.input_line_count = 0
+        self.output_line_count = 0
+        self.output_event_count = 0
 
     def startFactory(self):
         # TODO
@@ -102,10 +105,18 @@ class PrivCountDataInjector(ServerFactory):
         if self.listeners is not None:
             stopListening(self.listeners)
             self.listeners = None
+        # Count lines and events
+        event_info = ("Read {} lines, {} valid times, sent {} events"
+                      .format(self.input_line_count, self.output_line_count,
+                              self.output_event_count))
         # close the event log file
         if self.event_file is not None:
             self.event_file.close()
             self.event_file = None
+            logging.warning("Connection closed before all events were sent. "
+                            + event_info)
+        else:
+            logging.debug(event_info)
         # close the connection from our server side
         if self.protocol is not None and self.protocol.transport is not None:
             self.protocol.transport.loseConnection()
@@ -163,6 +174,8 @@ class PrivCountDataInjector(ServerFactory):
             # make sure this event is in our 'valid' event window
             if this_time_end < self.prune_before or this_time_end > self.prune_after:
                 continue
+
+            self.output_line_count += 1
 
             # if we need to simulate event inter-arrival times
             do_wait, wait_time = False, 0.0
