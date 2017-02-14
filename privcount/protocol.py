@@ -1697,8 +1697,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                     logging.warning("Unwanted event type {}".format(line))
             # skip empty events
             elif len(parts) <= 2:
-                # send the event, including the event type
                 logging.warning("Event with no data {}".format(line))
+            # send the event, including the event type
             elif not self.factory.handle_event(parts[1:]):
                 self.quit()
                 return

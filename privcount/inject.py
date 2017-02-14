@@ -192,7 +192,7 @@ class PrivCountDataInjector(ServerFactory):
             # we can't dump the entire file at once: it fills up the buffers
             # without giving the twisted event loop time to flush them
             # instead, use callLater with a zero delay
-            # we cant sleep or twisted wont work correctly, we must use callLater instead
+            # we can't sleep or twisted won't work correctly
             reactor.callLater(wait_time, self._flush_later, msg) # pylint: disable=E1101
             # _flush_later will inject the next event when called
             return
