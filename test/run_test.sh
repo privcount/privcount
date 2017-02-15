@@ -15,10 +15,15 @@ do
     --install|-I)
       PRIVCOUNT_INSTALL=1
       ;;
+    --rounds|-r)
+      PRIVCOUNT_ROUNDS=$2
+      shift
+      ;;
     --help|-h)
       echo "usage: $0 [...] [<privcount-directory>] -- [<data-source-args...>]"
       echo "  -I: run 'pip install -I <privcount-directory>' before testing"
       echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
+      echo "  -r rounds: run this many rounds before stopping"
       echo "  <privcount-directory>: the directory privcount is in"
       echo "    default: '$PRIVCOUNT_DIRECTORY'"
       echo "  <data-source-args...>: arguments appended to the data source"
