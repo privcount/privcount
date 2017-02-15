@@ -1380,6 +1380,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         self.cookie_file = None
         self.collection_events = None
         self.active_events = None
+        self.received_event_count = 0
 
     def connectionMade(self):
         '''
@@ -1398,6 +1399,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         events explictly specified in event_list. After every successful
         control port connection, re-enable the events.
         '''
+        if self.received_event_count != 0:
+            logging.warning("startCollection called multiple times without stopCollection")
+            self.received_event_count = 0
         self.collection_events = set()
         if counter_list is not None:
             self.collection_events |= get_events_for_counters(counter_list)
@@ -1421,10 +1425,13 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         Disable all events. Remain connected to the control port, but wait for
         the next collection to start.
         '''
+        logging.info("Stopping collection, collected {} events."
+                     .format(self.received_event_count))
+        self.received_event_count = 0
         self.collection_events = None
         self.disableEvents()
         # let the user know that we're waiting
-        logging.info("Waiting for PrivCount collection to start")
+        logging.info("Waiting for next PrivCount collection to start")
 
     def enableEvents(self):
         '''
@@ -1678,6 +1685,10 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         elif self.state == 'processing' and line.startswith("650 PRIVCOUNT_"):
             parts = line.split(" ")
             assert len(parts) > 1
+            # log the event
+            self.received_event_count += 1
+            logging.debug("receiving event {} '{}'"
+                          .format(self.received_event_count, line))
             # skip unwanted events
             if not parts[1] in self.active_events:
                 if not parts[1] in get_valid_events():
@@ -1686,8 +1697,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                     logging.warning("Unwanted event type {}".format(line))
             # skip empty events
             elif len(parts) <= 2:
-                # send the event, including the event type
                 logging.warning("Event with no data {}".format(line))
+            # send the event, including the event type
             elif not self.factory.handle_event(parts[1:]):
                 self.quit()
                 return
@@ -1718,12 +1729,18 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             self.quit()
 
     def quit(self):
+        self.state = "disconnected"
         self.sendLine("QUIT")
+        # Don't rely on the remote side to end the connection
+        # Protocols should not send any more data once the connection has been
+        # terminated
+        self.transport.loseConnection()
 
     def connectionLost(self, reason):
         '''
         overrides twisted function
         '''
+        self.state = "disconnected"
         logging.debug("Connection with {} was lost: {}"
                       .format(transport_info(self.transport),
                               reason.getErrorMessage()))
@@ -1802,6 +1819,13 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
 
         logging.debug("Received line '{}' from {}"
                       .format(line, transport_info(self.transport)))
+
+        # Quit regardless of authentication state
+        if parts[0] == "QUIT":
+            self.factory.stop_injecting()
+            self.sendLine("250 closing connection")
+            self.transport.loseConnection()
+            return
 
         # We use " quotes in some places where tor uses ' quotes.
         # This should not matter: where it is significant, we match tor's
@@ -1983,11 +2007,6 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                     # Like GETINFO, our GETCONF does not accept multiple words
                     # and it doesn't bother to strip the =
                     self.sendLine('552 Unrecognized option: Unknown option "{}". Failing.'.format(parts[1]))
-            elif parts[0] == "QUIT":
-                self.factory.stop_injecting()
-                self.sendLine("250 closing connection")
-                self.transport.loseConnection()
-                return
             else:
                 self.sendLine('510 Unrecognized command "{}"'.format(parts[0]))
         else:
@@ -2000,3 +2019,4 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
         logging.debug("Connection with {} was lost: {}"
                       .format(transport_info(self.transport),
                               reason.getErrorMessage()))
+        self.factory.stop_injecting()

@@ -233,9 +233,9 @@ if [ -e privcount.outcome.latest.json -a \
   # there's no point in comparing the tallies JSON or results PDF
   echo "Comparing latest outcomes file with previous outcomes file..."
   # skip expected differences due to time or network jitter
-  # some minor numeric differences are expected due to noise, and due to
-  # events falling before or after data collection stops in short runs
-  diff --minimal \
+  # PrivCount is entirely deterministic: if there are any other differences,
+  # they are due to code changes, or are a bug, or need to be filtered out here
+  diff --minimal --unified=10 \
     -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
     -I "[Dd]elay" -I "Collect" -I "End" -I "peer" \
     old/privcount.outcome.latest.json privcount.outcome.latest.json || true
@@ -250,7 +250,9 @@ fi
 if [ -e privcount.traffic.model.latest.json -a \
      -e old/privcount.traffic.model.latest.json ]; then
   echo "Comparing latest traffic model file with previous traffic model file..."
-  diff --minimal \
+  # PrivCount is entirely deterministic: if there are any other differences,
+  # they are due to code changes, or are a bug, or need to be filtered out here
+  diff --minimal --unified=10 \
     old/privcount.traffic.model.latest.json privcount.traffic.model.latest.json || true
 else
   # Since we need old/latest and latest, it takes two runs to generate the
