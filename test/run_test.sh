@@ -3,20 +3,37 @@
 set -e
 set -u
 
+# Default option values
+PRIVCOUNT_INSTALL=0
 PRIVCOUNT_ROUNDS=2
 
 # Process arguments
-if [ $# -lt 1 -o $# -gt 2 ]; then
-  echo "usage: $0 [-I] <privcount-directory>"
-  echo "       -I: run 'pip install -I <privcount-directory>' before testing"
-  exit 1
-elif [ $# -eq 1 ]; then
-  PRIVCOUNT_INSTALL=0
-  PRIVCOUNT_DIRECTORY="$1"
-elif [ $# -eq 2 ]; then
-  PRIVCOUNT_INSTALL=1
-  PRIVCOUNT_DIRECTORY="$2"
-fi
+until [ "$#" -le 0 ]
+do
+  case "$1" in
+    --install|-I)
+      PRIVCOUNT_INSTALL=1
+      PRIVCOUNT_DIRECTORY=$2
+      shift
+      ;;
+    --help|-h)
+      echo "usage: $0 [-I] <privcount-directory>"
+      echo "  -I: run 'pip install -I <privcount-directory>' before testing"
+      echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
+      echo "  <privcount-directory>: the directory privcount is in"
+      echo "    default: '$PRIVCOUNT_DIRECTORY'"
+      # we've done what they asked
+      exit 0
+      ;;
+    *)
+      PRIVCOUNT_DIRECTORY=$1
+      # ignore any remaining arguments
+      shift
+      break
+      ;;
+  esac
+  shift
+done
 
 # source the venv if it exists
 if [ -f "$PRIVCOUNT_DIRECTORY/venv/bin/activate" ]; then
