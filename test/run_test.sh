@@ -18,17 +18,25 @@ do
       shift
       ;;
     --help|-h)
-      echo "usage: $0 [-I] [<privcount-directory>]"
+      echo "usage: $0 [-I] [<privcount-directory>] -- [<data-source-args...>]"
       echo "  -I: run 'pip install -I <privcount-directory>' before testing"
       echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
       echo "  <privcount-directory>: the directory privcount is in"
       echo "    default: '$PRIVCOUNT_DIRECTORY'"
+      echo "  <data-source-args...>: arguments appended to the data source"
+      echo "    default first round: port 20003, password auth"
+      echo "    default next rounds: unix /tmp/privcount-inject, cookie auth"
       # we've done what they asked
       exit 0
       ;;
+    --)
+      # leave any remaining arguments for the data source
+      shift
+      break
+      ;;
     *)
       PRIVCOUNT_DIRECTORY=$1
-      # ignore any remaining arguments
+      # leave any remaining arguments for the data source
       shift
       break
       ;;
@@ -115,11 +123,11 @@ INJECTOR_BASE_CMD="privcount inject --log events.txt"
 echo "Generating random password file..."
 cat /dev/random | hexdump -e '"%x"' -n 32 -v > keys/control_password.txt
 # The command for password authentication
-INJECTOR_PORT_CMD="$INJECTOR_BASE_CMD --port 20003 --control-password keys/control_password.txt"
+INJECTOR_PORT_CMD="$INJECTOR_BASE_CMD --port 20003 --control-password keys/control_password.txt $@"
 
-# The injector automatically writes its own cookie file, just like tor
 # The command for safecookie authentication
-INJECTOR_UNIX_CMD="$INJECTOR_BASE_CMD --unix /tmp/privcount-inject --control-cookie-file /tmp/privcount-control-auth-cookie"
+# The injector automatically writes its own cookie file, just like tor
+INJECTOR_UNIX_CMD="$INJECTOR_BASE_CMD --unix /tmp/privcount-inject --control-cookie-file /tmp/privcount-control-auth-cookie $@"
 
 # Generate a log file name
 # Usage:
