@@ -5,6 +5,7 @@ set -u
 
 # Default option values
 PRIVCOUNT_INSTALL=0
+PRIVCOUNT_DIRECTORY=.
 PRIVCOUNT_ROUNDS=2
 
 # Process arguments
@@ -17,7 +18,7 @@ do
       shift
       ;;
     --help|-h)
-      echo "usage: $0 [-I] <privcount-directory>"
+      echo "usage: $0 [-I] [<privcount-directory>]"
       echo "  -I: run 'pip install -I <privcount-directory>' before testing"
       echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
       echo "  <privcount-directory>: the directory privcount is in"
