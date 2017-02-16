@@ -1,3 +1,5 @@
+# config for injector multi-round integration test
+
 # only the tally server needs these
 tally_server:
     state: 'privcount.ts.state' # path to file where persistent state will be stored
@@ -67,7 +69,7 @@ share_keeper:
 
 # only the data collectors need these
 data_collector:
-    name: 'phantomtrain1' # a unique, human meaningful name for debugging
+    name: 'inject-test' # a unique, human meaningful name for debugging
     state: 'privcount.dc.state' # path to file where persistent state will be stored
     # the Tor control connection from which we will receive events
     # Can be:

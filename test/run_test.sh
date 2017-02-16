@@ -6,6 +6,8 @@ set -u
 # Default option values
 PRIVCOUNT_INSTALL=0
 PRIVCOUNT_DIRECTORY=.
+PRIVCOUNT_SOURCE=inject
+# Only works for inject source
 PRIVCOUNT_ROUNDS=2
 PRIVCOUNT_UNIT_TESTS=1
 
@@ -15,6 +17,10 @@ do
   case "$1" in
     --install|-I)
       PRIVCOUNT_INSTALL=1
+      ;;
+    --source|-s)
+      PRIVCOUNT_SOURCE=$2
+      shift
       ;;
     --rounds|-r)
       PRIVCOUNT_ROUNDS=$2
@@ -27,6 +33,8 @@ do
       echo "usage: $0 [...] [<privcount-directory>] -- [<data-source-args...>]"
       echo "  -I: run 'pip install -I <privcount-directory>' before testing"
       echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
+      echo "  -s source: use inject, chutney, or tor as the data source"
+      echo "    default: '$PRIVCOUNT_SOURCE'"
       echo "  -r rounds: run this many rounds before stopping"
       echo "  -x: skip unit tests"
       echo "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
@@ -49,6 +57,43 @@ do
   esac
   shift
 done
+
+# Data source commands
+
+# Inject Source
+
+# We can either test --simulate, and get partial data, or get full data
+# It's better to get full data
+INJECT_BASE_CMD="privcount inject --log events.txt"
+
+# The commands for IP port connection and password authentication
+INJECT_PORT_CMD="$INJECT_BASE_CMD --port 20003 --control-password keys/control_password.txt $@"
+
+# The command for unix socket connection and safecookie authentication
+# The injector automatically writes its own cookie file, just like tor
+INJECT_UNIX_CMD="$INJECT_BASE_CMD --unix /tmp/privcount-inject --control-cookie-file /tmp/privcount-control-auth-cookie $@"
+
+# logs go to standard output/error and need no special treatment
+INJECT_LOG_CMD=true
+
+# Uses the standard test config
+INJECT_CONFIG=config.yaml
+
+# Now select the source command
+echo "Selecting data source $PRIVCOUNT_SOURCE..."
+
+case "$PRIVCOUNT_SOURCE" in
+  inject)
+    FIRST_ROUND_CMD=$INJECT_PORT_CMD
+    OTHER_ROUND_CMD=$INJECT_UNIX_CMD
+    LOG_CMD=$INJECT_LOG_CMD
+    CONFIG=$INJECT_CONFIG
+    ;;
+  *)
+    echo "Source $PRIVCOUNT_SOURCE not supported."
+    exit 1
+    ;;
+esac
 
 # source the venv if it exists
 if [ -f "$PRIVCOUNT_DIRECTORY/venv/bin/activate" ]; then
@@ -122,22 +167,6 @@ $MOVE_JSON_COMMAND || true
 $MOVE_PDF_COMMAND 2> /dev/null || true
 $MOVE_LOG_COMMAND || true
 
-# Injector commands for re-use
-# We can either test --simulate, and get partial data, or get full data
-# It's better to get full data
-INJECTOR_BASE_CMD="privcount inject --log events.txt"
-
-# Prepare for password authentication: the data collector and injector both
-# read this file
-echo "Generating random password file..."
-cat /dev/random | hexdump -e '"%x"' -n 32 -v > keys/control_password.txt
-# The command for password authentication
-INJECTOR_PORT_CMD="$INJECTOR_BASE_CMD --port 20003 --control-password keys/control_password.txt $@"
-
-# The command for safecookie authentication
-# The injector automatically writes its own cookie file, just like tor
-INJECTOR_UNIX_CMD="$INJECTOR_BASE_CMD --unix /tmp/privcount-inject --control-cookie-file /tmp/privcount-control-auth-cookie $@"
-
 # Generate a log file name
 # Usage:
 # > `log_file_name privcount_command timestamp` 2>&1
@@ -169,15 +198,36 @@ function save_to_log() {
 }
 
 # Then run the ts, sk, dc, and injector
-echo "Launching injector (IP), tally server, share keeper, and data collector..."
+echo "Launching $PRIVCOUNT_SOURCE, tally server, share keeper, and data collector..."
 # This won't match the timestamp logged by the TS, because the TS waits before
 # starting the round
 LOG_TIMESTAMP="$STARTSEC"
-privcount ts config.yaml 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
-privcount sk config.yaml 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
-privcount dc config.yaml 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
+privcount ts "$CONFIG" 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
+privcount sk "$CONFIG" 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
+privcount dc "$CONFIG" 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
 ROUNDS=1
-$INJECTOR_PORT_CMD 2>&1 | `save_to_log inject.$ROUNDS $LOG_TIMESTAMP` &
+
+# Pre-launch commands
+case "$PRIVCOUNT_SOURCE" in
+  inject)
+    # Prepare for password authentication: the data collector and injector both
+    # read this file
+    echo "Generating random password file for injector..."
+    cat /dev/random | hexdump -e '"%x"' -n 32 -v > keys/control_password.txt
+    ;;
+  tor)
+    # nothing
+    ;;
+  chutney)
+    # nothing
+    ;;
+  *)
+    echo "Source $PRIVCOUNT_SOURCE not supported."
+    exit 1
+    ;;
+esac
+
+$FIRST_ROUND_CMD 2>&1 | `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
 
 # Then wait for each job, terminating if any job produces an error
 # Ideally, we'd want to use wait, or wait $job, but that only checks one job
@@ -189,7 +239,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   # fail if any job has failed
   if echo "$JOB_STATUS" | grep -q "Exit"; then
     # and kill everything
-    echo "Error: Privcount process exited with an error..."
+    echo "Error: Privcount or $PRIVCOUNT_SOURCE process exited with an error..."
     pkill -P $$
     exit 1
   fi
@@ -201,8 +251,8 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       # If the plot libraries are not installed, this will always fail
       $MOVE_PDF_COMMAND 2> /dev/null || true
       ROUNDS=$[$ROUNDS+1]
-      echo "Restarting injector (unix path) for round $ROUNDS..."
-      $INJECTOR_UNIX_CMD 2>&1 | `save_to_log inject.$ROUNDS $LOG_TIMESTAMP` &
+      echo "Launching $PRIVCOUNT_SOURCE for round $ROUNDS..."
+      $OTHER_ROUND_CMD 2>&1 | `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     else
       break
     fi
@@ -217,7 +267,7 @@ ENDDATE="`$DATE_COMMAND`"
 ENDSEC="`$TIMESTAMP_COMMAND`"
 
 # And terminate all the privcount processes
-echo "Terminating privcount after $ROUNDS round(s)..."
+echo "Terminating privcount and $PRIVCOUNT_SOURCE after $ROUNDS round(s)..."
 pkill -P $$
 
 # Symlink a timestamped file to a similarly-named "latest" file
@@ -259,7 +309,7 @@ link_latest ts log
 link_latest sk log
 link_latest dc log
 for round_number in `seq $PRIVCOUNT_ROUNDS`; do
-  link_latest inject.$round_number log
+  link_latest $PRIVCOUNT_SOURCE.$round_number log
 done
 
 # Show the differences between the latest and old latest outcome files
@@ -297,13 +347,15 @@ else
 fi
 
 # Grep the warnings out of the log files
+# $LOG_CMD displays warnings from all logs produced by the chutney data source
 # We don't diff the previous log files with the latest log files, because many
 # of the timestamps and other irrelevant details are different
-echo "Extracting warnings from privcount output..."
+echo "Extracting warnings from privcount and $PRIVCOUNT_SOURCE output..."
 grep -v -e NOTICE -e INFO -e DEBUG \
   -e "seconds of user activity" -e "delay_period not specified" \
   privcount.*.latest.log \
   || true
+$LOG_CMD
 
 # Show how long it took
 echo "$ENDDATE"
