@@ -7,6 +7,7 @@ set -u
 PRIVCOUNT_INSTALL=0
 PRIVCOUNT_DIRECTORY=.
 PRIVCOUNT_ROUNDS=2
+PRIVCOUNT_UNIT_TESTS=1
 
 # Process arguments
 until [ "$#" -le 0 ]
@@ -19,11 +20,16 @@ do
       PRIVCOUNT_ROUNDS=$2
       shift
       ;;
+    --no-unit-tests|-x)
+      PRIVCOUNT_UNIT_TESTS=0
+      ;;
     --help|-h)
       echo "usage: $0 [...] [<privcount-directory>] -- [<data-source-args...>]"
       echo "  -I: run 'pip install -I <privcount-directory>' before testing"
       echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
       echo "  -r rounds: run this many rounds before stopping"
+      echo "  -x: skip unit tests"
+      echo "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
       echo "  <privcount-directory>: the directory privcount is in"
       echo "    default: '$PRIVCOUNT_DIRECTORY'"
       echo "  <data-source-args...>: arguments appended to the data source"
@@ -65,33 +71,36 @@ fi
 
 cd "$PRIVCOUNT_DIRECTORY/test"
 
-# Run the python-based unit tests
-echo "Testing time formatting:"
-python test_format_time.py
-echo ""
+if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
 
-echo "Testing encryption:"
-python test_encryption.py
-echo ""
+  # Run the python-based unit tests
+  echo "Testing time formatting:"
+  python test_format_time.py
+  echo ""
 
-echo "Testing random numbers:"
-python test_random.py
-echo ""
+  echo "Testing encryption:"
+  python test_encryption.py
+  echo ""
 
-echo "Testing counters:"
-python test_counter.py
-echo ""
+  echo "Testing random numbers:"
+  python test_random.py
+  echo ""
 
-echo "Testing traffic model:"
-python test_traffic_model.py
-echo ""
+  echo "Testing counters:"
+  python test_counter.py
+  echo ""
 
-echo "Testing noise:"
-# The noise script contains its own main function, which we use as a test
-python ../privcount/tools/compute_noise.py
+  echo "Testing traffic model:"
+  python test_traffic_model.py
+  echo ""
 
-# Requires a local privcount-patched Tor instance
-#python test_tor_ctl_event.py
+  echo "Testing noise:"
+  python ../privcount/tools/compute_noise.py
+
+  # Requires a local privcount-patched Tor instance
+  #python test_tor_ctl_event.py
+
+fi
 
 # Execute this command to produce a numeric unix timestamp in seconds
 TIMESTAMP_COMMAND="date +%s"
