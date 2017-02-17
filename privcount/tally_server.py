@@ -357,6 +357,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert ts_conf['collect_period'] > 0
             assert ts_conf['event_period'] > 0
             assert ts_conf['checkin_period'] > 0
+            # The TS runs one round by default
+            ts_conf.setdefault('continue', False)
             assert (isinstance(ts_conf['continue'], bool) or
                     ts_conf['continue'] >= 0)
             # check the hard-coded counter values are sane
