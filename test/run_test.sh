@@ -16,6 +16,14 @@ PRIVCOUNT_SOURCE=${PRIVCOUNT_SOURCE:-inject}
 # Only works for inject source
 PRIVCOUNT_ROUNDS=${PRIVCOUNT_ROUNDS:-2}
 PRIVCOUNT_UNIT_TESTS=${PRIVCOUNT_UNIT_TESTS:-1}
+# assume privcount-tor is beside privcount
+PRIVCOUNT_TOR=${PRIVCOUNT_TOR:-../../tor-privcount/src/or/tor}
+# Don't run make by default
+PRIVCOUNT_TOR_MAKE=${PRIVCOUNT_TOR_MAKE:-0}
+# allow the torrc to be the empty string (which means "no torrc")
+PRIVCOUNT_TORRC=${PRIVCOUNT_TORRC-torrc}
+# make the data directory a new temp directory by default
+PRIVCOUNT_TOR_DATADIR=${PRIVCOUNT_TOR_DATADIR:-`mktemp -d`}
 
 # Process arguments
 until [ "$#" -le 0 ]
@@ -26,6 +34,21 @@ do
       ;;
     --source|-s)
       PRIVCOUNT_SOURCE=$2
+      shift
+      ;;
+    --tor|-t)
+      PRIVCOUNT_TOR=$2
+      shift
+      ;;
+    --make-tor|-m)
+      PRIVCOUNT_TOR_MAKE=1
+      ;;
+    --torrc|-f)
+      PRIVCOUNT_TORRC=$2
+      shift
+      ;;
+    --tor-datadir|-d)
+      PRIVCOUNT_TOR_DATADIR=$2
       shift
       ;;
     --rounds|-r)
@@ -44,7 +67,17 @@ do
       echo "    inject: use 'privcount inject' on test/events.txt"
       echo "    tor: use a privcount-patched tor binary"
       echo "    chutney: use a chutney network with a privcount-patched tor"
+      echo "  -t tor-path: use the privcount-patched tor binary at tor-path"
+      echo "    default: '$PRIVCOUNT_TOR'"
+      echo "  -m: run make on tor-path before testing (sources: tor, chutney)"
+      echo "    default: '$PRIVCOUNT_TOR_MAKE' (0: no make, 1: make)"
+      echo "  -f torrc-path: launch tor with the torrc at torrc-path"
+      echo "    an empty torrc path '' means 'no torrc file'"
+      echo "    default: '$PRIVCOUNT_TORRC'"
+      echo "  -d datadir-path: launch tor with the data directory datadir-path"
+      echo "    default: a new temp directory" # $PRIVCOUNT_TOR_DATADIR
       echo "  -r rounds: run this many rounds before stopping"
+      echo "    default: '$PRIVCOUNT_ROUNDS' (set to 1 for tor and chutney)"
       echo "  -x: skip unit tests"
       echo "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
       echo "  <privcount-directory>: the directory privcount is in"
@@ -53,6 +86,7 @@ do
       echo "    defaults:"
       echo "      inject first round: port 20003, password auth"
       echo "      inject next rounds: unix /tmp/privcount-inject, cookie auth"
+      echo "      tor single round: port 20003, cookie auth"
       echo "Spaces and special characters are not supported in (some) paths."
       exit 0
       ;;
@@ -89,6 +123,23 @@ INJECT_LOG_CMD=true
 # Uses the standard test config
 INJECT_CONFIG=config.yaml
 
+# Tor Source
+
+# The command to start a tor relay
+# Sets the data directory to a newly created temporary directory (by default)
+# Uses a torrc with the same control port as the injector (if set)
+# Appends any remaining command-line arguments
+TOR_CMD="$PRIVCOUNT_TOR DataDirectory $PRIVCOUNT_TOR_DATADIR ${PRIVCOUNT_TORRC+-f $PRIVCOUNT_TORRC} $@"
+
+# logs go to standard output/error and need no special treatment
+# TODO: write to file and ignore standard warnings when displaying messages?
+TOR_LOG_CMD=true
+#TOR_LOG_CMD="grep -v -e TODO '$TOR_LOG_PATH'"
+
+# Uses the standard test config
+# TODO: write a config with longer rounds
+TOR_CONFIG=config.tor.yaml
+
 # Now select the source command
 echo "Selecting data source $PRIVCOUNT_SOURCE..."
 
@@ -98,6 +149,15 @@ case "$PRIVCOUNT_SOURCE" in
     OTHER_ROUND_CMD=$INJECT_UNIX_CMD
     LOG_CMD=$INJECT_LOG_CMD
     CONFIG=$INJECT_CONFIG
+    ;;
+  tor)
+    FIRST_ROUND_CMD=$TOR_CMD
+    # only supports 1 round, fail if we try to have more
+    OTHER_ROUND_CMD=false
+    LOG_CMD=$TOR_LOG_CMD
+    CONFIG=$TOR_CONFIG
+    echo "This source only supports 1 round, setting rounds to 1..."
+    PRIVCOUNT_ROUNDS=1
     ;;
   *)
     echo "Source $PRIVCOUNT_SOURCE not supported."
@@ -125,6 +185,26 @@ if [ "$PRIVCOUNT_INSTALL" -eq 1 ]; then
 fi
 
 cd "$PRIVCOUNT_DIRECTORY/test"
+
+if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
+  # Recompile Tor, if needed
+  # assume standard tor source directory structure
+  TOR_MAKE_DIR=`dirname "$PRIVCOUNT_TOR"`/../..
+  case "$PRIVCOUNT_SOURCE" in
+    inject)
+      # nothing
+      ;;
+    tor)
+      echo "Making tor binary in '$TOR_MAKE_DIR' ..."
+      make -C "$TOR_MAKE_DIR" "$PWD"/"$PRIVCOUNT_TOR"
+      ;;
+    *)
+      echo "Source $PRIVCOUNT_SOURCE not supported."
+      exit 1
+      ;;
+  esac
+
+fi
 
 if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
 
@@ -332,7 +412,7 @@ if [ -e privcount.outcome.latest.json -a \
   # they are due to code changes, or are a bug, or need to be filtered out here
   diff --minimal --unified=10 \
     -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
-    -I "[Dd]elay" -I "Collect" -I "End" -I "peer" \
+    -I "[Dd]elay" -I "Collect" -I "End" -I "peer" -I "fingerprint" \
     old/privcount.outcome.latest.json privcount.outcome.latest.json || true
 else
   # Since we need old/latest and latest, it takes two runs to generate the
@@ -363,6 +443,8 @@ fi
 echo "Extracting warnings from privcount and $PRIVCOUNT_SOURCE output..."
 grep -v -e NOTICE -e INFO -e DEBUG \
   -e "seconds of user activity" -e "delay_period not specified" \
+  -e notice \
+  -e "Path for PidFile" -e "Your log may contain" \
   privcount.*.latest.log \
   || true
 $LOG_CMD

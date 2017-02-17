@@ -1,0 +1,59 @@
+# config for tor single-round integration test
+
+tally_server:
+    state: 'privcount.ts.state'
+    counters: './counters.bins.yaml'
+    noise: './counters.noise.yaml'
+    traffic_model: 'traffic.model.json'
+    traffic_noise: 'traffic.noise.yaml'
+    allocation: './counters.allocation.yaml'
+    noise_weight:
+        # We can't know our test tor relay's fingerprint in advance
+        # * means 'any other relay', and should only be used for testing
+        '*': 1.0
+    listen_port: 20001
+    sk_threshold: 1
+    dc_threshold: 1
+    # The elapsed test time is approximately:
+    #     collect_period + 2*event_period
+    collect_period: 60
+    # There must be at least two event periods in each collect period
+    event_period: 5
+    # There must be at least two checkin periods in each collect period
+    # The checking period should also be less than or equal to the event
+    # period, unless you are willing to wait a while for client status updates
+    checkin_period: 5
+    # We only run one round, so this is unused
+    delay_period: 86400
+    key: 'keys/ts.pem'
+    cert: 'keys/ts.cert'
+    # if the key file does not exist, the TS creates a file with a random key
+    secret_handshake: 'keys/secret_handshake.yaml'
+
+share_keeper:
+    state: 'privcount.sk.state'
+    tally_server_info:
+        ip: '127.0.0.1'
+        port: 20001
+    key: 'keys/sk.pem'
+    # We only run one round, so this is unused
+    delay_period: 86400
+    secret_handshake: 'keys/secret_handshake.yaml'
+
+data_collector:
+    name: 'tor-test'
+    state: 'privcount.dc.state'
+    # the Tor control connection from which we will receive events
+    # Can be:
+    # - port, with ip optional (default 127.0.0.1), or
+    # - a unix socket path
+    event_source:
+        port: 20003
+    tally_server_info:
+        ip: 127.0.0.1
+        port: 20001
+    share_keepers:
+        - 'e79ea9173e28e6a54f6d2ec6494c1723a330811652acebbe8d98098ce347d679'
+    # We only run one round, so this is unused
+    delay_period: 86400
+    secret_handshake: 'keys/secret_handshake.yaml'
