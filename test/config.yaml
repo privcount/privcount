@@ -20,13 +20,16 @@ tally_server:
     allocation: './counters.allocation.yaml'
     noise_weight: # distribute noise among all machines / data collectors
         # The tor relay fingerprints must be quoted, as some start with 0-9
-        # This is the fingerprint from the test data collector
+        # This is the hard-coded fingerprint from the injector
         # Comment it out to test the missing fingerprint failure case
         'FACADE0000000000000000000123456789ABCDEF': 1.0
         # This fingerprint is not present on the test data collector,
         # it should be ignored
         '3DEADBEEF012345678900000000000000DEADC00': 1.0
-    listen_port: 20001 # open port on which to listen for remote connections from TKSes
+        # * means 'any other relay', and should only be used for testing
+        # (we know the injector's hard-coded fingerprint)
+        # '*': 1.0
+    listen_port: 20001 # open port on which to listen for remote connections from SKs and DCs
     sk_threshold: 1 # number of share keeper nodes required before starting
     dc_threshold: 1 # number of data collector nodes required before starting
     # The elapsed test time is approximately:
