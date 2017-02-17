@@ -1,15 +1,21 @@
 #!/bin/bash
 
+# Shell settings
+# fail on failed commands or unset variables
 set -e
 set -u
+# the exit status of a pipe is the last non-zero exit, or zero if all succeed
+set -o pipefail
+# report background exit statuses immediately
+set -b
 
-# Default option values
-PRIVCOUNT_INSTALL=0
-PRIVCOUNT_DIRECTORY=.
-PRIVCOUNT_SOURCE=inject
+# Set default option values if empty (:) or unset (-)
+PRIVCOUNT_INSTALL=${PRIVCOUNT_INSTALL:-0}
+PRIVCOUNT_DIRECTORY=${PRIVCOUNT_DIRECTORY:-.}
+PRIVCOUNT_SOURCE=${PRIVCOUNT_SOURCE:-inject}
 # Only works for inject source
-PRIVCOUNT_ROUNDS=2
-PRIVCOUNT_UNIT_TESTS=1
+PRIVCOUNT_ROUNDS=${PRIVCOUNT_ROUNDS:-2}
+PRIVCOUNT_UNIT_TESTS=${PRIVCOUNT_UNIT_TESTS:-1}
 
 # Process arguments
 until [ "$#" -le 0 ]
@@ -35,15 +41,19 @@ do
       echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
       echo "  -s source: use inject, chutney, or tor as the data source"
       echo "    default: '$PRIVCOUNT_SOURCE'"
+      echo "    inject: use 'privcount inject' on test/events.txt"
+      echo "    tor: use a privcount-patched tor binary"
+      echo "    chutney: use a chutney network with a privcount-patched tor"
       echo "  -r rounds: run this many rounds before stopping"
       echo "  -x: skip unit tests"
       echo "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
       echo "  <privcount-directory>: the directory privcount is in"
       echo "    default: '$PRIVCOUNT_DIRECTORY'"
       echo "  <data-source-args...>: arguments appended to the data source"
-      echo "    default first round: port 20003, password auth"
-      echo "    default next rounds: unix /tmp/privcount-inject, cookie auth"
-      # we've done what they asked
+      echo "    defaults:"
+      echo "      inject first round: port 20003, password auth"
+      echo "      inject next rounds: unix /tmp/privcount-inject, cookie auth"
+      echo "Spaces and special characters are not supported in (some) paths."
       exit 0
       ;;
     --)
@@ -257,7 +267,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       break
     fi
   fi
-  sleep 2
+  sleep 3
   JOB_STATUS=`jobs`
   echo "$JOB_STATUS"
 done
