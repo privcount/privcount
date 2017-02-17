@@ -14,15 +14,16 @@ from privcount.log import format_delay_time_until, format_elapsed_time_since
 from privcount.statistics_noise import DEFAULT_SIGMA_TOLERANCE
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
-def get_remaining_rounds(num_phases, continue_config):
+def get_remaining_rounds(completed_phases, continue_config, current_state):
         '''
         If the TS is configured to continue collecting a limited number of
         rounds, return the number of rounds. Otherwise, if it will continue
         forever, return None.
         '''
-        # run at least once
+        assert current_state in ['active', 'idle']
         min_remaining = 0
-        if num_phases == 0:
+        # run at least once, including the current round if we are active
+        if completed_phases == 0 and current_state == 'idle':
             min_remaining = 1
         if isinstance(continue_config, bool):
             if continue_config:
@@ -30,20 +31,19 @@ def get_remaining_rounds(num_phases, continue_config):
             else:
                 return max(0, min_remaining)
         else:
-            return max(continue_config - num_phases, min_remaining)
+            remaining = continue_config - completed_phases
+            if current_state == 'active':
+                remaining -= 1
+            return max(remaining, min_remaining)
 
-def continue_collecting(num_phases, continue_config):
+def continue_collecting(completed_phases, continue_config, current_state):
         '''
         If the TS is configured to continue collecting more rounds,
         return True. Otherwise, return False.
         '''
-        # run at least once
-        if num_phases == 0:
-            return True
-        if isinstance(continue_config, bool):
-            return continue_config
-        else:
-            return continue_config > num_phases
+        remaining = get_remaining_rounds(completed_phases, continue_config,
+                                         current_state)
+        return remaining is None or remaining > 0
 
 def log_tally_server_status(status):
     '''
@@ -71,9 +71,11 @@ def log_tally_server_status(status):
     a, i = status['sks_active'], status['sks_idle']
     logging.info("--server status: ShareKeepers: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
     if continue_collecting(status['completed_phases'],
-                           status['continue']):
+                           status['continue'],
+                           status['state']):
         rem = get_remaining_rounds(status['completed_phases'],
-                                   status['continue'])
+                                   status['continue'],
+                                   status['state'])
         if rem is not None:
             continue_str = "continue for {} more rounds".format(rem)
         else:

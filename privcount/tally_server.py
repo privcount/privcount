@@ -110,7 +110,8 @@ class TallyServer(ServerFactory, PrivCountServer):
         if self.collection_phase is None:
             num_phases = self.num_completed_collection_phases
             if continue_collecting(num_phases,
-                                   self.config['continue']):
+                                   self.config['continue'],
+                                   'idle'):
                 dcs, sks = self.get_idle_dcs(), self.get_idle_sks()
                 if len(dcs) >= self.config['dc_threshold'] and len(sks) >= self.config['sk_threshold']:
                     if self.collection_delay.round_start_permitted(
