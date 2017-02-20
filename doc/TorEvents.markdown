@@ -4,7 +4,7 @@ PrivCount obtains its Tor usage data via Tor Control Events. These events have
 been implemented specifically for PrivCount. PrivCount also uses some other
 Controller interfaces.
 
-## PrivCount Event Overview
+## PrivCount Overview
 
 ### Initialisation
 
@@ -32,10 +32,51 @@ Controller interfaces.
 2. PrivCount turns off EnablePrivCount and all tor events (SETCONF,
    SETEVENTS)
 
-## PrivCount Event Overview
+## Tor Relay Roles
+
+The information available to a Tor Relay depends on the role that relay plays
+in the data transfer. Relays can determine their role in the data transfer
+based on the commands they receive.
+
+Role     |  Connection | Circuit | Stream | Cell | Bytes | Additional
+---------|-------------|---------|--------|------|-------|-----------------
+Guard~   | Yes         | Yes     | No     | Yes  | Yes   | Client IP~
+Middle   | Yes         | Yes     | No     | Yes  | Yes   | (None)
+Exit     | Yes         | Yes     | Yes    | Yes  | Yes   | DNS^
+BEGINDIR | Yes         | Yes     | Yes    | Yes  | Yes   | URL*
+DirPort  | Yes         | NA      | NA     | NA   | Yes   | URL*
+HSDir    | Yes         | Yes     | Yes    | Yes  | Yes   | Onion Address+
+Intro    | Yes         | Yes     | No     | Yes  | Yes   | Service Keys+
+Rend     | Yes         | Yes     | No     | Yes  | Yes   | (None)
+
+\~ "Guard" relays can be connected to clients, or Bridge relays, or other
+   relays that aren't in the consensus. Other relays authenticate using RSA and
+   ed25519 keys, bridges and clients do not, and can not be distinguished.
+\^ Application protocols also leak any unencrypted (meta)data to Exit relays.
+\* Directory requests contain information about the documents being downloaded.
+   Clients request all relay documents, but fetch hidden service descriptors
+   as-needed.
+\+ HSDirs handle hidden service descriptor uploads and downloads over BEGINDIR.
+   The service keys can be matched with a hidden service descriptor if the
+   onion address is known. Next-generation (v3) hidden service descriptors
+   can only be decrypted if the onion address is already known.
+
+When relays are relaying cells on a circuit, they can only see that the cell
+is a RELAY (or RELAY_EARLY) cell. Everything else is encrypted. (Each relay
+maintains a separate mapping that tells it where to forward RELAY cells
+received on a particular circuit.)
+
+PrivCount does not currently have a "cell" event. Multiple cells may be
+included in each "bytes" event.
+
+## PrivCount Events
 
 PrivCount implements the following events, listed in the typical order they
-would occur for a single client connection:
+would occur for a single client connection.
+
+PrivCount tries to capture all Tor network traffic for its traffic modelling.
+Some other events are issued selectively based on the type of traffic: this is
+a work in progress.
 
 ### PRIVCOUNT_DNS_RESOLVED
 
