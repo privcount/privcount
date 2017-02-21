@@ -14,7 +14,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 
 from privcount.config import normalise_path, choose_secret_handshake_path
 from privcount.connection import connect, disconnect, validate_connection_config, choose_a_connection, get_a_control_password
-from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters
+from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, has_noise_weight, get_noise_weight
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since
 from privcount.node import PrivCountClient
@@ -420,13 +420,13 @@ class Aggregator(ReconnectingClientFactory):
             logging.warning("Asked to add noise twice. Ignoring.")
             return
 
-        if (self.fingerprint is not None and
-            self.noise_weight_config.has_key(self.fingerprint)):
-            self.noise_weight_value = self.noise_weight_config[self.fingerprint]
+        if has_noise_weight(self.noise_weight_config, self.fingerprint):
+            self.noise_weight_value = get_noise_weight(
+                self.noise_weight_config, self.fingerprint)
         else:
             logging.warning("Tally Server did not provide a noise weight for our fingerprint {} in noise weight config {}, we will not count in this round."
-                            .format(self.fingerprint, self.noise_weight_config,
-                                    self.noise_weight_value))
+                            .format(self.fingerprint,
+                                    self.noise_weight_config))
             # stop collecting and stop counting
             self._stop_protocol()
             self._stop_secure_counters(counts_are_valid=False)

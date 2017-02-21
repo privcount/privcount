@@ -110,7 +110,8 @@ class TallyServer(ServerFactory, PrivCountServer):
         if self.collection_phase is None:
             num_phases = self.num_completed_collection_phases
             if continue_collecting(num_phases,
-                                   self.config['continue']):
+                                   self.config['continue'],
+                                   'idle'):
                 dcs, sks = self.get_idle_dcs(), self.get_idle_sks()
                 if len(dcs) >= self.config['dc_threshold'] and len(sks) >= self.config['sk_threshold']:
                     if self.collection_delay.round_start_permitted(
@@ -356,6 +357,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert ts_conf['collect_period'] > 0
             assert ts_conf['event_period'] > 0
             assert ts_conf['checkin_period'] > 0
+            # The TS runs one round by default
+            ts_conf.setdefault('continue', False)
             assert (isinstance(ts_conf['continue'], bool) or
                     ts_conf['continue'] >= 0)
             # check the hard-coded counter values are sane

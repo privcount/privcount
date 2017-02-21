@@ -14,6 +14,10 @@ from math import sqrt
 from privcount.statistics_noise import DEFAULT_SIGMA_TOLERANCE, DEFAULT_DUMMY_COUNTER_NAME
 from privcount.log import format_period, format_elapsed_time_since, format_delay_time_until
 
+# The label used for the default noise weight for testing
+# Labels are typically data collector relay fingerprints
+DEFAULT_NOISE_WEIGHT_NAME = '*'
+
 def counter_modulus():
     '''
     The hard-coded modulus value for a blinded counter
@@ -136,6 +140,43 @@ def check_noise_weight_sum(noise_weight_sum, description="sum"):
         return False
     return True
 
+def get_noise_weight_default(noise_weight_config):
+    '''
+    Returns the default noise weight, if present in noise_weight_config.
+    Otherwise, returns None.
+    '''
+    return noise_weight_config.get(DEFAULT_NOISE_WEIGHT_NAME, None)
+
+def has_noise_weight_default(noise_weight_config):
+    '''
+    Returns True if noise_weight_config has a default noise weight.
+    Otherwise, returns False.
+    '''
+    return get_noise_weight_default(noise_weight_config) is not None
+
+def get_noise_weight(noise_weight_config, fingerprint):
+    '''
+    Returns the noise weight for fingerprint, which can be None.
+    If fingerprint does not have a noise weight (or is None), return the
+    default noise weight (if any).
+    Otherwise, returns None.
+    '''
+    if fingerprint is not None and fingerprint in noise_weight_config:
+        return noise_weight_config[fingerprint]
+    elif has_noise_weight_default(noise_weight_config):
+        return get_noise_weight_default(noise_weight_config)
+    else:
+        return None
+
+def has_noise_weight(noise_weight_config, fingerprint):
+    '''
+    Returns True if fingerprint has a noise weight. fingerprint can be None.
+    If fingerprint is None or missing, returns True if there is a default
+    noise weight.
+    If fingerprint does not have a noise weight, returns False.
+    '''
+    return get_noise_weight(noise_weight_config, fingerprint) is not None
+
 def check_noise_weight_config(noise_weight_config, dc_threshold):
     '''
     Check that noise_weight_config is a valid noise weight configuration.
@@ -145,17 +186,29 @@ def check_noise_weight_config(noise_weight_config, dc_threshold):
     '''
     if not check_dc_threshold(dc_threshold):
         return False
-    # there must be noise weights for a threshold of DCs
-    if len(noise_weight_config) < dc_threshold:
-        logging.warning("There must be at least as many noise weights as the threshold of data collectors. Noise weights: {}, Threshold: {}."
+    # there must be noise weights for a threshold of DCs, or there must be
+    # a default noise weight
+    if (len(noise_weight_config) < dc_threshold and
+        not has_noise_weight_default(noise_weight_config)):
+        logging.warning("There must be at least as many noise weights as the threshold of data collectors, or there must be a default noise weight. Noise weights: {}, Threshold: {}."
                         .format(len(noise_weight_config), dc_threshold))
         return False
     # each noise weight must be individually valid
     for dc in noise_weight_config:
         if not check_noise_weight_value(noise_weight_config[dc]):
             return False
+    # calculate the maximum possible noise weight
+    noise_weight_sum = sum(noise_weight_config.values())
+    # if there is a default, assume a threshold of relays might use it
+    if has_noise_weight_default(noise_weight_config):
+        default_weight = get_noise_weight_default(noise_weight_config)
+        # adjust the sum for the extra default value
+        noise_weight_sum -= default_weight
+        # add a threshold of that weight
+        assert dc_threshold > 0
+        noise_weight_sum += dc_threshold*default_weight
     # the sum must be valid
-    if not check_noise_weight_sum(sum(noise_weight_config.values())):
+    if not check_noise_weight_sum(noise_weight_sum):
         return False
     return True
 

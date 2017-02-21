@@ -1,0 +1,42 @@
+# torrc for PrivCount tor integration tests
+
+# We set the DataDirectory path from mktemp on the command-line
+
+# Logging
+# the Tor default
+Log notice stderr
+# an extra log for diagnostics (this relative path will cause a warning)
+Log debug file privcount.tor.debug.log
+
+PidFile tor.pid
+
+# Use the same port as the injector
+# (We could use a unix socket instead, it doesn't really matter)
+ControlPort 20003
+
+# Relay and Directory Mirror
+ORPort 12345
+DirPort 23456
+# Not an exit, just in case it's made public
+ExitRelay 0
+
+# No client traffic
+SOCKSPort 0
+
+# Testing only: don't add this relay to the public network
+PublishServerDescriptor 0
+
+# Default is 30 seconds, which is too long for an integration test
+# (But we might want to extend it so that tor has time to close connections)
+ShutdownWaitLength 0
+
+# Use Cookie auth
+CookieAuthentication 1
+
+# Tor logs a notice if this is missing
+ContactInfo privcount test relay
+# Give it a name for completeness
+Nickname PrivCountTorTest
+
+# Tor logs a notice if this is configured without a GeoIP file
+DirReqStatistics 0
