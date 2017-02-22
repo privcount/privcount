@@ -51,15 +51,15 @@ Rend     | Yes         | Yes     | No     | Yes  | Yes   | (None)
 
 \~ "Guard" relays can be connected to clients, or Bridge relays, or other
    relays that aren't in the consensus. Other relays authenticate using RSA and
-   ed25519 keys, bridges and clients do not, and can not be distinguished.
-\^ Application protocols also leak any unencrypted (meta)data to Exit relays.
+   ed25519 keys, bridges and clients do not, and can not be distinguished.  
+\^ Application protocols also leak any unencrypted (meta)data to Exit relays.  
 \* Directory requests contain information about the documents being downloaded.
    Clients request all relay documents, but fetch hidden service descriptors
-   as-needed.
+   as-needed.  
 \+ HSDirs handle hidden service descriptor uploads and downloads over BEGINDIR.
    The service keys can be matched with a hidden service descriptor if the
    onion address is known. Next-generation (v3) hidden service descriptors
-   can only be decrypted if the onion address is already known.
+   can only be decrypted if the onion address is already known.  
 
 When relays are relaying cells on a circuit, they can only see that the cell
 is a RELAY (or RELAY_EARLY) cell. Everything else is encrypted. (Each relay
