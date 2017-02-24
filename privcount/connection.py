@@ -4,6 +4,8 @@ Created on Dec 8, 2016
 @author: teor
 '''
 
+import logging
+
 from collections import Sequence
 from exceptions import AttributeError
 
@@ -247,7 +249,7 @@ def validate_connection_config(config, must_have_ip=False):
             try:
                 port = int(item['port'])
             except ValueError as e:
-                logging.warning("Invalid port {}: {}".format(port, e))
+                logging.warning("Invalid port {}: {}".format(item['port'], e))
                 return False
             if port <= 0:
                 logging.warning("Port {} must be positive".format(port))
