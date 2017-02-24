@@ -29,6 +29,29 @@ PRIVCOUNT_TORRC=${PRIVCOUNT_TORRC-torrc}
 # make the data directory a new temp directory by default
 PRIVCOUNT_TOR_DATADIR=${PRIVCOUNT_TOR_DATADIR:-`mktemp -d`}
 
+# internal: not configurable via a command-line argument or the environment
+# use --tor-dir instead
+PRIVCOUNT_TOR_BINARY=src/or/tor
+PRIVCOUNT_TOR_GENCERT_BINARY=src/tools/tor-gencert
+
+# Chutney source
+# use the chutney path, or assume chutney is beside privcount
+PRIVCOUNT_CHUTNEY_PATH=${PRIVCOUNT_CHUTNEY_PATH:-${CHUTNEY_PATH:-../../chutney/}}
+PRIVCOUNT_CHUTNEY_FLAVOUR=${PRIVCOUNT_CHUTNEY_FLAVOUR:-${NETWORK_FLAVOUR:-basic-min}}
+# the relay control ports opened by the selected chutney flavour
+# this must be manually kept in sync with PRIVCOUNT_CHUTNEY_FLAVOUR
+# basic-min has 3 relays/authorities and starts at controlport_base (8000)
+PRIVCOUNT_CHUTNEY_PORTS=${PRIVCOUNT_CHUTNEY_PORTS:-`seq 8000 8002`}
+PRIVCOUNT_CHUTNEY_CONNECTIONS=${PRIVCOUNT_CHUTNEY_CONNECTIONS:-${CHUTNEY_CONNECTIONS:-1}}
+# The chutney default is 10KB, we use 1KB to make counts easy to check
+PRIVCOUNT_CHUTNEY_BYTES=${PRIVCOUNT_CHUTNEY_BYTES:-${CHUTNEY_DATA_BYTES:-1024}}
+# other chutney environmental variables are listed in tools/test-network.sh
+
+# internal: not configurable via command-line arguments
+# can be set in the environment
+PRIVCOUNT_CHUTNEY_LAUNCH=${PRIVCOUNT_CHUTNEY_LAUNCH:-tools/test-network.sh}
+PRIVCOUNT_CHUTNEY_WARNINGS=${PRIVCOUNT_CHUTNEY_WARNINGS:-tools/warnings.sh}
+
 # Process arguments
 until [ "$#" -le 0 ]
 do
@@ -62,8 +85,28 @@ do
       PRIVCOUNT_TOR_DATADIR=$2
       shift
       ;;
+    --chutney-path|-c)
+      PRIVCOUNT_CHUTNEY_PATH=$2
       shift
       ;;
+    --chutney-flavour|-n)
+      PRIVCOUNT_CHUTNEY_FLAVOUR=$2
+      shift
+      ;;
+    --chutney-ports|-p)
+      PRIVCOUNT_CHUTNEY_PORTS=""
+      while [ $# -ge 2 ] && [[ "$2" =~ [0-9]* ]]; do
+        PRIVCOUNT_CHUTNEY_PORTS="$PRIVCOUNT_CHUTNEY_PORTS $2"
+        shift
+      done
+      ;;
+    --chutney-connections|-o)
+      PRIVCOUNT_CHUTNEY_CONNECTIONS=$2
+      shift
+      ;;
+    --chutney-bytes|-b)
+      PRIVCOUNT_CHUTNEY_BYTES=$2
+      shift
       ;;
     --help|-h)
       echo "usage: $0 [...] [<privcount-directory>] -- [<data-source-args...>]"
@@ -87,6 +130,17 @@ do
       echo "    default: '$PRIVCOUNT_TORRC'"
       echo "  -d datadir-path: launch tor with the data directory datadir-path"
       echo "    default: a new temp directory" # $PRIVCOUNT_TOR_DATADIR
+      echo "  -c chutney-path: launch chutney from chutney-path/$PRIVCOUNT_CHUTNEY_LAUNCH_SCRIPT"
+      echo "    default: '$PRIVCOUNT_CHUTNEY_PATH'"
+      echo "  -n chutney-flavour: launch chutney with chutney-flavour"
+      echo "    default: '$PRIVCOUNT_CHUTNEY_FLAVOUR'"
+      echo "  -p chutney-port ... : launch a data collector for each port"
+      echo "    use: \`seq 8000 finish-port\` to generate a list"
+      echo "    default: '$PRIVCOUNT_CHUTNEY_PORTS'"
+      echo "  -o chutney-connections: make chutney-connections per client"
+      echo "    default: '$PRIVCOUNT_CHUTNEY_BYTES'"
+      echo "  -b chutney-bytes: verify chutney-bytes per client connection"
+      echo "    default: '$PRIVCOUNT_CHUTNEY_BYTES'"
       echo "  <privcount-directory>: the directory privcount is in"
       echo "    default: '$PRIVCOUNT_DIRECTORY'"
       echo "  <data-source-args...>: arguments appended to the data source"
@@ -94,6 +148,7 @@ do
       echo "      inject first round: port 20003, password auth"
       echo "      inject next rounds: unix /tmp/privcount-inject, cookie auth"
       echo "      tor single round: port 20003, cookie auth"
+      echo "      chutney single round: chutney basic-min ports, cookie auth"
       echo "Relative paths are supported."
       echo "Paths with special characters or spaces are not supported."
       exit 0
@@ -151,6 +206,27 @@ TOR_LOG_CMD=true
 # TODO: write a config with longer rounds
 TOR_CONFIG=config.tor.yaml
 
+# Chutney Source
+
+# Give chutney the environmental variables it needs
+export TOR_DIR=${PRIVCOUNT_TOR_DIR:-$TOR_DIR}
+export CHUTNEY_PATH=${PRIVCOUNT_CHUTNEY_PATH:-$CHUTNEY_PATH}
+export NETWORK_FLAVOUR=${PRIVCOUNT_CHUTNEY_FLAVOUR:-$NETWORK_FLAVOUR}
+export CHUTNEY_CONNECTIONS=${PRIVCOUNT_CHUTNEY_CONNECTIONS:-$CHUTNEY_CONNECTIONS}
+export CHUTNEY_DATA_BYTES=${PRIVCOUNT_CHUTNEY_BYTES:-$CHUTNEY_DATA_BYTES}
+
+# The command to start a tor test network using chutney
+CHUTNEY_TEST_NETWORK=$PRIVCOUNT_CHUTNEY_PATH/$PRIVCOUNT_CHUTNEY_LAUNCH
+# Needs to know all the variables listed above
+CHUTNEY_CMD="$CHUTNEY_TEST_NETWORK --all-warnings $@"
+
+# Recent chutney versions log warnings automatically, but we want a summary
+# at the end of the script output
+CHUTNEY_LOG_CMD="$CHUTNEY_PATH/tools/warnings.sh"
+
+# A config template: we need one config per data collector
+CHUTNEY_CONFIG=config.chutney.yaml
+
 # Now select the source command
 echo "Selecting data source $PRIVCOUNT_SOURCE..."
 
@@ -167,6 +243,14 @@ case "$PRIVCOUNT_SOURCE" in
     OTHER_ROUND_CMD=false
     LOG_CMD=$TOR_LOG_CMD
     CONFIG=$TOR_CONFIG
+    PRIVCOUNT_ROUNDS=1
+    ;;
+  chutney)
+    FIRST_ROUND_CMD=$CHUTNEY_CMD
+    # only supports 1 round, fail if we try to have more
+    OTHER_ROUND_CMD=false
+    LOG_CMD=$CHUTNEY_LOG_CMD
+    CONFIG=$CHUTNEY_CONFIG
     PRIVCOUNT_ROUNDS=1
     ;;
   *)
@@ -207,6 +291,12 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
     tor)
       echo "Making tor binary in '$TOR_MAKE_DIR' ..."
       make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY"
+      ;;
+    chutney)
+      # chutney needs tor-gencert as well as tor
+      echo "Making tor binaries in '$TOR_MAKE_DIR' ..."
+      make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" \
+        "$PRIVCOUNT_TOR_GENCERT_BINARY"
       ;;
     *)
       echo "Source $PRIVCOUNT_SOURCE not supported."
@@ -325,7 +415,29 @@ case "$PRIVCOUNT_SOURCE" in
         `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     ;;
   chutney)
-    # nothing
+    # clean up the whitespace in the port list
+    PRIVCOUNT_CHUTNEY_PORTS=`echo -n $PRIVCOUNT_CHUTNEY_PORTS | xargs`
+    # work out how many ports there are
+    CHUTNEY_PORT_ARRAY=( $PRIVCOUNT_CHUTNEY_PORTS )
+    CHUTNEY_PORT_COUNT=${#CHUTNEY_PORT_ARRAY[@]}
+    TEMPLATE_CONFIG=$CONFIG
+    # launch one DC per port
+    for CHUTNEY_PORT in ${CHUTNEY_PORT_ARRAY[@]} ; do
+      CONFIG=$TEMPLATE_CONFIG.$CHUTNEY_PORT
+      echo "Generating config for chutney port $CHUTNEY_PORT..."
+      cp "$TEMPLATE_CONFIG" "$CONFIG"
+      sed -i "" -e "s/CHUTNEY_PORT_COUNT/$CHUTNEY_PORT_COUNT/g" "$CONFIG"
+      sed -i "" -e "s/CHUTNEY_PORT/$CHUTNEY_PORT/g" "$CONFIG"
+      privcount dc "$CONFIG" 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
+    done
+    # launch the TS expecting the right number of DCs
+    # (the config number does not matter)
+    privcount ts "$CONFIG" 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
+    # the SK doesn't care how many DCs there are
+    privcount sk "$CONFIG" 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
+    # The chutney output is very verbose: don't save it to the log
+    $FIRST_ROUND_CMD 2>&1
+    echo -n | `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     ;;
   *)
     echo "Source $PRIVCOUNT_SOURCE not supported."
@@ -465,7 +577,9 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e "Path for PidFile" -e "Your log may contain" \
   privcount.*.latest.log \
   || true
-$LOG_CMD
+# Log any source-specific warnings
+# Summarise unexpected chutney warnings
+CHUTNEY_WARNINGS_IGNORE_EXPECTED=true CHUTNEY_WARNINGS_SUMMARY=true $LOG_CMD
 
 # Show how long it took
 echo "$ENDDATE"
