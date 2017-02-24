@@ -10,14 +10,18 @@ set -o pipefail
 set -b
 
 # Set default option values if empty (:) or unset (-)
+# PrivCount itself
 PRIVCOUNT_INSTALL=${PRIVCOUNT_INSTALL:-0}
 PRIVCOUNT_DIRECTORY=${PRIVCOUNT_DIRECTORY:-.}
 PRIVCOUNT_SOURCE=${PRIVCOUNT_SOURCE:-inject}
-# Only works for inject source
+
+# Inject source
 PRIVCOUNT_ROUNDS=${PRIVCOUNT_ROUNDS:-2}
 PRIVCOUNT_UNIT_TESTS=${PRIVCOUNT_UNIT_TESTS:-1}
-# assume privcount-tor is beside privcount
-PRIVCOUNT_TOR=${PRIVCOUNT_TOR:-../../tor-privcount/src/or/tor}
+
+# Tor source
+# use the chutney tor dir, or assume privcount-tor is beside privcount
+PRIVCOUNT_TOR_DIR=${PRIVCOUNT_TOR_DIR:-${TOR_DIR:-../../tor-privcount/}}
 # Don't run make by default
 PRIVCOUNT_TOR_MAKE=${PRIVCOUNT_TOR_MAKE:-0}
 # allow the torrc to be the empty string (which means "no torrc")
@@ -32,12 +36,19 @@ do
     --install|-I)
       PRIVCOUNT_INSTALL=1
       ;;
+    --no-unit-tests|-x)
+      PRIVCOUNT_UNIT_TESTS=0
+      ;;
+    --rounds|-r)
+      PRIVCOUNT_ROUNDS=$2
+      shift
+      ;;
     --source|-s)
       PRIVCOUNT_SOURCE=$2
       shift
       ;;
-    --tor|-t)
-      PRIVCOUNT_TOR=$2
+    --tor-dir|-t)
+      PRIVCOUNT_TOR_DIR=$2
       shift
       ;;
     --make-tor|-m)
@@ -51,24 +62,24 @@ do
       PRIVCOUNT_TOR_DATADIR=$2
       shift
       ;;
-    --rounds|-r)
-      PRIVCOUNT_ROUNDS=$2
       shift
       ;;
-    --no-unit-tests|-x)
-      PRIVCOUNT_UNIT_TESTS=0
       ;;
     --help|-h)
       echo "usage: $0 [...] [<privcount-directory>] -- [<data-source-args...>]"
       echo "  -I: run 'pip install -I <privcount-directory>' before testing"
       echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
+      echo "  -x: skip unit tests"
+      echo "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
+      echo "  -r rounds: run this many rounds before stopping"
+      echo "    default: '$PRIVCOUNT_ROUNDS' (set to 1 for tor and chutney)"
       echo "  -s source: use inject, chutney, or tor as the data source"
       echo "    default: '$PRIVCOUNT_SOURCE'"
       echo "    inject: use 'privcount inject' on test/events.txt"
       echo "    tor: use a privcount-patched tor binary"
       echo "    chutney: use a chutney network with a privcount-patched tor"
-      echo "  -t tor-path: use the privcount-patched tor binary at tor-path"
-      echo "    default: '$PRIVCOUNT_TOR'"
+      echo "  -t tor-dir: use the privcount-patched tor binary in tor-dir/$PRIVCOUNT_TOR_BINARY"
+      echo "    default: '$PRIVCOUNT_TOR_DIR'"
       echo "  -m: run make on tor-path before testing (sources: tor, chutney)"
       echo "    default: '$PRIVCOUNT_TOR_MAKE' (0: no make, 1: make)"
       echo "  -f torrc-path: launch tor with the torrc at torrc-path"
@@ -76,10 +87,6 @@ do
       echo "    default: '$PRIVCOUNT_TORRC'"
       echo "  -d datadir-path: launch tor with the data directory datadir-path"
       echo "    default: a new temp directory" # $PRIVCOUNT_TOR_DATADIR
-      echo "  -r rounds: run this many rounds before stopping"
-      echo "    default: '$PRIVCOUNT_ROUNDS' (set to 1 for tor and chutney)"
-      echo "  -x: skip unit tests"
-      echo "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
       echo "  <privcount-directory>: the directory privcount is in"
       echo "    default: '$PRIVCOUNT_DIRECTORY'"
       echo "  <data-source-args...>: arguments appended to the data source"
@@ -87,7 +94,8 @@ do
       echo "      inject first round: port 20003, password auth"
       echo "      inject next rounds: unix /tmp/privcount-inject, cookie auth"
       echo "      tor single round: port 20003, cookie auth"
-      echo "Spaces and special characters are not supported in (some) paths."
+      echo "Relative paths are supported."
+      echo "Paths with special characters or spaces are not supported."
       exit 0
       ;;
     --)
@@ -125,6 +133,9 @@ INJECT_CONFIG=config.yaml
 
 # Tor Source
 
+# Find tor
+PRIVCOUNT_TOR=$PRIVCOUNT_TOR_DIR/$PRIVCOUNT_TOR_BINARY
+
 # The command to start a tor relay
 # Sets the data directory to a newly created temporary directory (by default)
 # Uses a torrc with the same control port as the injector (if set)
@@ -156,7 +167,6 @@ case "$PRIVCOUNT_SOURCE" in
     OTHER_ROUND_CMD=false
     LOG_CMD=$TOR_LOG_CMD
     CONFIG=$TOR_CONFIG
-    echo "This source only supports 1 round, setting rounds to 1..."
     PRIVCOUNT_ROUNDS=1
     ;;
   *)
@@ -196,18 +206,16 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
       ;;
     tor)
       echo "Making tor binary in '$TOR_MAKE_DIR' ..."
-      make -C "$TOR_MAKE_DIR" "$PWD"/"$PRIVCOUNT_TOR"
+      make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY"
       ;;
     *)
       echo "Source $PRIVCOUNT_SOURCE not supported."
       exit 1
       ;;
   esac
-
 fi
 
 if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
-
   # Run the python-based unit tests
   echo "Testing time formatting:"
   python test_format_time.py
@@ -234,7 +242,6 @@ if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
 
   # Requires a local privcount-patched Tor instance
   #python test_tor_ctl_event.py
-
 fi
 
 # Execute this command to produce a numeric unix timestamp in seconds
@@ -273,7 +280,8 @@ function log_file_name() {
 
 # Save a command's output in a log file
 # Usage:
-# privcount privcount_command args 2&>1 | `save_to_log privcount_command timestamp`
+# privcount privcount_command args 2&>1 | \
+#   `save_to_log privcount_command timestamp`
 # Takes two arguments: the privcount command (inject, ts, sk, dc) and the unix
 # timestamp for the log
 # Outputs a command that logs the output of a command to a file, and also
@@ -292,21 +300,29 @@ echo "Launching $PRIVCOUNT_SOURCE, tally server, share keeper, and data collecto
 # This won't match the timestamp logged by the TS, because the TS waits before
 # starting the round
 LOG_TIMESTAMP="$STARTSEC"
-privcount ts "$CONFIG" 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
-privcount sk "$CONFIG" 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
-privcount dc "$CONFIG" 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
 ROUNDS=1
 
-# Pre-launch commands
+# Launch commands
 case "$PRIVCOUNT_SOURCE" in
   inject)
     # Prepare for password authentication: the data collector and injector both
     # read this file
     echo "Generating random password file for injector..."
     cat /dev/random | hexdump -e '"%x"' -n 32 -v > keys/control_password.txt
+    # standard launch commands
+    privcount ts "$CONFIG" 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
+    privcount sk "$CONFIG" 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
+    privcount dc "$CONFIG" 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
+    $FIRST_ROUND_CMD 2>&1 | \
+        `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     ;;
   tor)
-    # nothing
+    # standard launch commands
+    privcount ts "$CONFIG" 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
+    privcount sk "$CONFIG" 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
+    privcount dc "$CONFIG" 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
+    $FIRST_ROUND_CMD 2>&1 | \
+        `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     ;;
   chutney)
     # nothing
@@ -316,8 +332,6 @@ case "$PRIVCOUNT_SOURCE" in
     exit 1
     ;;
 esac
-
-$FIRST_ROUND_CMD 2>&1 | `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
 
 # Then wait for each job, terminating if any job produces an error
 # Ideally, we'd want to use wait, or wait $job, but that only checks one job
@@ -329,20 +343,22 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   # fail if any job has failed
   if echo "$JOB_STATUS" | grep -q "Exit"; then
     # and kill everything
-    echo "Error: Privcount or $PRIVCOUNT_SOURCE process exited with an error..."
+    echo "Error: Privcount or $PRIVCOUNT_SOURCE process exited with error..."
     pkill -P $$
     exit 1
   fi
   # succeed if an outcome file is produced
   if [ -f privcount.outcome.*.json ]; then
     if [ $ROUNDS -lt $PRIVCOUNT_ROUNDS ]; then
-      echo "Moving round $ROUNDS results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
+      echo \
+         "Moving round $ROUNDS results to '$PRIVCOUNT_DIRECTORY/test/old' ..."
       $MOVE_JSON_COMMAND || true
       # If the plot libraries are not installed, this will always fail
       $MOVE_PDF_COMMAND 2> /dev/null || true
       ROUNDS=$[$ROUNDS+1]
       echo "Launching $PRIVCOUNT_SOURCE for round $ROUNDS..."
-      $OTHER_ROUND_CMD 2>&1 | `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+      $OTHER_ROUND_CMD 2>&1 | \
+        `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     else
       break
     fi
@@ -391,7 +407,8 @@ if [ -f privcount.tallies.latest.json ]; then
   echo "Plotting results..."
   # plot will fail if the optional dependencies are not installed
   # tolerate this failure, and shut down the privcount processes
-  privcount plot -d privcount.tallies.latest.json data 2>&1 | `save_to_log plot $LOG_TIMESTAMP` || true
+  privcount plot -d privcount.tallies.latest.json data 2>&1 | \
+    `save_to_log plot $LOG_TIMESTAMP` || true
 fi
 
 # If log files were produced, keep a link to the latest files
@@ -424,11 +441,12 @@ fi
 # Show the differences between the latest and old latest traffic model files
 if [ -e privcount.traffic.model.latest.json -a \
      -e old/privcount.traffic.model.latest.json ]; then
-  echo "Comparing latest traffic model file with previous traffic model file..."
+  echo "Comparing latest traffic model with previous traffic model..."
   # PrivCount is entirely deterministic: if there are any other differences,
   # they are due to code changes, or are a bug, or need to be filtered out here
   diff --minimal --unified=10 \
-    old/privcount.traffic.model.latest.json privcount.traffic.model.latest.json || true
+    old/privcount.traffic.model.latest.json \
+    privcount.traffic.model.latest.json || true
 else
   # Since we need old/latest and latest, it takes two runs to generate the
   # first traffic model file comparison
