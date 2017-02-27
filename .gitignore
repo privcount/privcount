@@ -13,3 +13,6 @@ test/privcount.*.log
 test/old
 test/keys/secret_handshake.yaml
 test/keys/control_password.txt
+
+# generated test config files
+test/config.chutney.yaml.*

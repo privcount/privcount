@@ -114,6 +114,8 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
             # this is still encrypted, so there's no need for a secure delete
             del share['secret']
             share['secret'] = "(encrypted blinding share, deleted by share keeper)"
+        # sort the shares, so that their order is consistent between rounds
+        self.start_config.get('shares', []).sort()
 
         if ('shares' not in config):
             logging.warning("start command from tally server cannot be completed due to missing shares")
