@@ -278,8 +278,6 @@ if [ "$PRIVCOUNT_INSTALL" -eq 1 ]; then
   pip install -I "$PRIVCOUNT_DIRECTORY"
 fi
 
-cd "$PRIVCOUNT_DIRECTORY/test"
-
 if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
   # Recompile Tor, if needed
   # assume standard tor source directory structure
@@ -304,6 +302,9 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
       ;;
   esac
 fi
+
+# From this point onwards, the script assumes it's in the test directory
+cd "$PRIVCOUNT_DIRECTORY/test"
 
 if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
   # Run the python-based unit tests
