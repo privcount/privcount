@@ -9,7 +9,7 @@ import string
 import sys
 
 from base64 import b64encode, b64decode
-from os import urandom
+from os import urandom, environ, path, getcwd
 from random import SystemRandom
 
 from privcount.counter import counter_modulus
@@ -31,9 +31,11 @@ RAND_LONG_BITS = max(INT_BITS, counter_modulus().bit_length(), sys.float_info.ma
 # How long should the random string be (in unencoded bytes)?
 RAND_STR_BYTES = 20
 
-# The paths to the RSA keys, when in the privcount/test directory
-PUBLIC_KEY_PATH = 'keys/sk.cert'
-PRIVATE_KEY_PATH = 'keys/sk.pem'
+# The paths to the RSA keys, based on the location of privcount/test
+PRIVCOUNT_DIRECTORY = environ.get('PRIVCOUNT_DIRECTORY', getcwd())
+TEST_DIRECTORY = path.join(PRIVCOUNT_DIRECTORY, 'test')
+PUBLIC_KEY_PATH = path.join(TEST_DIRECTORY, 'keys/sk.cert')
+PRIVATE_KEY_PATH = path.join(TEST_DIRECTORY, 'keys/sk.pem')
 
 # This is the maximum number of bytes OpenSSL will encrypt with PrivCount's
 # current public key size (determined by trying different values)
