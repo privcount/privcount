@@ -51,30 +51,33 @@ Intro    | Yes         | Yes     | No     | Yes  | X&    | Service Keys+
 Rend     | Yes         | Yes     | No     | Yes  | X&    | (None)
 Client@  | X           | X       | X      | X    | X     | DNS^
 
-\~ "Guard" relays can be connected to clients, or Bridge relays, or other
-   relays that aren't in the consensus. Other relays authenticate using RSA and
-   ed25519 keys, bridges and clients do not, and can not be distinguished.  
-\$ Most Directory requests are performed using a direct connection from the
-   client, others are performed using a 3-hop path.
-\^ Application protocols also leak any unencrypted (meta)data to Exit relays
-   and Tor Clients.  
-\* Directory requests contain information about the documents being downloaded.
-   Clients request all relay documents, but fetch hidden service descriptors
-   as-needed.  
-\+ HSDirs handle hidden service descriptor uploads and downloads over BEGINDIR.
-   The service keys can be matched with a hidden service descriptor if the
-   onion address is known. Next-generation (v3) hidden service descriptors
-   can only be decrypted if the onion address is already known. Clients always
-   perform HSDir uploads and downloads over a 3-hop connection.
-\& This role sees encrypted cells, including headers and padding, and can not
-   distinguish overheads from content.  
-\@ Onion services connect to the tor network as clients. Relays can also
-   perform client activities, like fetching a consensus.  
-
+Usage:
 * Yes: Available and Collected
 * No: Not Available (The information is encrypted)
 * NA: Not Applicable (The information does not exist)
 * X: Available, but Excluded from Collection
+
+Notes:
+* \~ "Guard" relays can be connected to clients, or Bridge relays, or other
+     relays that aren't in the consensus. Other relays authenticate using RSA
+     and ed25519 keys, bridges and clients do not, and can not be distinguished.  
+* \$ Most Directory requests are performed using a direct connection from the
+     client, others are performed using a 3-hop path.  
+* \^ Application protocols also leak any unencrypted (meta)data to Exit relays
+     and Tor Clients.  
+* \* Directory requests contain information about the documents being
+     downloaded. Clients request all relay documents, but fetch hidden service
+     descriptors as-needed.  
+* \+ HSDirs handle hidden service descriptor uploads and downloads over
+     BEGINDIR. The service keys can be matched with a hidden service
+     descriptor if the onion address is known. Next-generation (v3) hidden
+     service descriptors can only be decrypted if the onion address is already
+     known. Clients always perform HSDir uploads and downloads over a 3-hop
+     connection.  
+* \& This role sees encrypted cells, including headers and padding, and can
+     not distinguish overheads from content.  
+* \@ Onion services connect to the tor network as clients. Relays can also
+     perform client activities, like fetching a consensus.   
 
 When relays are relaying cells on a circuit, they can only see that the cell
 is a RELAY (or RELAY_EARLY) cell. Everything else is encrypted. (Each relay
