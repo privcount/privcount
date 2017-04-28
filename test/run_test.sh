@@ -12,7 +12,8 @@ set -b
 # Set default option values if empty (:) or unset (-)
 # PrivCount itself
 PRIVCOUNT_INSTALL=${PRIVCOUNT_INSTALL:-0}
-PRIVCOUNT_DIRECTORY=${PRIVCOUNT_DIRECTORY:-.}
+TEST_DIR=`dirname "$0"`
+export PRIVCOUNT_DIRECTORY=${PRIVCOUNT_DIRECTORY:-`dirname "$TEST_DIR"`}
 PRIVCOUNT_SOURCE=${PRIVCOUNT_SOURCE:-inject}
 
 # Inject source
@@ -21,7 +22,7 @@ PRIVCOUNT_UNIT_TESTS=${PRIVCOUNT_UNIT_TESTS:-1}
 
 # Tor source
 # use the chutney tor dir, or assume privcount-tor is beside privcount
-PRIVCOUNT_TOR_DIR=${PRIVCOUNT_TOR_DIR:-${TOR_DIR:-../../tor-privcount/}}
+PRIVCOUNT_TOR_DIR=${PRIVCOUNT_TOR_DIR:-${TOR_DIR:-`dirname "$0"`/../../tor-privcount/}}
 # Don't run make by default
 PRIVCOUNT_TOR_MAKE=${PRIVCOUNT_TOR_MAKE:-0}
 # allow the torrc to be the empty string (which means "no torrc")
@@ -36,7 +37,7 @@ PRIVCOUNT_TOR_GENCERT_BINARY=src/tools/tor-gencert
 
 # Chutney source
 # use the chutney path, or assume chutney is beside privcount
-PRIVCOUNT_CHUTNEY_PATH=${PRIVCOUNT_CHUTNEY_PATH:-${CHUTNEY_PATH:-../../chutney/}}
+PRIVCOUNT_CHUTNEY_PATH=${PRIVCOUNT_CHUTNEY_PATH:-${CHUTNEY_PATH:-`dirname "$0"`/../../chutney/}}
 PRIVCOUNT_CHUTNEY_FLAVOUR=${PRIVCOUNT_CHUTNEY_FLAVOUR:-${NETWORK_FLAVOUR:-basic-min}}
 # the relay control ports opened by the selected chutney flavour
 # this must be manually kept in sync with PRIVCOUNT_CHUTNEY_FLAVOUR
@@ -159,11 +160,15 @@ do
       break
       ;;
     *)
-      PRIVCOUNT_DIRECTORY=$1
+      export PRIVCOUNT_DIRECTORY=$1
       ;;
   esac
   shift
 done
+
+# Set subdirectory paths
+TEST_DIR="$PRIVCOUNT_DIRECTORY/test"
+TOOLS_DIR="$PRIVCOUNT_DIRECTORY/privcount/tools"
 
 # Data source commands
 
@@ -174,7 +179,7 @@ done
 INJECT_BASE_CMD="privcount inject --log events.txt"
 
 # The commands for IP port connection and password authentication
-INJECT_PORT_CMD="$INJECT_BASE_CMD --port 20003 --control-password keys/control_password.txt $@"
+INJECT_PORT_CMD="$INJECT_BASE_CMD --port 20003 --control-password $TEST_DIR/keys/control_password.txt $@"
 
 # The command for unix socket connection and safecookie authentication
 # The injector automatically writes its own cookie file, just like tor
@@ -303,36 +308,33 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
   esac
 fi
 
-# From this point onwards, the script assumes it's in the test directory
-cd "$PRIVCOUNT_DIRECTORY/test"
-
 if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
   # Run the python-based unit tests
   echo "Testing time formatting:"
-  python test_format_time.py
+  python "$TEST_DIR/test_format_time.py"
   echo ""
 
   echo "Testing encryption:"
-  python test_encryption.py
+  python "$TEST_DIR/test_encryption.py"
   echo ""
 
   echo "Testing random numbers:"
-  python test_random.py
+  python "$TEST_DIR/test_random.py"
   echo ""
 
   echo "Testing counters:"
-  python test_counter.py
+  python "$TEST_DIR/test_counter.py"
   echo ""
 
   echo "Testing traffic model:"
-  python test_traffic_model.py
+  python "$TEST_DIR/test_traffic_model.py"
   echo ""
 
   echo "Testing noise:"
-  python ../privcount/tools/compute_noise.py
+  python "$TOOLS_DIR/compute_noise.py"
 
   # Requires a local privcount-patched Tor instance
-  #python test_tor_ctl_event.py
+  #python "$TEST_DIR/test_tor_ctl_event.py"
 fi
 
 # Execute this command to produce a numeric unix timestamp in seconds
@@ -342,13 +344,14 @@ DATE_COMMAND="date"
 "$DATE_COMMAND"
 STARTSEC="`$TIMESTAMP_COMMAND`"
 
+OLD_DIR="$TEST_DIR/old"
 # Move aside the old result files
-echo "Moving old results files to '$PRIVCOUNT_DIRECTORY/test/old' ..."
-mkdir -p old
+echo "Moving old results files to '$OLD_DIR' ..."
+mkdir -p "$OLD_DIR"
 # Save the commands for re-use during multiple round tests
-MOVE_JSON_COMMAND="mv privcount.*.json old/"
-MOVE_PDF_COMMAND="mv privcount.*.pdf old/"
-MOVE_LOG_COMMAND="mv privcount.*.log old/"
+MOVE_JSON_COMMAND="mv $TEST_DIR/privcount.*.json $OLD_DIR/"
+MOVE_PDF_COMMAND="mv $TEST_DIR/privcount.*.pdf $OLD_DIR/"
+MOVE_LOG_COMMAND="mv $TEST_DIR/privcount.*.log $OLD_DIR/"
 # Clean up before running the test
 $MOVE_JSON_COMMAND || true
 # If the plot libraries are not installed, this will always fail
@@ -364,9 +367,10 @@ $MOVE_LOG_COMMAND || true
 # Outputs a string containing the log file name
 # Doesn't handle arguments with spaces
 function log_file_name() {
-  PRIVCOUNT_COMMAND="$1"
-  FILE_TIMESTAMP="$2"
-  echo "privcount.$PRIVCOUNT_COMMAND.$FILE_TIMESTAMP.log"
+  LOG_DIR="$1"
+  PRIVCOUNT_COMMAND="$2"
+  FILE_TIMESTAMP="$3"
+  echo "$LOG_DIR/privcount.$PRIVCOUNT_COMMAND.$FILE_TIMESTAMP.log"
 }
 
 # Save a command's output in a log file
@@ -380,9 +384,10 @@ function log_file_name() {
 # Doesn't handle arguments with spaces
 function save_to_log() {
   SAVE_LOG_COMMAND="tee"
-  PRIVCOUNT_COMMAND="$1"
-  FILE_TIMESTAMP="$2"
-  FILE_NAME=`log_file_name "$PRIVCOUNT_COMMAND" "$FILE_TIMESTAMP"`
+  LOG_DIR="$1"
+  PRIVCOUNT_COMMAND="$2"
+  FILE_TIMESTAMP="$3"
+  FILE_NAME=`log_file_name "$LOG_DIR" "$PRIVCOUNT_COMMAND" "$FILE_TIMESTAMP"`
   echo "$SAVE_LOG_COMMAND $FILE_NAME"
 }
 
@@ -399,21 +404,26 @@ case "$PRIVCOUNT_SOURCE" in
     # Prepare for password authentication: the data collector and injector both
     # read this file
     echo "Generating random password file for injector..."
-    cat /dev/random | hexdump -e '"%x"' -n 32 -v > keys/control_password.txt
-    # standard launch commands
-    privcount ts "$CONFIG" 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
-    privcount sk "$CONFIG" 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
-    privcount dc "$CONFIG" 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
+    cat /dev/random | hexdump -e '"%x"' -n 32 -v \
+        > "$TEST_DIR/keys/control_password.txt"
+    # the privcount test configs expect to be in the test directory
+    pushd "$TEST_DIR"
+    privcount ts "$CONFIG" 2>&1 | `save_to_log . ts $LOG_TIMESTAMP` &
+    privcount sk "$CONFIG" 2>&1 | `save_to_log . sk $LOG_TIMESTAMP` &
+    privcount dc "$CONFIG" 2>&1 | `save_to_log . dc $LOG_TIMESTAMP` &
+    popd
     $FIRST_ROUND_CMD 2>&1 | \
-        `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+        `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     ;;
   tor)
-    # standard launch commands
-    privcount ts "$CONFIG" 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
-    privcount sk "$CONFIG" 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
-    privcount dc "$CONFIG" 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
+    # the privcount test configs expect to be in the test directory
+    pushd "$TEST_DIR"
+    privcount ts "$CONFIG" 2>&1 | `save_to_log . ts $LOG_TIMESTAMP` &
+    privcount sk "$CONFIG" 2>&1 | `save_to_log . sk $LOG_TIMESTAMP` &
+    privcount dc "$CONFIG" 2>&1 | `save_to_log . dc $LOG_TIMESTAMP` &
+    popd
     $FIRST_ROUND_CMD 2>&1 | \
-        `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+        `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     ;;
   chutney)
     # clean up the whitespace in the port list
@@ -421,6 +431,8 @@ case "$PRIVCOUNT_SOURCE" in
     # work out how many ports there are
     CHUTNEY_PORT_ARRAY=( $PRIVCOUNT_CHUTNEY_PORTS )
     CHUTNEY_PORT_COUNT=${#CHUTNEY_PORT_ARRAY[@]}
+    # the privcount test configs expect to be in the test directory
+    pushd "$TEST_DIR"
     TEMPLATE_CONFIG=$CONFIG
     # launch one DC per port
     for CHUTNEY_PORT in ${CHUTNEY_PORT_ARRAY[@]} ; do
@@ -429,16 +441,18 @@ case "$PRIVCOUNT_SOURCE" in
       cp "$TEMPLATE_CONFIG" "$CONFIG"
       sed -i "" -e "s/CHUTNEY_PORT_COUNT/$CHUTNEY_PORT_COUNT/g" "$CONFIG"
       sed -i "" -e "s/CHUTNEY_PORT/$CHUTNEY_PORT/g" "$CONFIG"
-      privcount dc "$CONFIG" 2>&1 | `save_to_log dc $LOG_TIMESTAMP` &
+      privcount dc "$CONFIG" 2>&1 | `save_to_log . dc $LOG_TIMESTAMP` &
     done
     # launch the TS expecting the right number of DCs
     # (the config number does not matter)
-    privcount ts "$CONFIG" 2>&1 | `save_to_log ts $LOG_TIMESTAMP` &
+    privcount ts "$CONFIG" 2>&1 | `save_to_log . ts $LOG_TIMESTAMP` &
     # the SK doesn't care how many DCs there are
-    privcount sk "$CONFIG" 2>&1 | `save_to_log sk $LOG_TIMESTAMP` &
+    privcount sk "$CONFIG" 2>&1 | `save_to_log . sk $LOG_TIMESTAMP` &
+    popd
     # The chutney output is very verbose: don't save it to the log
     $FIRST_ROUND_CMD 2>&1
-    echo -n | `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+    echo "For full chutney logs run $CHUTNEY_LOG_CMD" | \
+        `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP`
     ;;
   *)
     echo "Source $PRIVCOUNT_SOURCE not supported."
@@ -461,17 +475,16 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
     exit 1
   fi
   # succeed if an outcome file is produced
-  if [ -f privcount.outcome.*.json ]; then
+  if [ -f "$TEST_DIR/"privcount.outcome.*.json ]; then
     if [ $ROUNDS -lt $PRIVCOUNT_ROUNDS ]; then
-      echo \
-         "Moving round $ROUNDS results to '$PRIVCOUNT_DIRECTORY/test/old' ..."
+      echo "Moving round $ROUNDS results to '$OLD_DIR' ..."
       $MOVE_JSON_COMMAND || true
       # If the plot libraries are not installed, this will always fail
       $MOVE_PDF_COMMAND 2> /dev/null || true
       ROUNDS=$[$ROUNDS+1]
       echo "Launching $PRIVCOUNT_SOURCE for round $ROUNDS..."
       $OTHER_ROUND_CMD 2>&1 | \
-        `save_to_log $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+        `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     else
       break
     fi
@@ -500,12 +513,14 @@ function link_latest() {
   SUFFIX="$2"
   GLOB_PATTERN=privcount.$PREFIX.*.$SUFFIX
   LATEST_NAME=privcount.$PREFIX.latest.$SUFFIX
+  pushd "$TEST_DIR" > /dev/null
   if [ -f $GLOB_PATTERN ]; then
-    ln -s $GLOB_PATTERN $LATEST_NAME
+    ln -s $GLOB_PATTERN "$LATEST_NAME"
   else
     echo "Error: No $PREFIX $SUFFIX file produced."
     exit 1
   fi
+  popd > /dev/null
 }
 
 # If an outcome file was produced, keep a link to the latest file
@@ -516,12 +531,12 @@ link_latest traffic.model json
 
 # If a tallies file was produced, keep a link to the latest file, and plot it
 link_latest tallies json
-if [ -f privcount.tallies.latest.json ]; then
+if [ -f "$TEST_DIR/privcount.tallies.latest.json" ]; then
   echo "Plotting results..."
   # plot will fail if the optional dependencies are not installed
   # tolerate this failure, and shut down the privcount processes
-  privcount plot -d privcount.tallies.latest.json data 2>&1 | \
-    `save_to_log plot $LOG_TIMESTAMP` || true
+  privcount plot -d "$TEST_DIR/privcount.tallies.latest.json" data 2>&1 | \
+    `save_to_log "$TEST_DIR" plot $LOG_TIMESTAMP` || true
 fi
 
 # If log files were produced, keep a link to the latest files
@@ -533,8 +548,8 @@ for round_number in `seq $PRIVCOUNT_ROUNDS`; do
 done
 
 # Show the differences between the latest and old latest outcome files
-if [ -e privcount.outcome.latest.json -a \
-     -e old/privcount.outcome.latest.json ]; then
+if [ -e "$TEST_DIR/privcount.outcome.latest.json" -a \
+     -e "$OLD_DIR/privcount.outcome.latest.json" ]; then
   # there's no point in comparing the tallies JSON or results PDF
   echo "Comparing latest outcomes file with previous outcomes file..."
   # skip expected differences due to time or network jitter
@@ -543,7 +558,8 @@ if [ -e privcount.outcome.latest.json -a \
   diff --minimal --unified=10 \
     -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
     -I "[Dd]elay" -I "Collect" -I "End" -I "peer" -I "fingerprint" \
-    old/privcount.outcome.latest.json privcount.outcome.latest.json || true
+    "$OLD_DIR/privcount.outcome.latest.json" \
+    "$TEST_DIR/privcount.outcome.latest.json" || true
 else
   # Since we need old/latest and latest, it takes two runs to generate the
   # first outcome file comparison
@@ -552,14 +568,14 @@ else
 fi
 
 # Show the differences between the latest and old latest traffic model files
-if [ -e privcount.traffic.model.latest.json -a \
-     -e old/privcount.traffic.model.latest.json ]; then
+if [ -e "$TEST_DIR/privcount.traffic.model.latest.json" -a \
+     -e "$OLD_DIR/privcount.traffic.model.latest.json" ]; then
   echo "Comparing latest traffic model with previous traffic model..."
   # PrivCount is entirely deterministic: if there are any other differences,
   # they are due to code changes, or are a bug, or need to be filtered out here
   diff --minimal --unified=10 \
-    old/privcount.traffic.model.latest.json \
-    privcount.traffic.model.latest.json || true
+    "$OLD_DIR/privcount.traffic.model.latest.json" \
+    "$TEST_DIR/privcount.traffic.model.latest.json" || true
 else
   # Since we need old/latest and latest, it takes two runs to generate the
   # first traffic model file comparison
@@ -576,7 +592,7 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e "seconds of user activity" -e "delay_period not specified" \
   -e notice \
   -e "Path for PidFile" -e "Your log may contain" \
-  privcount.*.latest.log \
+  "$TEST_DIR/"privcount.*.latest.log \
   || true
 # Log any source-specific warnings
 # Summarise unexpected chutney warnings

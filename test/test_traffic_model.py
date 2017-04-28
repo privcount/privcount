@@ -3,7 +3,10 @@
 import os, json
 from privcount.traffic_model import TrafficModel
 
-MODEL_FILENAME="traffic.model.json"
+# The path to the model file, based on the location of privcount/test
+PRIVCOUNT_DIRECTORY = os.environ.get('PRIVCOUNT_DIRECTORY', os.getcwd())
+TEST_DIRECTORY = os.path.join(PRIVCOUNT_DIRECTORY, 'test')
+MODEL_FILENAME = os.path.join(TEST_DIRECTORY, "traffic.model.json")
 
 # a sample model
 model = {
