@@ -404,8 +404,10 @@ case "$PRIVCOUNT_SOURCE" in
     # Prepare for password authentication: the data collector and injector both
     # read this file
     echo "Generating random password file for injector..."
+    # sometimes cat /dev/{random,urandom,zero} exits with error 141
+    # even though the file is actually written out
     cat /dev/random | hexdump -e '"%x"' -n 32 -v \
-        > "$TEST_DIR/keys/control_password.txt"
+        > "$TEST_DIR/keys/control_password.txt" || true
     # the privcount test configs expect to be in the test directory
     pushd "$TEST_DIR"
     privcount ts "$CONFIG" 2>&1 | `save_to_log . ts $LOG_TIMESTAMP` &
