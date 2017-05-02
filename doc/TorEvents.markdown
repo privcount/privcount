@@ -38,28 +38,46 @@ The information available to a Tor Relay depends on the role that relay plays
 in the data transfer. Relays can determine their role in the data transfer
 based on the commands they receive.
 
-Role     |  Connection | Circuit | Stream | Cell | Bytes | Additional
----------|-------------|---------|--------|------|-------|-----------------
-Guard~   | Yes         | Yes     | No     | Yes  | Yes   | Client IP~
-Middle   | Yes         | Yes     | No     | Yes  | Yes   | (None)
-Exit     | Yes         | Yes     | Yes    | Yes  | Yes   | DNS^
-BEGINDIR | Yes         | Yes     | Yes    | Yes  | Yes   | URL*
-DirPort  | Yes         | NA      | NA     | NA   | Yes   | URL*
-HSDir    | Yes         | Yes     | Yes    | Yes  | Yes   | Onion Address+
-Intro    | Yes         | Yes     | No     | Yes  | Yes   | Service Keys+
-Rend     | Yes         | Yes     | No     | Yes  | Yes   | (None)
+Role     |  Connection | Circuit | Stream | Cell | Bytes  | Additional
+---------|-------------|---------|--------|------|--------|-----------------
+Guard~   | Y           | Y       | N/E    | Y    | N/C/E& | Client IP~
+Bridge   | Y           | Y       | N/E    | Y    | N/C/E& | Client IP~
+Middle   | N/C         | N/C     | N/E    | N/C  | N/C/E& |
+Exit     | Y           | Y       | Y      | Y    | Y      | DNS^
+DirPort  | N/C         | N/A     | N/A    | N/A  | N/C    | URL*, Client IP$
+BEGINDIR | N/C         | N/C     | N/C    | N/C  | N/C    | URL*, Client IP$
+HSDir    | N/C         | N/C     | N/C    | N/C  | N/C    | Onion Address+
+Intro    | Y           | Y       | N/E    | Y    | N/C/E& | Service Keys+
+Rend     | Y           | Y       | N/C    | Y    | N/C/E& |
+Client@  | N/C         | N/C     | N/C    | N/C  | N/C    | DNS^
 
-\~ "Guard" relays can be connected to clients, or Bridge relays, or other
-   relays that aren't in the consensus. Other relays authenticate using RSA and
-   ed25519 keys, bridges and clients do not, and can not be distinguished.  
-\^ Application protocols also leak any unencrypted (meta)data to Exit relays.  
-\* Directory requests contain information about the documents being downloaded.
-   Clients request all relay documents, but fetch hidden service descriptors
-   as-needed.  
-\+ HSDirs handle hidden service descriptor uploads and downloads over BEGINDIR.
-   The service keys can be matched with a hidden service descriptor if the
-   onion address is known. Next-generation (v3) hidden service descriptors
-   can only be decrypted if the onion address is already known.  
+Usage:
+* Y: Available and Collected
+* N/C: Available, but not Collected (We choose not to collect this)
+* N/E: Available, but Encrypted (The relay does not have the keys needed to decrypt this)
+* N/A: Not Applicable (The data does not exist)
+
+Notes:
+* \~ "Guard" relays can be connected to clients, or Bridge relays, or other
+     relays that aren't in the consensus. Other relays authenticate using RSA
+     and ed25519 keys, bridges and clients do not, and can not be distinguished.  
+* \$ Most Directory requests are performed using a direct connection from the
+     client, others are performed using a 3-hop path.  
+* \^ Application protocols also leak any unencrypted (meta)data to Exit relays
+     and Tor Clients.  
+* \* Directory requests contain information about the documents being
+     downloaded. Clients request all relay documents, but fetch hidden service
+     descriptors as-needed.  
+* \+ HSDirs handle hidden service descriptor uploads and downloads over
+     BEGINDIR. The service keys can be matched with a hidden service
+     descriptor if the onion address is known. Next-generation (v3) hidden
+     service descriptors can only be decrypted if the onion address is already
+     known. Clients always perform HSDir uploads and downloads over a 3-hop
+     connection.  
+* \& This role sees encrypted cells, including headers and padding, and can
+     not distinguish overheads from content.  
+* \@ Onion services connect to the tor network as clients. Relays can also
+     perform client activities, like fetching a consensus.   
 
 When relays are relaying cells on a circuit, they can only see that the cell
 is a RELAY (or RELAY_EARLY) cell. Everything else is encrypted. (Each relay
@@ -74,9 +92,9 @@ included in each "bytes" event.
 PrivCount implements the following events, listed in the typical order they
 would occur for a single client connection.
 
-PrivCount tries to capture all Tor network traffic for its traffic modelling.
-Some other events are issued selectively based on the type of traffic: this is
-a work in progress.
+PrivCount tries to capture all non-directory Tor network traffic for its
+traffic modelling. Some other events are issued selectively based on the type
+of traffic: this is a work in progress.
 
 ### PRIVCOUNT_DNS_RESOLVED
 
@@ -116,17 +134,13 @@ It has the following known issues:
 
 This event is sent when tor reads or writes data from a remote exit stream.
 
-Internal tor network requests (such as onion service requests) do not trigger
-this event: they are filtered out on the tor side. Zero reads and writes do
-not trigger this event. Tor also performs some checks before reading or
-writing that may cause this event not to be sent.
-
-Client BEGINDIR (ORPort directory) requests trigger this event, but client
-HTTP (DirPort directory) requests do not.
+Internal tor network requests (such as onion service requests) and directory
+requests do not trigger this event: they are filtered out on the tor side.
+Zero reads and writes do not trigger this event. Tor also performs some checks
+before reading or writing that may cause this event not to be sent.
 
 Relay DirPort self-checks by remote relays do trigger this event, even though
-they are not client traffic. The 
-traffic and connections are
+they are not client traffic. The traffic and connections are
 negligible compared with all tor network traffic, but may be significant for
 small counters that include IPv4 ports 80 or 9030.
 
@@ -146,13 +160,8 @@ It includes the following fields:
 * Current Timestamp
 
 It has the following known issues:
-* This event includes client BEGINDIR (ORPort directory) requests  
-  https://github.com/privcount/privcount/issues/191
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
-* This event uses a string for a flag, a number is more efficient and
-  consistent with other events  
-  https://github.com/privcount/privcount/issues/189
 * The channel and circuit fields in this event may be missing in some cases  
   https://github.com/privcount/privcount/issues/193
 
@@ -160,11 +169,8 @@ It has the following known issues:
 
 This event is sent when tor closes a remote exit stream.
 
-Internal tor network requests (such as onion service requests) do not trigger
-this event: they are filtered out on the tor side.
-
-Client BEGINDIR (ORPort directory) requests trigger this event with the "Is
-Directory Request" flag, but client HTTP (DirPort directory) requests do not.
+Internal tor network requests (such as onion service requests) and directory
+requests do not trigger this event: they are filtered out on the tor side.
 
 Relay DirPort self-checks by remote relays do trigger this event, even though
 they are not client traffic. The self-testing traffic and connections are
@@ -187,8 +193,6 @@ It includes the following fields:
 * Is Directory Request Flag
 
 It has the following known issues:
-* The is_dir flag has false positives on client connections to port 1  
-  https://github.com/privcount/privcount/issues/190
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
 * The channel and circuit fields in this event may be missing in some cases  
@@ -198,12 +202,9 @@ It has the following known issues:
 
 This event is sent when tor closes a remote exit circuit.
 
-Internal tor network requests (such as onion service requests) do not trigger
-this event: they are filtered out on the tor side. Unused circuits are also
-filtered out.
-
-Client BEGINDIR (ORPort directory) requests trigger this event, but client
-HTTP (DirPort directory) requests do not.
+Internal tor network requests (such as onion service requests) and directory
+requests do not trigger this event: they are filtered out on the tor side.
+Unused circuits are also filtered out.
 
 Relay DirPort self-checks by remote relays do trigger this event, even though
 they are not client traffic. The self-testing traffic and connections are
@@ -232,31 +233,30 @@ It includes the following fields:
 * Next Hop Is Relay Flag
 
 It has the following known issues:
-* This event includes client BEGINDIR (ORPort directory) requests  
-  https://github.com/privcount/privcount/issues/191
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
 * The channel field in this event may be missing in some cases  
   https://github.com/privcount/privcount/issues/193
-* The cell counts in this event are not protected against overflow  
-  https://github.com/privcount/privcount/issues/195
 * If a Remote IP Address is missing, 0.0.0.0 is used as a placeholder  
   https://github.com/privcount/privcount/issues/196
-* The Is Client flag does not identify all clients  
-  https://github.com/privcount/privcount/issues/199
 
 ### PRIVCOUNT_CONNECTION_ENDED
 
 This event is sent when tor closes a remote OR connection.
 
 Internal tor network requests (such as onion service requests) trigger this
-event, including client BEGINDIR (ORPort directory) requests. But client
-HTTP (DirPort directory) requests do not.
+event.
 
-Relay DirPort self-checks by remote relays do trigger this event, even though
-they are not client traffic. The self-testing connections are negligible
-compared with all tor network traffic: it is unlikely they would add many
-additional connections from middle to exit relays.
+Relay DirPort self-checks by remote relays also trigger this event, even
+though they are not client traffic. There are very few self-testing
+connections compared with all tor network traffic.
+
+Circuits for these requests are multiplexed over connections from the client
+or other relays, so they almost always use existing connections.
+
+Client directory requests do not trigger this event: they are filtered out on
+the tor side. (Clients make direct connections for most BEGINDIR requests, so
+excluding them makes connection counts more accurate.)
 
 The connection ended event is used by the PrivCount connection and connection
 lifetime counters.
@@ -270,16 +270,12 @@ It includes the following fields:
 * Remote Is Relay Flag
 
 It has the following known issues:
-* This event includes client BEGINDIR (ORPort directory) requests  
-  https://github.com/privcount/privcount/issues/191
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
 * The channel field in this event may be missing in some cases  
   https://github.com/privcount/privcount/issues/193
 * If a Remote IP Address is missing, 0.0.0.0 is used as a placeholder  
   https://github.com/privcount/privcount/issues/196
-* The Is Client flag does not identify all clients  
-  https://github.com/privcount/privcount/issues/199
 
 ## PrivCount Event Field Detail
 
