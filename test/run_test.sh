@@ -176,7 +176,7 @@ TOOLS_DIR="$PRIVCOUNT_DIRECTORY/privcount/tools"
 
 # We can either test --simulate, and get partial data, or get full data
 # It's better to get full data
-INJECT_BASE_CMD="privcount inject --log events.txt"
+INJECT_BASE_CMD="privcount inject --log $TEST_DIR/events.txt"
 
 # The commands for IP port connection and password authentication
 INJECT_PORT_CMD="$INJECT_BASE_CMD --port 20003 --control-password $TEST_DIR/keys/control_password.txt $@"
@@ -200,7 +200,7 @@ PRIVCOUNT_TOR=$PRIVCOUNT_TOR_DIR/$PRIVCOUNT_TOR_BINARY
 # Sets the data directory to a newly created temporary directory (by default)
 # Uses a torrc with the same control port as the injector (if set)
 # Appends any remaining command-line arguments
-TOR_CMD="$PRIVCOUNT_TOR DataDirectory $PRIVCOUNT_TOR_DATADIR ${PRIVCOUNT_TORRC+-f $PRIVCOUNT_TORRC} $@"
+TOR_CMD="$PRIVCOUNT_TOR DataDirectory $PRIVCOUNT_TOR_DATADIR ${PRIVCOUNT_TORRC+-f $TEST_DIR/$PRIVCOUNT_TORRC} $@"
 
 # logs go to standard output/error and need no special treatment
 # TODO: write to file and ignore standard warnings when displaying messages?
