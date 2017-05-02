@@ -1380,7 +1380,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         self.cookie_file = None
         self.collection_events = None
         self.active_events = None
-        self.received_event_count = 0
+        self.has_received_events = False
 
     def connectionMade(self):
         '''
@@ -1399,9 +1399,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         events explictly specified in event_list. After every successful
         control port connection, re-enable the events.
         '''
-        if self.received_event_count != 0:
+        if self.has_received_events:
             logging.warning("startCollection called multiple times without stopCollection")
-            self.received_event_count = 0
+            self.has_received_events = False
         self.collection_events = set()
         if counter_list is not None:
             self.collection_events |= get_events_for_counters(counter_list)
@@ -1425,9 +1425,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         Disable all events. Remain connected to the control port, but wait for
         the next collection to start.
         '''
-        logging.info("Stopping collection, collected {} events."
-                     .format(self.received_event_count))
-        self.received_event_count = 0
+        logging.info("Stopping collection, {} events received."
+                     .format("some" if self.has_received_events else "no"))
+        self.has_received_events = False
         self.collection_events = None
         self.disableEvents()
         # let the user know that we're waiting
@@ -1686,9 +1686,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             parts = line.split(" ")
             assert len(parts) > 1
             # log the event
-            self.received_event_count += 1
-            logging.debug("receiving event {} '{}'"
-                          .format(self.received_event_count, line))
+            self.has_received_events = True
+            logging.debug("receiving event '{}'".format(line))
             # skip unwanted events
             if not parts[1] in self.active_events:
                 if not parts[1] in get_valid_events():
