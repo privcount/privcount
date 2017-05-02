@@ -42,7 +42,7 @@ PRIVCOUNT_CHUTNEY_FLAVOUR=${PRIVCOUNT_CHUTNEY_FLAVOUR:-${NETWORK_FLAVOUR:-basic-
 # the relay control ports opened by the selected chutney flavour
 # this must be manually kept in sync with PRIVCOUNT_CHUTNEY_FLAVOUR
 # basic-min has 3 relays/authorities and starts at controlport_base (8000)
-PRIVCOUNT_CHUTNEY_PORTS=${PRIVCOUNT_CHUTNEY_PORTS:-`seq 8000 8002`}
+PRIVCOUNT_CHUTNEY_PORTS=${PRIVCOUNT_CHUTNEY_PORTS:-`seq 8000 8002 | tr '\n' ' '`}
 PRIVCOUNT_CHUTNEY_CONNECTIONS=${PRIVCOUNT_CHUTNEY_CONNECTIONS:-${CHUTNEY_CONNECTIONS:-1}}
 # The chutney default is 10KB, we use 1KB to make counts easy to check
 PRIVCOUNT_CHUTNEY_BYTES=${PRIVCOUNT_CHUTNEY_BYTES:-${CHUTNEY_DATA_BYTES:-1024}}
@@ -116,7 +116,7 @@ do
       echo "  -x: skip unit tests"
       echo "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
       echo "  -r rounds: run this many rounds before stopping"
-      echo "    default: '$PRIVCOUNT_ROUNDS' (set to 1 for tor and chutney)"
+      echo "    default: '$PRIVCOUNT_ROUNDS' (1 for tor and chutney)"
       echo "  -s source: use inject, chutney, or tor as the data source"
       echo "    default: '$PRIVCOUNT_SOURCE'"
       echo "    inject: use 'privcount inject' on test/events.txt"
@@ -131,7 +131,7 @@ do
       echo "    default: '$PRIVCOUNT_TORRC'"
       echo "  -d datadir-path: launch tor with the data directory datadir-path"
       echo "    default: a new temp directory" # $PRIVCOUNT_TOR_DATADIR
-      echo "  -c chutney-path: launch chutney from chutney-path/$PRIVCOUNT_CHUTNEY_LAUNCH_SCRIPT"
+      echo "  -c chutney-path: launch chutney from chutney-path/chutney"
       echo "    default: '$PRIVCOUNT_CHUTNEY_PATH'"
       echo "  -n chutney-flavour: launch chutney with chutney-flavour"
       echo "    default: '$PRIVCOUNT_CHUTNEY_FLAVOUR'"
@@ -176,7 +176,7 @@ TOOLS_DIR="$PRIVCOUNT_DIRECTORY/privcount/tools"
 
 # We can either test --simulate, and get partial data, or get full data
 # It's better to get full data
-INJECT_BASE_CMD="privcount inject --log events.txt"
+INJECT_BASE_CMD="privcount inject --log $TEST_DIR/events.txt"
 
 # The commands for IP port connection and password authentication
 INJECT_PORT_CMD="$INJECT_BASE_CMD --port 20003 --control-password $TEST_DIR/keys/control_password.txt $@"
@@ -200,7 +200,7 @@ PRIVCOUNT_TOR=$PRIVCOUNT_TOR_DIR/$PRIVCOUNT_TOR_BINARY
 # Sets the data directory to a newly created temporary directory (by default)
 # Uses a torrc with the same control port as the injector (if set)
 # Appends any remaining command-line arguments
-TOR_CMD="$PRIVCOUNT_TOR DataDirectory $PRIVCOUNT_TOR_DATADIR ${PRIVCOUNT_TORRC+-f $PRIVCOUNT_TORRC} $@"
+TOR_CMD="$PRIVCOUNT_TOR DataDirectory $PRIVCOUNT_TOR_DATADIR ${PRIVCOUNT_TORRC+-f $TEST_DIR/$PRIVCOUNT_TORRC} $@"
 
 # logs go to standard output/error and need no special treatment
 # TODO: write to file and ignore standard warnings when displaying messages?
@@ -404,8 +404,10 @@ case "$PRIVCOUNT_SOURCE" in
     # Prepare for password authentication: the data collector and injector both
     # read this file
     echo "Generating random password file for injector..."
+    # sometimes cat /dev/{random,urandom,zero} exits with error 141
+    # even though the file is actually written out
     cat /dev/random | hexdump -e '"%x"' -n 32 -v \
-        > "$TEST_DIR/keys/control_password.txt"
+        > "$TEST_DIR/keys/control_password.txt" || true
     # the privcount test configs expect to be in the test directory
     pushd "$TEST_DIR"
     privcount ts "$CONFIG" 2>&1 | `save_to_log . ts $LOG_TIMESTAMP` &
