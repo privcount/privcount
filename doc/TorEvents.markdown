@@ -38,24 +38,24 @@ The information available to a Tor Relay depends on the role that relay plays
 in the data transfer. Relays can determine their role in the data transfer
 based on the commands they receive.
 
-Role     |  Connection | Circuit | Stream | Cell | Bytes | Additional
----------|-------------|---------|--------|------|-------|-----------------
-Guard~   | Yes         | Yes     | No     | Yes  | X&    | Client IP~
-Bridge   | Yes         | Yes     | No     | Yes  | X&    | Client IP~
-Middle   | X           | X       | No     | X    | X&    | (None)
-Exit     | Yes         | Yes     | Yes    | Yes  | Yes   | DNS^
-DirPort  | X           | NA      | NA     | NA   | X     | URL*, Client IP$
-BEGINDIR | X           | X       | X      | X    | X     | URL*, Client IP$
-HSDir    | X           | X       | X      | X    | X     | Onion Address+
-Intro    | Yes         | Yes     | No     | Yes  | X&    | Service Keys+
-Rend     | Yes         | Yes     | No     | Yes  | X&    | (None)
-Client@  | X           | X       | X      | X    | X     | DNS^
+Role     |  Connection | Circuit | Stream | Cell | Bytes  | Additional
+---------|-------------|---------|--------|------|--------|-----------------
+Guard~   | Y           | Y       | N/E    | Y    | N/C/E& | Client IP~
+Bridge   | Y           | Y       | N/E    | Y    | N/C/E& | Client IP~
+Middle   | N/C         | N/C     | N/E    | N/C  | N/C/E& |
+Exit     | Y           | Y       | Y      | Y    | Y      | DNS^
+DirPort  | N/C         | N/A     | N/A    | N/A  | N/C    | URL*, Client IP$
+BEGINDIR | N/C         | N/C     | N/C    | N/C  | N/C    | URL*, Client IP$
+HSDir    | N/C         | N/C     | N/C    | N/C  | N/C    | Onion Address+
+Intro    | Y           | Y       | N/E    | Y    | N/C/E& | Service Keys+
+Rend     | Y           | Y       | N/C    | Y    | N/C/E& |
+Client@  | N/C         | N/C     | N/C    | N/C  | N/C    | DNS^
 
 Usage:
-* Yes: Available and Collected
-* No: Not Available (The information is encrypted)
-* NA: Not Applicable (The information does not exist)
-* X: Available, but Excluded from Collection
+* Y: Available and Collected
+* N/C: Available, but not Collected (We choose not to collect this)
+* N/E: Available, but Encrypted (The relay does not have the keys needed to decrypt this)
+* N/A: Not Applicable (The data does not exist)
 
 Notes:
 * \~ "Guard" relays can be connected to clients, or Bridge relays, or other
