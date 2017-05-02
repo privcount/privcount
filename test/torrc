@@ -40,3 +40,8 @@ Nickname PrivCountTorTest
 
 # Tor logs a notice if this is configured without a GeoIP file
 DirReqStatistics 0
+
+# If the network is down, and (on macOS only?) /etc/resolv.conf is missing,
+# tor will abort because its DNS doesn't work
+# See tor bug #21900
+ServerDNSResolvConfFile /dev/null
