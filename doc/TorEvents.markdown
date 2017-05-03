@@ -118,7 +118,9 @@ PrivEx's censorship blacklist measurements.
 It includes the following fields:
 * Channel ID
 * Circuit ID
+* Stream ID
 * Address requested by client (hostname or IPv4 or IPv6)
+* Current Timestamp
 
 It has the following known issues:
 * There is no indication in the event whether the request was successful or
@@ -127,8 +129,6 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/184
 * The resolved address is not included in the event  
   https://github.com/privcount/privcount/issues/184
-* The time is not included in the event  
-  https://github.com/privcount/privcount/issues/187
 * These events include relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
 
