@@ -652,7 +652,7 @@ class Aggregator(ReconnectingClientFactory):
         if not self.secure_counters:
             return False
 
-        # ignore empty events
+        # fail on empty events
         if len(event) <= 1:
             return False
 
@@ -663,36 +663,48 @@ class Aggregator(ReconnectingClientFactory):
         if event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
             # 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED', ChanID, CircID, StreamID, isOutbound, BW, Time
             if len(items) == Aggregator.STREAM_BYTES_ITEMS:
-                self._handle_bytes_event(items[:Aggregator.STREAM_BYTES_ITEMS])
+                return self._handle_bytes_event(items[:Aggregator.STREAM_BYTES_ITEMS])
+            else:
+                return False
 
         elif event_code == 'PRIVCOUNT_STREAM_ENDED':
             # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
             if len(items) == Aggregator.STREAM_ENDED_ITEMS:
-                self._handle_stream_event(items[:Aggregator.STREAM_ENDED_ITEMS])
+                return self._handle_stream_event(items[:Aggregator.STREAM_ENDED_ITEMS])
+            else:
+                return False
+
 
         elif event_code == 'PRIVCOUNT_CIRCUIT_ENDED':
             # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
             if len(items) == Aggregator.CIRCUIT_ENDED_ITEMS:
-                self._handle_circuit_event(items[:Aggregator.CIRCUIT_ENDED_ITEMS])
+                return self._handle_circuit_event(items[:Aggregator.CIRCUIT_ENDED_ITEMS])
+            else:
+                return False
 
         elif event_code == 'PRIVCOUNT_CONNECTION_ENDED':
             # 'PRIVCOUNT_CONNECTION_ENDED', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
             if len(items) == Aggregator.CONNECTION_ENDED_ITEMS:
-                self._handle_connection_event(items[:Aggregator.CONNECTION_ENDED_ITEMS])
+                return self._handle_connection_event(items[:Aggregator.CONNECTION_ENDED_ITEMS])
+            else:
+                return False
 
         return True
 
     def _handle_bytes_event(self, items):
         assert(len(items) == Aggregator.STREAM_BYTES_ITEMS)
 
+        # if we get an unexpected byte event, warn but ignore
         if self.traffic_model == None:
-            return
+            logging.warning("No traffic model for stream bytes event")
+            return True
 
         chanid, circid, strmid, is_outbound, bw_bytes = [int(v) for v in items[0:5]]
         ts = float(items[5])
 
         self.strm_bytes.setdefault(strmid, {}).setdefault(circid, [])
         self.strm_bytes[strmid][circid].append([bw_bytes, is_outbound, ts])
+        return True
 
     def _handle_stream_event(self, items):
         assert(len(items) == Aggregator.STREAM_ENDED_ITEMS)
@@ -705,7 +717,7 @@ class Aggregator(ReconnectingClientFactory):
         # only count streams with legitimate transfers
         totalbw = readbw+writebw
         if readbw < 0 or writebw < 0 or totalbw <= 0:
-            return
+            return True
 
         self.secure_counters.increment("StreamsAll", 1)
         self.secure_counters.increment("StreamBytesAll", 1, totalbw)
@@ -768,6 +780,7 @@ class Aggregator(ReconnectingClientFactory):
             self.strm_bytes[strmid].pop(circid, None)
             if len(self.strm_bytes[strmid]) == 0:
                 self.strm_bytes.pop(strmid, None)
+        return True
 
     def _classify_port(self, port):
         p2p_ports = [1214]
@@ -913,6 +926,7 @@ class Aggregator(ReconnectingClientFactory):
                 # if that was the last circuit on channel, remove the channel too
                 if len(self.circ_info[chanid]) == 0:
                     self.circ_info.pop(chanid, None)
+        return True
 
     def _handle_connection_event(self, items):
         assert(len(items) == Aggregator.CONNECTION_ENDED_ITEMS)
@@ -925,6 +939,7 @@ class Aggregator(ReconnectingClientFactory):
         if not isrelay:
             self.secure_counters.increment("ConnectionsAll", 1)
             self.secure_counters.increment("ConnectionLifeTime", end - start)
+        return True
 
     def _do_rotate(self):
         logging.info("rotating circuit window now, {}".format(format_last_event_time_since(self.last_event_time)))
