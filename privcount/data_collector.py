@@ -811,25 +811,22 @@ class Aggregator(ReconnectingClientFactory):
             times.append(l[i] - l[i-1])
         return times
 
-    CIRCUIT_ENDED_ITEMS = 16
+    CIRCUIT_ENDED_ITEMS = 12
 
-    # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
+    # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, NCellsIn, NCellsOut, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, PrevIsClient, NextIP, NextIsEdge
     def _handle_circuit_event(self, items):
         assert(len(items) == Aggregator.CIRCUIT_ENDED_ITEMS)
 
-        chanid, circid, ncellsin, ncellsout, readbwdns, writebwdns, readbwexit, writebwexit = [int(v) for v in items[0:8]]
-        start, end = float(items[8]), float(items[9])
-        previp = items[10]
-        prevIsClient = True if int(items[11]) > 0 else False
-        prevIsRelay = True if int(items[12]) > 0 else False
-        nextip = items[13]
-        nextIsClient = True if int(items[14]) > 0 else False
-        nextIsRelay = True if int(items[15]) > 0 else False
+        chanid, circid, ncellsin, ncellsout, readbwexit, writebwexit = [int(v) for v in items[0:6]]
+        start, end = float(items[6]), float(items[7])
+        previp = items[8]
+        prevIsClient = True if int(items[9]) > 0 else False
+        nextip = items[10]
+        nextIsEdge = True if int(items[11]) > 0 else False
 
         # we get circuit events on both exits and entries
         # stream bw info is only avail on exits
-        # isclient is based on CREATE_FAST and I'm not sure that is always used by clients
-        if not prevIsRelay:
+        if prevIsClient:
             # previous hop is unkown, we are entry
             self.secure_counters.increment("CircuitsAllEntry", 1)
 
@@ -864,7 +861,7 @@ class Aggregator(ReconnectingClientFactory):
                     self.cli_ips_current[previp]['num_inactive_completed'] = 0
                 self.cli_ips_current[previp]['num_inactive_completed'] += 1
 
-        elif not nextIsRelay:
+        elif nextIsEdge:
             # prev hop is known relay but next is not, we are exit
             self.secure_counters.increment("CircuitsAll", 1)
             self.secure_counters.increment("CircuitLifeTimeAll", end - start)

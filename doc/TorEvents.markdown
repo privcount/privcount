@@ -219,18 +219,14 @@ It includes the following fields:
 * Circuit ID
 * Total Number of Cells In (Read)
 * Total Number of Cells Out (Written)
-* Total Number of DNS Bytes Read
-* Total Number of DNS Bytes Written
 * Total Number of Exit Bytes Read
 * Total Number of Exit Bytes Written
 * Circuit Creation Timestamp
 * Current Timestamp
 * Previous Hop Remote IP Address
 * Previous Hop Is Client Flag
-* Previous Hop Is Relay Flag
 * Next Hop Remote IP Address
 * Next Hop Is Edge Flag
-* Next Hop Is Relay Flag
 
 It has the following known issues:
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
@@ -336,9 +332,3 @@ False (0) if:
 * all streams are non-exit connections,
 * the next channel is connected to a relay,
 * the circuit and connection are both missing.
-
-### Is Relay Flag
-A numeric boolean flag: 1 if the remote side is a relay in the latest consensus
-that this relay has. (Clients with different consensuses may ask to extend to
-relays not in this relay's consensus.) 0 if it is not in the consensus. 0 if
-the channel is missing.
