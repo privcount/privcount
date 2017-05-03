@@ -227,7 +227,7 @@ It includes the following fields:
 * Previous Hop Is Client Flag
 * Previous Hop Is Relay Flag
 * Next Hop Remote IP Address
-* Next Hop Is Client Flag
+* Next Hop Is Edge Flag
 * Next Hop Is Relay Flag
 
 It has the following known issues:
@@ -314,11 +314,26 @@ underlying resolution depends on the operating system.
 A string boolean flag: "outbound" for writes, "inbound" for reads.
 
 ### Is Client Flag
-A numeric boolean flag: 1 if the remote side used a CREATE_FAST handshake to
-initiate this connection. 0 if it used another kind of handshake. 0 if the
-channel is missing. Since the public tor consensus sets usecreatefast to 0,
-this flag does not reliably identify clients, but does identify bootstrapping
-clients.
+A numeric boolean flag.
+True (1) if:
+* the remote side used a CREATE_FAST handshake to initiate this connection, or
+* the remote side did not perform peer authentication.
+False (0) if:
+* the remote side used another kind of handshake, or
+* the remote side performed peer authentication, or
+* the circuit is missing.
+
+### Is Edge Flag
+A numeric boolean flag.
+True (1) if:
+* the edge connection is an exit connection, or
+* any stream or pending stream on the circuit is an exit connection, or
+* there are no streams and no next channel.
+False (0) if:
+* the circuit is an origin circuit,
+* all streams are non-exit connections,
+* the next channel is connected to a relay,
+* the circuit and connection are both missing.
 
 ### Is Relay Flag
 A numeric boolean flag: 1 if the remote side is a relay in the latest consensus
