@@ -704,7 +704,7 @@ class Aggregator(ReconnectingClientFactory):
 
         # only count streams with legitimate transfers
         totalbw = readbw+writebw
-        if totalbw <= 0:
+        if readbw < 0 or writebw < 0 or totalbw <= 0:
             return
 
         self.secure_counters.increment("StreamsAll", 1)
