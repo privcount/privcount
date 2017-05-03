@@ -594,6 +594,7 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e "seconds of user activity" -e "delay_period not specified" \
   -e notice \
   -e "Path for PidFile" -e "Your log may contain" \
+  -e "no nameservers" -e "any working nameservers" \
   "$TEST_DIR/"privcount.*.latest.log \
   || true
 # Log any source-specific warnings
