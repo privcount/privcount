@@ -263,7 +263,6 @@ It includes the following fields:
 * Current Timestamp
 * Remote IP Address
 * Remote Is Client Flag
-* Remote Is Relay Flag
 
 It has the following known issues:
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
