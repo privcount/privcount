@@ -54,13 +54,15 @@ Client@  | N/C         | N/C     | N/C    | N/C  | N/C    | DNS^
 Usage:
 * Y: Available and Collected
 * N/C: Available, but not Collected (We choose not to collect this)
-* N/E: Available, but Encrypted (The relay does not have the keys needed to decrypt this)
+* N/E: Available, but Encrypted (The relay does not have the keys needed to
+       decrypt this)
 * N/A: Not Applicable (The data does not exist)
 
 Notes:
 * \~ "Guard" relays can be connected to clients, or Bridge relays, or other
      relays that aren't in the consensus. Other relays authenticate using RSA
-     and ed25519 keys, bridges and clients do not, and can not be distinguished.  
+     and ed25519 keys, bridges and clients do not, and can not be
+     distinguished.  
 * \$ Most Directory requests are performed using a direct connection from the
      client, others are performed using a 3-hop path.  
 * \^ Application protocols also leak any unencrypted (meta)data to Exit relays
@@ -311,7 +313,7 @@ The current unix epoch time (UTC) in seconds, to 6 decimal places. The
 underlying resolution depends on the operating system.
 
 ### Is Outbound Flag
-A string boolean flag: "outbound" for writes, "inbound" for reads.
+A numeric boolean flag: 1 for writes, 0 for reads.
 
 ### Is Client Flag
 A numeric boolean flag.
