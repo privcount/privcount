@@ -655,7 +655,12 @@ class Aggregator(ReconnectingClientFactory):
         self.last_event_time = time()
 
         # hand valid events off to the aggregator
-        if event_code == 'PRIVCOUNT_STREAM_ENDED':
+        if event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
+            # 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED', ChanID, CircID, StreamID, isOutbound, BW, Time
+            if len(items) == 6:
+                self._handle_bytes_event(items[0:6])
+
+        elif event_code == 'PRIVCOUNT_STREAM_ENDED':
             # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
             if len(items) == 10:
                 self._handle_stream_event(items[0:10])
@@ -669,11 +674,6 @@ class Aggregator(ReconnectingClientFactory):
             # 'PRIVCOUNT_CONNECTION_ENDED', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
             if len(items) == 6:
                 self._handle_connection_event(items[0:6])
-
-        elif event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
-            # 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED', ChanID, CircID, StreamID, isOutbound, BW, Time
-            if len(items) == 6:
-                self._handle_bytes_event(items[0:6])
 
         return True
 
