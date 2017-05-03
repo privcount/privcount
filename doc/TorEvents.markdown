@@ -189,8 +189,6 @@ It includes the following fields:
 * Total Number of Bytes Written
 * Connection Creation Timestamp
 * Current Timestamp
-* Is DNS Request Flag
-* Is Directory Request Flag
 
 It has the following known issues:
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
@@ -314,16 +312,6 @@ underlying resolution depends on the operating system.
 
 ### Is Outbound Flag
 A string boolean flag: "outbound" for writes, "inbound" for reads.
-
-### Is DNS Request Flag
-A numeric boolean flag: 1 for DNS resolver connections, whether used for
-hostname lookup or PTR (reverse DNS), for both RESOLVE and CONNECT requests. 0
-for non-DNS connections.
-
-### Is Directory Request Flag
-A numeric boolean flag: 1 for BEGINDIR (ORPort directory) requests. 0 for
-non-directory ORPort Exit requests. There are no events emitted for DirPort
-directory requests.
 
 ### Is Client Flag
 A numeric boolean flag: 1 if the remote side used a CREATE_FAST handshake to

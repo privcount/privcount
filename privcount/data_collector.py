@@ -700,16 +700,14 @@ class Aggregator(ReconnectingClientFactory):
         self.strm_bytes[strmid][circid].append([bw_bytes, is_outbound, ts])
         return True
 
-    STREAM_ENDED_ITEMS = 10
+    STREAM_ENDED_ITEMS = 8
 
-    # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
+    # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd
     def _handle_stream_event(self, items):
         assert(len(items) == Aggregator.STREAM_ENDED_ITEMS)
 
         chanid, circid, strmid, port, readbw, writebw = [int(v) for v in items[0:6]]
         start, end = float(items[6]), float(items[7])
-        is_dns = True if int(items[8]) == 1 else False
-        is_dir = True if int(items[9]) == 1 else False
 
         # only count streams with legitimate transfers
         totalbw = readbw+writebw
