@@ -643,11 +643,6 @@ class Aggregator(ReconnectingClientFactory):
             context['noise_weight_value'] = self.noise_weight_value
         return context
 
-    STREAM_BYTES_ITEMS = 6
-    STREAM_ENDED_ITEMS = 10
-    CIRCUIT_ENDED_ITEMS = 16
-    CONNECTION_ENDED_ITEMS = 6
-
     def handle_event(self, event):
         if not self.secure_counters:
             return False
@@ -661,14 +656,12 @@ class Aggregator(ReconnectingClientFactory):
 
         # hand valid events off to the aggregator
         if event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
-            # 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED', ChanID, CircID, StreamID, isOutbound, BW, Time
             if len(items) == Aggregator.STREAM_BYTES_ITEMS:
                 return self._handle_bytes_event(items[:Aggregator.STREAM_BYTES_ITEMS])
             else:
                 return False
 
         elif event_code == 'PRIVCOUNT_STREAM_ENDED':
-            # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
             if len(items) == Aggregator.STREAM_ENDED_ITEMS:
                 return self._handle_stream_event(items[:Aggregator.STREAM_ENDED_ITEMS])
             else:
@@ -676,14 +669,12 @@ class Aggregator(ReconnectingClientFactory):
 
 
         elif event_code == 'PRIVCOUNT_CIRCUIT_ENDED':
-            # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
             if len(items) == Aggregator.CIRCUIT_ENDED_ITEMS:
                 return self._handle_circuit_event(items[:Aggregator.CIRCUIT_ENDED_ITEMS])
             else:
                 return False
 
         elif event_code == 'PRIVCOUNT_CONNECTION_ENDED':
-            # 'PRIVCOUNT_CONNECTION_ENDED', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
             if len(items) == Aggregator.CONNECTION_ENDED_ITEMS:
                 return self._handle_connection_event(items[:Aggregator.CONNECTION_ENDED_ITEMS])
             else:
@@ -691,6 +682,9 @@ class Aggregator(ReconnectingClientFactory):
 
         return True
 
+    STREAM_BYTES_ITEMS = 6
+
+    # 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED', ChanID, CircID, StreamID, isOutbound, BW, Time
     def _handle_bytes_event(self, items):
         assert(len(items) == Aggregator.STREAM_BYTES_ITEMS)
 
@@ -706,6 +700,9 @@ class Aggregator(ReconnectingClientFactory):
         self.strm_bytes[strmid][circid].append([bw_bytes, is_outbound, ts])
         return True
 
+    STREAM_ENDED_ITEMS = 10
+
+    # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
     def _handle_stream_event(self, items):
         assert(len(items) == Aggregator.STREAM_ENDED_ITEMS)
 
@@ -816,6 +813,9 @@ class Aggregator(ReconnectingClientFactory):
             times.append(l[i] - l[i-1])
         return times
 
+    CIRCUIT_ENDED_ITEMS = 16
+
+    # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
     def _handle_circuit_event(self, items):
         assert(len(items) == Aggregator.CIRCUIT_ENDED_ITEMS)
 
@@ -928,6 +928,9 @@ class Aggregator(ReconnectingClientFactory):
                     self.circ_info.pop(chanid, None)
         return True
 
+    CONNECTION_ENDED_ITEMS = 6
+
+    # 'PRIVCOUNT_CONNECTION_ENDED', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
     def _handle_connection_event(self, items):
         assert(len(items) == Aggregator.CONNECTION_ENDED_ITEMS)
 
