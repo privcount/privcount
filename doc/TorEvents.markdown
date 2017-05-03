@@ -119,7 +119,7 @@ It includes the following fields:
 * Channel ID
 * Circuit ID
 * Stream ID
-* Address requested by client (hostname or IPv4 or IPv6)
+* Requested Host Address (hostname or IPv4 or IPv6)
 * Current Timestamp
 
 It has the following known issues:
@@ -191,6 +191,8 @@ It includes the following fields:
 * Total Number of Bytes Written
 * Connection Creation Timestamp
 * Current Timestamp
+* Remote Host Address (hostname or IPv4 or IPv6)
+* Resolved Remote IP Address (IPv4 or IPv6)
 
 It has the following known issues:
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
