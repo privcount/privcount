@@ -1,3 +1,9 @@
+# THESE NOISE CONFIGURATIONS OFFER ABSOLUTELEY NO PRIVACY AND SHOULD ONLY BE USED
+# FOR TESTING PURPOSES IN LOCAL PRIVATE NON-DEPLOYMENT SCENARIOS
+
+# when you modify the counters in this file, run:
+# test/test_counter_match.sh
+
 counters:
   TrafficModelTotalEmissions:
     estimated_value: 0.0

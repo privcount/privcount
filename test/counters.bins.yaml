@@ -1,4 +1,8 @@
 # histograms represent a collection of counters that together define a histogram
+
+# when you modify the counters in this file, run:
+# test/test_counter_match.sh
+
 counters:
     # ENTRY - cells sent 'in' to client per active circuit on client OR connections
     CircuitCellsIn:
@@ -87,8 +91,15 @@ counters:
         - [3.0, 30.0]
         - [30.0, 300.0]
         - [300.0, .inf]
-    # EXIT - circuit inter-stream creation times in seconds for for port>=10000 and no other class
+    # EXIT - circuit inter-stream creation times in seconds for port>=10000 and no other class
     CircuitInterStreamCreationTimeOther:
+        bins:
+        - [0.0, 3.0]
+        - [3.0, 30.0]
+        - [30.0, 300.0]
+        - [300.0, .inf]
+    # EXIT - circuit inter-stream creation times in seconds for P2P
+    CircuitInterStreamCreationTimeP2P:
         bins:
         - [0.0, 3.0]
         - [3.0, 30.0]
@@ -166,6 +177,21 @@ counters:
         - [16.0, 32.0]
         - [32.0, 64.0]
         - [64.0, .inf]
+    # EXIT - completed streams per active circuit for P2P
+    CircuitStreamsP2P:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 5.0]
+        - [5.0, 10.0]
+        - [10.0, 20.0]
+        - [20.0, 30.0]
+        - [30.0, 50.0]
+        - [50.0, 75.0]
+        - [75.0, 100.0]
+        - [100.0, 150.0]
+        - [150.0, 200.0]
+        - [200.0, 400.0]
+        - [400.0, .inf]
     # EXIT - completed streams per active circuit for HTTP/HTTPS
     CircuitStreamsWeb:
         bins:
@@ -181,6 +207,18 @@ counters:
         - [150.0, 200.0]
         - [200.0, 400.0]
         - [400.0, .inf]
+    # ENTRY - number of circuits
+    CircuitsAllEntry:
+        bins:
+        - [0.0, .inf]
+    # ENTRY - number of circuits with at least one stream completed
+    CircuitsActiveEntry:
+        bins:
+        - [0.0, .inf]
+    # ENTRY - number of circuits with no streams completed
+    CircuitsInactiveEntry:
+        bins:
+        - [0.0, .inf]
     # EXIT - number of circuits
     CircuitsAll:
         bins:
@@ -199,6 +237,10 @@ counters:
         - [0.0, .inf]
     # EXIT - number of circuits for port>=10000 and no other class
     CircuitsOther:
+        bins:
+        - [0.0, .inf]
+    # EXIT - number of circuits for P2P
+    CircuitsP2P:
         bins:
         - [0.0, .inf]
     # EXIT - number of circuits for HTTP/HTTPS
@@ -253,14 +295,21 @@ counters:
         - [250.0, 500.0]
         - [500.0, 1000.0]
         - [1000.0, .inf]
-    # ENTRY - number of circuits to clients
-    CircuitsAll:
-        bins:
-        - [0.0, .inf]
     # ENTRY - number of OR connections to clients
     ConnectionsAll:
         bins:
         - [0.0, .inf]
+    # ENTRY - connection times in seconds for all connections
+    ConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+
     # EXIT - bytes received per completed stream
     StreamBytesAll:
         bins:
@@ -317,8 +366,36 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
+    # EXIT - bytes received from server per completed stream for P2P
+    StreamBytesInP2P:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream for HTTP/HTTPS
     StreamBytesInWeb:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    # EXIT - bytes received per completed stream for SSH/IRC
+    StreamBytesInteractive:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -387,8 +464,36 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
+    # EXIT - bytes sent to server per completed stream for P2P
+    StreamBytesOutP2P:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream for HTTP/HTTPS
     StreamBytesOutWeb:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    # EXIT - bytes received per completed stream for P2P
+    StreamBytesP2P:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -542,6 +647,53 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream for P2P
+    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    StreamBytesRatioP2P:
+        bins:
+        - [-.inf, -20.0]
+        - [-20.0, -19.0]
+        - [-19.0, -18.0]
+        - [-18.0, -17.0]
+        - [-17.0, -16.0]
+        - [-16.0, -15.0]
+        - [-15.0, -14.0]
+        - [-14.0, -13.0]
+        - [-13.0, -12.0]
+        - [-12.0, -11.0]
+        - [-11.0, -10.0]
+        - [-10.0, -9.0]
+        - [-9.0, -8.0]
+        - [-8.0, -7.0]
+        - [-7.0, -6.0]
+        - [-6.0, -5.0]
+        - [-5.0, -4.0]
+        - [-4.0, -3.0]
+        - [-3.0, -2.0]
+        - [-2.0, -1.0]
+        - [-1.0, 0.0]
+        - [0.0, 0.00000000000001]
+        - [0.00000000000001, 1.0]
+        - [1.0, 2.0]
+        - [2.0, 3.0]
+        - [3.0, 4.0]
+        - [4.0, 5.0]
+        - [5.0, 6.0]
+        - [6.0, 7.0]
+        - [7.0, 8.0]
+        - [8.0, 9.0]
+        - [9.0, 10.0]
+        - [10.0, 11.0]
+        - [11.0, 12.0]
+        - [12.0, 13.0]
+        - [13.0, 14.0]
+        - [14.0, 15.0]
+        - [15.0, 16.0]
+        - [16.0, 17.0]
+        - [17.0, 18.0]
+        - [18.0, 19.0]
+        - [19.0, 20.0]
+        - [20.0, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for HTTP/HTTPS
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
     StreamBytesRatioWeb:
@@ -637,6 +789,23 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
+    # EXIT - time in seconds between create and destroy per completed stream for P2P
+    StreamLifeTimeP2P:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 2.0]
+        - [2.0, 3.0]
+        - [3.0, 4.0]
+        - [4.0, 5.0]
+        - [5.0, 10.0]
+        - [10.0, 15.0]
+        - [15.0, 30.0]
+        - [30.0, 60.0]
+        - [60.0, 120.0]
+        - [120.0, 300.0]
+        - [300.0, 600.0]
+        - [600.0, 660.0]
+        - [660.0, .inf]
     # EXIT - time in seconds between create and destroy per completed stream for HTTP/HTTPS
     StreamLifeTimeWeb:
         bins:
@@ -658,8 +827,16 @@ counters:
     StreamsAll:
         bins:
         - [0.0, .inf]
+    # EXIT - number of streams to servers for SSH/IRC
+    StreamsInteractive:
+        bins:
+        - [0.0, .inf]
     # EXIT - number of streams to servers for port>=10000 and no other class
     StreamsOther:
+        bins:
+        - [0.0, .inf]
+    # EXIT - number of streams to servers for P2P
+    StreamsP2P:
         bins:
         - [0.0, .inf]
     # EXIT - number of streams to servers for HTTP/HTTPS

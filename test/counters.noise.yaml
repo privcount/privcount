@@ -9,6 +9,12 @@
 # values in these files, they are ignored, and re-calculated each time the file
 # is loaded
 
+# THESE NOISE CONFIGURATIONS OFFER ABSOLUTELEY NO PRIVACY AND SHOULD ONLY BE USED
+# FOR TESTING PURPOSES IN LOCAL PRIVATE NON-DEPLOYMENT SCENARIOS
+
+# when you modify the counters in this file, run:
+# test/test_counter_match.sh
+
 # The overall privacy parameters
 privacy:
     delta: 0.0
@@ -43,8 +49,12 @@ counters:
     CircuitInterStreamCreationTimeInteractive:
         estimated_value: 0.0
         sensitivity: 0
-    # EXIT - circuit inter-stream creation times in seconds for for port>=10000 and no other class
+    # EXIT - circuit inter-stream creation times in seconds for port>=10000 and no other class
     CircuitInterStreamCreationTimeOther:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - circuit inter-stream creation times in seconds for P2P
+    CircuitInterStreamCreationTimeP2P:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - circuit inter-stream creation times in seconds for HTTP/HTTPS
@@ -75,8 +85,24 @@ counters:
     CircuitStreamsOther:
         estimated_value: 0.0
         sensitivity: 0
+    # EXIT - completed streams per active circuit for P2P
+    CircuitStreamsP2P:
+        estimated_value: 0.0
+        sensitivity: 0
     # EXIT - completed streams per active circuit for HTTP/HTTPS
     CircuitStreamsWeb:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - number of circuits
+    CircuitsAllEntry:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - number of circuits with at least one stream completed
+    CircuitsActiveEntry:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - number of circuits with no streams completed
+    CircuitsInactiveEntry:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of circuits
@@ -97,6 +123,10 @@ counters:
         sensitivity: 0
     # EXIT - number of circuits for port>=10000 and no other class
     CircuitsOther:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - number of circuits for P2P
+    CircuitsP2P:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of circuits for HTTP/HTTPS
@@ -123,12 +153,12 @@ counters:
     ClientIPsUnique:
         estimated_value: 0.0
         sensitivity: 0
-    # ENTRY - number of circuits to clients
-    CircuitsAll:
-        estimated_value: 0.0
-        sensitivity: 0
     # ENTRY - number of OR connections to clients
     ConnectionsAll:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - connection times in seconds for all connections
+    ConnectionLifeTime:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes received per completed stream
@@ -147,8 +177,16 @@ counters:
     StreamBytesInOther:
         estimated_value: 0.0
         sensitivity: 0
+    # EXIT - bytes received from server per completed stream for P2P
+    StreamBytesInP2P:
+        estimated_value: 0.0
+        sensitivity: 0
     # EXIT - bytes received from server per completed stream for HTTP/HTTPS
     StreamBytesInWeb:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - bytes received per completed stream for SSH/IRC
+    StreamBytesInteractive:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes received per completed stream for port>=10000 and no other class
@@ -167,8 +205,16 @@ counters:
     StreamBytesOutOther:
         estimated_value: 0.0
         sensitivity: 0
+    # EXIT - bytes sent to server per completed stream for P2P
+    StreamBytesOutP2P:
+        estimated_value: 0.0
+        sensitivity: 0
     # EXIT - bytes sent to server per completed stream for HTTP/HTTPS
     StreamBytesOutWeb:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - bytes received per completed stream for P2P
+    StreamBytesP2P:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream
@@ -184,6 +230,11 @@ counters:
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for port>=10000 and no other class
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
     StreamBytesRatioOther:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream for P2P
+    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    StreamBytesRatioP2P:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for HTTP/HTTPS
@@ -203,6 +254,10 @@ counters:
     StreamLifeTimeOther:
         estimated_value: 0.0
         sensitivity: 0
+    # EXIT - time in seconds between create and destroy per completed stream for P2P
+    StreamLifeTimeP2P:
+        estimated_value: 0.0
+        sensitivity: 0
     # EXIT - time in seconds between create and destroy per completed stream for HTTP/HTTPS
     StreamLifeTimeWeb:
         estimated_value: 0.0
@@ -211,8 +266,16 @@ counters:
     StreamsAll:
         estimated_value: 0.0
         sensitivity: 0
+    # EXIT - number of streams to servers for SSH/IRC
+    StreamsInteractive:
+        estimated_value: 0.0
+        sensitivity: 0
     # EXIT - number of streams to servers for port>=10000 and no other class
     StreamsOther:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - number of streams to servers for P2P
+    StreamsP2P:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of streams to servers for HTTP/HTTPS

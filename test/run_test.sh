@@ -308,6 +308,11 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
   esac
 fi
 
+# Run the counter matching checks
+echo "Checking that all counters have events, increments, and tests:"
+"$TEST_DIR/test_counter_match.sh"
+echo ""
+
 if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
   # Run the python-based unit tests
   echo "Testing time formatting:"

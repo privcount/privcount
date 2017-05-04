@@ -5,6 +5,9 @@ venv
 
 # test outputs
 test/counters.allocation.yaml
+test/*.names
+test/*.names.unsorted
+test/*.names.extra
 test/privcount.results.pdf
 test/privcount.tallies.*.json
 test/privcount.outcome.*.json

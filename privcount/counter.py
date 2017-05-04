@@ -256,6 +256,8 @@ def get_valid_events():
     assert check_event_set_case(event_set)
     return event_set
 
+# when you modify this list, update the test counters, and run:
+# test/test_counter_match.sh
 PRIVCOUNT_COUNTER_EVENTS = {
 # these counters depend on bytes transferred event
 # they are updated in _handle_bytes_event
