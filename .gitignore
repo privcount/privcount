@@ -5,14 +5,15 @@ venv
 
 # test outputs
 test/counters.allocation.yaml
+test/old
+test/keys/secret_handshake.yaml
+test/keys/control_password.txt
 test/privcount.results.pdf
 test/privcount.tallies.*.json
 test/privcount.outcome.*.json
 test/privcount.traffic.model.*.json
 test/privcount.*.log
-test/old
-test/keys/secret_handshake.yaml
-test/keys/control_password.txt
+test/tor.pid
 
 # generated test config files
 test/config.chutney.yaml.*
