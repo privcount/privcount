@@ -160,8 +160,10 @@ class PrivCountProtocol(LineOnlyReceiver):
 
     # The common prefix tokens on each handshake line
 
-    # The first version this handshake was introduced in
-    HANDSHAKE_VERSION = 'PRIVCOUNT-020'
+    # The current version of the PrivCount protocol
+    # Should only be updated for incompatible API changes
+    # These are major version change according to http://semver.org/
+    HANDSHAKE_VERSION = 'PRIVCOUNT-100'
     # The role of the node sending the handshake
     ROLE_CLIENT = 'CLIENT'
     ROLE_SERVER = 'SERVER'
