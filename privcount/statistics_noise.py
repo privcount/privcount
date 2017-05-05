@@ -415,12 +415,15 @@ def compare_noise_allocation(epsilon, delta, stats_parameters,
                                    sanity_check=sanity_check)
     # assert that the results and calculated values are equivalent
     # base results
-    assert noise_parameters['privacy']['sigma_ratio'] == sigma_ratio
+    # double equality fails here, so we compare string representations
+    # instead: see #260 and #69
+    # and yes, this is a terrible hack
+    assert str(noise_parameters['privacy']['sigma_ratio']) == str(sigma_ratio)
     np_excess_noise_ratio = noise_parameters['privacy']['excess_noise_ratio']
     for stat in noise_parameters['counters']:
         counter = noise_parameters['counters'][stat]
-        assert epsilons[stat] == counter['epsilon']
-        assert sigmas[stat] == counter['sigma']
+        assert str(epsilons[stat]) == str(counter['epsilon'])
+        assert str(sigmas[stat]) == str(counter['sigma'])
         # rearranged values
         if stat == sanity_check:
             sc = get_sanity_check_counter()
@@ -430,8 +433,8 @@ def compare_noise_allocation(epsilon, delta, stats_parameters,
             (base_sensitivity, base_estimated_value) = stats_parameters[stat]
         np_sensitivity = counter['sensitivity']
         np_estimated_value = counter['estimated_value']
-        assert base_sensitivity == np_sensitivity
-        assert base_estimated_value == np_estimated_value
+        assert str(base_sensitivity) == str(np_sensitivity)
+        assert str(base_estimated_value) == str(np_estimated_value)
         # calculated values
         base_noise_ratio = get_expected_noise_ratio(excess_noise_ratio,
                                                     sigmas[stat],
@@ -440,8 +443,8 @@ def compare_noise_allocation(epsilon, delta, stats_parameters,
                                                   counter['sigma'],
                                                   counter['estimated_value'])
         calc_noise_ratio = counter['expected_noise_ratio']
-        assert base_noise_ratio == np_noise_ratio
-        assert base_noise_ratio == calc_noise_ratio
+        assert str(base_noise_ratio) == str(np_noise_ratio)
+        assert str(base_noise_ratio) == str(calc_noise_ratio)
 
 def print_privacy_allocation(stats_parameters, sigmas, epsilons, excess_noise_ratio):
     '''
