@@ -3,6 +3,9 @@
 *.pyc
 venv
 
+# counter renames
+*.bak
+
 # test outputs
 test/counters.allocation.yaml
 test/*.names
