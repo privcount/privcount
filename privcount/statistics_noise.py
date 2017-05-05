@@ -7,7 +7,7 @@ DEFAULT_SIGMA_TOLERANCE = 1e-6
 DEFAULT_EPSILON_TOLERANCE = 1e-15
 DEFAULT_SIGMA_RATIO_TOLERANCE = 1e-6
 
-DEFAULT_DUMMY_COUNTER_NAME = 'SanityCheck'
+DEFAULT_DUMMY_COUNTER_NAME = 'ZeroCount'
 
 def satisfies_dp(sensitivity, epsilon, delta, std):
     '''
@@ -241,7 +241,7 @@ def get_sanity_check_counter():
     '''
     Provide a dictionary with the standard sanity check counter values.
     It is typically used like:
-        counters['SanityCheck'] = get_sanity_check_counter()
+        counters['ZeroCount'] = get_sanity_check_counter()
     All of these values are unused, except for:
         bins:
             - [0.0, inf] (a long counter is appended by SecureCounters,

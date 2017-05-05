@@ -8,197 +8,197 @@
 
 counters:
     # ENTRY - cells sent 'in' to client per active circuit on client OR connections
-    CircuitCellsIn:
+    EntryCircuitInboundCellCount:
         sigma: 0.0
     # ENTRY - cells sent 'out' from client per active circuit on client OR connections
-    CircuitCellsOut:
+    EntryCircuitOutboundCellCount:
         sigma: 0.0
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    CircuitCellsRatio:
+    EntryCircuitCellRatio:
         sigma: 0.0
     # EXIT - circuit inter-stream creation times in seconds
-    CircuitInterStreamCreationTime:
+    ExitCircuitInterStreamCreationTime:
         sigma: 0.0
     # EXIT - circuit inter-stream creation times in seconds for IRC/SSH
-    CircuitInterStreamCreationTimeInteractive:
+    ExitCircuitInteractiveInterStreamCreationTime:
         sigma: 0.0
     # EXIT - circuit inter-stream creation times in seconds for port>=10000 and no other class
-    CircuitInterStreamCreationTimeOther:
+    ExitCircuitOtherPortInterStreamCreationTime:
         sigma: 0.0
     # EXIT - circuit inter-stream creation times in seconds for P2P
-    CircuitInterStreamCreationTimeP2P:
+    ExitCircuitP2PInterStreamCreationTime:
         sigma: 0.0
     # EXIT - circuit inter-stream creation times in seconds for HTTP/HTTPS
-    CircuitInterStreamCreationTimeWeb:
+    ExitCircuitWebInterStreamCreationTime:
         sigma: 0.0
     # ENTRY - circuit times in seconds for all circuits
-    CircuitLifeTimeAll:
+    ExitCircuitLifeTime:
         sigma: 0.0
     # ENTRY - circuit times in seconds for active circuits
-    CircuitLifeTimeActive:
+    ExitActiveCircuitLifeTime:
         sigma: 0.0
     # ENTRY - circuit times in seconds for inactive circuits
-    CircuitLifeTimeInactive:
+    ExitInactiveCircuitLifeTime:
         sigma: 0.0
     # EXIT - completed streams per active circuit
-    CircuitStreamsAll:
+    ExitCircuitStreamCount:
         sigma: 0.0
     # EXIT - completed streams per active circuit for IRC/SSH
-    CircuitStreamsInteractive:
+    ExitCircuitInteractiveStreamCount:
         sigma: 0.0
     # EXIT - completed streams per active circuit for port>=10000 and no other class
-    CircuitStreamsOther:
+    ExitCircuitOtherPortStreamCount:
         sigma: 0.0
     # EXIT - completed streams per active circuit for P2P
-    CircuitStreamsP2P:
+    ExitCircuitP2PStreamCount:
         sigma: 0.0
     # EXIT - completed streams per active circuit for HTTP/HTTPS
-    CircuitStreamsWeb:
+    ExitCircuitWebStreamCount:
         sigma: 0.0
     # ENTRY - number of circuits
-    CircuitsAllEntry:
+    EntryCircuitCount:
         sigma: 0.0
     # ENTRY - number of circuits with at least one stream completed
-    CircuitsActiveEntry:
+    EntryActiveCircuitCount:
         sigma: 0.0
     # ENTRY - number of circuits with no streams completed
-    CircuitsInactiveEntry:
+    EntryInactiveCircuitCount:
         sigma: 0.0
     # EXIT - number of circuits
-    CircuitsAll:
+    ExitCircuitCount:
         sigma: 0.0
     # EXIT - number of circuits with at least one stream completed
-    CircuitsActive:
+    ExitActiveCircuitCount:
         sigma: 0.0
     # EXIT - number of circuits with no streams completed
-    CircuitsInactive:
+    ExitInactiveCircuitCount:
         sigma: 0.0
     # EXIT - number of circuits for IRC/SSH
-    CircuitsInteractive:
+    ExitInteractiveCircuitCount:
         sigma: 0.0
     # EXIT - number of circuits for port>=10000 and no other class
-    CircuitsOther:
+    ExitOtherPortCircuitCount:
         sigma: 0.0
     # EXIT - number of circuits for P2P
-    CircuitsP2P:
+    ExitP2PCircuitCount:
         sigma: 0.0
     # EXIT - number of circuits with no streams completed
-    CircuitsWeb:
+    ExitWebCircuitCount:
         sigma: 0.0
     # ENTRY - circuits per client IP with at least 8 cells transferred (10 min rotation)
-    ClientIPCircuitsActive:
+    EntryClientIPActiveCircuitCount:
         sigma: 0.0
     # ENTRY - circuits per client IP with less than 8 cells transferred (10 min rotation)
-    ClientIPCircuitsInactive:
+    EntryClientIPInactiveCircuitCount:
         sigma: 0.0
     # ENTRY - unique client IPs seen with at least 8 cells transferred (10 min rotation)
-    ClientIPsActive:
+    EntryActiveClientIPCount:
         sigma: 0.0
     # ENTRY - unique client IPs seen with less than 8 cells transferred (10 min rotation)
-    ClientIPsInactive:
+    EntryInactiveClientIPCount:
         sigma: 0.0
     # ENTRY - unique client IPs seen (10 min rotation)
-    ClientIPsUnique:
+    EntryClientIPCount:
         sigma: 0.0
     # ENTRY - number of OR connections to clients
-    ConnectionsAll:
+    EntryConnectionCount:
         sigma: 0.0
     # ENTRY - connection times in seconds for all connections
-    ConnectionLifeTime:
+    EntryConnectionLifeTime:
         sigma: 0.0
     # EXIT - bytes received per completed stream
-    StreamBytesAll:
+    ExitStreamByteCount:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream
-    StreamBytesInAll:
+    ExitStreamInboundByteCount:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream for IRC/SSH
-    StreamBytesInInteractive:
+    ExitInteractiveStreamInboundByteCount:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream for port>=10000 and no other class
-    StreamBytesInOther:
+    ExitOtherPortStreamInboundByteCount:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream for P2P
-    StreamBytesInP2P:
+    ExitP2PStreamInboundByteCount:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream for HTTP/HTTPS
-    StreamBytesInWeb:
+    ExitWebStreamInboundByteCount:
         sigma: 0.0
     # EXIT - bytes received per completed stream for IRC/SSH
-    StreamBytesInteractive:
+    ExitInteractiveStreamByteCount:
         sigma: 0.0
     # EXIT - bytes received per completed stream for port>=10000 and no other class
-    StreamBytesOther:
+    ExitOtherPortStreamByteCount:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream
-    StreamBytesOutAll:
+    ExitStreamOutboundByteCount:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream for IRC/SSH
-    StreamBytesOutInteractive:
+    ExitInteractiveStreamOutboundByteCount:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream for port>=10000 and no other class
-    StreamBytesOutOther:
+    ExitOtherPortStreamOutboundByteCount:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream for P2P
-    StreamBytesOutP2P:
+    ExitP2PStreamOutboundByteCount:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream for HTTP/HTTPS
-    StreamBytesOutWeb:
+    ExitWebStreamOutboundByteCount:
         sigma: 0.0
     # EXIT - bytes received per completed stream for P2P
-    StreamBytesP2P:
+    ExitP2PStreamByteCount:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioAll:
+    ExitStreamByteRatio:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for IRC/SSH
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioInteractive:
+    ExitInteractiveStreamByteRatio:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for port>=10000 and no other class
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioOther:
+    ExitOtherPortStreamByteRatio:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for P2P
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioP2P:
+    ExitP2PStreamByteRatio:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for HTTP/HTTPS
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioWeb:
+    ExitWebStreamByteRatio:
         sigma: 0.0
     # EXIT - bytes per completed stream for HTTP/HTTPS
-    StreamBytesWeb:
+    ExitWebStreamByteCount:
         sigma: 0.0
     # EXIT - time in seconds between create and destroy per completed stream for IRC/SSH
-    StreamLifeTimeInteractive:
+    ExitInteractiveStreamLifeTime:
         sigma: 0.0
     # EXIT - time in seconds between create and destroy per completed stream for port>=10000 and no other class
-    StreamLifeTimeOther:
+    ExitOtherPortStreamLifeTime:
         sigma: 0.0
     # EXIT - time in seconds between create and destroy per completed stream for P2P
-    StreamLifeTimeP2P:
+    ExitP2PStreamLifeTime:
         sigma: 0.0
     # EXIT - time in seconds between create and destroy per completed stream for HTTP/HTTPS
-    StreamLifeTimeWeb:
+    ExitWebStreamLifeTime:
         sigma: 0.0
     # EXIT - number of streams to servers
-    StreamsAll:
+    ExitStreamCount:
         sigma: 0.0
     # EXIT - number of streams to servers for SSH/IRC
-    StreamsInteractive:
+    ExitInteractiveStreamCount:
         sigma: 0.0
     # EXIT - number of streams to servers for port>=10000 and no other class
-    StreamsOther:
+    ExitOtherPortStreamCount:
         sigma: 0.0
     # EXIT - number of streams to servers for P2P
-    StreamsP2P:
+    ExitP2PStreamCount:
         sigma: 0.0
     # EXIT - number of streams to servers for HTTP/HTTPS
-    StreamsWeb:
+    ExitWebStreamCount:
         sigma: 0.0
     # not counted - used only to make sure aggregation was performed correctly
-    SanityCheck:
+    ZeroCount:
         sigma: 0.0

@@ -23,7 +23,7 @@ modulus_max = max(2L**64L, counter_modulus() * 2L**5L)
 
 # A simple set of byte counters
 counters = {
-  'SanityCheck': {
+  'ZeroCount': {
     'bins':
     [
       [0.0, float('inf')],
@@ -221,7 +221,7 @@ def check_counters(tallies, N, multi_bin=True):
         assert tallies['Bytes']['bins'][4][2] == 2*N
     else:
         assert tallies['Bytes']['bins'][4][2] == 1*N
-    assert tallies['SanityCheck']['bins'][0][2] == 0
+    assert tallies['ZeroCount']['bins'][0][2] == 0
     logging.debug("all counts are correct!")
 
 def run_counters(counters, modulus, N, X=None, multi_bin=True):

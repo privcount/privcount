@@ -79,61 +79,61 @@ num_connections_per_day = 147162.0/2
 
 # p2p initial statistics (needed to get estimates for other initial rounds)
 p2p_initial_stats_parameters = {\
-    'CircuitsAll' : (sensitivity_circuits,
+    'ExitCircuitCount' : (sensitivity_circuits,
         extrainfo_num_circuits_per_day * p2p_initial_epoch_days),
-    'CircuitsP2P' : (sensitivity_p2p_circuits,
+    'ExitP2PCircuitCount' : (sensitivity_p2p_circuits,
          (float(extrainfo_num_p2p_streams_per_day)/2.0)*p2p_initial_epoch_days), # est 2 streams/circuit under the logic that most BitTorrent peers will have at most that many simultaneous downloads from different peers in a given circuit lifetime (i.e. 10 min) or will complete at most that many successive piece/sub-piece downloads in the circuit lifetime
-    'StreamsAll' : (sensitivity_streams,
+    'ExitStreamCount' : (sensitivity_streams,
         extrainfo_num_streams_per_day * p2p_initial_epoch_days),
-    'StreamsP2P' : (sensitivity_p2p_streams,
+    'ExitP2PStreamCount' : (sensitivity_p2p_streams,
         extrainfo_num_p2p_streams_per_day * p2p_initial_epoch_days),
-    'StreamBytesP2P' : (sensitivity_p2p_kibytes,
+    'ExitP2PStreamByteCount' : (sensitivity_p2p_kibytes,
         extrainfo_num_p2p_kibytes_per_day * p2p_initial_epoch_days)
 }
 
 # initial statistics for basic data exploration (uses mostly extrainfo estimates but also some hard-to-estimate values from the P2P initial collection
 initial_stats_parameters = {\
-    'CircuitsAll' : (sensitivity_circuits,
+    'ExitCircuitCount' : (sensitivity_circuits,
         num_circuits_per_day * initial_epoch_days),
-    'CircuitsActive' : (sensitivity_circuits,
+    'ExitActiveCircuitCount' : (sensitivity_circuits,
         0.5*num_circuits_per_day * initial_epoch_days),
-    'CircuitsInactive' : (sensitivity_circuits,
+    'ExitInactiveCircuitCount' : (sensitivity_circuits,
         0.5*num_circuits_per_day * initial_epoch_days),
-    'CircuitsInteractive' : (sensitivity_interactive_circuits,
+    'ExitInteractiveCircuitCount' : (sensitivity_interactive_circuits,
         (float(extrainfo_num_interactive_streams_per_day) / 2) * initial_epoch_days), # est 2 streams / interactive circuit
-    'CircuitsOther' : (sensitivity_other_circuits,
+    'ExitOtherPortCircuitCount' : (sensitivity_other_circuits,
         extrainfo_num_circuits_per_day * (float(extrainfo_num_other_streams_per_day)/extrainfo_num_streams_per_day) * initial_epoch_days), # est same fraction of other circuits as other streams
-    'CircuitsP2P' : (sensitivity_p2p_circuits,
+    'ExitP2PCircuitCount' : (sensitivity_p2p_circuits,
          (float(num_p2p_circuits_per_day))*initial_epoch_days),
-    'CircuitsWeb' : (sensitivity_web_circuits, # est 50 streams / web circ
+    'ExitWebCircuitCount' : (sensitivity_web_circuits, # est 50 streams / web circ
         (float(extrainfo_num_web_streams_per_day) / 50) * initial_epoch_days),
-    'ClientIPsUnique' : (\
+    'EntryClientIPCount' : (\
         sensitivity_client_ips_per_slice * float(sensitivity_client_ips_duration)/slice_length,
         extrainfo_num_ips_per_day * initial_epoch_days),
-    'ClientIPsActive' : (sensitivity_client_ips_per_slice *\
+    'EntryActiveClientIPCount' : (sensitivity_client_ips_per_slice *\
         float(sensitivity_client_ips_duration)/slice_length,
         0.01 * extrainfo_num_ips_per_day * initial_epoch_days), # est 1/100 of clients with circuits in a time slice ever use those circuits
-    'ClientIPsInactive' : (sensitivity_client_ips_per_slice *\
+    'EntryInactiveClientIPCount' : (sensitivity_client_ips_per_slice *\
         float(sensitivity_client_ips_duration)/slice_length,
         0.99 * extrainfo_num_ips_per_day * initial_epoch_days), # est 99/100 of clients with circuits in a time slice don't use those circuits,),
-    'StreamBytesAll' : (sensitivity_kibytes, extrainfo_num_kibytes_per_day * initial_epoch_days),
-    'StreamBytesInteractive' : (sensitivity_interactive_kibytes,
+    'ExitStreamByteCount' : (sensitivity_kibytes, extrainfo_num_kibytes_per_day * initial_epoch_days),
+    'ExitInteractiveStreamByteCount' : (sensitivity_interactive_kibytes,
         extrainfo_num_interactive_kibytes_per_day * initial_epoch_days),
-    'StreamBytesOther' : (sensitivity_other_kibytes,
+    'ExitOtherPortStreamByteCount' : (sensitivity_other_kibytes,
         extrainfo_num_other_kibytes_per_day * initial_epoch_days),
-    'StreamBytesP2P' : (sensitivity_p2p_kibytes,
+    'ExitP2PStreamByteCount' : (sensitivity_p2p_kibytes,
         num_p2p_kibytes_per_day * initial_epoch_days),
-    'StreamBytesWeb' : (sensitivity_web_kibytes,
+    'ExitWebStreamByteCount' : (sensitivity_web_kibytes,
         extrainfo_num_web_kibytes_per_day * initial_epoch_days),
-    'StreamsAll' : (sensitivity_streams,
+    'ExitStreamCount' : (sensitivity_streams,
         num_streams_per_day * p2p_initial_epoch_days),
-    'StreamsInteractive' : (sensitivity_interactive_streams,
+    'ExitInteractiveStreamCount' : (sensitivity_interactive_streams,
         extrainfo_num_interactive_streams_per_day * initial_epoch_days),
-    'StreamsOther' : (sensitivity_other_streams,
+    'ExitOtherPortStreamCount' : (sensitivity_other_streams,
         extrainfo_num_other_streams_per_day * initial_epoch_days),
-    'StreamsP2P' : (sensitivity_p2p_streams,
+    'ExitP2PStreamCount' : (sensitivity_p2p_streams,
         num_p2p_streams_per_day * initial_epoch_days),
-    'StreamsWeb' : (sensitivity_streams,
+    'ExitWebStreamCount' : (sensitivity_streams,
         extrainfo_num_web_streams_per_day * initial_epoch_days)
 }
 
@@ -157,89 +157,89 @@ other_stream_histogram_parameters = (2 * sensitivity_other_streams,
 stats_parameters = {\
     ### entry statistics ###
     ## counts ##
-    'ClientIPsUnique' : (\
+    'EntryClientIPCount' : (\
         sensitivity_client_ips_per_slice * float(sensitivity_client_ips_duration)/slice_length,
         num_ips_slices_per_day * epoch_days),
-    'ClientIPsActive' : (sensitivity_client_ips_per_slice *\
+    'EntryActiveClientIPCount' : (sensitivity_client_ips_per_slice *\
         float(sensitivity_client_ips_duration)/slice_length,
         num_active_ips_slices_per_day * epoch_days), # used to estimate with 0.1 * num_ips_slices_per_day instead of num_active_ips_slices_per_day
-    'ClientIPsInactive' :(sensitivity_client_ips_per_slice *\
+    'EntryInactiveClientIPCount' :(sensitivity_client_ips_per_slice *\
         float(sensitivity_client_ips_duration)/slice_length,
         num_inactive_ips_slices_per_day * epoch_days),
-    'ConnectionsAll' : (sensitivity_connections, num_connections_per_day * epoch_days), # used to use num_ips_slices_per_day instead of num_connections_per_day w/ an est. of 1 cxn per IP per day
+    'EntryConnectionCount' : (sensitivity_connections, num_connections_per_day * epoch_days), # used to use num_ips_slices_per_day instead of num_connections_per_day w/ an est. of 1 cxn per IP per day
     ####
     ## histograms ##
 # removed due to low utility and complication of counting circuits at both guards and exits
-#    'CircuitCellsIn' : circuit_histogram_parameters,
-#    'CircuitCellsOut' : circuit_histogram_parameters,
-#    'CircuitCellsRatio' : circuit_histogram_parameters,
+#    'EntryCircuitInboundCellCount' : circuit_histogram_parameters,
+#    'EntryCircuitOutboundCellCount' : circuit_histogram_parameters,
+#    'EntryCircuitCellRatio' : circuit_histogram_parameters,
     ####
     ######
 
     ### exit statistics ###
     ## counts ##
-    'CircuitsActive' : (sensitivity_circuits, num_active_circuits_per_day * epoch_days),
-    'CircuitsInactive' : (sensitivity_circuits, num_inactive_circuits_per_day * epoch_days),
+    'ExitActiveCircuitCount' : (sensitivity_circuits, num_active_circuits_per_day * epoch_days),
+    'ExitInactiveCircuitCount' : (sensitivity_circuits, num_inactive_circuits_per_day * epoch_days),
 # removing interactive stats due to low volume
-#    'CircuitsInteractive' : (sensitivity_interactive_circuits,
+#    'ExitInteractiveCircuitCount' : (sensitivity_interactive_circuits,
 #        num_interactive_circuits_per_day * epoch_days),
-    'CircuitsOther' : (sensitivity_other_circuits, num_other_circuits_per_day * epoch_days),
+    'ExitOtherPortCircuitCount' : (sensitivity_other_circuits, num_other_circuits_per_day * epoch_days),
 # removing P2P class
-#    'CircuitsP2P' : (sensitivity_p2p_circuits, num_p2p_circuits_per_day * epoch_days),
-    'CircuitsWeb' : (sensitivity_web_circuits, num_web_circuits_per_day * epoch_days),
-    'StreamBytesAll' : (sensitivity_kibytes, num_kibytes_per_day * epoch_days),
+#    'ExitP2PCircuitCount' : (sensitivity_p2p_circuits, num_p2p_circuits_per_day * epoch_days),
+    'ExitWebCircuitCount' : (sensitivity_web_circuits, num_web_circuits_per_day * epoch_days),
+    'ExitStreamByteCount' : (sensitivity_kibytes, num_kibytes_per_day * epoch_days),
 # removing interactive stats due to low volume
-#    'StreamBytesInteractive' : (sensitivity_interactive_kibytes,
+#    'ExitInteractiveStreamByteCount' : (sensitivity_interactive_kibytes,
 #        num_interactive_kibytes_per_day * epoch_days),
-    'StreamBytesOther' : (sensitivity_other_kibytes, num_other_kibytes_per_day * epoch_days),
-    'StreamBytesWeb' : (sensitivity_web_kibytes, num_web_kibytes_per_day * epoch_days),
-    'StreamsAll' : (sensitivity_streams, num_streams_per_day * epoch_days),
+    'ExitOtherPortStreamByteCount' : (sensitivity_other_kibytes, num_other_kibytes_per_day * epoch_days),
+    'ExitWebStreamByteCount' : (sensitivity_web_kibytes, num_web_kibytes_per_day * epoch_days),
+    'ExitStreamCount' : (sensitivity_streams, num_streams_per_day * epoch_days),
 # removing interactive stats due to low volume
-#    'StreamsInteractive' : (sensitivity_interactive_streams,
+#    'ExitInteractiveStreamCount' : (sensitivity_interactive_streams,
 #        num_interactive_streams_per_day * epoch_days),
-    'StreamsOther' : (sensitivity_other_streams, num_other_streams_per_day * epoch_days),
+    'ExitOtherPortStreamCount' : (sensitivity_other_streams, num_other_streams_per_day * epoch_days),
 # removing P2P class
-#    'StreamsP2P' : (sensitivity_p2p_streams, num_p2p_streams_per_day * epoch_days),
-    'StreamsWeb' : (sensitivity_streams, num_web_streams_per_day * epoch_days),
+#    'ExitP2PStreamCount' : (sensitivity_p2p_streams, num_p2p_streams_per_day * epoch_days),
+    'ExitWebStreamCount' : (sensitivity_streams, num_web_streams_per_day * epoch_days),
     ####
 
     ## histograms ##
-    'CircuitInterStreamCreationTime' : stream_histogram_parameters,
-    'CircuitInterStreamCreationTimeOther' : other_stream_histogram_parameters,
-    'CircuitInterStreamCreationTimeWeb' : web_stream_histogram_parameters,
-    'CircuitLifeTimeAll' : circuit_histogram_parameters,
-    'CircuitLifeTimeActive' : (2*sensitivity_circuits, num_active_circuits_per_day * epoch_days),
-    'CircuitLifeTimeInactive' : (2*sensitivity_circuits, num_inactive_circuits_per_day * epoch_days),
-    'CircuitStreamsAll' : circuit_histogram_parameters,
-    'CircuitStreamsOther' : (2 * sensitivity_other_circuits,
+    'ExitCircuitInterStreamCreationTime' : stream_histogram_parameters,
+    'ExitCircuitOtherPortInterStreamCreationTime' : other_stream_histogram_parameters,
+    'ExitCircuitWebInterStreamCreationTime' : web_stream_histogram_parameters,
+    'ExitCircuitLifeTime' : circuit_histogram_parameters,
+    'ExitActiveCircuitLifeTime' : (2*sensitivity_circuits, num_active_circuits_per_day * epoch_days),
+    'ExitInactiveCircuitLifeTime' : (2*sensitivity_circuits, num_inactive_circuits_per_day * epoch_days),
+    'ExitCircuitStreamCount' : circuit_histogram_parameters,
+    'ExitCircuitOtherPortStreamCount' : (2 * sensitivity_other_circuits,
         num_other_circuits_per_day * epoch_days),
-    'CircuitStreamsWeb' : (2 * sensitivity_web_circuits, num_web_circuits_per_day * epoch_days),
+    'ExitCircuitWebStreamCount' : (2 * sensitivity_web_circuits, num_web_circuits_per_day * epoch_days),
 # removing interactive stats due to low volume
-#    'CircuitStreamsInteractive' : (2 * sensitivity_interactive_circuits,
+#    'ExitCircuitInteractiveStreamCount' : (2 * sensitivity_interactive_circuits,
 #        num_interactive_circuits_per_day * epoch_days),
 # removing P2P class
-#    'CircuitStreamsP2P' : (2 * sensitivity_p2p_circuits, num_p2p_circuits_per_day * epoch_days),
-    'StreamBytesInAll' : stream_histogram_parameters,
-    'StreamBytesInOther' : other_stream_histogram_parameters,
-    'StreamBytesInWeb' : web_stream_histogram_parameters,
+#    'ExitCircuitP2PStreamCount' : (2 * sensitivity_p2p_circuits, num_p2p_circuits_per_day * epoch_days),
+    'ExitStreamInboundByteCount' : stream_histogram_parameters,
+    'ExitOtherPortStreamInboundByteCount' : other_stream_histogram_parameters,
+    'ExitWebStreamInboundByteCount' : web_stream_histogram_parameters,
 # removing interactive stats due to low volume
-#    'StreamBytesInInteractive' : interactive_stream_histogram_parameters,
+#    'ExitInteractiveStreamInboundByteCount' : interactive_stream_histogram_parameters,
 # removing P2P class
-#    'StreamBytesInP2P' : p2p_stream_histogram_parameters,
-    'StreamBytesOutAll' : stream_histogram_parameters,
-    'StreamBytesOutOther' : other_stream_histogram_parameters,
-    'StreamBytesOutWeb' : web_stream_histogram_parameters,
+#    'ExitP2PStreamInboundByteCount' : p2p_stream_histogram_parameters,
+    'ExitStreamOutboundByteCount' : stream_histogram_parameters,
+    'ExitOtherPortStreamOutboundByteCount' : other_stream_histogram_parameters,
+    'ExitWebStreamOutboundByteCount' : web_stream_histogram_parameters,
 # removing interactive stats due to low volume
-#    'StreamBytesOutInteractive' : interactive_stream_histogram_parameters,
+#    'ExitInteractiveStreamOutboundByteCount' : interactive_stream_histogram_parameters,
 # removing P2P class
-#    'StreamBytesOutP2P' : p2p_stream_histogram_parameters,
-    'StreamBytesRatioAll' : stream_histogram_parameters,
-    'StreamBytesRatioOther' : other_stream_histogram_parameters,
-    'StreamBytesRatioWeb' : web_stream_histogram_parameters
+#    'ExitP2PStreamOutboundByteCount' : p2p_stream_histogram_parameters,
+    'ExitStreamByteRatio' : stream_histogram_parameters,
+    'ExitOtherPortStreamByteRatio' : other_stream_histogram_parameters,
+    'ExitWebStreamByteRatio' : web_stream_histogram_parameters
 # removing interactive stats due to low volume
-#    'StreamBytesRatioInteractive':interactive_stream_histogram_parameters,
+#    'ExitInteractiveStreamByteRatio':interactive_stream_histogram_parameters,
 # removing P2P class
-#    'StreamBytesRatioP2P' : p2p_stream_histogram_parameters,
+#    'ExitP2PStreamByteRatio' : p2p_stream_histogram_parameters,
     ####
     ######
 }

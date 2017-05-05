@@ -48,20 +48,20 @@ packet_logdelaysquared_histogram_parameters = (2 * sensitivity_packet_logdelaysq
 
 traffic_model_parameters = {
     # "single counter" type of statistics
-    'TrafficModelTotalEmissions': packet_single_parameters,
-    'TrafficModelTotalLogDelay': packet_logdelay_single_parameters,
-    'TrafficModelTotalSquaredLogDelay': packet_logdelaysquared_single_parameters,
-    'TrafficModelTotalTransitions': packet_single_parameters,
+    'ExitStreamTrafficModelEmissionCount': packet_single_parameters,
+    'ExitStreamTrafficModelLogDelayTime': packet_logdelay_single_parameters,
+    'ExitStreamTrafficModelSquaredLogDelayTime': packet_logdelaysquared_single_parameters,
+    'ExitStreamTrafficModelTransitionCount': packet_single_parameters,
 
     # "histogram" type of statistics
     # each '<>' is expanded to include all counters for the states defined in a particular model
-    'TrafficModelTotalEmissions_<STATE>_<DIRECTION>': packet_histogram_parameters,
-    'TrafficModelTotalLogDelay_<STATE>_<DIRECTION>': packet_logdelay_histogram_parameters,
-    'TrafficModelTotalSquaredLogDelay_<STATE>_<DIRECTION>': packet_logdelaysquared_histogram_parameters,
+    'ExitStreamTrafficModelEmissionCount_<STATE>_<DIRECTION>': packet_histogram_parameters,
+    'ExitStreamTrafficModelLogDelayTime_<STATE>_<DIRECTION>': packet_logdelay_histogram_parameters,
+    'ExitStreamTrafficModelSquaredLogDelayTime_<STATE>_<DIRECTION>': packet_logdelaysquared_histogram_parameters,
     # only counted on stream's first packet, so use stream params
-    'TrafficModelTotalTransitions_START_<STATE>': stream_histogram_parameters,
+    'ExitStreamTrafficModelTransitionCount_START_<STATE>': stream_histogram_parameters,
     # counted on all but the last packet on each stream
-    'TrafficModelTotalTransitions_<SRCSTATE>_<DSTSTATE>': packet_histogram_parameters,
+    'ExitStreamTrafficModelTransitionCount_<SRCSTATE>_<DSTSTATE>': packet_histogram_parameters,
 }
 
 if __name__ == '__main__':

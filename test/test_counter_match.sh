@@ -62,7 +62,7 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
         cat "$TEST_DIR/traffic_model.py.names.extra" \
             >> "$OUT_PATH.names.unsorted"
     fi
-    # Add the SanityCheck counter (it has no events and no increments)
+    # Add the ZeroCount counter (it has no events and no increments)
     cat "$TEST_DIR/statistics_noise.py.names.extra" \
         >> "$OUT_PATH.names.unsorted"
     # And sort

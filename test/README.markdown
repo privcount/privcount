@@ -59,7 +59,7 @@ Start the PrivCount components:
     privcount dc config.yaml
 
 Now wait until the end of the epoch and check the tally results json file published by the
-tally server. The results for the 'SanityCheck' counter should indicate a zero count for the
+tally server. The results for the 'ZeroCount' counter should indicate a zero count for the
 bin representing counts in the range [0, Infinity).
 
 If you have matplotlib installed, you can then visualize the results:
