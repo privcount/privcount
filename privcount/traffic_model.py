@@ -102,8 +102,10 @@ class TrafficModel(object):
         that is used to specify noise for this model. Static counter labels are not
         dependent on the model input.
         '''
-        static_labels = ["TrafficModelTotalEmissions", "TrafficModelTotalTransitions",
-                         "TrafficModelTotalLogDelay", "TrafficModelTotalSquaredLogDelay"]
+        static_labels = ['TrafficModelTotalEmissions',
+                         'TrafficModelTotalTransitions',
+                         'TrafficModelTotalLogDelay',
+                         'TrafficModelTotalSquaredLogDelay']
         labels = {}
         for static_label in static_labels:
             labels[static_label] = static_label
