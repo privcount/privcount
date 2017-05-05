@@ -6,7 +6,7 @@ Created on Dec 11, 2016
 import math
 import logging
 
-from privcount.counter import register_dynamic_counter, BYTES_EVENT
+from privcount.counter import register_dynamic_counter, BYTES_EVENT, STREAM_EVENT
 
 def check_traffic_model_config(model_config):
     '''
@@ -51,7 +51,7 @@ class TrafficModel(object):
 
     def register_counters(self):
         for label in self.get_dynamic_counter_labels():
-            register_dynamic_counter(label, { BYTES_EVENT })
+            register_dynamic_counter(label, { BYTES_EVENT, STREAM_EVENT })
 
     def get_dynamic_counter_template_label_mapping(self):
         '''
