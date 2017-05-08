@@ -3,6 +3,8 @@
 Created on Dec 12, 2015
 
 @author: rob
+
+See LICENSE for licensing information
 '''
 import sys
 import argparse

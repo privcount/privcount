@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# See LICENSE for licensing information
+
 # Test that a local control port (IP or unix socket) provides PrivCount events
 
 import logging

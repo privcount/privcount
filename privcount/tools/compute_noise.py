@@ -1,3 +1,5 @@
+# See LICENSE for licensing information
+
 import yaml
 import privcount.statistics_noise as psn
 

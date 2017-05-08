@@ -1,3 +1,5 @@
+# See LICENSE for licensing information
+
 import logging, json, math
 
 from time import time

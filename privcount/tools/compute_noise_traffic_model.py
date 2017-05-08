@@ -1,3 +1,5 @@
+# See LICENSE for licensing information
+
 import math
 import yaml
 

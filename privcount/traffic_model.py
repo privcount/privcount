@@ -2,6 +2,8 @@
 Created on Dec 11, 2016
 
 @author: rob
+
+See LICENSE for licensing information
 '''
 import math
 import logging

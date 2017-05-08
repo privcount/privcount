@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# See LICENSE for licensing information
 
 # a simple range and bin test for privcount's random constructions
 # this test can not prove that these constructs produce uniformly random

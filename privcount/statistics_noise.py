@@ -1,3 +1,5 @@
+# See LICENSE for licensing information
+
 import logging
 import math
 import scipy.stats

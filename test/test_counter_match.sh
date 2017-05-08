@@ -1,4 +1,5 @@
 #!/bin/bash
+# See LICENSE for licensing information
 
 # Check if the counters in the code and test files are the same
 

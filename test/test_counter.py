@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# See LICENSE for licensing information
 
 # this test will fail if any counter inconsistencies are detected
-# 
 
 import sys
 

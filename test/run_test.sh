@@ -1,4 +1,5 @@
 #!/bin/bash
+# See LICENSE for licensing information
 
 # Shell settings
 # fail on failed commands or unset variables

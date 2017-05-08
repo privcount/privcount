@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# See LICENSE for licensing information
 
 import os, json
 from privcount.traffic_model import TrafficModel

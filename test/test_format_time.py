@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# See LICENSE for licensing information
+
 from privcount.log import normalise_time, format_epoch, format_period, format_datetime
 
 # some of this code is only executed when we reach 1 week

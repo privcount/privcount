@@ -19,6 +19,8 @@ PrivEx: Private Collection of Traffic Statistics for Anonymous Communication Net
 Tariq Elahi, George Danezis, and Ian Goldberg
 ```
 
+See LICENSE for licensing information.
+
 # requirements
 
 Base components:
