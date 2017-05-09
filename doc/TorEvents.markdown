@@ -54,13 +54,15 @@ Client@  | N/C         | N/C     | N/C    | N/C  | N/C    | DNS^
 Usage:
 * Y: Available and Collected
 * N/C: Available, but not Collected (We choose not to collect this)
-* N/E: Available, but Encrypted (The relay does not have the keys needed to decrypt this)
+* N/E: Available, but Encrypted (The relay does not have the keys needed to
+       decrypt this)
 * N/A: Not Applicable (The data does not exist)
 
 Notes:
 * \~ "Guard" relays can be connected to clients, or Bridge relays, or other
      relays that aren't in the consensus. Other relays authenticate using RSA
-     and ed25519 keys, bridges and clients do not, and can not be distinguished.  
+     and ed25519 keys, bridges and clients do not, and can not be
+     distinguished.  
 * \$ Most Directory requests are performed using a direct connection from the
      client, others are performed using a 3-hop path.  
 * \^ Application protocols also leak any unencrypted (meta)data to Exit relays
@@ -116,7 +118,9 @@ PrivEx's censorship blacklist measurements.
 It includes the following fields:
 * Channel ID
 * Circuit ID
-* Address requested by client (hostname or IPv4 or IPv6)
+* Stream ID
+* Requested Host Address (hostname or IPv4 or IPv6)
+* Current Timestamp
 
 It has the following known issues:
 * There is no indication in the event whether the request was successful or
@@ -125,8 +129,6 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/184
 * The resolved address is not included in the event  
   https://github.com/privcount/privcount/issues/184
-* The time is not included in the event  
-  https://github.com/privcount/privcount/issues/187
 * These events include relay DirPort self-checks to their own IPv4 addresses  
   https://github.com/privcount/privcount/issues/188
 
@@ -189,8 +191,8 @@ It includes the following fields:
 * Total Number of Bytes Written
 * Connection Creation Timestamp
 * Current Timestamp
-* Is DNS Request Flag
-* Is Directory Request Flag
+* Remote Host Address (hostname or IPv4 or IPv6)
+* Resolved Remote IP Address (IPv4 or IPv6)
 
 It has the following known issues:
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
@@ -219,18 +221,14 @@ It includes the following fields:
 * Circuit ID
 * Total Number of Cells In (Read)
 * Total Number of Cells Out (Written)
-* Total Number of DNS Bytes Read
-* Total Number of DNS Bytes Written
 * Total Number of Exit Bytes Read
 * Total Number of Exit Bytes Written
 * Circuit Creation Timestamp
 * Current Timestamp
 * Previous Hop Remote IP Address
 * Previous Hop Is Client Flag
-* Previous Hop Is Relay Flag
 * Next Hop Remote IP Address
-* Next Hop Is Client Flag
-* Next Hop Is Relay Flag
+* Next Hop Is Edge Flag
 
 It has the following known issues:
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
@@ -267,7 +265,6 @@ It includes the following fields:
 * Current Timestamp
 * Remote IP Address
 * Remote Is Client Flag
-* Remote Is Relay Flag
 
 It has the following known issues:
 * This event includes relay DirPort self-checks to their own IPv4 addresses  
@@ -313,27 +310,26 @@ The current unix epoch time (UTC) in seconds, to 6 decimal places. The
 underlying resolution depends on the operating system.
 
 ### Is Outbound Flag
-A string boolean flag: "outbound" for writes, "inbound" for reads.
-
-### Is DNS Request Flag
-A numeric boolean flag: 1 for DNS resolver connections, whether used for
-hostname lookup or PTR (reverse DNS), for both RESOLVE and CONNECT requests. 0
-for non-DNS connections.
-
-### Is Directory Request Flag
-A numeric boolean flag: 1 for BEGINDIR (ORPort directory) requests. 0 for
-non-directory ORPort Exit requests. There are no events emitted for DirPort
-directory requests.
+A numeric boolean flag: 1 for writes, 0 for reads.
 
 ### Is Client Flag
-A numeric boolean flag: 1 if the remote side used a CREATE_FAST handshake to
-initiate this connection. 0 if it used another kind of handshake. 0 if the
-channel is missing. Since the public tor consensus sets usecreatefast to 0,
-this flag does not reliably identify clients, but does identify bootstrapping
-clients.
+A numeric boolean flag.
+True (1) if:
+* the remote side used a CREATE_FAST handshake to initiate this connection, or
+* the remote side did not perform peer authentication.
+False (0) if:
+* the remote side used another kind of handshake, or
+* the remote side performed peer authentication, or
+* the circuit is missing.
 
-### Is Relay Flag
-A numeric boolean flag: 1 if the remote side is a relay in the latest consensus
-that this relay has. (Clients with different consensuses may ask to extend to
-relays not in this relay's consensus.) 0 if it is not in the consensus. 0 if
-the channel is missing.
+### Is Edge Flag
+A numeric boolean flag.
+True (1) if:
+* the edge connection is an exit connection, or
+* any stream or pending stream on the circuit is an exit connection, or
+* there are no streams and no next channel.
+False (0) if:
+* the circuit is an origin circuit,
+* all streams are non-exit connections,
+* the next channel is connected to a relay,
+* the circuit and connection are both missing.

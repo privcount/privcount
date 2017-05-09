@@ -1,28 +1,34 @@
+# THESE NOISE CONFIGURATIONS OFFER ABSOLUTELEY NO PRIVACY AND SHOULD ONLY BE USED
+# FOR TESTING PURPOSES IN LOCAL PRIVATE NON-DEPLOYMENT SCENARIOS
+
+# when you modify the counters in this file, run:
+# test/test_counter_match.sh
+
 counters:
-  TrafficModelTotalEmissions:
+  ExitStreamTrafficModelEmissionCount:
     estimated_value: 0.0
     sensitivity: 0.0
-  TrafficModelTotalEmissions_<STATE>_<DIRECTION>:
+  ExitStreamTrafficModelEmissionCount_<STATE>_<DIRECTION>:
     estimated_value: 0.0
     sensitivity: 0.0
-  TrafficModelTotalLogDelay:
+  ExitStreamTrafficModelLogDelayTime:
     estimated_value: 0.0
     sensitivity: 0.0
-  TrafficModelTotalLogDelay_<STATE>_<DIRECTION>:
+  ExitStreamTrafficModelLogDelayTime_<STATE>_<DIRECTION>:
     estimated_value: 0.0
     sensitivity: 0.0
-  TrafficModelTotalSquaredLogDelay:
+  ExitStreamTrafficModelSquaredLogDelayTime:
     estimated_value: 0.0
     sensitivity: 0.0
-  TrafficModelTotalSquaredLogDelay_<STATE>_<DIRECTION>:
+  ExitStreamTrafficModelSquaredLogDelayTime_<STATE>_<DIRECTION>:
     estimated_value: 0.0
     sensitivity: 0.0
-  TrafficModelTotalTransitions:
+  ExitStreamTrafficModelTransitionCount:
     estimated_value: 0.0
     sensitivity: 0.0
-  TrafficModelTotalTransitions_<SRCSTATE>_<DSTSTATE>:
+  ExitStreamTrafficModelTransitionCount_<SRCSTATE>_<DSTSTATE>:
     estimated_value: 0.0
     sensitivity: 0.0
-  TrafficModelTotalTransitions_START_<STATE>:
+  ExitStreamTrafficModelTransitionCount_START_<STATE>:
     estimated_value: 0.0
     sensitivity: 0.0

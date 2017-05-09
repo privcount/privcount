@@ -2,6 +2,8 @@
 Created on Dec 6, 2016
 
 @author: teor
+
+See LICENSE for licensing information
 '''
 
 import logging
@@ -256,85 +258,87 @@ def get_valid_events():
     assert check_event_set_case(event_set)
     return event_set
 
+# when you modify this list, update the test counters, and run:
+# test/test_counter_match.sh
 PRIVCOUNT_COUNTER_EVENTS = {
 # these counters depend on bytes transferred event
 # they are updated in _handle_bytes_event
-'TrafficModelTotalEmissions' : { BYTES_EVENT },
-'TrafficModelTotalTransitions' : { BYTES_EVENT },
-'TrafficModelTotalLogDelay' : { BYTES_EVENT },
-'TrafficModelTotalSquaredLogDelay' : { BYTES_EVENT },
+'ExitStreamTrafficModelEmissionCount' : { BYTES_EVENT, STREAM_EVENT },
+'ExitStreamTrafficModelTransitionCount' : { BYTES_EVENT, STREAM_EVENT },
+'ExitStreamTrafficModelLogDelayTime' : { BYTES_EVENT, STREAM_EVENT },
+'ExitStreamTrafficModelSquaredLogDelayTime' : { BYTES_EVENT, STREAM_EVENT },
 # NOTE: model-specific counters are added in register_dynamic_counter
-'StreamsAll' : { STREAM_EVENT },
-'StreamBytesAll' : { STREAM_EVENT },
-'StreamBytesOutAll' : { STREAM_EVENT },
-'StreamBytesInAll' : { STREAM_EVENT },
-'StreamBytesRatioAll' : { STREAM_EVENT },
-'StreamsWeb' : { STREAM_EVENT },
-'StreamBytesWeb' : { STREAM_EVENT },
-'StreamBytesOutWeb' : { STREAM_EVENT },
-'StreamBytesInWeb' : { STREAM_EVENT },
-'StreamBytesRatioWeb' : { STREAM_EVENT },
-'StreamLifeTimeWeb' : { STREAM_EVENT },
-'StreamsInteractive' : { STREAM_EVENT },
-'StreamBytesInteractive' : { STREAM_EVENT },
-'StreamBytesOutInteractive' : { STREAM_EVENT },
-'StreamBytesInInteractive' : { STREAM_EVENT },
-'StreamBytesRatioInteractive' : { STREAM_EVENT },
-'StreamLifeTimeInteractive' : { STREAM_EVENT },
-'StreamsP2P' : { STREAM_EVENT },
-'StreamBytesP2P' : { STREAM_EVENT },
-'StreamBytesOutP2P' : { STREAM_EVENT },
-'StreamBytesInP2P' : { STREAM_EVENT },
-'StreamBytesRatioP2P' : { STREAM_EVENT },
-'StreamLifeTimeP2P' : { STREAM_EVENT },
-'StreamsOther' : { STREAM_EVENT },
-'StreamBytesOther' : { STREAM_EVENT },
-'StreamBytesOutOther' : { STREAM_EVENT },
-'StreamBytesInOther' : { STREAM_EVENT },
-'StreamBytesRatioOther' : { STREAM_EVENT },
-'StreamLifeTimeOther' : { STREAM_EVENT },
+'ExitStreamCount' : { STREAM_EVENT },
+'ExitStreamByteCount' : { STREAM_EVENT },
+'ExitStreamOutboundByteCount' : { STREAM_EVENT },
+'ExitStreamInboundByteCount' : { STREAM_EVENT },
+'ExitStreamByteRatio' : { STREAM_EVENT },
+'ExitWebStreamCount' : { STREAM_EVENT },
+'ExitWebStreamByteCount' : { STREAM_EVENT },
+'ExitWebStreamOutboundByteCount' : { STREAM_EVENT },
+'ExitWebStreamInboundByteCount' : { STREAM_EVENT },
+'ExitWebStreamByteRatio' : { STREAM_EVENT },
+'ExitWebStreamLifeTime' : { STREAM_EVENT },
+'ExitInteractiveStreamCount' : { STREAM_EVENT },
+'ExitInteractiveStreamByteCount' : { STREAM_EVENT },
+'ExitInteractiveStreamOutboundByteCount' : { STREAM_EVENT },
+'ExitInteractiveStreamInboundByteCount' : { STREAM_EVENT },
+'ExitInteractiveStreamByteRatio' : { STREAM_EVENT },
+'ExitInteractiveStreamLifeTime' : { STREAM_EVENT },
+'ExitP2PStreamCount' : { STREAM_EVENT },
+'ExitP2PStreamByteCount' : { STREAM_EVENT },
+'ExitP2PStreamOutboundByteCount' : { STREAM_EVENT },
+'ExitP2PStreamInboundByteCount' : { STREAM_EVENT },
+'ExitP2PStreamByteRatio' : { STREAM_EVENT },
+'ExitP2PStreamLifeTime' : { STREAM_EVENT },
+'ExitOtherPortStreamCount' : { STREAM_EVENT },
+'ExitOtherPortStreamByteCount' : { STREAM_EVENT },
+'ExitOtherPortStreamOutboundByteCount' : { STREAM_EVENT },
+'ExitOtherPortStreamInboundByteCount' : { STREAM_EVENT },
+'ExitOtherPortStreamByteRatio' : { STREAM_EVENT },
+'ExitOtherPortStreamLifeTime' : { STREAM_EVENT },
 # these counters depend on circuit end
 # they are updated in _do_rotate,
 # and use data updated in _handle_circuit_event
-'ClientIPsUnique' : { CIRCUIT_EVENT },
-'ClientIPsActive' : { CIRCUIT_EVENT },
-'ClientIPsInactive' : { CIRCUIT_EVENT },
-'ClientIPCircuitsActive' : { CIRCUIT_EVENT },
-'ClientIPCircuitsInactive' : { CIRCUIT_EVENT },
+'EntryClientIPCount' : { CIRCUIT_EVENT },
+'EntryActiveClientIPCount' : { CIRCUIT_EVENT },
+'EntryInactiveClientIPCount' : { CIRCUIT_EVENT },
+'EntryClientIPActiveCircuitCount' : { CIRCUIT_EVENT },
+'EntryClientIPInactiveCircuitCount' : { CIRCUIT_EVENT },
 # these counters depend on circuit end
 # they are updated in _handle_circuit_event
-'CircuitsAllEntry' : { CIRCUIT_EVENT },
-'CircuitsActiveEntry' : { CIRCUIT_EVENT },
-'CircuitCellsIn' : { CIRCUIT_EVENT },
-'CircuitCellsOut' : { CIRCUIT_EVENT },
-'CircuitCellsRatio' : { CIRCUIT_EVENT },
-'CircuitsInactiveEntry' : { CIRCUIT_EVENT },
-'CircuitsAll' : { CIRCUIT_EVENT },
-'CircuitLifeTimeAll' : { CIRCUIT_EVENT },
+'EntryCircuitCount' : { CIRCUIT_EVENT },
+'EntryActiveCircuitCount' : { CIRCUIT_EVENT },
+'EntryCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'EntryCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'EntryCircuitCellRatio' : { CIRCUIT_EVENT },
+'EntryInactiveCircuitCount' : { CIRCUIT_EVENT },
+'ExitCircuitCount' : { CIRCUIT_EVENT },
+'ExitCircuitLifeTime' : { CIRCUIT_EVENT },
 # these counters depend on stream end and circuit end
 # they are updated in _handle_circuit_event,
 # and use data updated in _handle_stream_event
-'CircuitsActive' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitsInactive' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitLifeTimeActive' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitLifeTimeInactive' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitStreamsAll' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitsWeb' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitStreamsWeb' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitInterStreamCreationTimeWeb' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitsInteractive' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitStreamsInteractive' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitInterStreamCreationTimeInteractive' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitsP2P' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitStreamsP2P' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitInterStreamCreationTimeP2P' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitsOther' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitStreamsOther' : { STREAM_EVENT, CIRCUIT_EVENT },
-'CircuitInterStreamCreationTimeOther' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitActiveCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitInactiveCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitActiveCircuitLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitInactiveCircuitLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitWebCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitWebStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitWebInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitInteractiveCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitInteractiveStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitInteractiveInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitP2PCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitP2PStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitP2PInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitOtherPortCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitOtherPortStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitOtherPortInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 # these counters depend on connection end
-'ConnectionsAll' : { CONNECTION_EVENT },
-'ConnectionLifeTime' : { CONNECTION_EVENT },
+'EntryConnectionCount' : { CONNECTION_EVENT },
+'EntryConnectionLifeTime' : { CONNECTION_EVENT },
 # the sanity check counter doesn't depend on any events
 DEFAULT_DUMMY_COUNTER_NAME : set(),
 }
@@ -1056,7 +1060,7 @@ class SecureCounters(object):
         ],
         'sigma': 2090007.68996
       },
-      'CircuitCellsIn': {
+      'EntryCircuitInboundCellCount': {
         'bins':
         [
           [0.0, 512.0],

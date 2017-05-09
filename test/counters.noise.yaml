@@ -9,6 +9,12 @@
 # values in these files, they are ignored, and re-calculated each time the file
 # is loaded
 
+# THESE NOISE CONFIGURATIONS OFFER ABSOLUTELEY NO PRIVACY AND SHOULD ONLY BE USED
+# FOR TESTING PURPOSES IN LOCAL PRIVATE NON-DEPLOYMENT SCENARIOS
+
+# when you modify the counters in this file, run:
+# test/test_counter_match.sh
+
 # The overall privacy parameters
 privacy:
     delta: 0.0
@@ -23,205 +29,262 @@ privacy:
 # Values for each counter
 counters:
   # ENTRY - cells sent 'in' to client per active circuit on client OR connections
-    CircuitCellsIn:
+    EntryCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - cells sent 'out' from client per active circuit on client OR connections
-    CircuitCellsOut:
+    EntryCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    CircuitCellsRatio:
+    EntryCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - circuit inter-stream creation times in seconds
-    CircuitInterStreamCreationTime:
+    ExitCircuitInterStreamCreationTime:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - circuit inter-stream creation times in seconds for IRC/SSH
-    CircuitInterStreamCreationTimeInteractive:
+    ExitCircuitInteractiveInterStreamCreationTime:
         estimated_value: 0.0
         sensitivity: 0
-    # EXIT - circuit inter-stream creation times in seconds for for port>=10000 and no other class
-    CircuitInterStreamCreationTimeOther:
+    # EXIT - circuit inter-stream creation times in seconds for port>=10000 and no other class
+    ExitCircuitOtherPortInterStreamCreationTime:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - circuit inter-stream creation times in seconds for P2P
+    ExitCircuitP2PInterStreamCreationTime:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - circuit inter-stream creation times in seconds for HTTP/HTTPS
-    CircuitInterStreamCreationTimeWeb:
+    ExitCircuitWebInterStreamCreationTime:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - circuit times in seconds for all circuits
-    CircuitLifeTimeAll:
+    ExitCircuitLifeTime:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - circuit times in seconds for active circuits
-    CircuitLifeTimeActive:
+    ExitActiveCircuitLifeTime:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - circuit times in seconds for inactive circuits
-    CircuitLifeTimeInactive:
+    ExitInactiveCircuitLifeTime:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit
-    CircuitStreamsAll:
+    ExitCircuitStreamCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit for IRC/SSH
-    CircuitStreamsInteractive:
+    ExitCircuitInteractiveStreamCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit for port>=10000 and no other class
-    CircuitStreamsOther:
+    ExitCircuitOtherPortStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - completed streams per active circuit for P2P
+    ExitCircuitP2PStreamCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit for HTTP/HTTPS
-    CircuitStreamsWeb:
+    ExitCircuitWebStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - number of circuits
+    EntryCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - number of circuits with at least one stream completed
+    EntryActiveCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - number of circuits with no streams completed
+    EntryInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of circuits
-    CircuitsAll:
+    ExitCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of circuits with at least one stream completed
-    CircuitsActive:
+    ExitActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of circuits with no streams completed
-    CircuitsInactive:
+    ExitInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of circuits for IRC/SSH
-    CircuitsInteractive:
+    ExitInteractiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of circuits for port>=10000 and no other class
-    CircuitsOther:
+    ExitOtherPortCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - number of circuits for P2P
+    ExitP2PCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of circuits for HTTP/HTTPS
-    CircuitsWeb:
+    ExitWebCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - circuits per client IP with at least 8 cells transferred (10 min rotation)
-    ClientIPCircuitsActive:
+    EntryClientIPActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - circuits per client IP with less than 8 cells transferred (10 min rotation)
-    ClientIPCircuitsInactive:
+    EntryClientIPInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - unique client IPs seen with at least 8 cells transferred (10 min rotation)
-    ClientIPsActive:
+    EntryActiveClientIPCount:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - unique client IPs seen with less than 8 cells transferred (10 min rotation)
-    ClientIPsInactive:
+    EntryInactiveClientIPCount:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - unique client IPs seen (10 min rotation)
-    ClientIPsUnique:
-        estimated_value: 0.0
-        sensitivity: 0
-    # ENTRY - number of circuits to clients
-    CircuitsAll:
+    EntryClientIPCount:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - number of OR connections to clients
-    ConnectionsAll:
+    EntryConnectionCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # ENTRY - connection times in seconds for all connections
+    EntryConnectionLifeTime:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes received per completed stream
-    StreamBytesAll:
+    ExitStreamByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes received from server per completed stream
-    StreamBytesInAll:
+    ExitStreamInboundByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes received from server per completed stream for IRC/SSH
-    StreamBytesInInteractive:
+    ExitInteractiveStreamInboundByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes received from server per completed stream for port>=10000 and no other class
-    StreamBytesInOther:
+    ExitOtherPortStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - bytes received from server per completed stream for P2P
+    ExitP2PStreamInboundByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes received from server per completed stream for HTTP/HTTPS
-    StreamBytesInWeb:
+    ExitWebStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - bytes received per completed stream for SSH/IRC
+    ExitInteractiveStreamByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes received per completed stream for port>=10000 and no other class
-    StreamBytesOther:
+    ExitOtherPortStreamByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes sent to server per completed stream
-    StreamBytesOutAll:
+    ExitStreamOutboundByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes sent to server per completed stream for IRC/SSH
-    StreamBytesOutInteractive:
+    ExitInteractiveStreamOutboundByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes sent to server per completed stream for port>=10000 and no other class
-    StreamBytesOutOther:
+    ExitOtherPortStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - bytes sent to server per completed stream for P2P
+    ExitP2PStreamOutboundByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes sent to server per completed stream for HTTP/HTTPS
-    StreamBytesOutWeb:
+    ExitWebStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - bytes received per completed stream for P2P
+    ExitP2PStreamByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioAll:
+    ExitStreamByteRatio:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for IRC/SSH
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioInteractive:
+    ExitInteractiveStreamByteRatio:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for port>=10000 and no other class
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioOther:
+    ExitOtherPortStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream for P2P
+    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    ExitP2PStreamByteRatio:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for HTTP/HTTPS
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioWeb:
+    ExitWebStreamByteRatio:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - bytes per completed stream for HTTP/HTTPS
-    StreamBytesWeb:
+    ExitWebStreamByteCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - time in seconds between create and destroy per completed stream for IRC/SSH
-    StreamLifeTimeInteractive:
+    ExitInteractiveStreamLifeTime:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - time in seconds between create and destroy per completed stream for port>=10000 and no other class
-    StreamLifeTimeOther:
+    ExitOtherPortStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - time in seconds between create and destroy per completed stream for P2P
+    ExitP2PStreamLifeTime:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - time in seconds between create and destroy per completed stream for HTTP/HTTPS
-    StreamLifeTimeWeb:
+    ExitWebStreamLifeTime:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of streams to servers
-    StreamsAll:
+    ExitStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - number of streams to servers for SSH/IRC
+    ExitInteractiveStreamCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of streams to servers for port>=10000 and no other class
-    StreamsOther:
+    ExitOtherPortStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0
+    # EXIT - number of streams to servers for P2P
+    ExitP2PStreamCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of streams to servers for HTTP/HTTPS
-    StreamsWeb:
+    ExitWebStreamCount:
         estimated_value: 0.0
         sensitivity: 0
 # This dummy counter is added after the noise allocation is calculated
 # It is safe to remove it, or leave it in. A fresh copy is added every time
 # the config is loaded
-    SanityCheck:
+    ZeroCount:
         estimated_value: 0.0
         sensitivity: 0.0

@@ -4,6 +4,8 @@ Created on Dec 8, 2016
 @author: teor
 
 Based on previous code
+
+See LICENSE for licensing information
 '''
 
 from os import path

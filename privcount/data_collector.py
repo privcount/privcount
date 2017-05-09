@@ -1,3 +1,5 @@
+# See LICENSE for licensing information
+
 import os
 import logging
 import math
@@ -304,7 +306,7 @@ class Aggregator(ReconnectingClientFactory):
         self.tor_control_port = tor_control_port
 
         self.last_event_time = 0.0
-        self.num_rotations = 0L
+        self.num_rotations = 0
         self.circ_info = {}
         self.strm_bytes = {}
         self.cli_ips_rotated = time()
@@ -647,7 +649,7 @@ class Aggregator(ReconnectingClientFactory):
         if not self.secure_counters:
             return False
 
-        # ignore empty events
+        # fail on empty events
         if len(event) <= 1:
             return False
 
@@ -655,56 +657,74 @@ class Aggregator(ReconnectingClientFactory):
         self.last_event_time = time()
 
         # hand valid events off to the aggregator
-        if event_code == 'PRIVCOUNT_STREAM_ENDED':
-            # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, isDNS, isDir
-            if len(items) == 10:
-                self._handle_stream_event(items[0:10])
+        if event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
+            if len(items) == Aggregator.STREAM_BYTES_ITEMS:
+                return self._handle_bytes_event(items[:Aggregator.STREAM_BYTES_ITEMS])
+            else:
+                return False
+
+        elif event_code == 'PRIVCOUNT_STREAM_ENDED':
+            if len(items) == Aggregator.STREAM_ENDED_ITEMS:
+                return self._handle_stream_event(items[:Aggregator.STREAM_ENDED_ITEMS])
+            else:
+                return False
+
 
         elif event_code == 'PRIVCOUNT_CIRCUIT_ENDED':
-            # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, nCellsIn, nCellsOut, ReadBWDNS, WriteBWDNS, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, prevIsClient, prevIsRelay, NextIP, nextIsClient, nextIsRelay
-            if len(items) == 16:
-                self._handle_circuit_event(items[0:16])
+            if len(items) == Aggregator.CIRCUIT_ENDED_ITEMS:
+                return self._handle_circuit_event(items[:Aggregator.CIRCUIT_ENDED_ITEMS])
+            else:
+                return False
 
         elif event_code == 'PRIVCOUNT_CONNECTION_ENDED':
-            # 'PRIVCOUNT_CONNECTION_ENDED', ChanID, TimeStart, TimeEnd, IP, isClient, isRelay
-            if len(items) == 6:
-                self._handle_connection_event(items[0:6])
-
-        elif event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
-            # 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED', ChanID, CircID, StreamID, isOutbound, BW, Time
-            if len(items) == 6:
-                self._handle_bytes_event(items[0:6])
+            if len(items) == Aggregator.CONNECTION_ENDED_ITEMS:
+                return self._handle_connection_event(items[:Aggregator.CONNECTION_ENDED_ITEMS])
+            else:
+                return False
 
         return True
 
+    STREAM_BYTES_ITEMS = 6
+
+    # 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED', ChanID, CircID, StreamID, isOutbound, BW, Time
     def _handle_bytes_event(self, items):
+        assert(len(items) == Aggregator.STREAM_BYTES_ITEMS)
+
+        # if we get an unexpected byte event, warn but ignore
         if self.traffic_model == None:
-            return
+            logging.warning("No traffic model for stream bytes event")
+            return True
 
         chanid, circid, strmid, is_outbound, bw_bytes = [int(v) for v in items[0:5]]
         ts = float(items[5])
 
         self.strm_bytes.setdefault(strmid, {}).setdefault(circid, [])
         self.strm_bytes[strmid][circid].append([bw_bytes, is_outbound, ts])
+        return True
 
+    STREAM_ENDED_ITEMS = 10
+
+    # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, RemoteHost, RemoteIP
     def _handle_stream_event(self, items):
-        chanid, circid, strmid, port, readbw, writebw = [long(v) for v in items[0:6]]
+        assert(len(items) == Aggregator.STREAM_ENDED_ITEMS)
+
+        chanid, circid, strmid, port, readbw, writebw = [int(v) for v in items[0:6]]
         start, end = float(items[6]), float(items[7])
-        is_dns = True if int(items[8]) == 1 else False
-        is_dir = True if int(items[9]) == 1 else False
+        remote_host = items[8]
+        remote_ip = items[9]
 
         # only count streams with legitimate transfers
         totalbw = readbw+writebw
-        if totalbw <= 0:
-            return
+        if readbw < 0 or writebw < 0 or totalbw <= 0:
+            return True
 
-        self.secure_counters.increment("StreamsAll", 1)
-        self.secure_counters.increment("StreamBytesAll", 1, totalbw)
+        self.secure_counters.increment('ExitStreamCount', 1)
+        self.secure_counters.increment('ExitStreamByteCount', 1, totalbw)
 
-        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0L, 'web':0L, 'p2p':0L, 'other':0L}, 'stream_starttimes': {'interactive':[], 'web':[], 'p2p':[], 'other':[]}})
+        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0, 'web':0, 'p2p':0, 'other':0}, 'stream_starttimes': {'interactive':[], 'web':[], 'p2p':[], 'other':[]}})
 
         stream_class = self._classify_port(port)
-        self.circ_info[chanid][circid]['num_streams'][stream_class] += 1L
+        self.circ_info[chanid][circid]['num_streams'][stream_class] += 1
         self.circ_info[chanid][circid]['stream_starttimes'][stream_class].append(start)
 
         # the amount we read from the stream is bound for the client
@@ -712,38 +732,38 @@ class Aggregator(ReconnectingClientFactory):
         ratio = self._encode_ratio(readbw, writebw)
         lifetime = end-start
 
-        self.secure_counters.increment("StreamBytesOutAll", writebw)
-        self.secure_counters.increment("StreamBytesInAll", readbw)
-        self.secure_counters.increment("StreamBytesRatioAll", ratio)
+        self.secure_counters.increment('ExitStreamOutboundByteCount', writebw)
+        self.secure_counters.increment('ExitStreamInboundByteCount', readbw)
+        self.secure_counters.increment('ExitStreamByteRatio', ratio)
 
         if stream_class == 'web':
-            self.secure_counters.increment("StreamsWeb", 1)
-            self.secure_counters.increment("StreamBytesWeb", 1, totalbw)
-            self.secure_counters.increment("StreamBytesOutWeb", writebw)
-            self.secure_counters.increment("StreamBytesInWeb", readbw)
-            self.secure_counters.increment("StreamBytesRatioWeb", ratio)
-            self.secure_counters.increment("StreamLifeTimeWeb", lifetime)
+            self.secure_counters.increment('ExitWebStreamCount', 1)
+            self.secure_counters.increment('ExitWebStreamByteCount', 1, totalbw)
+            self.secure_counters.increment('ExitWebStreamOutboundByteCount', writebw)
+            self.secure_counters.increment('ExitWebStreamInboundByteCount', readbw)
+            self.secure_counters.increment('ExitWebStreamByteRatio', ratio)
+            self.secure_counters.increment('ExitWebStreamLifeTime', lifetime)
         elif stream_class == 'interactive':
-            self.secure_counters.increment("StreamsInteractive", 1)
-            self.secure_counters.increment("StreamBytesInteractive", 1, totalbw)
-            self.secure_counters.increment("StreamBytesOutInteractive", writebw)
-            self.secure_counters.increment("StreamBytesInInteractive", readbw)
-            self.secure_counters.increment("StreamBytesRatioInteractive", ratio)
-            self.secure_counters.increment("StreamLifeTimeInteractive", lifetime)
+            self.secure_counters.increment('ExitInteractiveStreamCount', 1)
+            self.secure_counters.increment('ExitInteractiveStreamByteCount', 1, totalbw)
+            self.secure_counters.increment('ExitInteractiveStreamOutboundByteCount', writebw)
+            self.secure_counters.increment('ExitInteractiveStreamInboundByteCount', readbw)
+            self.secure_counters.increment('ExitInteractiveStreamByteRatio', ratio)
+            self.secure_counters.increment('ExitInteractiveStreamLifeTime', lifetime)
         elif stream_class == 'p2p':
-            self.secure_counters.increment("StreamsP2P", 1)
-            self.secure_counters.increment("StreamBytesP2P", 1, totalbw)
-            self.secure_counters.increment("StreamBytesOutP2P", writebw)
-            self.secure_counters.increment("StreamBytesInP2P", readbw)
-            self.secure_counters.increment("StreamBytesRatioP2P", ratio)
-            self.secure_counters.increment("StreamLifeTimeP2P", lifetime)
+            self.secure_counters.increment('ExitP2PStreamCount', 1)
+            self.secure_counters.increment('ExitP2PStreamByteCount', 1, totalbw)
+            self.secure_counters.increment('ExitP2PStreamOutboundByteCount', writebw)
+            self.secure_counters.increment('ExitP2PStreamInboundByteCount', readbw)
+            self.secure_counters.increment('ExitP2PStreamByteRatio', ratio)
+            self.secure_counters.increment('ExitP2PStreamLifeTime', lifetime)
         elif stream_class == 'other':
-            self.secure_counters.increment("StreamsOther", 1)
-            self.secure_counters.increment("StreamBytesOther", 1, totalbw)
-            self.secure_counters.increment("StreamBytesOutOther", writebw)
-            self.secure_counters.increment("StreamBytesInOther", readbw)
-            self.secure_counters.increment("StreamBytesRatioOther", ratio)
-            self.secure_counters.increment("StreamLifeTimeOther", lifetime)
+            self.secure_counters.increment('ExitOtherPortStreamCount', 1)
+            self.secure_counters.increment('ExitOtherPortStreamByteCount', 1, totalbw)
+            self.secure_counters.increment('ExitOtherPortStreamOutboundByteCount', writebw)
+            self.secure_counters.increment('ExitOtherPortStreamInboundByteCount', readbw)
+            self.secure_counters.increment('ExitOtherPortStreamByteRatio', ratio)
+            self.secure_counters.increment('ExitOtherPortStreamLifeTime', lifetime)
 
         # if we have a traffic model object, then we should use our observations to find the
         # most likely path through the HMM, and then count some aggregate statistics
@@ -759,6 +779,7 @@ class Aggregator(ReconnectingClientFactory):
             self.strm_bytes[strmid].pop(circid, None)
             if len(self.strm_bytes[strmid]) == 0:
                 self.strm_bytes.pop(strmid, None)
+        return True
 
     def _classify_port(self, port):
         p2p_ports = [1214]
@@ -794,32 +815,34 @@ class Aggregator(ReconnectingClientFactory):
             times.append(l[i] - l[i-1])
         return times
 
+    CIRCUIT_ENDED_ITEMS = 12
+
+    # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, NCellsIn, NCellsOut, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, PrevIsClient, NextIP, NextIsEdge
     def _handle_circuit_event(self, items):
-        chanid, circid, ncellsin, ncellsout, readbwdns, writebwdns, readbwexit, writebwexit = [long(v) for v in items[0:8]]
-        start, end = float(items[8]), float(items[9])
-        previp = items[10]
-        prevIsClient = True if int(items[11]) > 0 else False
-        prevIsRelay = True if int(items[12]) > 0 else False
-        nextip = items[13]
-        nextIsClient = True if int(items[14]) > 0 else False
-        nextIsRelay = True if int(items[15]) > 0 else False
+        assert(len(items) == Aggregator.CIRCUIT_ENDED_ITEMS)
+
+        chanid, circid, ncellsin, ncellsout, readbwexit, writebwexit = [int(v) for v in items[0:6]]
+        start, end = float(items[6]), float(items[7])
+        previp = items[8]
+        prevIsClient = True if int(items[9]) > 0 else False
+        nextip = items[10]
+        nextIsEdge = True if int(items[11]) > 0 else False
 
         # we get circuit events on both exits and entries
         # stream bw info is only avail on exits
-        # isclient is based on CREATE_FAST and I'm not sure that is always used by clients
-        if not prevIsRelay:
+        if prevIsClient:
             # previous hop is unkown, we are entry
-            self.secure_counters.increment("CircuitsAllEntry", 1)
+            self.secure_counters.increment('EntryCircuitCount', 1)
 
             # only count cells ratio on active circuits with legitimate transfers
             is_active = True if ncellsin + ncellsout >= 8 else False
             if is_active:
-                self.secure_counters.increment("CircuitsActiveEntry", 1)
-                self.secure_counters.increment("CircuitCellsIn", ncellsin)
-                self.secure_counters.increment("CircuitCellsOut", ncellsout)
-                self.secure_counters.increment("CircuitCellsRatio", self._encode_ratio(ncellsin, ncellsout))
+                self.secure_counters.increment('EntryActiveCircuitCount', 1)
+                self.secure_counters.increment('EntryCircuitInboundCellCount', ncellsin)
+                self.secure_counters.increment('EntryCircuitOutboundCellCount', ncellsout)
+                self.secure_counters.increment('EntryCircuitCellRatio', self._encode_ratio(ncellsin, ncellsout))
             else:
-                self.secure_counters.increment("CircuitsInactiveEntry", 1)
+                self.secure_counters.increment('EntryInactiveCircuitCount', 1)
 
             # count unique client ips
             # we saw this client within current rotation window
@@ -835,17 +858,17 @@ class Aggregator(ReconnectingClientFactory):
             # count number of completed circuits per client
             if is_active:
                 if 'num_active_completed' not in self.cli_ips_current[previp]:
-                    self.cli_ips_current[previp]['num_active_completed'] = 0L
-                self.cli_ips_current[previp]['num_active_completed'] += 1L
+                    self.cli_ips_current[previp]['num_active_completed'] = 0
+                self.cli_ips_current[previp]['num_active_completed'] += 1
             else:
                 if 'num_inactive_completed' not in self.cli_ips_current[previp]:
-                    self.cli_ips_current[previp]['num_inactive_completed'] = 0L
-                self.cli_ips_current[previp]['num_inactive_completed'] += 1L
+                    self.cli_ips_current[previp]['num_inactive_completed'] = 0
+                self.cli_ips_current[previp]['num_inactive_completed'] += 1
 
-        elif not nextIsRelay:
+        elif nextIsEdge:
             # prev hop is known relay but next is not, we are exit
-            self.secure_counters.increment("CircuitsAll", 1)
-            self.secure_counters.increment("CircuitLifeTimeAll", end - start)
+            self.secure_counters.increment('ExitCircuitCount', 1)
+            self.secure_counters.increment('ExitCircuitLifeTime', end - start)
 
             # check if we have any stream info in this circuit
             circ_is_known, has_completed_stream = False, False
@@ -856,44 +879,44 @@ class Aggregator(ReconnectingClientFactory):
 
             if circ_is_known and has_completed_stream:
                 # we have circuit info and at least one stream ended on it
-                self.secure_counters.increment("CircuitsActive", 1)
-                self.secure_counters.increment("CircuitLifeTimeActive", end - start)
+                self.secure_counters.increment('ExitActiveCircuitCount', 1)
+                self.secure_counters.increment('ExitActiveCircuitLifeTime', end - start)
 
                 # convenience
                 counts = self.circ_info[chanid][circid]['num_streams']
                 times = self.circ_info[chanid][circid]['stream_starttimes']
 
                 # first increment general counters
-                self.secure_counters.increment("CircuitStreamsAll", sum(counts.values()))
+                self.secure_counters.increment('ExitCircuitStreamCount', sum(counts.values()))
                 for isct in self._compute_interstream_creation_times(times['web'] + times['interactive'] + times['p2p'] + times['other']):
-                    self.secure_counters.increment("CircuitInterStreamCreationTime", isct)
+                    self.secure_counters.increment('ExitCircuitInterStreamCreationTime', isct)
 
                 # now only increment the classes that have positive counts
                 if counts['web'] > 0:
-                    self.secure_counters.increment("CircuitsWeb", 1)
-                    self.secure_counters.increment("CircuitStreamsWeb", counts['web'])
+                    self.secure_counters.increment('ExitWebCircuitCount', 1)
+                    self.secure_counters.increment('ExitCircuitWebStreamCount', counts['web'])
                     for isct in self._compute_interstream_creation_times(times['web']):
-                        self.secure_counters.increment("CircuitInterStreamCreationTimeWeb", isct)
+                        self.secure_counters.increment('ExitCircuitWebInterStreamCreationTime', isct)
                 if counts['interactive'] > 0:
-                    self.secure_counters.increment("CircuitsInteractive", 1)
-                    self.secure_counters.increment("CircuitStreamsInteractive", counts['interactive'])
+                    self.secure_counters.increment('ExitInteractiveCircuitCount', 1)
+                    self.secure_counters.increment('ExitCircuitInteractiveStreamCount', counts['interactive'])
                     for isct in self._compute_interstream_creation_times(times['interactive']):
-                        self.secure_counters.increment("CircuitInterStreamCreationTimeInteractive", isct)
+                        self.secure_counters.increment('ExitCircuitInteractiveInterStreamCreationTime', isct)
                 if counts['p2p'] > 0:
-                    self.secure_counters.increment("CircuitsP2P", 1)
-                    self.secure_counters.increment("CircuitStreamsP2P", counts['p2p'])
+                    self.secure_counters.increment('ExitP2PCircuitCount', 1)
+                    self.secure_counters.increment('ExitCircuitP2PStreamCount', counts['p2p'])
                     for isct in self._compute_interstream_creation_times(times['p2p']):
-                        self.secure_counters.increment("CircuitInterStreamCreationTimeP2P", isct)
+                        self.secure_counters.increment('ExitCircuitP2PInterStreamCreationTime', isct)
                 if counts['other'] > 0:
-                    self.secure_counters.increment("CircuitsOther", 1)
-                    self.secure_counters.increment("CircuitStreamsOther", counts['other'])
+                    self.secure_counters.increment('ExitOtherPortCircuitCount', 1)
+                    self.secure_counters.increment('ExitCircuitOtherPortStreamCount', counts['other'])
                     for isct in self._compute_interstream_creation_times(times['other']):
-                        self.secure_counters.increment("CircuitInterStreamCreationTimeOther", isct)
+                        self.secure_counters.increment('ExitCircuitOtherPortInterStreamCreationTime', isct)
 
             else:
                 # either we dont know circ, or no streams ended on it
-                self.secure_counters.increment("CircuitsInactive", 1)
-                self.secure_counters.increment("CircuitLifeTimeInactive", end - start)
+                self.secure_counters.increment('ExitInactiveCircuitCount', 1)
+                self.secure_counters.increment('ExitInactiveCircuitLifeTime', end - start)
 
             # cleanup
             if circ_is_known:
@@ -902,16 +925,22 @@ class Aggregator(ReconnectingClientFactory):
                 # if that was the last circuit on channel, remove the channel too
                 if len(self.circ_info[chanid]) == 0:
                     self.circ_info.pop(chanid, None)
+        return True
 
+    CONNECTION_ENDED_ITEMS = 5
+
+    # 'PRIVCOUNT_CONNECTION_ENDED', ChanID, TimeStart, TimeEnd, IP, isClient
     def _handle_connection_event(self, items):
-        chanid = long(items[0])
+        assert(len(items) == Aggregator.CONNECTION_ENDED_ITEMS)
+
+        chanid = int(items[0])
         start, end = float(items[1]), float(items[2])
         ip = items[3]
         isclient = True if int(items[4]) > 0 else False
-        isrelay = True if int(items[5]) > 0 else False
-        if not isrelay:
-            self.secure_counters.increment("ConnectionsAll", 1)
-            self.secure_counters.increment("ConnectionLifeTime", end - start)
+        if isclient:
+            self.secure_counters.increment('EntryConnectionCount', 1)
+            self.secure_counters.increment('EntryConnectionLifeTime', end - start)
+        return True
 
     def _do_rotate(self):
         logging.info("rotating circuit window now, {}".format(format_last_event_time_since(self.last_event_time)))
@@ -922,19 +951,19 @@ class Aggregator(ReconnectingClientFactory):
             for ip in self.cli_ips_previous:
                 client = self.cli_ips_previous[ip]
 
-                self.secure_counters.increment("ClientIPsUnique", 1)
+                self.secure_counters.increment('EntryClientIPCount', 1)
                 if client['is_active']:
-                    self.secure_counters.increment("ClientIPsActive", 1)
+                    self.secure_counters.increment('EntryActiveClientIPCount', 1)
                 else:
-                    self.secure_counters.increment("ClientIPsInactive", 1)
+                    self.secure_counters.increment('EntryInactiveClientIPCount', 1)
 
                 if 'num_active_completed' in client:
-                    self.secure_counters.increment("ClientIPCircuitsActive", client['num_active_completed'])
+                    self.secure_counters.increment('EntryClientIPActiveCircuitCount', client['num_active_completed'])
                 if 'num_inactive_completed' in client:
-                    self.secure_counters.increment("ClientIPCircuitsInactive", client['num_inactive_completed'])
+                    self.secure_counters.increment('EntryClientIPInactiveCircuitCount', client['num_inactive_completed'])
 
         # reset for next interval
         self.cli_ips_previous = self.cli_ips_current
         self.cli_ips_current = {}
         self.cli_ips_rotated = time()
-        self.num_rotations += 1L
+        self.num_rotations += 1

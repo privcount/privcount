@@ -2,6 +2,8 @@
 Created on Dec 6, 2016
 
 @author: teor
+
+See LICENSE for licensing information
 '''
 
 import logging

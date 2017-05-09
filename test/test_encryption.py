@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# See LICENSE for licensing information
 
 # test that privcount's encryption and decryption functions work
 

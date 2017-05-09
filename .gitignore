@@ -3,14 +3,20 @@
 *.pyc
 venv
 
+# counter renames
+*.bak
+
 # test outputs
+test/*.names
+test/*.names.unsorted
+test/*.names.extra
 test/counters.allocation.yaml
-test/old
-test/keys/secret_handshake.yaml
-test/keys/control_password.txt
 test/privcount.tallies.*.json
 test/privcount.outcome.*.json
 test/privcount.traffic.model.*.json
+test/keys/secret_handshake.yaml
+test/keys/control_password.txt
+test/old
 
 # these are dumped in the working directory
 privcount.results.pdf

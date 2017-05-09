@@ -2,11 +2,13 @@
 Created on Dec 11, 2016
 
 @author: rob
+
+See LICENSE for licensing information
 '''
 import math
 import logging
 
-from privcount.counter import register_dynamic_counter, BYTES_EVENT
+from privcount.counter import register_dynamic_counter, BYTES_EVENT, STREAM_EVENT
 
 def check_traffic_model_config(model_config):
     '''
@@ -51,7 +53,7 @@ class TrafficModel(object):
 
     def register_counters(self):
         for label in self.get_dynamic_counter_labels():
-            register_dynamic_counter(label, { BYTES_EVENT })
+            register_dynamic_counter(label, { BYTES_EVENT, STREAM_EVENT })
 
     def get_dynamic_counter_template_label_mapping(self):
         '''
@@ -69,29 +71,29 @@ class TrafficModel(object):
 
         for state in self.emit_p:
             for direction in self.emit_p[state]:
-                template_label = "TrafficModelTotalEmissions_<STATE>_<DIRECTION>"
-                counter_label = "TrafficModelTotalEmissions_{}_{}".format(state, direction)
+                template_label = "ExitStreamTrafficModelEmissionCount_<STATE>_<DIRECTION>"
+                counter_label = "ExitStreamTrafficModelEmissionCount_{}_{}".format(state, direction)
                 labels[counter_label] = template_label
 
-                template_label = "TrafficModelTotalLogDelay_<STATE>_<DIRECTION>"
-                counter_label = "TrafficModelTotalLogDelay_{}_{}".format(state, direction)
+                template_label = "ExitStreamTrafficModelLogDelayTime_<STATE>_<DIRECTION>"
+                counter_label = "ExitStreamTrafficModelLogDelayTime_{}_{}".format(state, direction)
                 labels[counter_label] = template_label
 
-                template_label = "TrafficModelTotalSquaredLogDelay_<STATE>_<DIRECTION>"
-                counter_label = "TrafficModelTotalSquaredLogDelay_{}_{}".format(state, direction)
+                template_label = "ExitStreamTrafficModelSquaredLogDelayTime_<STATE>_<DIRECTION>"
+                counter_label = "ExitStreamTrafficModelSquaredLogDelayTime_{}_{}".format(state, direction)
                 labels[counter_label] = template_label
 
         for src_state in self.trans_p:
             for dst_state in self.trans_p[src_state]:
                 if self.trans_p[src_state][dst_state] > 0.0:
-                    template_label = "TrafficModelTotalTransitions_<SRCSTATE>_<DSTSTATE>"
-                    counter_label = "TrafficModelTotalTransitions_{}_{}".format(src_state, dst_state)
+                    template_label = "ExitStreamTrafficModelTransitionCount_<SRCSTATE>_<DSTSTATE>"
+                    counter_label = "ExitStreamTrafficModelTransitionCount_{}_{}".format(src_state, dst_state)
                     labels[counter_label] = template_label
 
         for state in self.start_p:
             if self.start_p[state] > 0.0:
-                template_label = "TrafficModelTotalTransitions_START_<STATE>"
-                counter_label = "TrafficModelTotalTransitions_START_{}".format(state)
+                template_label = "ExitStreamTrafficModelTransitionCount_START_<STATE>"
+                counter_label = "ExitStreamTrafficModelTransitionCount_START_{}".format(state)
                 labels[counter_label] = template_label
 
         return labels
@@ -102,8 +104,10 @@ class TrafficModel(object):
         that is used to specify noise for this model. Static counter labels are not
         dependent on the model input.
         '''
-        static_labels = ["TrafficModelTotalEmissions", "TrafficModelTotalTransitions",
-                         "TrafficModelTotalLogDelay", "TrafficModelTotalSquaredLogDelay"]
+        static_labels = ['ExitStreamTrafficModelEmissionCount',
+                         'ExitStreamTrafficModelTransitionCount',
+                         'ExitStreamTrafficModelLogDelayTime',
+                         'ExitStreamTrafficModelSquaredLogDelayTime']
         labels = {}
         for static_label in static_labels:
             labels[static_label] = static_label
@@ -331,25 +335,25 @@ class TrafficModel(object):
             # we don't want to count negatives, so override delay if needed
             ldelay = 0 if delay < 1 else int(math.log(delay))
 
-            secure_counters.increment("TrafficModelTotalEmissions", 1, num_increments=1)
-            label = "TrafficModelTotalEmissions_{}_{}".format(state, dir_code)
+            secure_counters.increment("ExitStreamTrafficModelEmissionCount", 1, num_increments=1)
+            label = "ExitStreamTrafficModelEmissionCount_{}_{}".format(state, dir_code)
             secure_counters.increment(label, 1, num_increments=1)
 
-            secure_counters.increment("TrafficModelTotalLogDelay", 1, num_increments=ldelay)
-            label = "TrafficModelTotalLogDelay_{}_{}".format(state, dir_code)
+            secure_counters.increment("ExitStreamTrafficModelLogDelayTime", 1, num_increments=ldelay)
+            label = "ExitStreamTrafficModelLogDelayTime_{}_{}".format(state, dir_code)
             secure_counters.increment(label, 1, num_increments=ldelay)
 
-            secure_counters.increment("TrafficModelTotalSquaredLogDelay", 1, num_increments=ldelay*ldelay)
-            label = "TrafficModelTotalSquaredLogDelay_{}_{}".format(state, dir_code)
+            secure_counters.increment("ExitStreamTrafficModelSquaredLogDelayTime", 1, num_increments=ldelay*ldelay)
+            label = "ExitStreamTrafficModelSquaredLogDelayTime_{}_{}".format(state, dir_code)
             secure_counters.increment(label, 1, num_increments=ldelay*ldelay)
 
             if i == 0: # track starting transitions
-                label = "TrafficModelTotalTransitions_START_{}".format(state)
+                label = "ExitStreamTrafficModelTransitionCount_START_{}".format(state)
                 secure_counters.increment(label, 1, num_increments=1)
             if (i+1) < num_states:
                 next_state = likliest_states[i+1]
-                secure_counters.increment("TrafficModelTotalTransitions", 1, num_increments=1)
-                label = "TrafficModelTotalTransitions_{}_{}".format(state, next_state)
+                secure_counters.increment("ExitStreamTrafficModelTransitionCount", 1, num_increments=1)
+                label = "ExitStreamTrafficModelTransitionCount_{}_{}".format(state, next_state)
                 secure_counters.increment(label, 1, num_increments=1)
 
     def update_from_tallies(self, tallies, trans_inertia=0.1, emit_inertia=0.1):
@@ -367,7 +371,7 @@ class TrafficModel(object):
             trans_count[src_state] = {}
             for dst_state in self.trans_p[src_state]:
                 trans_count[src_state][dst_state] = 0
-                src_dst_label = "TrafficModelTotalTransitions_{}_{}".format(src_state, dst_state)
+                src_dst_label = "ExitStreamTrafficModelTransitionCount_{}_{}".format(src_state, dst_state)
                 if src_dst_label in tallies:
                     val = tallies[src_dst_label]
                     trans_count[src_state][dst_state] = val
@@ -384,19 +388,19 @@ class TrafficModel(object):
         for state in self.emit_p:
             obs_dir_emit_count[state], obs_mu[state], obs_sigma[state] = {}, {}, {}
             for direction in self.emit_p[state]:
-                sd_label = "TrafficModelTotalEmissions_{}_{}".format(state, direction)
+                sd_label = "ExitStreamTrafficModelEmissionCount_{}_{}".format(state, direction)
                 if sd_label in tallies:
                     obs_dir_emit_count[state][direction] = tallies[sd_label]
                 else:
                     obs_dir_emit_count[state][direction] = 0
 
-                mu_label = "TrafficModelTotalLogDelay_{}_{}".format(state, direction)
+                mu_label = "ExitStreamTrafficModelLogDelayTime_{}_{}".format(state, direction)
                 if mu_label in tallies and obs_dir_emit_count[state][direction] > 0:
                     obs_mu[state][direction] = float(tallies[mu_label])/float(obs_dir_emit_count[state][direction])
                 else:
                     obs_mu[state][direction] = 0.0
 
-                ss_label = "TrafficModelTotalSquaredLogDelay_{}_{}".format(state, direction)
+                ss_label = "ExitStreamTrafficModelSquaredLogDelayTime_{}_{}".format(state, direction)
                 if ss_label in tallies and sd_label in tallies and tallies[sd_label] > 0:
                     obs_var = float(tallies[ss_label])/float(tallies[sd_label])
                     obs_var -= obs_mu[state][direction]**2
@@ -432,7 +436,7 @@ class TrafficModel(object):
         start_total = 0
         for state in self.start_p:
             if self.start_p[state] > 0.0:
-                s_label = "TrafficModelTotalTransitions_START_{}".format(state)
+                s_label = "ExitStreamTrafficModelTransitionCount_START_{}".format(state)
                 if s_label in tallies:
                     s_count[state] = tallies[s_label]
                 else:

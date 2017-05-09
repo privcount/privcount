@@ -1,10 +1,11 @@
+#!/usr/bin/env python
 '''
 Created on Dec 12, 2015
 
 @author: rob
-'''
 
-#!/usr/bin/env python
+See LICENSE for licensing information
+'''
 
 from distutils.core import setup
 

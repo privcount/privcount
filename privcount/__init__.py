@@ -1,3 +1,4 @@
+# See LICENSE for licensing information
 __all__ = [
    'config',
    'connection',

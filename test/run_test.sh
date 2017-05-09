@@ -1,4 +1,5 @@
 #!/bin/bash
+# See LICENSE for licensing information
 
 # Shell settings
 # fail on failed commands or unset variables
@@ -308,6 +309,11 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
   esac
 fi
 
+# Run the counter matching checks
+echo "Checking that all counters have events, increments, and tests:"
+"$TEST_DIR/test_counter_match.sh"
+echo ""
+
 if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
   # Run the python-based unit tests
   echo "Testing time formatting:"
@@ -594,6 +600,7 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e "seconds of user activity" -e "delay_period not specified" \
   -e notice \
   -e "Path for PidFile" -e "Your log may contain" \
+  -e "no nameservers" -e "any working nameservers" \
   "$TEST_DIR/"privcount.*.latest.log \
   || true
 # Log any source-specific warnings

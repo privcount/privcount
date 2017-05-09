@@ -1,7 +1,11 @@
 # histograms represent a collection of counters that together define a histogram
+
+# when you modify the counters in this file, run:
+# test/test_counter_match.sh
+
 counters:
     # ENTRY - cells sent 'in' to client per active circuit on client OR connections
-    CircuitCellsIn:
+    EntryCircuitInboundCellCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -14,7 +18,7 @@ counters:
         - [8192.0, 16384.0]
         - [16384.0, .inf]
     # ENTRY - cells sent 'out' from client per active circuit on client OR connections
-    CircuitCellsOut:
+    EntryCircuitOutboundCellCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -28,7 +32,7 @@ counters:
         - [16384.0, .inf]
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    CircuitCellsRatio:
+    EntryCircuitCellRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -74,35 +78,42 @@ counters:
         - [19.0, 20.0]
         - [20.0, .inf]
     # EXIT - circuit inter-stream creation times in seconds
-    CircuitInterStreamCreationTime:
+    ExitCircuitInterStreamCreationTime:
         bins:
         - [0.0, 3.0]
         - [3.0, 30.0]
         - [30.0, 300.0]
         - [300.0, .inf]
     # EXIT - circuit inter-stream creation times in seconds for IRC/SSH
-    CircuitInterStreamCreationTimeInteractive:
+    ExitCircuitInteractiveInterStreamCreationTime:
         bins:
         - [0.0, 3.0]
         - [3.0, 30.0]
         - [30.0, 300.0]
         - [300.0, .inf]
-    # EXIT - circuit inter-stream creation times in seconds for for port>=10000 and no other class
-    CircuitInterStreamCreationTimeOther:
+    # EXIT - circuit inter-stream creation times in seconds for port>=10000 and no other class
+    ExitCircuitOtherPortInterStreamCreationTime:
+        bins:
+        - [0.0, 3.0]
+        - [3.0, 30.0]
+        - [30.0, 300.0]
+        - [300.0, .inf]
+    # EXIT - circuit inter-stream creation times in seconds for P2P
+    ExitCircuitP2PInterStreamCreationTime:
         bins:
         - [0.0, 3.0]
         - [3.0, 30.0]
         - [30.0, 300.0]
         - [300.0, .inf]
     # EXIT - circuit inter-stream creation times in seconds for HTTP/HTTPS
-    CircuitInterStreamCreationTimeWeb:
+    ExitCircuitWebInterStreamCreationTime:
         bins:
         - [0.0, 3.0]
         - [3.0, 30.0]
         - [30.0, 300.0]
         - [300.0, .inf]
     # ENTRY - circuit times in seconds for all circuits
-    CircuitLifeTimeAll:
+    ExitCircuitLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
@@ -112,7 +123,7 @@ counters:
         - [1080.0, 1200.0]
         - [1200.0, .inf]
     # ENTRY - circuit times in seconds for active circuits
-    CircuitLifeTimeActive:
+    ExitActiveCircuitLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
@@ -122,7 +133,7 @@ counters:
         - [1080.0, 1200.0]
         - [1200.0, .inf]
     # ENTRY - circuit times in seconds for inactive circuits
-    CircuitLifeTimeInactive:
+    ExitInactiveCircuitLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
@@ -132,7 +143,7 @@ counters:
         - [1080.0, 1200.0]
         - [1200.0, .inf]
     # EXIT - completed streams per active circuit
-    CircuitStreamsAll:
+    ExitCircuitStreamCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 5.0]
@@ -147,7 +158,7 @@ counters:
         - [200.0, 400.0]
         - [400.0, .inf]
     # EXIT - completed streams per active circuit for IRC/SSH
-    CircuitStreamsInteractive:
+    ExitCircuitInteractiveStreamCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -157,7 +168,7 @@ counters:
         - [8.0, 10.0]
         - [10.0, .inf]
     # EXIT - completed streams per active circuit for port>=10000 and no other class
-    CircuitStreamsOther:
+    ExitCircuitOtherPortStreamCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 4.0]
@@ -166,8 +177,8 @@ counters:
         - [16.0, 32.0]
         - [32.0, 64.0]
         - [64.0, .inf]
-    # EXIT - completed streams per active circuit for HTTP/HTTPS
-    CircuitStreamsWeb:
+    # EXIT - completed streams per active circuit for P2P
+    ExitCircuitP2PStreamCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 5.0]
@@ -181,32 +192,63 @@ counters:
         - [150.0, 200.0]
         - [200.0, 400.0]
         - [400.0, .inf]
+    # EXIT - completed streams per active circuit for HTTP/HTTPS
+    ExitCircuitWebStreamCount:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 5.0]
+        - [5.0, 10.0]
+        - [10.0, 20.0]
+        - [20.0, 30.0]
+        - [30.0, 50.0]
+        - [50.0, 75.0]
+        - [75.0, 100.0]
+        - [100.0, 150.0]
+        - [150.0, 200.0]
+        - [200.0, 400.0]
+        - [400.0, .inf]
+    # ENTRY - number of circuits
+    EntryCircuitCount:
+        bins:
+        - [0.0, .inf]
+    # ENTRY - number of circuits with at least one stream completed
+    EntryActiveCircuitCount:
+        bins:
+        - [0.0, .inf]
+    # ENTRY - number of circuits with no streams completed
+    EntryInactiveCircuitCount:
+        bins:
+        - [0.0, .inf]
     # EXIT - number of circuits
-    CircuitsAll:
+    ExitCircuitCount:
         bins:
         - [0.0, .inf]
     # EXIT - number of circuits with at least one stream completed
-    CircuitsActive:
+    ExitActiveCircuitCount:
         bins:
         - [0.0, .inf]
     # EXIT - number of circuits with no streams completed
-    CircuitsInactive:
+    ExitInactiveCircuitCount:
         bins:
         - [0.0, .inf]
     # EXIT - number of circuits for IRC/SSH
-    CircuitsInteractive:
+    ExitInteractiveCircuitCount:
         bins:
         - [0.0, .inf]
     # EXIT - number of circuits for port>=10000 and no other class
-    CircuitsOther:
+    ExitOtherPortCircuitCount:
+        bins:
+        - [0.0, .inf]
+    # EXIT - number of circuits for P2P
+    ExitP2PCircuitCount:
         bins:
         - [0.0, .inf]
     # EXIT - number of circuits for HTTP/HTTPS
-    CircuitsWeb:
+    ExitWebCircuitCount:
         bins:
         - [0.0, .inf]
     # ENTRY - circuits per client IP with at least 8 cells transferred (10 min rotation)
-    ClientIPCircuitsActive:
+    EntryClientIPActiveCircuitCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 4.0]
@@ -218,7 +260,7 @@ counters:
         - [30.0, 50.0]
         - [50.0, .inf]
     # ENTRY - circuits per client IP with less than 8 cells transferred (10 min rotation)
-    ClientIPCircuitsInactive:
+    EntryClientIPInactiveCircuitCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 4.0]
@@ -230,7 +272,7 @@ counters:
         - [30.0, 50.0]
         - [50.0, .inf]
     # ENTRY - unique client IPs seen with at least 8 cells transferred (10 min rotation)
-    ClientIPsActive:
+    EntryActiveClientIPCount:
         bins:
         - [0.0, 100.0]
         - [100.0, 250.0]
@@ -238,7 +280,7 @@ counters:
         - [500.0, 1000.0]
         - [1000.0, .inf]
     # ENTRY - unique client IPs seen with less than 8 cells transferred (10 min rotation)
-    ClientIPsInactive:
+    EntryInactiveClientIPCount:
         bins:
         - [0.0, 100.0]
         - [100.0, 250.0]
@@ -246,23 +288,30 @@ counters:
         - [500.0, 1000.0]
         - [1000.0, .inf]
     # ENTRY - unique client IPs seen (10 min rotation)
-    ClientIPsUnique:
+    EntryClientIPCount:
         bins:
         - [0.0, 100.0]
         - [100.0, 250.0]
         - [250.0, 500.0]
         - [500.0, 1000.0]
         - [1000.0, .inf]
-    # ENTRY - number of circuits to clients
-    CircuitsAll:
-        bins:
-        - [0.0, .inf]
     # ENTRY - number of OR connections to clients
-    ConnectionsAll:
+    EntryConnectionCount:
         bins:
         - [0.0, .inf]
+    # ENTRY - connection times in seconds for all connections
+    EntryConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+
     # EXIT - bytes received per completed stream
-    StreamBytesAll:
+    ExitStreamByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -276,7 +325,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream
-    StreamBytesInAll:
+    ExitStreamInboundByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -290,7 +339,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream for IRC/SSH
-    StreamBytesInInteractive:
+    ExitInteractiveStreamInboundByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -304,7 +353,21 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream for port>=10000 and no other class
-    StreamBytesInOther:
+    ExitOtherPortStreamInboundByteCount:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    # EXIT - bytes received from server per completed stream for P2P
+    ExitP2PStreamInboundByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -318,7 +381,21 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream for HTTP/HTTPS
-    StreamBytesInWeb:
+    ExitWebStreamInboundByteCount:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    # EXIT - bytes received per completed stream for SSH/IRC
+    ExitInteractiveStreamByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -332,7 +409,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received per completed stream for port>=10000 and no other class
-    StreamBytesOther:
+    ExitOtherPortStreamByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -346,7 +423,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream
-    StreamBytesOutAll:
+    ExitStreamOutboundByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -360,7 +437,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream for IRC/SSH
-    StreamBytesOutInteractive:
+    ExitInteractiveStreamOutboundByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -374,7 +451,21 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream for port>=10000 and no other class
-    StreamBytesOutOther:
+    ExitOtherPortStreamOutboundByteCount:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    # EXIT - bytes sent to server per completed stream for P2P
+    ExitP2PStreamOutboundByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -388,7 +479,21 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream for HTTP/HTTPS
-    StreamBytesOutWeb:
+    ExitWebStreamOutboundByteCount:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    # EXIT - bytes received per completed stream for P2P
+    ExitP2PStreamByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -403,7 +508,7 @@ counters:
         - [8388608.0, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioAll:
+    ExitStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -450,7 +555,7 @@ counters:
         - [20.0, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for IRC/SSH
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioInteractive:
+    ExitInteractiveStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -497,7 +602,54 @@ counters:
         - [20.0, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for port>=10000 and no other class
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioOther:
+    ExitOtherPortStreamByteRatio:
+        bins:
+        - [-.inf, -20.0]
+        - [-20.0, -19.0]
+        - [-19.0, -18.0]
+        - [-18.0, -17.0]
+        - [-17.0, -16.0]
+        - [-16.0, -15.0]
+        - [-15.0, -14.0]
+        - [-14.0, -13.0]
+        - [-13.0, -12.0]
+        - [-12.0, -11.0]
+        - [-11.0, -10.0]
+        - [-10.0, -9.0]
+        - [-9.0, -8.0]
+        - [-8.0, -7.0]
+        - [-7.0, -6.0]
+        - [-6.0, -5.0]
+        - [-5.0, -4.0]
+        - [-4.0, -3.0]
+        - [-3.0, -2.0]
+        - [-2.0, -1.0]
+        - [-1.0, 0.0]
+        - [0.0, 0.00000000000001]
+        - [0.00000000000001, 1.0]
+        - [1.0, 2.0]
+        - [2.0, 3.0]
+        - [3.0, 4.0]
+        - [4.0, 5.0]
+        - [5.0, 6.0]
+        - [6.0, 7.0]
+        - [7.0, 8.0]
+        - [8.0, 9.0]
+        - [9.0, 10.0]
+        - [10.0, 11.0]
+        - [11.0, 12.0]
+        - [12.0, 13.0]
+        - [13.0, 14.0]
+        - [14.0, 15.0]
+        - [15.0, 16.0]
+        - [16.0, 17.0]
+        - [17.0, 18.0]
+        - [18.0, 19.0]
+        - [19.0, 20.0]
+        - [20.0, .inf]
+    # EXIT - ratio of bytes sent to bytes received from server per completed stream for P2P
+    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    ExitP2PStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -544,7 +696,7 @@ counters:
         - [20.0, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for HTTP/HTTPS
     # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
-    StreamBytesRatioWeb:
+    ExitWebStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -590,7 +742,7 @@ counters:
         - [19.0, 20.0]
         - [20.0, .inf]
     # EXIT - bytes per completed stream for HTTP/HTTPS
-    StreamBytesWeb:
+    ExitWebStreamByteCount:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -604,7 +756,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - time in seconds between create and destroy per completed stream for IRC/SSH
-    StreamLifeTimeInteractive:
+    ExitInteractiveStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -621,7 +773,24 @@ counters:
         - [600.0, 660.0]
         - [660.0, .inf]
     # EXIT - time in seconds between create and destroy per completed stream for port>=10000 and no other class
-    StreamLifeTimeOther:
+    ExitOtherPortStreamLifeTime:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 2.0]
+        - [2.0, 3.0]
+        - [3.0, 4.0]
+        - [4.0, 5.0]
+        - [5.0, 10.0]
+        - [10.0, 15.0]
+        - [15.0, 30.0]
+        - [30.0, 60.0]
+        - [60.0, 120.0]
+        - [120.0, 300.0]
+        - [300.0, 600.0]
+        - [600.0, 660.0]
+        - [660.0, .inf]
+    # EXIT - time in seconds between create and destroy per completed stream for P2P
+    ExitP2PStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -638,7 +807,7 @@ counters:
         - [600.0, 660.0]
         - [660.0, .inf]
     # EXIT - time in seconds between create and destroy per completed stream for HTTP/HTTPS
-    StreamLifeTimeWeb:
+    ExitWebStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -655,18 +824,26 @@ counters:
         - [600.0, 660.0]
         - [660.0, .inf]
     # EXIT - number of streams to servers
-    StreamsAll:
+    ExitStreamCount:
+        bins:
+        - [0.0, .inf]
+    # EXIT - number of streams to servers for SSH/IRC
+    ExitInteractiveStreamCount:
         bins:
         - [0.0, .inf]
     # EXIT - number of streams to servers for port>=10000 and no other class
-    StreamsOther:
+    ExitOtherPortStreamCount:
+        bins:
+        - [0.0, .inf]
+    # EXIT - number of streams to servers for P2P
+    ExitP2PStreamCount:
         bins:
         - [0.0, .inf]
     # EXIT - number of streams to servers for HTTP/HTTPS
-    StreamsWeb:
+    ExitWebStreamCount:
         bins:
         - [0.0, .inf]
     # not counted - used only to make sure aggregation was performed correctly
-    SanityCheck:
+    ZeroCount:
         bins:
         - [0.0, .inf]

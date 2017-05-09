@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# See LICENSE for licensing information
 
 import sys, os, argparse, json
 from itertools import cycle

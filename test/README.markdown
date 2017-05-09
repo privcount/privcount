@@ -59,7 +59,7 @@ Start the PrivCount components:
     privcount dc config.yaml
 
 Now wait until the end of the epoch and check the tally results json file published by the
-tally server. The results for the 'SanityCheck' counter should indicate a zero count for the
+tally server. The results for the 'ZeroCount' counter should indicate a zero count for the
 bin representing counts in the range [0, Infinity).
 
 If you have matplotlib installed, you can then visualize the results:
@@ -71,3 +71,36 @@ and open the PDF file that was created.
 The full results, including context, are in:
 
     privcount.outcome.*.json
+
+#### Generating an events.txt file
+
+Here is how I generate an events.txt file:
+
+1. Find the chutney control port of the exit or guard you are interested in.
+   Control ports start at 8000, and are assigned in order of node creation
+   in the chutney/networks/* file.
+2. Open a terminal and run:
+    privcount/test/test_tor_ctl_event.py 8002 > raw_events.txt
+   Where 8002 is the port you are interested in.
+3. Open another terminal in a privcount-patched tor directory
+4. Run:
+    ../chutney/tools/test-network.sh --flavour basic-min --data 10240 --connections 10
+   The single client in this network will produce 10 streams with 10KB of data
+   each, or 100KB of data, through the single exit in the network.
+5. Wait around 60 seconds for chutney to finish
+6. Process the raw file with:
+    cat raw_events.txt | grep -v "^Relay" | cut -d" " -f 9- > events.txt
+7. Optionally, use 'localhost' instead of '127.0.0.1' for hostnames:
+    sed "s/\(PRIVCOUNT_STREAM_ENDED.*\)127.0.0.1 127.0.0.1/\1localhost 127.0.0.1/" events.txt > local_events.txt
+     mv local_events.txt events.txt
+8. Check the events file actually has some entries:
+    head -10 events.txt
+    wc -l events.txt
+8. Test the new events file using:
+    privcount/test/run_test.sh -I . -x -s inject
+
+Each chutney client conntects via a random exit. If you use a chutney flavour
+with onion services, a random client connects to each hidden service.
+
+Chutney does not use DNS by default, so there are no PRIVCOUNT_DNS_RESOLVED
+events.
