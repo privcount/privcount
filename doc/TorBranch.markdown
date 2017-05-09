@@ -1,5 +1,8 @@
 # The PrivCount Tor Branch
 
+(This document is about the PrivCount Tor events patch. For PrivCount python
+code versions, see PrivCountVersion.markdown.)
+
 PrivCount obtains its Tor usage data via Tor Control Events. These events have
 been implemented specifically for PrivCount: they have not yet been merged into
 Tor master.

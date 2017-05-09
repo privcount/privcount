@@ -7,18 +7,21 @@ venv
 *.bak
 
 # test outputs
-test/counters.allocation.yaml
 test/*.names
 test/*.names.unsorted
 test/*.names.extra
-test/privcount.results.pdf
+test/counters.allocation.yaml
 test/privcount.tallies.*.json
 test/privcount.outcome.*.json
 test/privcount.traffic.model.*.json
-test/privcount.*.log
-test/old
 test/keys/secret_handshake.yaml
 test/keys/control_password.txt
+test/old
+
+# these are dumped in the working directory
+privcount.results.pdf
+privcount.*.log
+tor.pid
 
 # generated test config files
 test/config.chutney.yaml.*
