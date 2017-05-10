@@ -7,7 +7,8 @@ from os import urandom, path
 from base64 import b64encode, b64decode
 from binascii import hexlify, unhexlify
 
-from twisted.internet import reactor
+from twisted.internet import reactor, task
+from twisted.internet.error import ReactorNotRunning
 from twisted.protocols.basic import LineOnlyReceiver
 
 from cryptography.hazmat.primitives.hashes import SHA256
@@ -15,6 +16,17 @@ from cryptography.hazmat.primitives.hashes import SHA256
 from privcount.connection import transport_info, transport_peer, transport_host
 from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
+
+def errorCallback(failure):
+    '''
+    Called by twisted when a deferred function fails
+    '''
+    logging.error(failure.getBriefTraceback())
+    logging.debug(failure.getTraceback())
+    try:
+        reactor.stop()
+    except ReactorNotRunning:
+        pass
 
 class PrivCountProtocol(LineOnlyReceiver):
     '''
@@ -51,7 +63,10 @@ class PrivCountProtocol(LineOnlyReceiver):
             logging.error(
                 "Exception {} while initialising PrivCountProtocol instance"
                 .format(e))
-            reactor.stop()
+            try:
+                reactor.stop()
+            except ReactorNotRunning:
+                pass
 
     def connectionMade(self):
         '''
@@ -125,7 +140,10 @@ class PrivCountProtocol(LineOnlyReceiver):
             # bring down the privcount network.
             # Since we ignore unrecognised events, the client would have to be
             # maliciously crafted, not just a port scanner.
-            reactor.stop()
+            try:
+                reactor.stop()
+            except ReactorNotRunning:
+                pass
 
         if not self.is_valid_connection:
             self.protocol_failed()
@@ -968,7 +986,17 @@ class PrivCountClientProtocol(PrivCountProtocol):
             parts = event_payload.split()
             if len(parts) == 1:
                 period = int(parts[0])
-                reactor.callLater(period, self.factory.do_checkin) # pylint: disable=E1101
+                # we have to store the checkin task in the factory,
+                # because the protocol is re-created on every connection
+                checkin_task = self.factory.get_checkin_task()
+                if checkin_task is not None and checkin_task.running:
+                    checkin_task.stop()
+                    self.factory.set_checkin_task(None)
+                checkin_task = task.LoopingCall(self.factory.do_checkin)
+                self.factory.set_checkin_task(checkin_task)
+                # we ignore any errors from do_checkin, see bug #47
+                checkin_deferred = checkin_task.start(period, now=False)
+                checkin_deferred.addErrback(errorCallback)
                 self.sendLine("CHECKIN SUCCESS")
                 self.protocol_succeeded()
                 return True

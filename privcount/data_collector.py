@@ -21,7 +21,7 @@ from privcount.counter import SecureCounters, counter_modulus, add_counter_limit
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since
 from privcount.node import PrivCountClient
-from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol
+from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, errorCallback
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
 SINGLE_BIN = SecureCounters.SINGLE_BIN
@@ -40,7 +40,7 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
     def __init__(self, config_filepath):
         PrivCountClient.__init__(self, config_filepath)
         self.aggregator = None
-        self.aggregator_defer_id = None
+        self.is_aggregator_pending = False
         self.context = {}
 
     def buildProtocol(self, addr):
@@ -58,7 +58,7 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         state = self.load_state()
         if state is not None:
             self.aggregator = state['aggregator']
-            self.aggregator_defer_id = state['aggregator_defer_id']
+            self.is_aggregator_pending = state['is_aggregator_pending']
 
     def stopFactory(self):
         '''
@@ -68,14 +68,14 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         return
         if self.aggregator is not None:
             # export everything that would be needed to survive an app restart
-            state = {'aggregator': self.aggregator, 'aggregator_defer_id': self.aggregator_defer_id}
+            state = {'aggregator': self.aggregator, 'is_aggregator_pending': self.is_aggregator_pending}
             self.dump_state(state)
 
     def run(self):
         '''
         Called by twisted
         '''
-        # load iniital config
+        # load initial config
         self.refresh_config()
         if self.config is None:
             logging.critical("cannot start due to error in config file")
@@ -103,6 +103,8 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         '''
         Called by protocol
         Refresh the config, and try to connect to the server
+        This function is usually called using LoopingCall, so any exceptions
+        will be turned into log messages.
         '''
         # TODO: Refactor common client code - issue #121
         self.refresh_config()
@@ -172,8 +174,10 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
 
         # sync the time that we start listening for Tor events
-        self.aggregator_defer_id = reactor.callLater(defer_time, self._start_aggregator_deferred)
-
+        aggregator_deferred = task.deferLater(reactor, defer_time,
+                                              self._start_aggregator_deferred)
+        self.is_aggregator_pending = True
+        aggregator_deferred.addErrback(errorCallback)
         # return the generated shares now
         shares = self.aggregator.get_shares()
         # this is a dict {sk_uid : sk_msg} for each sk
@@ -191,8 +195,13 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         return shares
 
     def _start_aggregator_deferred(self):
-        self.aggregator_defer_id = None
-        self.aggregator.start()
+        '''
+        This function is called using deferLater, so any exceptions will be
+        handled by errorCallback.
+        '''
+        if self.is_aggregator_pending:
+            self.is_aggregator_pending = False
+            self.aggregator.start()
 
     def do_stop(self, config):
         '''
@@ -206,9 +215,8 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         logging.info("got command to stop collection phase")
 
         counts = None
-        if self.aggregator_defer_id is not None:
-            self.aggregator_defer_id.cancel()
-            self.aggregator_defer_id = None
+        if self.is_aggregator_pending:
+            self.is_aggregator_pending = False
             assert self.aggregator is None
             logging.info("Aggregator deferred, counts never started")
         elif self.aggregator is not None:
@@ -346,7 +354,9 @@ class Aggregator(ReconnectingClientFactory):
         self.connector_list = connect(self, self.tor_control_port)
         # Twisted doesn't want a list of connectors, it only wants one
         self.connector = choose_a_connection(self.connector_list)
-        self.rotator = task.LoopingCall(self._do_rotate).start(600, now=False)
+        self.rotator = task.LoopingCall(self._do_rotate)
+        rotator_deferred = self.rotator.start(5, now=False)
+        rotator_deferred.addErrback(errorCallback)
         self.cli_ips_rotated = time()
         # if we've already built the protocol before starting
         if self.protocol is not None:
@@ -364,8 +374,8 @@ class Aggregator(ReconnectingClientFactory):
             self.protocol.stopCollection()
             self.protocol.quit()
             self.protocol = None
-        if self.rotator is not None:
-            self.rotator.cancel()
+        if self.rotator is not None and self.rotator.running:
+            self.rotator.stop()
             self.rotator = None
         if self.connector_list is not None:
             disconnect(self.connector_list)
@@ -968,6 +978,10 @@ class Aggregator(ReconnectingClientFactory):
         return True
 
     def _do_rotate(self):
+        '''
+        This function is called using LoopingCall, so any exceptions will be
+        turned into log messages.
+        '''
         logging.info("rotating circuit window now, {}".format(format_last_event_time_since(self.last_event_time)))
 
         # don't count anything in the first rotation period, since events that ended up in the

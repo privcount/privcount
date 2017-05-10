@@ -24,7 +24,7 @@ from privcount.counter import SecureCounters, counter_modulus, min_blinded_count
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since
 from privcount.node import PrivCountServer, continue_collecting, log_tally_server_status
-from privcount.protocol import PrivCountServerProtocol
+from privcount.protocol import PrivCountServerProtocol, errorCallback
 from privcount.statistics_noise import get_noise_allocation
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
@@ -45,6 +45,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         self.collection_phase = None
         self.idle_time = time()
         self.num_completed_collection_phases = 0
+        self.refresh_task = None
 
     def buildProtocol(self, addr):
         '''
@@ -66,6 +67,9 @@ class TallyServer(ServerFactory, PrivCountServer):
 
     def stopFactory(self):
         # TODO
+        if self.refresh_task is not None and self.refresh_task.running:
+            self.refresh_task.stop()
+            self.refresh_task = None
         return
         if self.collection_phase is not None or len(self.clients) > 0:
             # export everything that would be needed to survive an app restart
@@ -83,8 +87,9 @@ class TallyServer(ServerFactory, PrivCountServer):
             return
 
         # refresh and check status every event_period seconds
-        task.LoopingCall(self.refresh_loop).start(self.config['event_period'],
-                                                  now=False)
+        self.refresh_task = task.LoopingCall(self.refresh_loop)
+        refresh_deferred = self.refresh_task.start(self.config['event_period'], now=False)
+        refresh_deferred.addErrback(errorCallback)
 
         # setup server for receiving blinded counts from the DC nodes and key shares from the SK nodes
         listen_port = self.config['listen_port']
@@ -101,6 +106,9 @@ class TallyServer(ServerFactory, PrivCountServer):
         Perform the TS event loop:
         Refresh the config, check clients, check if we want to start or stop
         collecting, and log a status update.
+        This function is called using LoopingCall, so any exceptions will be
+        turned into log messages. (This is the behaviour we want for malformed
+        config files.)
         '''
         # make sure we have the latest config and counters
         self.refresh_config()
@@ -398,6 +406,11 @@ class TallyServer(ServerFactory, PrivCountServer):
             log_error()
 
     def clear_dead_clients(self):
+        '''
+        Check how long it has been since clients have successfully contacted
+        us, and mark clients that have been down for too long.
+        Also warns if clients have been done for a smaller amount of time.
+        '''
         now = time()
 
         for uid in self.clients.keys():
@@ -406,13 +419,18 @@ class TallyServer(ServerFactory, PrivCountServer):
             if 'public_key' in c_status:
                 c_status['public_key'] = "(public key)"
             time_since_checkin = now - c_status['alive']
+            # Maximum RTT in ~2005 was 20 seconds
+            # http://www3.cs.stonybrook.edu/~phillipa/papers/SPECTS.pdf
+            # There's no guarantee the last rtt will be the same as this one,
+            # so add a few seconds unconditionally
+            rtt = c_status.get('rtt', 15.0) + 5.0
 
-            if time_since_checkin > 2 * self.get_checkin_period():
+            if time_since_checkin > 3 * self.get_checkin_period() + rtt:
                 logging.warning("last checkin was {} for client {}".format(
                         format_elapsed_time_wait(time_since_checkin, 'at'),
                         c_status))
 
-            if time_since_checkin > 6 * self.get_checkin_period():
+            if time_since_checkin > 7 * self.get_checkin_period() + rtt:
                 logging.warning("marking dead client {}".format(c_status))
                 c_status['state'] = 'dead'
 

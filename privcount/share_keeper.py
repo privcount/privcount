@@ -89,6 +89,8 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
         '''
         Called by protocol
         Refresh the config, and try to connect to the server
+        This function is usually called using loopingCall, so any exceptions
+        will be turned into log messages.
         '''
         # TODO: Refactor common client code - issue #121
         self.refresh_config()

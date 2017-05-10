@@ -256,6 +256,23 @@ class PrivCountClient(PrivCountNode):
         self.last_noise_config = None
         # the start time of the most recent round
         self.collection_start_time = None
+        # the task for client checkins
+        self.checkin_task = None
+
+    def set_checkin_task(self, c_task):
+        '''
+        Called by protocol
+        Store c_task until the protocol requests it again
+        '''
+        self.checkin_task = c_task
+
+    def get_checkin_task(self):
+        '''
+        Called by protocol
+        Return the stored checkin task, or None if no task has ever been
+        stored
+        '''
+        return self.checkin_task
 
     def set_server_status(self, status):
         '''

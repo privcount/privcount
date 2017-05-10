@@ -17,7 +17,7 @@ from twisted.internet.error import ReactorNotRunning
 
 from privcount.config import normalise_path
 from privcount.connection import listen, stopListening
-from privcount.protocol import TorControlServerProtocol
+from privcount.protocol import TorControlServerProtocol, errorCallback
 from privcount.data_collector import Aggregator
 
 # set the log level
@@ -107,6 +107,8 @@ class PrivCountDataInjector(ServerFactory):
         Depending on the protocol, closing the connection can erase all unread
         data. So we stop sending events, but delay the actual close for a
         short amount of time.
+        This function sometimes reschedules itself using deferLater: any
+        exceptions will be handled by errorCallback.
         '''
         if not self.injecting:
             logging.debug("Ignoring request to stop injecting when injection is not in progress")
@@ -122,7 +124,10 @@ class PrivCountDataInjector(ServerFactory):
             # IP retains unread data in the network stack, but unix
             # sockets don't. So we need to delay closing unix sockets, for
             # the data collector to finish reading.
-            reactor.callLater(1.0, self.stop_injecting) # pylint: disable=E1101
+            # we don't care about cancelling here, we're stopping anyway
+            stop_deferred = task.deferLater(reactor, 1.0,
+                                            self.stop_injecting)
+            stop_deferred.addErrback(errorCallback)
             return
         if self.listeners is not None:
             stopListening(self.listeners)
@@ -180,6 +185,10 @@ class PrivCountDataInjector(ServerFactory):
             self.stop_injecting()
 
     def _flush_later(self, msg):
+        '''
+        This function is called using deferLater, so any exceptions will be
+        handled by errorCallback.
+        '''
         self._flush_now(msg)
         self._inject_events()
 
@@ -214,9 +223,11 @@ class PrivCountDataInjector(ServerFactory):
 
             # we can't dump the entire file at once: it fills up the buffers
             # without giving the twisted event loop time to flush them
-            # instead, use callLater with a zero delay
+            # instead, use deferLater with a zero delay
             # we can't sleep or twisted won't work correctly
-            reactor.callLater(wait_time, self._flush_later, msg) # pylint: disable=E1101
+            inject_deferred = task.deferLater(reactor, wait_time,
+                                              self._flush_later, msg)
+            inject_deferred.addErrback(errorCallback)
             # _flush_later will inject the next event when called
             return
 
