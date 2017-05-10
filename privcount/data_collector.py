@@ -714,7 +714,7 @@ class Aggregator(ReconnectingClientFactory):
         remote_ip = items[9]
 
         # only count streams with legitimate transfers
-        totalbw = readbw+writebw
+        totalbw = readbw + writebw
         if readbw < 0 or writebw < 0 or totalbw <= 0:
             return True
 
@@ -807,13 +807,13 @@ class Aggregator(ReconnectingClientFactory):
         else:
             return math.log(float(outval)/float(inval), 2) # log base 2
 
-    def _compute_interstream_creation_times(self, l):
-        l.sort()
-        times = []
-        for i in xrange(len(l)):
+    def _compute_interstream_creation_times(self, start_times):
+        start_times.sort()
+        isc_times = []
+        for i in xrange(len(start_times)):
             if i == 0: continue
-            times.append(l[i] - l[i-1])
-        return times
+            isc_times.append(start_times[i] - start_times[i-1])
+        return isc_times
 
     CIRCUIT_ENDED_ITEMS = 12
 

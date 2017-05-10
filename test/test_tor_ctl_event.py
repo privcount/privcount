@@ -13,7 +13,8 @@ from twisted.internet import reactor
 from twisted.internet.protocol import ReconnectingClientFactory
 
 from privcount.connection import connect, transport_info, get_a_control_password
-from privcount.protocol import TorControlClientProtocol, get_valid_events
+from privcount.protocol import TorControlClientProtocol
+from privcount.counter import get_valid_events
 
 # set the log level
 #logging.basicConfig(level=logging.DEBUG)
