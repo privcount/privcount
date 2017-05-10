@@ -85,7 +85,8 @@ class PrivCountProtocol(LineOnlyReceiver):
         overrides twisted function
         '''
         logging.warning("Incoming line of length {} exceeded MAX_LENGTH of {}, dropping unvalidated connection to {}"
-                        .format(len(line), transport_info(self.transport)))
+                        .format(len(line), self.MAX_LENGTH,
+                                transport_info(self.transport)))
         return LineOnlyReceiver.lineLengthExceeded(self, line)
 
     def process_event(self, event_type, event_payload):
@@ -674,7 +675,9 @@ class PrivCountProtocol(LineOnlyReceiver):
         logging.debug("Handshake with {} was successful"
                       .format(transport_info(self.transport)))
         self.is_valid_connection = True
-        self.MAX_LENGTH = 512*1024 # now allow longer lines
+        # now allow longer lines
+        # PrivCount 1.0.0 reached 0.5 MB with all counters and 8 DCs
+        self.MAX_LENGTH = 10*1024*1024
 
     def handshake_failed(self):
         '''
