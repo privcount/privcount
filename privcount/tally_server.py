@@ -13,7 +13,7 @@ import yaml
 import traceback
 
 from time import time
-from copy import deepcopy
+from copy import copy, deepcopy
 from base64 import b64encode
 
 from twisted.internet import reactor, task, ssl
@@ -401,7 +401,10 @@ class TallyServer(ServerFactory, PrivCountServer):
         now = time()
 
         for uid in self.clients.keys():
-            c_status = self.clients[uid]
+            # don't print ShareKeepers' public keys, they're very long
+            c_status = self.clients[uid].copy()
+            if 'public_key' in c_status:
+                c_status['public_key'] = "(public key)"
             time_since_checkin = now - c_status['alive']
 
             if time_since_checkin > 2 * self.get_checkin_period():
