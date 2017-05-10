@@ -306,8 +306,8 @@ saturating arithmetic: values that exceed the maximum are reported as the
 maximum value.
 
 ### Timestamp
-The current unix epoch time (UTC) in seconds, to 6 decimal places. The
-underlying resolution depends on the operating system.
+The current unix epoch time (UTC) in seconds, to microsecond precision
+(6 decimal places). The underlying resolution depends on the operating system.
 
 ### Is Outbound Flag
 A numeric boolean flag: 1 for writes, 0 for reads.

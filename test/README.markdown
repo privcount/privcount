@@ -79,9 +79,10 @@ Here is how I generate an events.txt file:
 1. Find the chutney control port of the exit or guard you are interested in.
    Control ports start at 8000, and are assigned in order of node creation
    in the chutney/networks/* file.
-2. Open a terminal and run:
-    privcount/test/test_tor_ctl_event.py 8002 > raw_events.txt
+2. Open a terminal in a privcount directory and run:
+    test/test_tor_ctl_event.py 8002 > raw_events.txt
    Where 8002 is the port you are interested in.
+   (You might need to activate your virtualenv first, if you are using one.)
 3. Open another terminal in a privcount-patched tor directory
 4. Run:
     ../chutney/tools/test-network.sh --flavour basic-min --data 10240 --connections 10
@@ -93,11 +94,12 @@ Here is how I generate an events.txt file:
 7. Optionally, use 'localhost' instead of '127.0.0.1' for hostnames:
     sed "s/\(PRIVCOUNT_STREAM_ENDED.*\)127.0.0.1 127.0.0.1/\1localhost 127.0.0.1/" events.txt > local_events.txt
      mv local_events.txt events.txt
+   (Chutney's automatic tests have no way of specifying a hostname.)
 8. Check the events file actually has some entries:
     head -10 events.txt
     wc -l events.txt
-8. Test the new events file using:
-    privcount/test/run_test.sh -I . -x -s inject
+8. Test the new events file in privcount using:
+    test/run_test.sh -I . -x -s inject
 
 Each chutney client conntects via a random exit. If you use a chutney flavour
 with onion services, a random client connects to each hidden service.

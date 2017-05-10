@@ -1,7 +1,7 @@
 #!/bin/bash
 # See LICENSE for licensing information
 
-# Check if the counters in the code and test files are the same
+# Check if the counters in the code, test, and doc files are the same
 
 # Shell settings
 # fail on failed commands or unset variables
@@ -70,11 +70,20 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
     cat "$OUT_PATH.names.unsorted" | sort > "$OUT_PATH.names"
 done
 
+# Process the doc files
+doc="$TEST_DIR/../doc/CounterTests.markdown"
+OUT_PATH="$TEST_DIR/CounterTests.markdown"
+# the trailing colon is optional: it is used to delimit a test expression
+# we ignore the template counters
+grep -i "^- $NAME_REGEX" "$doc" \
+    | cut -d' ' -f 2 | cut -d':' -f 1 | grep -v '_' \
+    | sort > "$OUT_PATH.names"
+
 echo "Number of counters:"
 wc -l "$TEST_DIR"/*.py.names "$TEST_DIR"/*.yaml.names \
-    "$TEST_DIR"/*.names.extra \
+    "$TEST_DIR"/*.markdown.names "$TEST_DIR"/*.names.extra \
     | grep -v total
 
-echo "Differences between counter files and counter.py:"
+echo "Differences between counters in code, test, and docs, and counter.py:"
 diff -u "$TEST_DIR"/*.names \
     --to-file="$TEST_DIR/counter.py.names"
