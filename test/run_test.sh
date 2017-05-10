@@ -44,7 +44,9 @@ PRIVCOUNT_CHUTNEY_FLAVOUR=${PRIVCOUNT_CHUTNEY_FLAVOUR:-${NETWORK_FLAVOUR:-basic-
 # this must be manually kept in sync with PRIVCOUNT_CHUTNEY_FLAVOUR
 # basic-min has 3 relays/authorities and starts at controlport_base (8000)
 PRIVCOUNT_CHUTNEY_PORTS=${PRIVCOUNT_CHUTNEY_PORTS:-`seq 8000 8002 | tr '\n' ' '`}
+# Connections are simultaneous, rounds are sequential
 PRIVCOUNT_CHUTNEY_CONNECTIONS=${PRIVCOUNT_CHUTNEY_CONNECTIONS:-${CHUTNEY_CONNECTIONS:-1}}
+PRIVCOUNT_CHUTNEY_ROUNDS=${PRIVCOUNT_CHUTNEY_ROUNDS:-${CHUTNEY_ROUNDS:-1}}
 # The chutney default is 10KB, we use 1KB to make counts easy to check
 PRIVCOUNT_CHUTNEY_BYTES=${PRIVCOUNT_CHUTNEY_BYTES:-${CHUTNEY_DATA_BYTES:-1024}}
 # other chutney environmental variables are listed in tools/test-network.sh
@@ -106,6 +108,10 @@ do
       PRIVCOUNT_CHUTNEY_CONNECTIONS=$2
       shift
       ;;
+    --chutney-rounds|-u)
+      PRIVCOUNT_CHUTNEY_ROUNDS=$2
+      shift
+      ;;
     --chutney-bytes|-b)
       PRIVCOUNT_CHUTNEY_BYTES=$2
       shift
@@ -140,7 +146,12 @@ do
       echo "    use: \`seq 8000 finish-port\` to generate a list"
       echo "    default: '$PRIVCOUNT_CHUTNEY_PORTS'"
       echo "  -o chutney-connections: make chutney-connections per client"
-      echo "    default: '$PRIVCOUNT_CHUTNEY_BYTES'"
+      echo "    Each connection to the chutney data source uses one stream."
+      echo "    Chutney opens these streams simultanously."
+      echo "    default: '$PRIVCOUNT_CHUTNEY_CONNECTIONS'"
+      echo "  -u chutney-rounds: run chutney-rounds verification rounds"
+      echo "    Chutney runs rounds sequentially.."
+      echo "    default: '$PRIVCOUNT_CHUTNEY_ROUNDS'"
       echo "  -b chutney-bytes: verify chutney-bytes per client connection"
       echo "    default: '$PRIVCOUNT_CHUTNEY_BYTES'"
       echo "  <privcount-directory>: the directory privcount is in"
@@ -219,6 +230,7 @@ export TOR_DIR=${PRIVCOUNT_TOR_DIR:-$TOR_DIR}
 export CHUTNEY_PATH=${PRIVCOUNT_CHUTNEY_PATH:-$CHUTNEY_PATH}
 export NETWORK_FLAVOUR=${PRIVCOUNT_CHUTNEY_FLAVOUR:-$NETWORK_FLAVOUR}
 export CHUTNEY_CONNECTIONS=${PRIVCOUNT_CHUTNEY_CONNECTIONS:-$CHUTNEY_CONNECTIONS}
+export CHUTNEY_ROUNDS=${PRIVCOUNT_CHUTNEY_ROUNDS:-$CHUTNEY_ROUNDS}
 export CHUTNEY_DATA_BYTES=${PRIVCOUNT_CHUTNEY_BYTES:-$CHUTNEY_DATA_BYTES}
 
 # The command to start a tor test network using chutney
@@ -458,7 +470,7 @@ case "$PRIVCOUNT_SOURCE" in
     privcount sk "$CONFIG" 2>&1 | `save_to_log . sk $LOG_TIMESTAMP` &
     popd
     # The chutney output is very verbose: don't save it to the log
-    $FIRST_ROUND_CMD 2>&1
+    $FIRST_ROUND_CMD 2>&1 &
     echo "For full chutney logs run $CHUTNEY_LOG_CMD" | \
         `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP`
     ;;
