@@ -273,6 +273,7 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitStreamOutboundByteCount' : { STREAM_EVENT },
 'ExitStreamInboundByteCount' : { STREAM_EVENT },
 'ExitStreamByteRatio' : { STREAM_EVENT },
+'ExitStreamLifeTime' : { STREAM_EVENT },
 'ExitWebStreamCount' : { STREAM_EVENT },
 'ExitWebStreamByteCount' : { STREAM_EVENT },
 'ExitWebStreamOutboundByteCount' : { STREAM_EVENT },

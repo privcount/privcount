@@ -172,6 +172,9 @@ counters:
     # EXIT - bytes per completed stream for HTTP/HTTPS
     ExitWebStreamByteCount:
         sigma: 0.0
+    # EXIT - time in seconds between create and destroy per completed stream
+    ExitStreamLifeTime:
+        sigma: 0.0
     # EXIT - time in seconds between create and destroy per completed stream for IRC/SSH
     ExitInteractiveStreamLifeTime:
         sigma: 0.0

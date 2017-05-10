@@ -755,6 +755,23 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
+    # EXIT - time in seconds between create and destroy per completed stream
+    ExitStreamLifeTime:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 2.0]
+        - [2.0, 3.0]
+        - [3.0, 4.0]
+        - [4.0, 5.0]
+        - [5.0, 10.0]
+        - [10.0, 15.0]
+        - [15.0, 30.0]
+        - [30.0, 60.0]
+        - [60.0, 120.0]
+        - [120.0, 300.0]
+        - [300.0, 600.0]
+        - [600.0, 660.0]
+        - [660.0, .inf]
     # EXIT - time in seconds between create and destroy per completed stream for IRC/SSH
     ExitInteractiveStreamLifeTime:
         bins:

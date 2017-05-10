@@ -246,6 +246,10 @@ counters:
     ExitWebStreamByteCount:
         estimated_value: 0.0
         sensitivity: 0
+    # EXIT - time in seconds between create and destroy per completed stream
+    ExitStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0
     # EXIT - time in seconds between create and destroy per completed stream for IRC/SSH
     ExitInteractiveStreamLifeTime:
         estimated_value: 0.0

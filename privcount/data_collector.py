@@ -718,9 +718,6 @@ class Aggregator(ReconnectingClientFactory):
         if readbw < 0 or writebw < 0 or totalbw <= 0:
             return True
 
-        self.secure_counters.increment('ExitStreamCount', 1)
-        self.secure_counters.increment('ExitStreamByteCount', 1, totalbw)
-
         self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0, 'web':0, 'p2p':0, 'other':0}, 'stream_starttimes': {'interactive':[], 'web':[], 'p2p':[], 'other':[]}})
 
         stream_class = self._classify_port(port)
@@ -732,9 +729,12 @@ class Aggregator(ReconnectingClientFactory):
         ratio = self._encode_ratio(readbw, writebw)
         lifetime = end-start
 
+        self.secure_counters.increment('ExitStreamCount', 1)
+        self.secure_counters.increment('ExitStreamByteCount', 1, totalbw)
         self.secure_counters.increment('ExitStreamOutboundByteCount', writebw)
         self.secure_counters.increment('ExitStreamInboundByteCount', readbw)
         self.secure_counters.increment('ExitStreamByteRatio', ratio)
+        self.secure_counters.increment('ExitStreamLifeTime', lifetime)
 
         if stream_class == 'web':
             self.secure_counters.increment('ExitWebStreamCount', 1)
