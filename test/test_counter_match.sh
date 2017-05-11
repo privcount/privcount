@@ -42,9 +42,10 @@ for counters in "$TEST_DIR"/counters.{bins,noise,sigmas}.yaml; do
 done
 
 echo "Processing $TEST_DIR/../privcount/traffic_model.py:"
+# there are multiple counter mentions in this file, so remove duplicates
 grep -i "'$NAME_REGEX'[],]" "$TEST_DIR/../privcount/traffic_model.py" \
     | grep -v -e 'counters' -e 'states' \
-    | cut -d"'" -f 2 > "$TEST_DIR/traffic_model.py.names.extra"
+    | cut -d"'" -f 2 | sort -u > "$TEST_DIR/traffic_model.py.names.extra"
 
 echo "Processing $TEST_DIR/../privcount/statistics_noise.py:"
 grep -i "DEFAULT_DUMMY_COUNTER_NAME *= *'$NAME_REGEX'" \
