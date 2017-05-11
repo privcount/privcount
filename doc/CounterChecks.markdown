@@ -46,6 +46,7 @@ The sigma determines how much noise is added to a counter.
 The bins determine how events are aggregated in the counter.
 
 * Bin counters must have a bins element
+* Each bins element must have at least one bin
 * Bins have lower and upper bounds which are decimal values  
   (including positive and negative infinity)
 * The upper bound is strictly greater than the lower bound

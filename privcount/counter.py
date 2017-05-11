@@ -11,7 +11,7 @@ import sys
 
 from random import SystemRandom
 from copy import deepcopy
-from math import sqrt
+from math import sqrt, isnan
 
 from privcount.statistics_noise import DEFAULT_SIGMA_TOLERANCE, DEFAULT_DUMMY_COUNTER_NAME
 from privcount.log import format_period, format_elapsed_time_since, format_delay_time_until
@@ -1134,6 +1134,8 @@ class SecureCounters(object):
             if 'bins' not in counter[key]:
                 return False
             num_bins = len(self.counters[key]['bins'])
+            if num_bins == 0:
+                return False
             if num_bins != len(counter[key]['bins']):
                 return False
             for i in xrange(num_bins):
@@ -1258,8 +1260,34 @@ class SecureCounters(object):
             return False
         return True
 
-    def increment(self, counter_key, bin_value, num_increments=1L):
+
+    SINGLE_BIN = float('nan')
+    '''
+    A placeholder for the bin value of a counter with a single bin.
+    This constant must be outside the range of every possible counter.
+    '''
+
+    @staticmethod
+    def is_single_bin_value(value):
+        if isnan(SecureCounters.SINGLE_BIN):
+            return isnan(value)
+        else:
+            return SecureCounters.SINGLE_BIN == value
+
+    def increment(self, counter_key, bin_value=SINGLE_BIN, num_increments=1L):
+        '''
+        Increment bin bin_value in counter counter_key by num_increments
+        (default 1). If there is only one bin for the counter, pass SINGLE_BIN
+        for bin_value.
+        '''
         if self.counters is not None and counter_key in self.counters:
+            # You must pass SINGLE_BIN for the bin_value of a single bin
+            if len(self.counters[counter_key]['bins']) == 1:
+                assert(SecureCounters.is_single_bin_value(bin_value))
+                bin_value = 1.0
+            else:
+                assert(not SecureCounters.is_single_bin_value(bin_value))
+                bin_value = float(bin_value)
             for item in self.counters[counter_key]['bins']:
                 if bin_value >= item[0] and bin_value < item[1]:
                     item[2] = ((long(item[2]) + long(num_increments))

@@ -64,8 +64,10 @@ Here is how you can construct a PrivCount counter name:
 A trailing slash means that the item is optional.
 
 We could also encode the difference between a single count and a histogram
-in the name, but this does not add much extra value. And it can change at
-runtime based on the Tally Server counter configuration.
+in the name, but we do not gain anything by doing this at the moment. In the
+future, if we have a histogram counter and a single bin counter for the same
+data, we should rename counters using multiple bins to Histogram, and single
+bins to Count. (Ratio and Time bins are also Histograms.)
 
 #### Suffixes for PrivCount Traffic Model Counters
 
