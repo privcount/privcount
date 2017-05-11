@@ -874,7 +874,7 @@ class CollectionDelay(object):
         # did we forget to check if we needed to delay this round?
         # warn, because this can happen if the delay is reconfigured,
         # or if another node fails a round because it starts sooner than its
-        # configured delay
+        # configured delay, or if the Tally server asks for results twice
         if not self.round_start_permitted(noise_allocation,
                                           start_time,
                                           delay_period,
