@@ -14,7 +14,7 @@ counters:
     EntryCircuitOutboundCellCount:
         sigma: 0.0
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     EntryCircuitCellRatio:
         sigma: 0.0
     # EXIT - circuit inter-stream creation times in seconds
@@ -150,23 +150,23 @@ counters:
     ExitP2PStreamByteCount:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitStreamByteRatio:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for IRC/SSH
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitInteractiveStreamByteRatio:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for port>=10000 and no other class
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitOtherPortStreamByteRatio:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for P2P
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitP2PStreamByteRatio:
         sigma: 0.0
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for HTTP/HTTPS
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitWebStreamByteRatio:
         sigma: 0.0
     # EXIT - bytes per completed stream for HTTP/HTTPS

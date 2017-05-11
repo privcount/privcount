@@ -35,12 +35,14 @@ counters = {
     'bins':
     [
       [0.0, float('inf')],
-     ],
+    ],
     'sigma': 0.0
   },
   'ByteHistogram': {
     'bins':
     [
+      [float('-inf'), -10.0],
+      # deliberate gap
       [0.0, 512.0],
       [512.0, 1024.0],
       [1024.0, 2048.0],
@@ -141,19 +143,25 @@ def increment_counters(dc_list, N, multi_bin=True):
         # single bin
         sc_dc.increment('ByteCount', SINGLE_BIN)
         # bin[0]
+        sc_dc.increment('ByteHistogram', -100.0)
+        if multi_bin:
+            sc_dc.increment('ByteHistogram', float('-inf'))
+        # no bin
+        sc_dc.increment('ByteHistogram', -5.0)
+        # bin[1]
         sc_dc.increment('ByteHistogram', 0.0)
         if multi_bin:
             sc_dc.increment('ByteHistogram', 511.0)
-        #bin[1]
+        # bin[2]
         sc_dc.increment('ByteHistogram', 600.0)
-        #bin[2]
+        # bin[3]
         if multi_bin:
             sc_dc.increment('ByteHistogram', 1024.0)
         sc_dc.increment('ByteHistogram', 2047.0)
-        #bin[3]
+        # bin[4]
         pass
-        #bin[4]
-        sc_dc.increment('ByteHistogram', 4096.0)
+        # bin[5]
+        sc_dc.increment('ByteHistogram', float('inf'))
         if multi_bin:
             sc_dc.increment('ByteHistogram', 10000.0)
     return long(N)
@@ -175,6 +183,12 @@ def increment_counters_num(dc_list, N, X=1L, multi_bin=True):
         sc_dc.increment('ByteCount', SINGLE_BIN, -1)
         sc_dc.increment('ByteCount', SINGLE_BIN, long(X))
         # bin[0]
+        sc_dc.increment('ByteHistogram', -100.0, long(X))
+        if multi_bin:
+            sc_dc.increment('ByteHistogram', float('-inf'), long(X))
+        # no bin
+        sc_dc.increment('ByteHistogram', -5.0, long(X))
+        # bin[1]
         # test that increment handles signed numbers, doubles & ints correctly
         # we can't rely on X being able to fit in a double or an int
         # so just increment by one, then subtract one
@@ -183,16 +197,16 @@ def increment_counters_num(dc_list, N, X=1L, multi_bin=True):
         sc_dc.increment('ByteHistogram', 0.0, long(X))
         if multi_bin:
             sc_dc.increment('ByteHistogram', 511.0, long(X))
-        #bin[1]
+        # bin[2]
         sc_dc.increment('ByteHistogram', 600.0, long(X))
-        #bin[2]
+        # bin[3]
         if multi_bin:
             sc_dc.increment('ByteHistogram', 1024.0, long(X))
         sc_dc.increment('ByteHistogram', 2047.0, long(X))
-        #bin[3]
+        # bin[4]
         pass
-        #bin[4]
-        sc_dc.increment('ByteHistogram', 4096.0, long(X))
+        # bin[5]
+        sc_dc.increment('ByteHistogram', float('inf'), long(X))
         if multi_bin:
             sc_dc.increment('ByteHistogram', 10000.0, long(X))
     return long(N)*long(X)
@@ -226,16 +240,20 @@ def check_counters(tallies, N, multi_bin=True):
         assert tallies['ByteHistogram']['bins'][0][2] == 2*N
     else:
         assert tallies['ByteHistogram']['bins'][0][2] == 1*N
-    assert tallies['ByteHistogram']['bins'][1][2] == 1*N
     if multi_bin:
-        assert tallies['ByteHistogram']['bins'][2][2] == 2*N
+        assert tallies['ByteHistogram']['bins'][1][2] == 2*N
     else:
-        assert tallies['ByteHistogram']['bins'][2][2] == 1*N
-    assert tallies['ByteHistogram']['bins'][3][2] == 0*N
+        assert tallies['ByteHistogram']['bins'][1][2] == 1*N
+    assert tallies['ByteHistogram']['bins'][2][2] == 1*N
     if multi_bin:
-        assert tallies['ByteHistogram']['bins'][4][2] == 2*N
+        assert tallies['ByteHistogram']['bins'][3][2] == 2*N
     else:
-        assert tallies['ByteHistogram']['bins'][4][2] == 1*N
+        assert tallies['ByteHistogram']['bins'][3][2] == 1*N
+    assert tallies['ByteHistogram']['bins'][4][2] == 0*N
+    if multi_bin:
+        assert tallies['ByteHistogram']['bins'][5][2] == 2*N
+    else:
+        assert tallies['ByteHistogram']['bins'][5][2] == 1*N
     assert tallies['ZeroCount']['bins'][0][2] == 0
     logging.debug("all counts are correct!")
 

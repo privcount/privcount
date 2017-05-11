@@ -1274,6 +1274,19 @@ class SecureCounters(object):
         else:
             return SecureCounters.SINGLE_BIN == value
 
+    @staticmethod
+    def is_in_bin(bin_min, bin_max, bin_value):
+        '''
+        Is bin_value between bin_min and bin_max?
+        bin_min is always inclusive. bin_max is exclusive, except when it is
+        inf, it includes inf.
+        '''
+        if bin_value >= bin_min:
+            # any value is <= inf, so we don't need to check if bin_value is inf
+            if bin_value < bin_max or bin_max == float('inf'):
+                return True
+        return False
+
     def increment(self, counter_key, bin_value=SINGLE_BIN, num_increments=1L):
         '''
         Increment bin bin_value in counter counter_key by num_increments
@@ -1289,7 +1302,7 @@ class SecureCounters(object):
                 assert(not SecureCounters.is_single_bin_value(bin_value))
                 bin_value = float(bin_value)
             for item in self.counters[counter_key]['bins']:
-                if bin_value >= item[0] and bin_value < item[1]:
+                if SecureCounters.is_in_bin(item[0], item[1], bin_value):
                     item[2] = ((long(item[2]) + long(num_increments))
                                % self.modulus)
 

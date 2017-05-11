@@ -4,6 +4,7 @@ import os
 import logging
 import math
 import string
+import sys
 import cPickle as pickle
 import yaml
 
@@ -800,14 +801,25 @@ class Aggregator(ReconnectingClientFactory):
             return 'other'
 
     def _encode_ratio(self, inval, outval):
-        if inval == outval:
+        '''
+        Calculate the log ratio between inbound and outbound traffic.
+        Positive when outval > inval, and negative when inval > outval.
+        Returns a non-infinite floating point value:
+        - zero when inval and outval are zero,
+        - a large negative number (< -100) when outval is zero, and
+        - a large positive number (> 100) when inval is zero, and
+        - log(base 2)(outval/inval) otherwise.
+        '''
+        inval = float(inval)
+        outval = float(outval)
+        if inval == 0.0 and outval == 0.0:
             return 0.0
         elif inval == 0.0:
-            return float('inf')
+            return sys.float_info.max_exp
         elif outval == 0.0:
-            return float('-inf')
+            return sys.float_info.min_exp
         else:
-            return math.log(float(outval)/float(inval), 2) # log base 2
+            return math.log(outval/inval, 2)
 
     def _compute_interstream_creation_times(self, start_times):
         start_times.sort()

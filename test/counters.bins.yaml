@@ -31,7 +31,7 @@ counters:
         - [8192.0, 16384.0]
         - [16384.0, .inf]
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     EntryCircuitCellRatio:
         bins:
         - [-.inf, -20.0]
@@ -455,7 +455,7 @@ counters:
         bins:
         - [-.inf, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitStreamByteRatio:
         bins:
         - [-.inf, -20.0]
@@ -502,7 +502,7 @@ counters:
         - [19.0, 20.0]
         - [20.0, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for IRC/SSH
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitInteractiveStreamByteRatio:
         bins:
         - [-.inf, -20.0]
@@ -549,7 +549,7 @@ counters:
         - [19.0, 20.0]
         - [20.0, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for port>=10000 and no other class
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitOtherPortStreamByteRatio:
         bins:
         - [-.inf, -20.0]
@@ -596,7 +596,7 @@ counters:
         - [19.0, 20.0]
         - [20.0, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for P2P
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitP2PStreamByteRatio:
         bins:
         - [-.inf, -20.0]
@@ -643,7 +643,7 @@ counters:
         - [19.0, 20.0]
         - [20.0, .inf]
     # EXIT - ratio of bytes sent to bytes received from server per completed stream for HTTP/HTTPS
-    # value is log(base 2)(out/in), 0.0 when in==out, -.inf when out==0, and .inf when in==0
+    # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
     ExitWebStreamByteRatio:
         bins:
         - [-.inf, -20.0]
