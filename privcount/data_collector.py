@@ -316,7 +316,7 @@ class Aggregator(ReconnectingClientFactory):
         self.rotator = None
         self.tor_control_port = tor_control_port
 
-        self.last_event_time = 0.0
+        self.last_event_time = None
         self.num_rotations = 0
         self.circ_info = {}
         self.strm_bytes = {}
@@ -652,7 +652,7 @@ class Aggregator(ReconnectingClientFactory):
             context['address'] = self.get_address()
         if self.get_fingerprint() is not None:
             context['fingerprint'] = self.get_fingerprint()
-        if self.last_event_time != 0.0:
+        if self.last_event_time is not None:
             context['last_event_time'] = self.last_event_time
         if self.noise_weight_value is not None:
             context['noise_weight_value'] = self.noise_weight_value
