@@ -255,6 +255,9 @@ class TrafficModel(object):
         #print 'The steps of states are ' + ' '.join(opt) + ' with highest probability of %s' % max_prob
         return opt # list of highest probable states, in order
 
+    # the maximum number of packets we will split a bandwidth event into
+    MAX_SPLIT_PACKET_COUNT = 100
+
     def _get_inter_packet_delays(self, strm_start_ts, byte_events):
         '''
         Take a list of (bw_bytes, is_outbound, ts) and turn them into packet delay
@@ -278,8 +281,10 @@ class TrafficModel(object):
             delay = max(long(0), long(micros))
 
             # create a packet delay for each packet
-            while bw_bytes > 0:
+            split_packet_count = 0
+            while bw_bytes > 0 and split_packet_count < TrafficModel.MAX_SPLIT_PACKET_COUNT:
                 packet_delays.append((dir_code, delay))
+                split_packet_count += 1
                 # the first packet gets all of the delay, the others arrive at the same time
                 delay = 0
                 bw_bytes -= 1500 # MTU
