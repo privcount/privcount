@@ -168,7 +168,13 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             traffic_model_config = config['traffic_model']
 
         # The aggregator doesn't care about the DC threshold
-        self.aggregator = Aggregator(dc_counters, traffic_model_config, config['sharekeepers'], config['noise_weight'], counter_modulus(), self.config['event_source'])
+        self.aggregator = Aggregator(dc_counters,
+                                     traffic_model_config,
+                                     config['sharekeepers'],
+                                     config['noise_weight'],
+                                     counter_modulus(),
+                                     self.config['event_source'],
+                                     self.config['rotate_period'])
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -228,6 +234,8 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
 
         return self.check_stop_config(config, counts)
 
+    DEFAULT_ROTATE_PERIOD = 600
+
     def refresh_config(self):
         '''
         re-read config and process any changes
@@ -253,6 +261,11 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
 
             dc_conf.setdefault('always_delay', False)
             assert isinstance(dc_conf['always_delay'], bool)
+
+            dc_conf['rotate_period'] = dc_conf.get('rotate_period',
+                                          conf.get('rotate_period',
+                                                   DataCollector.DEFAULT_ROTATE_PERIOD))
+            assert dc_conf['rotate_period'] > 0
 
             dc_conf['sigma_decrease_tolerance'] = \
                 self.get_valid_sigma_decrease_tolerance(dc_conf)
@@ -295,7 +308,7 @@ class Aggregator(ReconnectingClientFactory):
     '''
 
     def __init__(self, counters, traffic_model_config, sk_uids,
-                 noise_weight, modulus, tor_control_port):
+                 noise_weight, modulus, tor_control_port, rotate_period):
         self.secure_counters = SecureCounters(counters, modulus)
         self.collection_counters = counters
         # we can't generate the noise yet, because we don't know the
@@ -315,6 +328,7 @@ class Aggregator(ReconnectingClientFactory):
         self.protocol = None
         self.rotator = None
         self.tor_control_port = tor_control_port
+        self.rotate_period = rotate_period
 
         self.last_event_time = None
         self.num_rotations = 0
@@ -355,7 +369,7 @@ class Aggregator(ReconnectingClientFactory):
         # Twisted doesn't want a list of connectors, it only wants one
         self.connector = choose_a_connection(self.connector_list)
         self.rotator = task.LoopingCall(self._do_rotate)
-        rotator_deferred = self.rotator.start(5, now=False)
+        rotator_deferred = self.rotator.start(self.rotate_period, now=False)
         rotator_deferred.addErrback(errorCallback)
         self.cli_ips_rotated = time()
         # if we've already built the protocol before starting

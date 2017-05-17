@@ -58,4 +58,5 @@ data_collector:
         - 'e79ea9173e28e6a54f6d2ec6494c1723a330811652acebbe8d98098ce347d679'
     # We only run one round, so this is unused
     delay_period: 86400
+    rotate_period: 5
     secret_handshake: 'keys/secret_handshake.yaml'

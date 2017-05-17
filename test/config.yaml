@@ -97,6 +97,7 @@ data_collector:
     # optional overrides:
     #delay_period: 4 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
     #always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
+    rotate_period: 1 # (default: 600) sensitive data (like client IP addresses) remains in memory for up to 2*rotate_period
     #sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
     # all nodes must agree on this key to handshake correctly
     secret_handshake: 'keys/secret_handshake.yaml'
