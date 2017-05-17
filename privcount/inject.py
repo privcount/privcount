@@ -11,7 +11,7 @@ import argparse
 import logging
 from time import time
 
-from twisted.internet import reactor
+from twisted.internet import reactor, task
 from twisted.internet.protocol import ServerFactory
 from twisted.internet.error import ReactorNotRunning
 
@@ -205,6 +205,9 @@ class PrivCountDataInjector(ServerFactory):
 
             # make sure this event is in our 'valid' event window
             if this_time_end < self.prune_before or this_time_end > self.prune_after:
+                logging.info("Event end time {} is outside {} to {}, skipping {}"
+                             .format(this_time_end, self.prune_before,
+                                     self.prune_after, msg))
                 continue
 
             self.output_line_count += 1
@@ -220,6 +223,15 @@ class PrivCountDataInjector(ServerFactory):
             if wait_time < 0.0:
                 logging.warning("Out of sequence event times")
                 wait_time = 0.0
+
+            if wait_time < 2.0:
+                logger = logging.debug
+            elif wait_time < 60.0:
+                logger = logging.info
+            else:
+                logger = logging.warning
+
+            logger("Waiting {} seconds to send event {}".format(wait_time, msg))
 
             # we can't dump the entire file at once: it fills up the buffers
             # without giving the twisted event loop time to flush them
@@ -242,7 +254,7 @@ class PrivCountDataInjector(ServerFactory):
         elif parts[0] == 'PRIVCOUNT_CONNECTION_ENDED' and len(parts) == Aggregator.CONNECTION_ENDED_ITEMS + 1:
             return float(parts[2]), float(parts[3])
         else:
-            logging.warning("Wrong event field count in: {}".format(msg))
+            logging.warning("Wrong event field count or unknown event in: {}".format(msg))
         return 0.0, 0.0
 
     def _set_event_times(self, msg, start_time, end_time):
@@ -256,7 +268,7 @@ class PrivCountDataInjector(ServerFactory):
         elif parts[0] == 'PRIVCOUNT_CONNECTION_ENDED' and len(parts) == Aggregator.CONNECTION_ENDED_ITEMS + 1:
             parts[2], parts[3] = start_time, end_time
         else:
-            logging.warning("Wrong event field count in: {}".format(msg))
+            logging.warning("Wrong event field count or unknown event in: {}".format(msg))
         return ' '.join([str(p) for p in parts])
 
 def main():
@@ -270,7 +282,7 @@ def run_inject(args):
     start the injector, and start it listening
     '''
     # pylint: disable=E1101
-    injector = PrivCountDataInjector(args.log, args.simulate, int(args.prune_before), int(args.prune_after), args.control_password, args.control_cookie_file)
+    injector = PrivCountDataInjector(args.log, args.simulate, float(args.prune_before), float(args.prune_after), args.control_password, args.control_cookie_file)
     # The injector listens on all of IPv4, IPv6, and a control socket, and
     # injects events into the first client to connect
     # Since these are synthetic events, it is safe to use /tmp for the socket
@@ -306,10 +318,10 @@ def add_inject_args(parser):
                         help="add pauses between each event injection to simulate the inter-arrival times from the source data")
     parser.add_argument('--prune-before',
                         help="do not inject events that occurred before the given unix timestamp",
-                        default=0)
+                        default=float(0))
     parser.add_argument('--prune-after',
                         help="do not inject events that occurred after the given unix timestamp",
-                        default=2147483647)
+                        default=float(sys.maxint))
     parser.add_argument('--control-password',
                         help="A file containing the tor control password. Set this in tor using tor --hash-password and HashedControlPassword")
     parser.add_argument('--control-cookie-file',
