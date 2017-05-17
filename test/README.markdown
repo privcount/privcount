@@ -98,7 +98,11 @@ Here is how I generate an events.txt file:
 8. Check the events file actually has some entries:
     head -10 events.txt
     wc -l events.txt
-8. Test the new events file in privcount using:
+9. Append the extreme test events to the events file:
+    cat extreme_events.txt >> events.txt
+   We don't parse DNS_RESOLVED events, so they are kept separate in
+   extreme_dns_resolved_events.txt
+10. Test the new events file in privcount using:
     test/run_test.sh -I . -x -s inject
 
 Each chutney client conntects via a random exit. If you use a chutney flavour
