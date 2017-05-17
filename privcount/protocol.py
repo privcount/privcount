@@ -37,17 +37,8 @@ class PrivCountProtocol(LineOnlyReceiver):
 
     def __init__(self, factory):
         self.factory = factory
-        self.is_valid_connection = False
-        self.client_cookie = None
-        self.server_cookie = None
         self.privcount_role = None
-
-        '''here we use the LineOnlyReceiver's MAX_LENGTH to drop the connection
-        if we receive too much data before the handshake validates it
-        the handshake process itself transfers very little, so we can get
-        away with a small buffer - after the handshake suceeds, we allow lines
-        of longer length'''
-        self.MAX_LENGTH = 256
+        self.clear()
         try:
             # make sure the maximum line length will accommodate the longest
             # handshake line, including base64 encoded cookie and HMAC
@@ -68,6 +59,73 @@ class PrivCountProtocol(LineOnlyReceiver):
             except ReactorNotRunning:
                 pass
 
+    def clear(self):
+        '''
+        Clear all the instance variables
+        '''
+        self.is_valid_connection = False
+        self.client_cookie = None
+        self.server_cookie = None
+
+        '''here we use the LineOnlyReceiver's MAX_LENGTH to drop the connection
+        if we receive too much data before the handshake validates it
+        the handshake process itself transfers very little, so we can get
+        away with a small buffer - after the handshake suceeds, we allow lines
+        of longer length'''
+        self.MAX_LENGTH = 200
+
+    def get_warn_length(self, is_line_received):
+        '''
+        Returns the line length at which we should warn, based on whether
+        is_line_received or not
+        '''
+        if not self.is_valid_connection:
+            # The handshake sends predictable line lengths, so we can adopt a
+            # tight upper bound. We never warn for unvalidated received data:
+            # it might be a port scanner
+            return (self.MAX_LENGTH * 4) / 5
+        else:
+            # The PrivCount protcol sends lines that are all about the same
+            # length, because blinded values are almost always the same length
+            # (but the line length also increases for each extra node)
+            return self.MAX_LENGTH / 2
+
+    def check_line_length(self, line, is_line_received, is_length_exceeded):
+        '''
+        Warns on over-length lines, based on whether the line is received,
+        and whether the line was delivered via lineLengthExceeded or not
+        (sometimes, twisted's lineLengthExceeded only delivers a partial line,
+        https://twistedmatrix.com/trac/ticket/6558
+        and it had issues counting end of line characters
+        https://twistedmatrix.com/trac/ticket/6536
+        )
+        Terminates the protocol or reactor if the line is over-length.
+        '''
+        is_length_exceeded = is_length_exceeded or len(line) > self.MAX_LENGTH
+        is_unsafe_length = is_length_exceeded or len(line) > self.get_warn_length(is_line_received)
+        # we trust input we send, and input from validated peers
+        # don't ever warn about port scanners
+        is_something_we_control = not is_line_received or self.is_valid_connection
+        # if we are over the safe length, warn
+        if is_unsafe_length and is_something_we_control:
+            logging.warning("{} line of length {} exceeded {} of {}, {} {} connection to {}"
+                            .format("Received" if is_line_received else "Generated",
+                                    len(line),
+                                    "MAX_LENGTH" if is_length_exceeded else "safe length",
+                                    self.get_warn_length(is_line_received),
+                                    "dropping" if is_length_exceeded and is_line_received else "keeping",
+                                    "validated" if self.is_valid_connection else "unvalidated",
+                                    transport_info(self.transport)))
+        # if we send or receive an overlength line, this is a protocol error
+        if is_length_exceeded:
+            self.protocol_failed()
+        # if we generate an overlength line, it is a coding or config bug: fail
+        if is_length_exceeded and not is_line_received:
+            try:
+                reactor.stop()
+            except ReactorNotRunning:
+                pass
+
     def connectionMade(self):
         '''
         overrides twisted function
@@ -81,6 +139,7 @@ class PrivCountProtocol(LineOnlyReceiver):
         '''
         logging.debug("Received line '{}' from {}"
                       .format(line, transport_info(self.transport)))
+        self.check_line_length(line, True, False)
         parts = [part.strip() for part in line.split(' ', 1)]
         if len(parts) > 0:
             event_type = parts[0]
@@ -93,15 +152,14 @@ class PrivCountProtocol(LineOnlyReceiver):
         '''
         logging.debug("Sending line '{}' to {}"
                       .format(line, transport_info(self.transport)))
+        self.check_line_length(line, False, False)
         return LineOnlyReceiver.sendLine(self, line)
 
     def lineLengthExceeded(self, line):
         '''
         overrides twisted function
         '''
-        logging.warning("Incoming line of length {} exceeded MAX_LENGTH of {}, dropping unvalidated connection to {}"
-                        .format(len(line), self.MAX_LENGTH,
-                                transport_info(self.transport)))
+        self.check_line_length(line, True, True)
         return LineOnlyReceiver.lineLengthExceeded(self, line)
 
     def process_event(self, event_type, event_payload):
@@ -134,6 +192,13 @@ class PrivCountProtocol(LineOnlyReceiver):
             logging.error(
                 "Exception {} while processing event type: {} payload: {}"
                 .format(e, event_type, event_payload))
+
+            try:
+                self.protocol_failed()
+            except BaseException as e:
+                logging.error(
+                              "Exception {} in protocol failure after event type: {} payload: {}"
+                              .format(e, event_type, event_payload))
 
             # That said, terminating on exception is a denial of service
             # risk: if an untrusted party can cause an exception, they can
@@ -694,8 +759,9 @@ class PrivCountProtocol(LineOnlyReceiver):
                       .format(transport_info(self.transport)))
         self.is_valid_connection = True
         # now allow longer lines
-        # PrivCount 1.0.0 reached 0.5 MB with all counters and 8 DCs
-        self.MAX_LENGTH = 10*1024*1024
+        # PrivCount 1.0.0 reached 6 MB with all counters, a large traffic
+        # model, 20 DCs, and 10 SKs
+        self.MAX_LENGTH = 30*1024*1024
 
     def handshake_failed(self):
         '''
@@ -703,8 +769,8 @@ class PrivCountProtocol(LineOnlyReceiver):
         '''
         logging.warning("Handshake with {} failed"
                         .format(transport_info(self.transport)))
-        self.is_valid_connection = False
         self.transport.loseConnection()
+        self.clear()
 
     def protocol_succeeded(self):
         '''
@@ -713,6 +779,7 @@ class PrivCountProtocol(LineOnlyReceiver):
         logging.debug("Protocol with {} was successful"
                       .format(transport_info(self.transport)))
         self.transport.loseConnection()
+        self.clear()
 
     def protocol_failed(self):
         '''
@@ -720,13 +787,14 @@ class PrivCountProtocol(LineOnlyReceiver):
         '''
         logging.warning("Protocol with {} failed"
                         .format(transport_info(self.transport)))
-        self.is_valid_connection = False
         self.transport.loseConnection()
+        self.clear()
 
     def connectionLost(self, reason):
         '''
         overrides twisted function
         '''
+        self.clear()
         logging.debug("Connection with {} was lost: {}"
                       .format(transport_info(self.transport),
                               reason.getErrorMessage()))
@@ -766,6 +834,14 @@ class PrivCountServerProtocol(PrivCountProtocol):
     def __init__(self, factory):
         PrivCountProtocol.__init__(self, factory)
         self.privcount_role = PrivCountProtocol.ROLE_SERVER
+        self.clear()
+
+    def clear(self):
+        '''
+        Clear all the instance variables
+        '''
+        # this does a double-clear on init, that's ok
+        PrivCountProtocol.clear(self)
         self.last_sent_time = 0.0
         self.client_uid = None
 
@@ -1009,6 +1085,12 @@ class TorControlProtocol(object):
 
     def __init__(self, factory):
         self.factory = factory
+        self.clear()
+
+    def clear(self):
+        '''
+        Clear all the instance variables
+        '''
         self.cookie_string = None
         self.client_nonce = None
         self.server_nonce = None
@@ -1405,11 +1487,65 @@ class TorControlProtocol(object):
             TorControlProtocol.PASSWORD_MIN_VALID_LENGTH,
             TorControlProtocol.PASSWORD_MAX_VALID_LENGTH)
 
+    def quit(self):
+        '''
+        Quit and close the connection
+        Overridden in subclasses
+        '''
+        self.clear()
+
+    def get_warn_length(self, is_line_received):
+        '''
+        Returns the line length at which we should warn, based on whether
+        is_line_received or not
+        '''
+        # We put a strict limit on this, because it's harder to change
+        # (and it uses integers, addresses, and DNS names, which are
+        # often ~1/10 of their maximum length)
+        return self.MAX_LENGTH / 10
+
+    def check_line_length(self, line, is_line_received, is_length_exceeded):
+        '''
+        Warns on over-length lines, based on whether the line is received,
+        and whether the line was delivered via lineLengthExceeded or not
+        (sometimes, twisted's lineLengthExceeded only delivers a partial line,
+        https://twistedmatrix.com/trac/ticket/6558
+        and it had issues counting end of line characters
+        https://twistedmatrix.com/trac/ticket/6536
+        )
+        Terminates the reactor if the line is over-length.
+        '''
+        is_length_exceeded = is_length_exceeded or len(line) > self.MAX_LENGTH
+        is_unsafe_length = is_length_exceeded or len(line) > self.get_warn_length(is_line_received)
+        # if we are over the safe length, warn
+        if is_unsafe_length:
+            logging.warning("{} line of length {} exceeded {} of {}, {} connection to {}"
+                            .format("Received" if is_line_received else "Generated",
+                                    len(line),
+                                    "MAX_LENGTH" if is_length_exceeded else "safe length",
+                                    self.get_warn_length(is_line_received),
+                                    "dropping" if is_length_exceeded and is_line_received else "keeping",
+                                    transport_info(self.transport)))
+        # if we send or receive an overlength line, fail
+        if is_length_exceeded:
+            self.quit()
+            try:
+                reactor.stop()
+            except ReactorNotRunning:
+                pass
 
 class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
 
     def __init__(self, factory):
         TorControlProtocol.__init__(self, factory)
+        self.clear()
+
+    def clear(self):
+        '''
+        Clear all the instance variables
+        '''
+        # this does a double-clear on init, that's ok
+        TorControlProtocol.clear(self)
         self.state = None
         self.auth_methods = None
         self.cookie_file = None
@@ -1510,6 +1646,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         '''
         logging.debug("Sending line '{}' to {}"
                       .format(line, transport_info(self.transport)))
+        self.check_line_length(line, False, False)
         return LineOnlyReceiver.sendLine(self, line)
 
     def lineReceived(self, line):
@@ -1525,9 +1662,10 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         When events are received, process them.
         Overrides twisted function.
         '''
-        line = line.strip()
         logging.debug("Received line '{}' from {}"
                       .format(line, transport_info(self.transport)))
+        self.check_line_length(line, True, False)
+        line = line.strip()
 
         if self.state == 'protocolinfo':
             if line.startswith("250-PROTOCOLINFO"):
@@ -1762,18 +1900,30 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                             .format(transport_info(self.transport), line))
             self.quit()
 
+    def lineLengthExceeded(self, line):
+        '''
+        overrides twisted function
+        '''
+        self.check_line_length(line, True, True)
+        return LineOnlyReceiver.lineLengthExceeded(self, line)
+
     def quit(self):
-        self.state = "disconnected"
+        '''
+        Quit and close the connection
+        '''
         self.sendLine("QUIT")
+        self.state = "disconnected"
         # Don't rely on the remote side to end the connection
         # Protocols should not send any more data once the connection has been
         # terminated
         self.transport.loseConnection()
+        self.clear()
 
     def connectionLost(self, reason):
         '''
         overrides twisted function
         '''
+        self.clear()
         self.state = "disconnected"
         logging.debug("Connection with {} was lost: {}"
                       .format(transport_info(self.transport),
@@ -1827,6 +1977,14 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
 
     def __init__(self, factory):
         TorControlProtocol.__init__(self, factory)
+        self.clear()
+
+    def clear(self):
+        '''
+        Clear all the instance variables
+        '''
+        # this does a double-clear on init, that's ok
+        TorControlProtocol.clear(self)
         self.authenticated = False
 
     def connectionMade(self):
@@ -1842,23 +2000,22 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
         '''
         logging.debug("Sending line '{}' to {}"
                       .format(line, transport_info(self.transport)))
+        self.check_line_length(line, False, False)
         return LineOnlyReceiver.sendLine(self, line)
 
     def lineReceived(self, line):
         '''
         overrides twisted function
         '''
+        logging.debug("Received line '{}' from {}"
+                      .format(line, transport_info(self.transport)))
+        self.check_line_length(line, True, False)
         line = line.strip()
         parts = line.split(' ')
 
-        logging.debug("Received line '{}' from {}"
-                      .format(line, transport_info(self.transport)))
-
         # Quit regardless of authentication state
         if parts[0] == "QUIT":
-            self.factory.stop_injecting()
-            self.sendLine("250 closing connection")
-            self.transport.loseConnection()
+            self.quit()
             return
 
         # We use " quotes in some places where tor uses ' quotes.
@@ -2046,6 +2203,22 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
         else:
             self.sendLine('510 Unrecognized command ""')
 
+    def lineLengthExceeded(self, line):
+        '''
+        overrides twisted function
+        '''
+        self.check_line_length(line, True, True)
+        return LineOnlyReceiver.lineLengthExceeded(self, line)
+
+    def quit(self):
+        '''
+        Quit and close the connection
+        '''
+        self.factory.stop_injecting()
+        self.sendLine("250 closing connection")
+        self.transport.loseConnection()
+        self.clear()
+
     def connectionLost(self, reason):
         '''
         overrides twisted function
@@ -2054,3 +2227,4 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                       .format(transport_info(self.transport),
                               reason.getErrorMessage()))
         self.factory.stop_injecting()
+        self.clear()
