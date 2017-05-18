@@ -112,7 +112,7 @@ do
       ;;
     --chutney-ports|-p)
       PRIVCOUNT_CHUTNEY_PORTS=""
-      while [ $# -ge 2 ] && [[ "$2" =~ [0-9]* ]]; do
+      while [ $# -ge 2 ] && [[ "$2" =~ [0-9][0-9]* ]]; do
         PRIVCOUNT_CHUTNEY_PORTS="$PRIVCOUNT_CHUTNEY_PORTS $2"
         shift
       done
