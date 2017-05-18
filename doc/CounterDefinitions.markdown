@@ -27,8 +27,9 @@ Some overheads are excluded:
 The number of unique Client IP addresses seen by the relay in each 10 minute
 interval.
 
-All ClientIP counters are rotated every 10 minutes to limit the number of
-Client IP addresses stored in memory.
+The IP addresses used in ClientIP counters are rotated every 10 minutes to
+limit the number of Client IP addresses stored in memory. It takes 2
+rotations for a Client IP address to be removed from memory.
 
 ### LifeTime
 
@@ -53,7 +54,7 @@ See LifeTime for information about timestamp and event loop precision.
 The base 2 log ratio of the Inbound and Outbound (see below) Cells or Bytes.
 Uses the total Cells or Bytes over the life of the Circuit or Stream.
 
-Calculated using log(Outbound/Inbound, 3), with the following boundary
+Calculated using log(Outbound/Inbound, 2), with the following boundary
 conditions:
 * 0.0 when Outbound equals Inbound,
 * -.inf when Outbound is zero, and
@@ -79,7 +80,7 @@ InterStreamCreationTimes. Each socket read/write is then split on 1500 byte
 boundaries into packets. The entire delay is assigned to the first packet in
 the socket read/write.
 
-Calculated using int(log(DelayTime)), with the following boundary
+Calculated using int(log(DelayTime, math.e)), with the following boundary
 conditions:
 * 0 when DelayTime is less than 1 microsecond.
 
@@ -109,14 +110,16 @@ For example:
 
 ### Active/Inactive
 
-An Active Circuit is being used by a Tor client. Circuit Activity is checked
-when a Circuit ends.
+An Active Circuit is being used by a Tor client. Circuit Activity is only
+checked when a Circuit ends.
 
 The activity thresholds are:
 * Entry Circuits: 8 or more Cells were transmitted over the Circuit.
                   Uses the sum of Inbound and Outbound Cells.
-* Entry ClientIPs: 1 or more Entry Circuits were active in this rotation
-                   period.
+* Entry ClientIPs: 1 or more active Entry Circuits closed in this rotation
+                   period. If a client does not close any circuits, it is
+                   not counted. If a client only closes inactive circuits, it
+                   is inactive.
 * Exit Circuits: 1 or more Streams ended on the Circuit.
 
 ### Stream Port
@@ -135,8 +138,13 @@ The sub-categories are:
 
 The direction of Cell or Byte traffic on the Circuit or Stream.
 
-Inbound data is read/received/downloaded by the relay.
-Outbound data is written/sent/uploaded by the relay.
+Outbound data is sent away from the client, typically to an Exit.
+Outbound Cells are read from the Exit's circuit with the client, and written
+as Outbound bytes to the Exit's edge connection.
+
+Inbound data is sent to the client, typically from an Exit.
+Inbound Bytes are read from the Exit's edge connection, and written to Inbound
+cells.
 
 ### Traffic Model Template Counters
 

@@ -135,6 +135,9 @@ password file that's too short.)
 
 ### Hash the password and add it to the torrc
 
+(If you build Tor with libscrypt, this will use SCRYPT_SALSA208_SHA256,
+otherwise, it will use PKBDF2_SHA1. Prefer scrypt if at all possible.)
+
 ```
   echo -n "HashedControlPassword " >> torrc
   tor --hash-password `cat keys/control_password.txt` >> torrc

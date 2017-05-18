@@ -9,6 +9,7 @@ publication:
 Safely Measuring Tor
 23rd ACM Conference on Computer and Communication Security (CCS 2016)
 Rob Jansen and Aaron Johnson
+http://www.robgjansen.com/publications/privcount-ccs2016.pdf
 ```
 
 For more information about PrivEx, see:
@@ -17,34 +18,39 @@ For more information about PrivEx, see:
 PrivEx: Private Collection of Traffic Statistics for Anonymous Communication Networks
 21st ACM Conference on Computer and Communications Security (CCS 2014)
 Tariq Elahi, George Danezis, and Ian Goldberg
+http://www.cypherpunks.ca/~iang/pubs/privex-ccs14.pdf
 ```
 
 See LICENSE for licensing information.
 
-# Requirements
+# Dependencies
 
-PrivCount requirements:
+## PrivCount requirements:
 
     Debian/Ubuntu:  libssl-dev libffi-dev
-    Other Linux:    libssl libssl-dev cffi
+    Other Linux:    libssl libssl-devel cffi
+    (PrivCount supports BSD and macOS, the package names are similar.)
 
     python libs:    pyyaml, twisted, pyopenssl, cryptography, ...
                     (see requirements.txt for full list and versions)
 
-    We require OpenSSL version 1.0.2 or later for SHA256-padded RSA encryption.
-    Some tests require the openssl command.
+We require OpenSSL version 1.0.2 or later for SHA256-padded RSA encryption.
+Some tests require the openssl command.
 
-If building python libs from source:
+System libs can be install with `apt-get`, `yum`, `brew`, etc. Python libs can
+be installed with `pip`, as we explain below.
+
+### If building python libs from source:
 
     Debian/Ubuntu:  libpython2.7-dev
     Other Linux:    ?
 
-Optional python package manager:
+### Optional python package manager:
 
     Debian/Ubuntu:  python-pip
     Other Linux:    ?
 
-Optional graphing extensions (required only for the `plot` subcommand):
+### Optional graphing extensions (required only for the `plot` subcommand):
 
     Debian/Ubuntu: libpng-dev          #TODO this list is incomplete
     Other Linux:   libpng libpng-devel #TODO this list is incomplete
@@ -52,43 +58,56 @@ Optional graphing extensions (required only for the `plot` subcommand):
     python libs:   numpy, matplotlib
                    (see requirements-plot.txt for versions)
 
-Optional Tor relay consensus weight tool:
+### Optional Tor relay consensus weight tool:
 
     python libs: numpy, stem
                  (see requirements-weights.txt for versions)
 
-System libs can be install with `apt-get`, `yum`, `brew`, etc. Python libs can be installed with `pip`, as we explain below.
-
-# Optional: Installing Chutney
+## Optional: Installing Chutney
 
 Chutney is used to run the PrivCount tor network ('chutney') integration test.
 It can be used to test tor as well.
 
     git clone https://git.torproject.org/chutney.git
 
-# Optional: Installing a PrivCount-patched Tor
+## Optional: Installing a PrivCount-patched Tor
 
 A custom compiled PrivCount-patched Tor can be used to run a data collector.
 It is also used to run the PrivCount tor relay ('tor') and tor network
 ('chutney') integration tests.
 
-Tor Dependencies:
+### Tor Dependencies:
 
     Debian/Ubuntu:  libssl-dev libevent-dev
     Other Linux:    libssl libssl-dev libevent libevent-devel
 
-Optional Tor Sandbox Dependencies:
+### Optional Tor Dependencies:
+
+#### Linux Sandbox:
 
     Debian/Ubuntu:  libseccomp-dev
     Other Linux:    libseccomp2 libseccomp-devel
 
-Building Tor:
+#### scrypt Control Port Password Encryption:
+
+    Debian/Ubuntu:  libscrypt-dev
+    Other Linux:    libscrypt-devel
+
+#### Other Optional Tor Dependencies:
+
+Tor also supports systemd notifications, and xz and zstd compression of
+directory documents (in 0.3.1 and later).
+
+For details, read the output of:
+    ./configure --help
+
+### Building Tor:
 
     git clone https://github.com/privcount/tor.git tor-privcount
     git checkout privcount
     ./autogen.sh && ./configure --disable-asciidoc && make
 
-## Optional Tor tests:
+### Optional Tor tests:
 
     make check
     make test-network-all # requires chutney
@@ -177,7 +196,6 @@ relevant sections of test/run_test.sh for openssl commands that generate RSA
 keys.
 
 ## Tor Control Authentication
-
 
 PrivCount securely authenticates to tor's control port. This prevents the
 control port being used to run commands as the tor user.
