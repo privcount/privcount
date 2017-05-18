@@ -35,8 +35,8 @@ RAND_STR_BYTES = 20
 # The paths to the RSA keys, based on the location of privcount/test
 PRIVCOUNT_DIRECTORY = environ.get('PRIVCOUNT_DIRECTORY', getcwd())
 TEST_DIRECTORY = path.join(PRIVCOUNT_DIRECTORY, 'test')
-PUBLIC_KEY_PATH = path.join(TEST_DIRECTORY, 'keys/sk.cert')
-PRIVATE_KEY_PATH = path.join(TEST_DIRECTORY, 'keys/sk.pem')
+PUBLIC_KEY_PATH = path.join(TEST_DIRECTORY, 'keys/test.cert')
+PRIVATE_KEY_PATH = path.join(TEST_DIRECTORY, 'keys/test.pem')
 
 # This is the maximum number of bytes OpenSSL will encrypt with PrivCount's
 # current public key size (determined by trying different values)

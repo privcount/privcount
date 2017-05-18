@@ -344,6 +344,15 @@ if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
   echo ""
 
   echo "Testing encryption:"
+  # Generate a 4096-bit RSA key for testing
+  TEST_KEY_PATH="$TEST_DIR/keys/test.pem"
+  TEST_CERT_PATH="$TEST_DIR/keys/test.cert"
+  if [ ! -e "$TEST_KEY_PATH" ]; then
+    "$PRIVCOUNT_OPENSSL" genrsa -out "$TEST_KEY_PATH" 4096
+  fi
+  if [ ! -e "$TEST_CERT_PATH" ]; then
+    "$PRIVCOUNT_OPENSSL" rsa -pubout < "$TEST_KEY_PATH" > "$TEST_CERT_PATH"
+  fi
   python "$TEST_DIR/test_encryption.py"
   echo ""
 
