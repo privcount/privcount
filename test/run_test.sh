@@ -21,10 +21,11 @@ TEST_DIR=`dirname "$0"`
 export PRIVCOUNT_DIRECTORY=${PRIVCOUNT_DIRECTORY:-`dirname "$TEST_DIR"`}
 PRIVCOUNT_SOURCE=${PRIVCOUNT_SOURCE:-inject}
 PRIVCOUNT_SHARE_KEEPERS=${PRIVCOUNT_SHARE_KEEPERS:-1}
+PRIVCOUNT_UNIT_TESTS=${PRIVCOUNT_UNIT_TESTS:-1}
+PRIVCOUNT_PLOT=${PRIVCOUNT_PLOT:-1}
 
 # Inject source
 PRIVCOUNT_ROUNDS=${PRIVCOUNT_ROUNDS:-2}
-PRIVCOUNT_UNIT_TESTS=${PRIVCOUNT_UNIT_TESTS:-1}
 
 # Tor source
 # use the chutney tor dir, or assume privcount-tor is beside privcount
@@ -70,6 +71,9 @@ do
       ;;
     --no-unit-tests|-x)
       PRIVCOUNT_UNIT_TESTS=0
+      ;;
+    --no-plot|-z)
+      PRIVCOUNT_PLOT=0
       ;;
     --rounds|-r)
       PRIVCOUNT_ROUNDS=$2
@@ -131,6 +135,8 @@ do
       echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
       echo "  -x: skip unit tests"
       echo "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
+      echo "  -z: skip plot"
+      echo "    default: '$PRIVCOUNT_PLOT' (1: run, 0: skip)"
       echo "  -r rounds: run this many rounds before stopping"
       echo "    default: '$PRIVCOUNT_ROUNDS' (1 for tor and chutney)"
       echo "  -s source: use inject, chutney, or tor as the data source"
@@ -270,17 +276,17 @@ case "$PRIVCOUNT_SOURCE" in
     FIRST_ROUND_CMD=$TOR_CMD
     # only supports 1 round, fail if we try to have more
     OTHER_ROUND_CMD=false
+    PRIVCOUNT_ROUNDS=1
     LOG_CMD=$TOR_LOG_CMD
     CONFIG=$TOR_CONFIG
-    PRIVCOUNT_ROUNDS=1
     ;;
   chutney)
     FIRST_ROUND_CMD=$CHUTNEY_CMD
     # only supports 1 round, fail if we try to have more
     OTHER_ROUND_CMD=false
+    PRIVCOUNT_ROUNDS=1
     LOG_CMD=$CHUTNEY_LOG_CMD
     CONFIG=$CHUTNEY_CONFIG
-    PRIVCOUNT_ROUNDS=1
     ;;
   *)
     echo "Source $PRIVCOUNT_SOURCE not supported."
@@ -630,6 +636,7 @@ ENDSEC="`$TIMESTAMP_COMMAND`"
 # And terminate all the privcount processes
 echo "Terminating privcount and $PRIVCOUNT_SOURCE after $ROUNDS round(s)..."
 pkill -P $$
+wait
 
 # Symlink a timestamped file to a similarly-named "latest" file
 # Usage:
@@ -660,12 +667,14 @@ link_latest traffic.model json
 
 # If a tallies file was produced, keep a link to the latest file, and plot it
 link_latest tallies json
-if [ -f "$TEST_DIR/privcount.tallies.latest.json" ]; then
+if [ -f "$TEST_DIR/privcount.tallies.latest.json" -a \
+    "$PRIVCOUNT_PLOT" -eq 1 ]; then
   echo "Plotting results..."
   # plot will fail if the optional dependencies are not installed
-  # tolerate this failure, and shut down the privcount processes
+  # tolerate this failure
   privcount plot -d "$TEST_DIR/privcount.tallies.latest.json" data 2>&1 | \
-    `save_to_log "$TEST_DIR" plot $LOG_TIMESTAMP` || true
+    `save_to_log "$TEST_DIR" plot $LOG_TIMESTAMP` || \
+    echo "Plot failed. Install the dependencies in requirements-plot.txt to run plot."
 fi
 
 # If log files were produced, keep a link to the latest files
