@@ -11,11 +11,16 @@ set -o pipefail
 set -b
 
 # Set default option values if empty (:) or unset (-)
+
+# OpenSSL
+PRIVCOUNT_OPENSSL=${PRIVCOUNT_OPENSSL:-openssl}
+
 # PrivCount itself
 PRIVCOUNT_INSTALL=${PRIVCOUNT_INSTALL:-0}
 TEST_DIR=`dirname "$0"`
 export PRIVCOUNT_DIRECTORY=${PRIVCOUNT_DIRECTORY:-`dirname "$TEST_DIR"`}
 PRIVCOUNT_SOURCE=${PRIVCOUNT_SOURCE:-inject}
+PRIVCOUNT_SHARE_KEEPERS=${PRIVCOUNT_SHARE_KEEPERS:-1}
 
 # Inject source
 PRIVCOUNT_ROUNDS=${PRIVCOUNT_ROUNDS:-2}
@@ -74,6 +79,10 @@ do
       PRIVCOUNT_SOURCE=$2
       shift
       ;;
+    --share-keepers|-k)
+      PRIVCOUNT_SHARE_KEEPERS=$2
+      shift
+      ;;
     --tor-dir|-t)
       PRIVCOUNT_TOR_DIR=$2
       shift
@@ -129,6 +138,8 @@ do
       echo "    inject: use 'privcount inject' on test/events.txt"
       echo "    tor: use a privcount-patched tor binary"
       echo "    chutney: use a chutney network with a privcount-patched tor"
+      echo "  -k sks: run this many share keepers"
+      echo "    default: '$PRIVCOUNT_SHARE_KEEPERS'"
       echo "  -t tor-dir: use the privcount-patched tor binary in tor-dir/$PRIVCOUNT_TOR_BINARY"
       echo "    default: '$PRIVCOUNT_TOR_DIR'"
       echo "  -m: run make on tor-path before testing (sources: tor, chutney)"
@@ -416,7 +427,17 @@ echo "Launching $PRIVCOUNT_SOURCE, tally server, share keeper, and data collecto
 LOG_TIMESTAMP="$STARTSEC"
 ROUNDS=1
 
-# Launch commands
+# Set some defaults
+DATA_COLLECTOR_COUNT=1
+CHUTNEY_PORT_ARRAY=( 0 )
+DC_SOURCE_PORT=0
+SK_NUM=0
+
+SK_LIST_FILE="keys/sk.sha256.list"
+rm "$TEST_DIR/$SK_LIST_FILE" || true
+touch "$TEST_DIR/$SK_LIST_FILE"
+
+# Prepare for launch
 case "$PRIVCOUNT_SOURCE" in
   inject)
     # Prepare for password authentication: the data collector and injector both
@@ -426,49 +447,128 @@ case "$PRIVCOUNT_SOURCE" in
     # even though the file is actually written out
     cat /dev/random | hexdump -e '"%x"' -n 32 -v \
         > "$TEST_DIR/keys/control_password.txt" || true
-    # the privcount test configs expect to be in the test directory
-    pushd "$TEST_DIR"
-    privcount ts "$CONFIG" 2>&1 | `save_to_log . ts $LOG_TIMESTAMP` &
-    privcount sk "$CONFIG" 2>&1 | `save_to_log . sk $LOG_TIMESTAMP` &
-    privcount dc "$CONFIG" 2>&1 | `save_to_log . dc $LOG_TIMESTAMP` &
-    popd
-    $FIRST_ROUND_CMD 2>&1 | \
-        `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     ;;
   tor)
-    # the privcount test configs expect to be in the test directory
-    pushd "$TEST_DIR"
-    privcount ts "$CONFIG" 2>&1 | `save_to_log . ts $LOG_TIMESTAMP` &
-    privcount sk "$CONFIG" 2>&1 | `save_to_log . sk $LOG_TIMESTAMP` &
-    privcount dc "$CONFIG" 2>&1 | `save_to_log . dc $LOG_TIMESTAMP` &
-    popd
-    $FIRST_ROUND_CMD 2>&1 | \
-        `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+    # we don't need to do anything here
     ;;
   chutney)
     # clean up the whitespace in the port list
     PRIVCOUNT_CHUTNEY_PORTS=`echo -n $PRIVCOUNT_CHUTNEY_PORTS | xargs`
     # work out how many ports there are
     CHUTNEY_PORT_ARRAY=( $PRIVCOUNT_CHUTNEY_PORTS )
-    CHUTNEY_PORT_COUNT=${#CHUTNEY_PORT_ARRAY[@]}
-    # the privcount test configs expect to be in the test directory
-    pushd "$TEST_DIR"
-    TEMPLATE_CONFIG=$CONFIG
-    # launch one DC per port
-    for CHUTNEY_PORT in ${CHUTNEY_PORT_ARRAY[@]} ; do
-      CONFIG=$TEMPLATE_CONFIG.$CHUTNEY_PORT
-      echo "Generating config for chutney port $CHUTNEY_PORT..."
-      cp "$TEMPLATE_CONFIG" "$CONFIG"
-      sed -i "" -e "s/CHUTNEY_PORT_COUNT/$CHUTNEY_PORT_COUNT/g" "$CONFIG"
-      sed -i "" -e "s/CHUTNEY_PORT/$CHUTNEY_PORT/g" "$CONFIG"
-      privcount dc "$CONFIG" 2>&1 | `save_to_log . dc $LOG_TIMESTAMP` &
-    done
-    # launch the TS expecting the right number of DCs
-    # (the config number does not matter)
-    privcount ts "$CONFIG" 2>&1 | `save_to_log . ts $LOG_TIMESTAMP` &
-    # the SK doesn't care how many DCs there are
-    privcount sk "$CONFIG" 2>&1 | `save_to_log . sk $LOG_TIMESTAMP` &
-    popd
+    DATA_COLLECTOR_COUNT=${#CHUTNEY_PORT_ARRAY[@]}
+    ;;
+  *)
+    echo "Source $PRIVCOUNT_SOURCE not supported."
+    exit 1
+    ;;
+esac
+
+# the privcount test configs expect to be in the test directory
+pushd "$TEST_DIR"
+TEMPLATE_CONFIG=$CONFIG
+
+# Turn $TEMPLATE_CONFIG into $CONFIG using replacement parameters
+# Usage:
+# template_to_config
+# Takes no arguments, but expects the following variables to be set:
+#  TEMPLATE_CONFIG: the file to copy the template from
+#  CONFIG: the output file name
+# Template variables must be supplied, but their values are only used in files
+# that contain the template string (which is the same as the variable name).
+# The following variables are template variables:
+# Tally Server:
+#  PRIVCOUNT_SHARE_KEEPERS: the total number of share keepers
+#  DATA_COLLECTOR_COUNT: the total number of data collectors
+#    (whether using chutney or not)
+# Share Keeper:
+#  SK_NUM: a unique identifier for this share keeper
+# Data Collector:
+#  DC_SOURCE_PORT: the data source port for this data collector
+#  SK_LIST_FILE: the path to a file containing a list of share keeper
+#    fingerprints, as a list of quoted JSON strings
+# Creates a file at $CONFIG
+function template_to_config() {
+  cp "$TEMPLATE_CONFIG" "$CONFIG"
+  
+  # This code must be kept in sync with the DC code
+  # TS values
+  sed -i"" -e "s/PRIVCOUNT_SHARE_KEEPERS/$PRIVCOUNT_SHARE_KEEPERS/g" \
+      "$CONFIG"
+  sed -i"" -e "s/DATA_COLLECTOR_COUNT/$DATA_COLLECTOR_COUNT/g" "$CONFIG"
+  
+  # SK values
+  sed -i"" -e "s/SK_NUM/$SK_NUM/g" "$CONFIG"
+
+  # DC stub values
+  sed -i"" -e "s/DC_SOURCE_PORT/$DC_SOURCE_PORT/g" "$CONFIG"
+  sed -i"" -e "/- SK_LIST/r $SK_LIST_FILE" "$CONFIG"
+  sed -i"" -e "/- SK_LIST/d" "$CONFIG"
+}
+
+# this config makes the TS expect the right number of DCs and SKs
+CONFIG="$TEMPLATE_CONFIG.ts"
+echo "Generating TS config from $TEMPLATE_CONFIG in $CONFIG..."
+template_to_config
+
+# launch the TS
+privcount ts "$CONFIG" 2>&1 | `save_to_log . ts $LOG_TIMESTAMP` &
+
+# launch enough SKs
+for SK_NUM in `seq "$PRIVCOUNT_SHARE_KEEPERS"`; do
+  CONFIG="$TEMPLATE_CONFIG.sk.$SK_NUM"
+  echo "Generating SK config $SK_NUM from $TEMPLATE_CONFIG in $CONFIG..."
+  template_to_config
+
+  # Launch an SK with this config
+  privcount sk "$CONFIG" 2>&1 | `save_to_log . sk $LOG_TIMESTAMP` &
+done
+
+# find the SK fingerprints
+for SK_NUM in `seq "$PRIVCOUNT_SHARE_KEEPERS"`; do
+  SK_KEY_PATH="keys/sk.$SK_NUM.pem"
+  echo -n "Generating SK fingerprint for $SK_KEY_PATH"
+  echo -n "        - '" >> "$SK_LIST_FILE"
+  # Let the SKs finish launching
+  while [ ! -e "$SK_KEY_PATH" ]; do
+    echo -n "."
+    sleep 1
+  done
+  echo ""
+  # Some versions of openssl dgst use (stdin)= before the hash, others don't
+  "$PRIVCOUNT_OPENSSL" rsa -pubout < "$SK_KEY_PATH" \
+    | "$PRIVCOUNT_OPENSSL" dgst -sha256 | cut -d" " -f2 | tr -d '\r\n' \
+    >> "$SK_LIST_FILE"
+  echo "'" >> "$SK_LIST_FILE"
+done
+
+# sort the sk fingerprints so they match the order reported by DCs
+# Is there any need to remove duplicates here?
+sort "$SK_LIST_FILE" -o "$SK_LIST_FILE"
+
+# Clear the previous value
+SK_NUM=0
+
+# launch one DC per port
+# for inject and tor, there is one placeholder port in the array
+for DC_SOURCE_PORT in ${CHUTNEY_PORT_ARRAY[@]} ; do
+  CONFIG="$TEMPLATE_CONFIG.dc.$DC_SOURCE_PORT"
+  echo "Generating DC config $DC_SOURCE_PORT from $TEMPLATE_CONFIG in $CONFIG..."
+  template_to_config
+
+  # Launch a DC with this config
+  privcount dc "$CONFIG" 2>&1 | `save_to_log . dc $LOG_TIMESTAMP` &
+done
+
+popd
+
+# Launch the data source
+case "$PRIVCOUNT_SOURCE" in
+  inject|tor)
+    $FIRST_ROUND_CMD 2>&1 | \
+        `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+    ;;
+  chutney)
     # The chutney output is very verbose: don't save it to the log
     $FIRST_ROUND_CMD 2>&1 &
     echo "For full chutney logs run $CHUTNEY_LOG_CMD" | \

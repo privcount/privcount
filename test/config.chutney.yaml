@@ -1,4 +1,4 @@
-# TS & SK config for chutney single-round, multi-DC integration test
+# TS & SK config for chutney single-round, multi-DC, multi-SK integration test
 
 tally_server:
     state: 'privcount.ts.state'
@@ -12,9 +12,11 @@ tally_server:
         # * means 'any other relay', and should only be used for testing
         '*': 1.0
     listen_port: 20001
-    sk_threshold: 1
-    # Template value, replaced by run_test.sh
-    dc_threshold: CHUTNEY_PORT_COUNT
+    # Template values, replaced by run_test.sh
+    sk_threshold: PRIVCOUNT_SHARE_KEEPERS
+    dc_threshold: DATA_COLLECTOR_COUNT
+    #sk_threshold: 1
+    #dc_threshold: 3
     # The elapsed test time is approximately:
     #     collect_period + 2*event_period
     collect_period: 60
@@ -32,30 +34,35 @@ tally_server:
     secret_handshake: 'keys/secret_handshake.yaml'
 
 share_keeper:
-    state: 'privcount.sk.state'
+    # Template values, replaced by run_test.sh
+    state: 'privcount.sk.SK_NUM.state'
+    key: 'keys/sk.SK_NUM.pem'
     tally_server_info:
         ip: '127.0.0.1'
         port: 20001
-    key: 'keys/sk.pem'
     # We only run one round, so this is unused
     delay_period: 86400
     secret_handshake: 'keys/secret_handshake.yaml'
 
 data_collector:
-    name: 'chutney-test-CHUTNEY_PORT'
-    state: 'privcount.dc.CHUTNEY_PORT.state'
+    # Template values, replaced by run_test.sh
+    name: 'dc-chutney-test-DC_SOURCE_PORT'
+    state: 'privcount.dc.DC_SOURCE_PORT.state'
     # the Tor control connection from which we will receive events
     # Can be:
     # - port, with ip optional (default 127.0.0.1), or
     # - a unix socket path
     event_source:
         # Template value, replaced by run_test.sh
-        port: CHUTNEY_PORT
+        port: DC_SOURCE_PORT
     tally_server_info:
         ip: 127.0.0.1
         port: 20001
     share_keepers:
-        - 'e79ea9173e28e6a54f6d2ec6494c1723a330811652acebbe8d98098ce347d679'
+        # Template list value, replaced by run_test.sh
+        - SK_LIST
+        # - '0e193e4a66cf0332bc64ad613bb651579a10e08afdbb54aa49e9ea2286ccd41c'
+        # - ...
     # We only run one round, so this is unused
     delay_period: 86400
     rotate_period: 5

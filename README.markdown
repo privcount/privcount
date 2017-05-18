@@ -29,6 +29,7 @@ Base components:
     python libs: pyyaml, twisted, pyopenssl, service-identity, cryptography
 
     We require OpenSSL version 1.0.2 or later for SHA256-padded RSA encryption.
+    Some tests require the openssl command.
 
 Optional graphing extensions (required only for the `plot` subcommand):
 

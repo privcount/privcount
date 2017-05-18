@@ -14,8 +14,6 @@ test/counters.allocation.yaml
 test/privcount.tallies.*.json
 test/privcount.outcome.*.json
 test/privcount.traffic.model.*.json
-test/keys/secret_handshake.yaml
-test/keys/control_password.txt
 test/old
 
 # these are dumped in the working directory
@@ -23,5 +21,13 @@ privcount.results.pdf
 privcount.*.log
 tor.pid
 
+# generated test keys and credentials
+test/keys/secret_handshake.yaml
+test/keys/control_password.txt
+test/keys/sk.*.pem
+test/keys/sk.sha256.list
+
 # generated test config files
 test/config.chutney.yaml.*
+test/config.tor.yaml.*
+test/config.yaml.*

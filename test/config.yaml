@@ -30,7 +30,10 @@ tally_server:
         # (we know the injector's hard-coded fingerprint)
         # '*': 1.0
     listen_port: 20001 # open port on which to listen for remote connections from SKs and DCs
-    sk_threshold: 1 # number of share keeper nodes required before starting
+    # number of share keeper nodes required before starting
+    # Template value, replaced by run_test.sh
+    sk_threshold: PRIVCOUNT_SHARE_KEEPERS
+    #sk_threshold: 1
     dc_threshold: 1 # number of data collector nodes required before starting
     # The elapsed test time is approximately:
     #     collect_period + 2*event_period
@@ -58,12 +61,15 @@ tally_server:
 
 # only the share keepers need these
 share_keeper:
-    state: 'privcount.sk.state' # path to file where persistent state will be stored
+    # Template values, replaced by run_test.sh
+    # path to file where persistent state will be stored
+    state: 'privcount.sk.SK_NUM.state'
+    # path to the rsa private key (optional)
+    key: 'keys/sk.SK_NUM.pem'
     tally_server_info: # where the tally server is located
         ip: '127.0.0.1'
         port: 20001
     # optional overrides:
-    key: 'keys/sk.pem' # path to the rsa private key
     delay_period: 2 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
     always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
     sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
@@ -72,7 +78,7 @@ share_keeper:
 
 # only the data collectors need these
 data_collector:
-    name: 'inject-test' # a unique, human meaningful name for debugging
+    name: 'dc-inject-test' # a unique, human meaningful name for debugging
     state: 'privcount.dc.state' # path to file where persistent state will be stored
     # the Tor control connection from which we will receive events
     # Can be:
@@ -92,8 +98,13 @@ data_collector:
     tally_server_info: # where the tally server is located
         ip: 127.0.0.1
         port: 20001
-    share_keepers: # share keepers' public key hashes (`openssl rsa -pubout < keys/sk.pem | sha256sum`)
-        - 'e79ea9173e28e6a54f6d2ec6494c1723a330811652acebbe8d98098ce347d679'
+    # share keepers' public key hashes
+    # `openssl rsa -pubout < keys/sk.pem | openssl dgst -sha256`
+    share_keepers:
+        # Template list value, replaced by run_test.sh
+        - SK_LIST
+        # - '0e193e4a66cf0332bc64ad613bb651579a10e08afdbb54aa49e9ea2286ccd41c'
+        # - ...
     # optional overrides:
     #delay_period: 4 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
     #always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
