@@ -1026,6 +1026,7 @@ class Aggregator(ReconnectingClientFactory):
 
         # reset for next interval
         # make cli_ips_previous the IPs from period to 0 seconds ago
+        # TODO: secure delete IP addresses
         self.cli_ips_previous = self.cli_ips_current
         self.cli_ips_current = {}
         self.cli_ips_rotated = time()
