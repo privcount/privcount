@@ -418,6 +418,13 @@ def check_counter_names(counters):
             return False
     return True
 
+def count_bins(counters):
+    '''
+    Returns the total number of bins in counters.
+    '''
+    return sum([len(counter_config['bins'])
+                for counter_config in counters.values()])
+
 def check_bins_config(bins):
     '''
     Check that bins are non-overlapping.

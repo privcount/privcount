@@ -20,7 +20,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from privcount.config import normalise_path, choose_secret_handshake_path
-from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy
+from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since
 from privcount.node import PrivCountServer, continue_collecting, log_tally_server_status
@@ -804,7 +804,8 @@ class CollectionPhase(object):
                     logging.warning("received empty counts from {}, final results will not be available".format(client_uid))
                     self.error_flag = True
                 elif not self.is_error():
-                    logging.info("received {} counts from stopped client {}".format(len(counts), client_uid))
+                    logging.info("received {} counters ({} bins) from stopped client {}"
+                                 .format(len(counts), count_bins(counts), client_uid))
                     # add up the tallies from the client
                     self.final_counts[client_uid] = counts
                 else:
@@ -854,8 +855,9 @@ class CollectionPhase(object):
             config['dc_threshold'] = self.dc_threshold_config
             config['defer_time'] = self.clock_padding
             config['collect_period'] = self.period
-            logging.info("sending start comand with {} counters and requesting {} shares to data collector {}"
+            logging.info("sending start comand with {} counters ({} bins) and requesting {} shares to data collector {}"
                          .format(len(config['counters']),
+                                 count_bins(config['counters']),
                                  len(config['sharekeepers']),
                                  client_uid))
             logging.debug("full data collector start config {}".format(config))
@@ -869,8 +871,9 @@ class CollectionPhase(object):
             config['noise_weight'] = self.noise_weight_config
             config['dc_threshold'] = self.dc_threshold_config
             config['collect_period'] = self.period
-            logging.info("sending start command with {} counters and {} shares to share keeper {}"
+            logging.info("sending start command with {} counters ({} bins) and {} shares to share keeper {}"
                          .format(len(config['counters']),
+                                 count_bins(config['counters']),
                                  len(config['shares']),
                                  client_uid))
             logging.debug("full share keeper start config {}".format(config))
