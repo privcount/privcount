@@ -641,21 +641,26 @@ wait
 
 # Symlink a timestamped file to a similarly-named "latest" file
 # Usage:
-# link_latest prefix suffix
-# Takes two arguments: the prefix and the suffix, in a filename like:
-# privcount.prefix.timestamp.suffix
+# link_latest prefix suffix [is_mandatory]
+# Takes three arguments: the prefix and the suffix, in a filename like:
+#     privcount.prefix.timestamp.suffix
+# and is_mandatory: if a file is mandatory, this function exits the script
+# if it is not found. is_mandatory defaults to true if not provided.
 # Doesn't handle arguments with spaces
 function link_latest() {
   PREFIX="$1"
   SUFFIX="$2"
+  IS_MANDATORY="${3:-1}"
   GLOB_PATTERN=privcount.$PREFIX.*.$SUFFIX
   LATEST_NAME=privcount.$PREFIX.latest.$SUFFIX
   pushd "$TEST_DIR" > /dev/null
   if [ -f $GLOB_PATTERN ]; then
     ln -s $GLOB_PATTERN "$LATEST_NAME"
-  else
+  elif [ "$IS_MANDATORY" -eq 1 ]; then
     echo "Error: No $PREFIX $SUFFIX file produced."
     exit 1
+  else
+    echo "Warning: No $PREFIX $SUFFIX file produced."
   fi
   popd > /dev/null
 }
@@ -664,7 +669,7 @@ function link_latest() {
 link_latest outcome json
 
 # If the optional traffic model file was produced, link to the latest file
-link_latest traffic.model json
+link_latest traffic.model json 0
 
 # If a tallies file was produced, link to the latest file, and plot it
 link_latest tallies json
