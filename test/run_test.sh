@@ -460,8 +460,10 @@ case "$PRIVCOUNT_SOURCE" in
     echo "Generating random password file for injector..."
     # sometimes cat /dev/{random,urandom,zero} exits with error 141
     # even though the file is actually written out
-    cat /dev/random | hexdump -e '"%x"' -n 32 -v \
-        > "$TEST_DIR/keys/control_password.txt" || true
+    if [ ! -e "$TEST_DIR/keys/control_password.txt" ]; then
+      cat /dev/random | hexdump -e '"%x"' -n 32 -v \
+          > "$TEST_DIR/keys/control_password.txt" || true
+    fi
     ;;
   tor)
     # we don't need to do anything here
