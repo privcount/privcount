@@ -499,6 +499,23 @@ class TallyServer(ServerFactory, PrivCountServer):
 
         return status
 
+    def get_client_uidname(self, uid, status=None):
+        '''
+        Tries to find nickname in status, or, if status is None, tries
+        self.clients[uid].
+        Returns uid + ' ' + nickname if nickname is present, or uid otherwise.
+        '''
+        assert uid is not None
+
+        if status is None:
+            status = self.clients[uid]
+
+        nickname = status.get('nickname', None)
+        if nickname is not None:
+            return uid + ' ' + nickname
+        else:
+            return uid
+
     def set_client_status(self, uid, status): # called by protocol
         # dump the status content at debug level
         for k in status.keys():
@@ -521,13 +538,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                             .format(status['type'], uid, status['state'],
                                     oldfingerprint, fingerprint))
 
-        nickname = status.get('nickname', None)
-        # uidname includes the nickname for data collectors
-        if nickname is not None:
-            uidname = uid + ' ' + nickname
-        else:
-            uidname = uid
-
+        uidname = self.get_client_uidname(uid, status)
         if uid not in self.clients:
             logging.info("new {} {} joined and is {}".format(status['type'], uidname, status['state']))
 
@@ -591,6 +602,25 @@ class TallyServer(ServerFactory, PrivCountServer):
         self.collection_phase.set_tally_server_status(self.get_status())
         self.collection_phase.stop()
         if self.collection_phase.is_stopped():
+            # warn the user if a DC didn't collect any data
+            for uid in self.clients:
+                if self.clients[uid]['type'] == 'DataCollector':
+                    last_event = self.clients[uid].get('last_event_time', None)
+                    uidname = self.get_client_uidname(uid)
+                    event_issue = None
+                    if last_event is None:
+                        event_issue = 'never received any events'
+                    elif last_event < self.collection_phase.get_start_ts():
+                        event_issue = 'received an event before collection started'
+                    if event_issue is not None:
+                        # we could refuse to provide any results here, but they
+                        # could still be useful even if they are missing a DC
+                        # (or the DC has clock skew). So deliver the results
+                        # and allow the operator to decide how to interpret
+                        # them
+                        logging.warning('Data Collector {} {}. Check the results before using them.'
+                                        .format(uidname, event_issue))
+
             # we want the end time after all clients have definitely stopped
             # and returned their results, not the time the TS told the
             # CollectionPhase to initiate the stop procedure
