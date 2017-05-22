@@ -16,3 +16,7 @@ For example, when we:
   1.0.0,
 * add new events or new counters, we go from 0.2.0 to 0.3.0,
 * fix bugs, we go from 0.2.0 to 0.2.1.
+
+PrivCount versions can contain changes to the PrivCount python code, Tor patch,
+or both. Changes to upstream tor are managed using Tor's versioning scheme.
+See TorBranch.markdown for more details.
