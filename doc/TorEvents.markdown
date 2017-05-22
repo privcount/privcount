@@ -24,7 +24,7 @@ Controller interfaces.
 3. PrivCount turns on the tor events required for the collection round
    (SETEVENTS PRIVCOUNT_...)
 4. Tor starts sending events as they occur, and PrivCount processes these
-   events
+   events. Events that started before PrivCount was enabled are ignored.
 
 ### Cleanup
 
@@ -97,6 +97,11 @@ would occur for a single client connection.
 PrivCount tries to capture all non-directory Tor network traffic for its
 traffic modelling. Some other events are issued selectively based on the type
 of traffic: this is a work in progress.
+
+PrivCount ignores events for connections, circuits, and streams that were
+created before PrivCount was last enabled. Otherwise, events could have
+incomplete cell or byte counts, and we would have a bias towards long-running
+events.
 
 ### PRIVCOUNT_DNS_RESOLVED
 
@@ -308,6 +313,9 @@ maximum value.
 ### Timestamp
 The current unix epoch time (UTC) in seconds, to microsecond precision
 (6 decimal places). The underlying resolution depends on the operating system.
+
+Creation timestamps will always be after the last time PrivCount was enabled,
+to avoid capturing incomplete events.
 
 ### Is Outbound Flag
 A numeric boolean flag: 1 for writes, 0 for reads.

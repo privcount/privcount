@@ -998,31 +998,29 @@ class Aggregator(ReconnectingClientFactory):
         '''
         logging.info("rotating circuit window now, {}".format(format_last_event_time_since(self.last_event_time)))
 
-        # don't count anything in the first rotation period, since events that ended up in the
-        # previous list will be skewed toward longer lived circuits
-        if self.num_rotations > 0:
+        # it is safe to count the first rotation, because Tor only sends us
+        # events that started inside the collection period
+        client_ips_active = 0
+        client_ips_inactive = 0
 
-            client_ips_active = 0
-            client_ips_inactive = 0
+        # cli_ips_previous are the IPs from 2*period to period seconds ago,
+        # or are empty for the first rotation
+        for ip in self.cli_ips_previous:
+            client = self.cli_ips_previous[ip]
 
-            # cli_ips_previous are the IPs from 2*period to period seconds ago,
-            # or are empty for the first rotation
-            for ip in self.cli_ips_previous:
-                client = self.cli_ips_previous[ip]
+            if client['is_active']:
+                client_ips_active += 1
+            else:
+                client_ips_inactive += 1
 
-                if client['is_active']:
-                    client_ips_active += 1
-                else:
-                    client_ips_inactive += 1
+            if 'num_active_completed' in client:
+                self.secure_counters.increment('EntryClientIPActiveCircuitCount', client['num_active_completed'])
+            if 'num_inactive_completed' in client:
+                self.secure_counters.increment('EntryClientIPInactiveCircuitCount', client['num_inactive_completed'])
 
-                if 'num_active_completed' in client:
-                    self.secure_counters.increment('EntryClientIPActiveCircuitCount', client['num_active_completed'])
-                if 'num_inactive_completed' in client:
-                    self.secure_counters.increment('EntryClientIPInactiveCircuitCount', client['num_inactive_completed'])
-
-            self.secure_counters.increment('EntryClientIPCount', SINGLE_BIN, client_ips_active + client_ips_inactive)
-            self.secure_counters.increment('EntryActiveClientIPCount', SINGLE_BIN, client_ips_active)
-            self.secure_counters.increment('EntryInactiveClientIPCount', SINGLE_BIN, client_ips_inactive)
+        self.secure_counters.increment('EntryClientIPCount', SINGLE_BIN, client_ips_active + client_ips_inactive)
+        self.secure_counters.increment('EntryActiveClientIPCount', SINGLE_BIN, client_ips_active)
+        self.secure_counters.increment('EntryInactiveClientIPCount', SINGLE_BIN, client_ips_inactive)
 
         # reset for next interval
         # make cli_ips_previous the IPs from period to 0 seconds ago
