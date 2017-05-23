@@ -17,7 +17,8 @@ def log_error():
     #traceback.print_tb(tb) # Fixed format
     tb_info = traceback.extract_tb(tb)
     filename, line, func, text = tb_info[-1]
-    logging.warning("An error occurred in file '%s', at line %d, in func %s, in statement '%s'", filename, line, func, text)
+    logging.error("An error occurred in file '%s', at line %d, in func %s, in statement '%s'", filename, line, func, text)
+    logging.debug(traceback.format_exc())
 
 ## Logging: Time Formatting Functions ##
 ## a timestamp is an absolute point in time, in seconds since unix epoch

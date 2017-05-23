@@ -16,6 +16,7 @@ from cryptography.hazmat.primitives.hashes import SHA256
 from privcount.connection import transport_info, transport_peer, transport_host
 from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
+from privcount.log import log_error
 
 PRIVCOUNT_SHORT_VERSION_STRING = "1.0.0"
 
@@ -50,6 +51,7 @@ def privcount_git_revision():
                         .format(git_command_line,
                                 e.returncode, e.cmd, e.output))
         PRIVCOUNT_GIT_CACHE = "(no revision)"
+    # if any error happens here, log but ignore it
     except BaseException as e:
         logging.warning('Git revision check {} exception: "{}"'
                         .format(git_command_line, e))
@@ -61,8 +63,7 @@ def errorCallback(failure):
     '''
     Called by twisted when a deferred function fails
     '''
-    logging.error(failure.getBriefTraceback())
-    logging.debug(failure.getTraceback())
+    log_error()
     try:
         reactor.stop()
     except ReactorNotRunning:
@@ -89,11 +90,14 @@ class PrivCountProtocol(LineOnlyReceiver):
                         PrivCountProtocol.ROLE_CLIENT)) +
                 PrivCountProtocol.COOKIE_B64_BYTES +
                 PrivCountProtocol.HMAC_B64_BYTES)
+        # if any error happens here, die
         except BaseException as e:
             # catch errors and terminate the process
             logging.error(
                 "Exception {} while initialising PrivCountProtocol instance"
                 .format(e))
+            log_error()
+
             try:
                 reactor.stop()
             except ReactorNotRunning:
@@ -232,6 +236,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             logging.error(
                 "Exception {} while processing event type: {} payload: {}"
                 .format(e, event_type, event_payload))
+            log_error()
 
             try:
                 self.protocol_failed()
@@ -239,6 +244,7 @@ class PrivCountProtocol(LineOnlyReceiver):
                 logging.error(
                               "Exception {} in protocol failure after event type: {} payload: {}"
                               .format(e, event_type, event_payload))
+                log_error()
 
             # That said, terminating on exception is a denial of service
             # risk: if an untrusted party can cause an exception, they can

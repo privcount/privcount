@@ -10,7 +10,6 @@ import json
 import logging
 import cPickle as pickle
 import yaml
-import traceback
 
 from time import time
 from copy import copy, deepcopy
@@ -1151,8 +1150,7 @@ class CollectionPhase(object):
                 return updated_tmodel_conf
             except:
                 logging.warning("there was a non-fatal exception in the traffic model update function")
-                traceback.print_exc()
-                traceback.print_stack()
+                log_error()
                 return None
         else:
             # some problem with counter labels
