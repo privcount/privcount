@@ -11,6 +11,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, ArgumentType
 
 from privcount.inject import add_inject_args
 from privcount.plot import add_plot_args
+from privcount.protocol import get_privcount_version
 
 class CustomHelpFormatter(ArgumentDefaultsHelpFormatter):
     # adds the 'RawDescriptionHelpFormatter' to the ArgsDefault one
@@ -89,30 +90,27 @@ def main():
 
     if 'configpath' in args:
         logging.info("using config file at '%s'", args.configpath)
+    logging.info("running {} privcount version {}"
+                 .format(args.mode, get_privcount_version()))
     args.func(args)
 
 def data_collector(args):
-    logging.info("running data_collector")
     from privcount.data_collector import DataCollector
     DataCollector(args.configpath).run()
 
 def tally_server(args):
-    logging.info("running tally_server")
     from privcount.tally_server import TallyServer
     TallyServer(args.configpath).run()
 
 def share_keeper(args):
-    logging.info("running share_keeper")
     from privcount.share_keeper import ShareKeeper
     ShareKeeper(args.configpath).run()
 
 def inject(args):
-    logging.info("running inject")
     from privcount.inject import run_inject
     run_inject(args)
 
 def plot(args):
-    logging.info("running plot")
     from privcount.plot import run_plot
     run_plot(args)
 

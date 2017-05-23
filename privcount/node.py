@@ -65,7 +65,11 @@ def log_tally_server_status(status):
         # collecting results
         else:
             expected_end_msg = ", expect collection has ended for {}".format(format_elapsed_time_since(stopping_ts, 'since'))
-    logging.info("--server status: PrivCount is {} for {}{}".format(status['state'], format_elapsed_time_since(status['time'], 'since'), expected_end_msg))
+    logging.info("--server status: PrivCount is {} for {}{} (server version {})"
+                 .format(status['state'],
+                         format_elapsed_time_since(status['time'], 'since'),
+                         expected_end_msg,
+                         status['privcount-version']))
     t, r = status['dcs_total'], status['dcs_required']
     a, i = status['dcs_active'], status['dcs_idle']
     logging.info("--server status: DataCollectors: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))

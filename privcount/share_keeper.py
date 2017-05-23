@@ -20,7 +20,7 @@ from privcount.connection import validate_connection_config
 from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters
 from privcount.crypto import get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt
 from privcount.log import log_error
-from privcount.protocol import PrivCountClientProtocol
+from privcount.protocol import PrivCountClientProtocol, get_privcount_version
 from privcount.node import PrivCountClient
 
 class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
@@ -82,8 +82,13 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
         Called by protocol
         Returns a dictionary containing status information
         '''
-        return {'type':'ShareKeeper', 'name':self.config['name'],
-        'state': 'active' if self.keystore is not None else 'idle', 'public_key':get_serialized_public_key(self.config['key'])}
+        return {
+            'type' : 'ShareKeeper',
+            'name' : self.config['name'],
+            'state' : 'active' if self.keystore is not None else 'idle',
+            'public_key' : get_serialized_public_key(self.config['key']),
+            'privcount-version' : get_privcount_version(),
+               }
 
     def do_checkin(self):
         '''

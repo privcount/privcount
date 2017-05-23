@@ -24,7 +24,7 @@ from privcount.counter import SecureCounters, counter_modulus, min_blinded_count
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since
 from privcount.node import PrivCountServer, continue_collecting, log_tally_server_status
-from privcount.protocol import PrivCountServerProtocol, errorCallback
+from privcount.protocol import PrivCountServerProtocol, errorCallback, get_privcount_version
 from privcount.statistics_noise import get_noise_allocation
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
@@ -488,7 +488,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                 self.config['noise'],
                 self.config['delay_period'],
                 self.config['always_delay'],
-                self.config['sigma_decrease_tolerance'])
+                self.config['sigma_decrease_tolerance']),
+            'privcount-version' : get_privcount_version(),
         }
 
         # we can't know the expected end time until we have started
@@ -510,11 +511,38 @@ class TallyServer(ServerFactory, PrivCountServer):
         if status is None:
             status = self.clients[uid]
 
-        nickname = status.get('nickname', None)
-        if nickname is not None:
-            return uid + ' ' + nickname
-        else:
+        # if we're not expecting a nickname, just use the UID
+        if status['type'] != 'DataCollector':
             return uid
+
+        nickname = status.get('nickname', '(pending)')
+        return uid + ' ' + nickname
+
+    def get_client_version(self, uid, status=None):
+        '''
+        Tries to find privcount-version, tor-version, and tor-privcount-version
+        in status, or, if status is None, tries self.clients[uid].
+        Returns a formatted string containing the versions that are present.
+        '''
+        assert uid is not None
+
+        if status is None:
+            status = self.clients[uid]
+
+        assert 'privcount-version' in status
+        privcount_version = status['privcount-version']
+
+        # if we're not expecting additional versions, just use privcount
+        if status['type'] != 'DataCollector':
+            return privcount_version
+
+        tor_version = status.get('tor-version',
+                                 '(pending)')
+        tor_privcount_version = status.get('tor-privcount-version',
+                                           '(pending)')
+
+        return ('privcount: {}, tor: {}, tor privcount: {}'
+                .format(privcount_version, tor_version, tor_privcount_version))
 
     def set_client_status(self, uid, status): # called by protocol
         # dump the status content at debug level
@@ -540,7 +568,9 @@ class TallyServer(ServerFactory, PrivCountServer):
 
         uidname = self.get_client_uidname(uid, status)
         if uid not in self.clients:
-            logging.info("new {} {} joined and is {}".format(status['type'], uidname, status['state']))
+            logging.info("new {} {} joined and is {} (client version {})"
+                         .format(status['type'], uidname, status['state'],
+                                 self.get_client_version(uid, status)))
 
         oldstate = self.clients[uid]['state'] if uid in self.clients else status['state']
         # for each key, replace the client value with the value from status,
@@ -559,7 +589,12 @@ class TallyServer(ServerFactory, PrivCountServer):
         # only log a message if we expect events
         if self.clients[uid]['type'] == 'DataCollector':
             last_event_message = ' ' + format_last_event_time_since(last_event_time)
-        logging.info("----client status: {} {} is alive and {} for {}{}".format(self.clients[uid]['type'], uidname, self.clients[uid]['state'], format_elapsed_time_since(self.clients[uid]['time'], 'since'), last_event_message))
+        logging.info("----client status: {} {} is alive and {} for {}{} (client version {})"
+                     .format(self.clients[uid]['type'], uidname,
+                             self.clients[uid]['state'],
+                             format_elapsed_time_since(self.clients[uid]['time'], 'since'),
+                             last_event_message,
+                             self.get_client_version(uid, status)))
 
     def get_clock_padding(self, client_uids):
         max_delay = max([self.clients[uid]['rtt']+self.clients[uid]['clock_skew'] for uid in client_uids])

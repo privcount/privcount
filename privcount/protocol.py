@@ -1,6 +1,6 @@
 # See LICENSE for licensing information
 
-import logging, json, math
+import logging, json, math, subprocess
 
 from time import time
 from os import urandom, path
@@ -16,6 +16,46 @@ from cryptography.hazmat.primitives.hashes import SHA256
 from privcount.connection import transport_info, transport_peer, transport_host
 from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
+
+PRIVCOUNT_SHORT_VERSION_STRING = "1.0.0"
+
+def get_privcount_version():
+    '''
+    Return a string describing the PrivCount version
+    '''
+    return "{} (protocol {}, git-{})".format(
+                                          PRIVCOUNT_SHORT_VERSION_STRING,
+                                          PrivCountProtocol.HANDSHAKE_VERSION,
+                                          privcount_git_revision())
+
+PRIVCOUNT_GIT_CACHE = None
+
+def privcount_git_revision():
+    '''
+    Return a string containing the current git revision.
+    (The commit hash does not include any uncommitted working tree changes.)
+    Returns None if git is not installed, or the command fails in some other
+    way.
+    '''
+    global PRIVCOUNT_GIT_CACHE
+    if PRIVCOUNT_GIT_CACHE is not None:
+        return PRIVCOUNT_GIT_CACHE
+
+    # this is exactly what tor uses to report its revision
+    git_command_line = ['git', 'rev-parse', '--short=16', 'HEAD']
+    try:
+        PRIVCOUNT_GIT_CACHE = subprocess.check_output(git_command_line).strip()
+    except subprocess.CalledProcessError as e:
+        logging.warning('Git revision check {} returned {} cmd "{}" output "{}"'
+                        .format(git_command_line,
+                                e.returncode, e.cmd, e.output))
+        PRIVCOUNT_GIT_CACHE = "(no revision)"
+    except BaseException as e:
+        logging.warning('Git revision check {} exception: "{}"'
+                        .format(git_command_line, e))
+        PRIVCOUNT_GIT_CACHE = "(no revision)"
+
+    return PRIVCOUNT_GIT_CACHE
 
 def errorCallback(failure):
     '''
@@ -248,7 +288,7 @@ class PrivCountProtocol(LineOnlyReceiver):
 
     # The current version of the PrivCount protocol
     # Should only be updated for incompatible API changes
-    # These are major version change according to http://semver.org/
+    # These are major version changes, according to http://semver.org/
     HANDSHAKE_VERSION = 'PRIVCOUNT-100'
     # The role of the node sending the handshake
     ROLE_CLIENT = 'CLIENT'
@@ -1655,8 +1695,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         If so, authenticate using the best authentication method.
         Then, put the protocol in the 'discovering' state, and ask the relay
         for information about itself.
-        When the fingerprint is receved, put the protocol in the 'waiting'
-        state.
+        When the privcount version is received, put the protocol in the
+        'waiting' state.
         When the round is started, put the protocol in the 'processing' state,
         and send the list of events we want.
         When events are received, process them.
@@ -1700,7 +1740,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                     version = \
                         TorControlProtocol.decodeControllerString(version)
                     # tell the factory
-                    self.setDiscoveredValue('set_version', version,
+                    self.setDiscoveredValue('set_tor_version', version,
                                             'PROTOCOLINFO version')
             elif line == "250 OK":
                 # we must authenticate as soon as we can
@@ -1779,6 +1819,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             self.sendLine("GETINFO version")
             self.sendLine("GETINFO address")
             self.sendLine("GETINFO fingerprint")
+            # Unpatched Tor will break the protocol in response to this:
+            self.sendLine("GETINFO privcount-version")
             self.state = 'discovering'
         elif self.state == 'discovering':
             # -- These cases continue discovering, or quit() -- #
@@ -1821,7 +1863,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             # (the data collector and tally server accept version changes)
             elif line.startswith("250-version="):
                 _, _, version = line.partition("version=")
-                self.setDiscoveredValue('set_version', version,
+                self.setDiscoveredValue('set_tor_version', version,
                                         'GETINFO version')
             # It's just told us its address
             elif line.startswith("250-address="):
@@ -1831,17 +1873,30 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             elif line == "551 Address unknown":
                 logging.info("Connection with {}: does not know its own address"
                              .format(transport_info(self.transport)))
-            # -- fingerprint discovery ends in waiting or quit() --
             # It's a relay, and it's just told us its fingerprint
             elif line.startswith("250-fingerprint="):
                 _, _, fingerprint = line.partition("fingerprint=")
                 self.setDiscoveredValue('set_fingerprint', fingerprint,
                                         'fingerprint')
+            # -- fingerprint discovery ends in waiting or quit() --
+            # It's a PrivCount-patched Tor instance, and it's just told us its
+            # PrivCount version
+            elif line.startswith("250-privcount-version="):
+                _, _, version = line.partition("privcount-version=")
+                self.setDiscoveredValue('set_tor_privcount_version', version,
+                                        'GETINFO privcount-version')
                 # waiting mode will skip all further lines, until collection
                 self.state = 'waiting'
             # We asked for its fingerprint, and it said it's a client
             elif line == "551 Not running in server mode":
                 logging.warning("Connection with {} failed: not a relay"
+                                .format(transport_info(self.transport)))
+                self.quit()
+                return
+            # We asked for its PrivCount version, and it didn't know what we
+            # meant
+            elif line == '552 Unrecognized key "privcount-version"':
+                logging.warning("Connection with {} failed: not a PrivCount relay"
                                 .format(transport_info(self.transport)))
                 self.quit()
                 return
@@ -2156,6 +2211,9 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                 # The control spec says we should say "Tor ", but tor doesn't
                 elif len(parts) == 2 and parts[1] == "version":
                     self.sendLine("250-version=0.2.8.6 (git-4d217548e3f05569)")
+                    self.sendLine("250 OK")
+                elif len(parts) == 2 and parts[1] == "privcount-version":
+                    self.sendLine("250-privcount-version=1.0.0")
                     self.sendLine("250 OK")
                 elif len(parts) == 2 and parts[1] == "address":
                     # TEST-NET from https://tools.ietf.org/html/rfc5737

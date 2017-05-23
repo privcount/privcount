@@ -21,7 +21,7 @@ from privcount.counter import SecureCounters, counter_modulus, add_counter_limit
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since
 from privcount.node import PrivCountClient
-from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, errorCallback
+from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, errorCallback, get_privcount_version
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
 SINGLE_BIN = SecureCounters.SINGLE_BIN
@@ -90,8 +90,12 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         Called by protocol
         Returns a dictionary containing status information
         '''
-        status = {'type':'DataCollector', 'name':self.config['name'],
-                  'state': 'active' if self.aggregator is not None else 'idle'}
+        status = {
+            'type' : 'DataCollector',
+            'name' : self.config['name'],
+            'state' : 'active' if self.aggregator is not None else 'idle',
+            'privcount-version' : get_privcount_version(),
+                 }
         # store the latest context, so we have it even when the aggregator goes away
         if self.aggregator is not None:
             self.context.update(self.aggregator.get_context())
@@ -341,7 +345,8 @@ class Aggregator(ReconnectingClientFactory):
         self.nickname = None
         self.orport = None
         self.dirport = None
-        self.version = None
+        self.tor_version = None
+        self.tor_privcount_version = None
         self.address = None
         self.fingerprint = None
 
@@ -551,23 +556,32 @@ class Aggregator(ReconnectingClientFactory):
     def get_dirport(self):
         return self.dirport
 
-    def set_version(self, version):
+    @staticmethod
+    def validate_version(version, old_version, description):
+        '''
+        Perform basic validation and processing on version.
+        Uses description for logging changes to old_version.
+        Returns a whitespace-stripped version string, or None if the version
+        is invalid.
+        '''
         version = version.strip()
 
         # Do some basic validation of the version
         # This is hard, because versions can be almost anything
         if not len(version) > 0:
-            logging.warning("Bad version length %d: %s", len(version), version)
-            return False
+            logging.warning("Bad %s version length %d: %s",
+                            description, len(version), version)
+            return None
         # This means unicode printables, there's no ASCII equivalent
         if not all(c in string.printable for c in version):
-            logging.warning("Bad version characters: %s", version)
-            return False
+            logging.warning("Bad %s version characters: %s",
+                            description, version)
+            return None
 
         # Are we replacing an existing version?
-        if self.version is not None:
-            if self.version != version:
-                if self.version.lower() in version.lower():
+        if old_version is not None:
+            if old_version != version:
+                if old_version.lower() in version.lower():
                     # we just added a git tag to the version
                     # this happens because GETINFO version has the tag, but
                     # PROTOCOLINFO does not
@@ -575,16 +589,41 @@ class Aggregator(ReconnectingClientFactory):
                 else:
                     # did someone just restart tor with a new version?
                     logging_level = logging.warning
-                logging_level("Replacing version %s with %s", self.version, version)
+                logging_level("Replacing %s version %s with %s",
+                              description, old_version, version)
             else:
-                logging.debug("Duplicate version received %s", version)
+                logging.debug("Duplicate %s version received %s",
+                              description, version)
+        return version
 
-        self.version = version
+    def set_tor_version(self, version):
+        validated_version = Aggregator.validate_version(version, self.tor_version,
+                                                        'Tor version')
+        if validated_version is not None:
+            self.tor_version = validated_version
+            logging.info("Tor version is {}".format(self.tor_version))
+            return True
+        else:
+            return False
 
-        return True
+    def get_tor_version(self):
+        return self.tor_version
 
-    def get_version(self):
-        return self.version
+    def set_tor_privcount_version(self, tor_privcount_version):
+      validated_version = Aggregator.validate_version(
+                                                tor_privcount_version,
+                                                self.tor_privcount_version,
+                                                'Tor PrivCount version')
+      if validated_version is not None:
+          self.tor_privcount_version = validated_version
+          logging.info("Tor PrivCount version is {}"
+                       .format(self.tor_privcount_version))
+          return True
+      else:
+          return False
+
+    def get_tor_privcount_version(self):
+        return self.tor_privcount_version
 
     def set_address(self, address):
         address = address.strip()
@@ -660,8 +699,10 @@ class Aggregator(ReconnectingClientFactory):
             context['orport'] = self.get_orport()
         if self.get_dirport() is not None:
             context['dirport'] = self.get_dirport()
-        if self.get_version() is not None:
-            context['version'] = self.get_version()
+        if self.get_tor_version() is not None:
+            context['tor-version'] = self.get_tor_version()
+        if self.get_tor_privcount_version() is not None:
+            context['tor-privcount-version'] = self.get_tor_privcount_version()
         if self.get_address() is not None:
             context['address'] = self.get_address()
         if self.get_fingerprint() is not None:
