@@ -22,14 +22,14 @@ rm "$TEST_DIR"/*.names || true
 rm "$TEST_DIR"/*.names.unsorted || true
 rm "$TEST_DIR"/*.names.extra || true
 
-echo "Processing $TEST_DIR/traffic.noise.yaml:"
+#echo "Processing $TEST_DIR/traffic.noise.yaml:"
 grep -i "^ *$NAME_REGEX:$" "$TEST_DIR/traffic.noise.yaml" \
     | grep -v -e 'counters:' \
     | tr -d " \t:" > "$TEST_DIR/traffic.noise.yaml.names.extra"
 
 # Process the test counter files
 for counters in "$TEST_DIR"/counters.{bins,noise,sigmas}.yaml; do
-    echo "Processing $counters:"
+    #echo "Processing $counters:"
     grep -i "$NAME_REGEX:$" "$counters" \
         | grep -v -e '^#' -e 'bins:' -e 'privacy:' -e 'counters:' \
         | tr -d " \t:" > "$counters.names.unsorted"
@@ -41,20 +41,20 @@ for counters in "$TEST_DIR"/counters.{bins,noise,sigmas}.yaml; do
     cat "$counters.names.unsorted" | sort > "$counters.names"
 done
 
-echo "Processing $TEST_DIR/../privcount/traffic_model.py:"
+#echo "Processing $TEST_DIR/../privcount/traffic_model.py:"
 # there are multiple counter mentions in this file, so remove duplicates
 grep -i "'$NAME_REGEX'[],]" "$TEST_DIR/../privcount/traffic_model.py" \
     | grep -v -e 'counters' -e 'states' \
     | cut -d"'" -f 2 | sort -u > "$TEST_DIR/traffic_model.py.names.extra"
 
-echo "Processing $TEST_DIR/../privcount/statistics_noise.py:"
+#echo "Processing $TEST_DIR/../privcount/statistics_noise.py:"
 grep -i "DEFAULT_DUMMY_COUNTER_NAME *= *'$NAME_REGEX'" \
     "$TEST_DIR/../privcount/statistics_noise.py" \
     | cut -d"'" -f 2 > "$TEST_DIR/statistics_noise.py.names.extra"
 
 # Process the code files
 for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
-    echo "Processing $code:"
+    #echo "Processing $code:"
     OUT_PATH="$TEST_DIR"/`basename "$code"`
     grep -i "'$NAME_REGEX'[, ]" "$code" | cut -d"'" -f 2 \
         | grep -v -e 'bins' -e 'DOCUMENT' -e 'type' -e 'name' -e 'state' \

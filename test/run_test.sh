@@ -23,6 +23,10 @@ PRIVCOUNT_SOURCE=${PRIVCOUNT_SOURCE:-inject}
 PRIVCOUNT_SHARE_KEEPERS=${PRIVCOUNT_SHARE_KEEPERS:-1}
 PRIVCOUNT_UNIT_TESTS=${PRIVCOUNT_UNIT_TESTS:-1}
 PRIVCOUNT_PLOT=${PRIVCOUNT_PLOT:-1}
+PRIVCOUNT_LOG=${PRIVCOUNT_LOG:-""}
+# The default is to echo info and warning messages
+I="echo"
+W="echo"
 
 # Inject source
 PRIVCOUNT_ROUNDS=${PRIVCOUNT_ROUNDS:-2}
@@ -74,6 +78,12 @@ do
       ;;
     --no-plot|-z)
       PRIVCOUNT_PLOT=0
+      ;;
+    --debug|-v)
+      PRIVCOUNT_LOG="-v"
+      ;;
+    --warn|--warning|-q)
+      PRIVCOUNT_LOG="-q"
       ;;
     --rounds|-r)
       PRIVCOUNT_ROUNDS=$2
@@ -130,57 +140,60 @@ do
       shift
       ;;
     --help|-h)
-      echo "usage: $0 [...] [<privcount-directory>] -- [<data-source-args...>]"
-      echo "  -I: run 'pip install -I <privcount-directory>' before testing"
-      echo "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
-      echo "  -x: skip unit tests"
-      echo "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
-      echo "  -z: skip plot"
-      echo "    default: '$PRIVCOUNT_PLOT' (1: run, 0: skip)"
-      echo "  -r rounds: run this many rounds before stopping"
-      echo "    default: '$PRIVCOUNT_ROUNDS' (1 for tor and chutney)"
-      echo "  -s source: use inject, chutney, or tor as the data source"
-      echo "    default: '$PRIVCOUNT_SOURCE'"
-      echo "    inject: use 'privcount inject' on test/events.txt"
-      echo "    tor: use a privcount-patched tor binary"
-      echo "    chutney: use a chutney network with a privcount-patched tor"
-      echo "  -k sks: run this many share keepers"
-      echo "    default: '$PRIVCOUNT_SHARE_KEEPERS'"
-      echo "  -t tor-dir: use the privcount-patched tor binary in tor-dir/$PRIVCOUNT_TOR_BINARY"
-      echo "    default: '$PRIVCOUNT_TOR_DIR'"
-      echo "  -m: run make on tor-path before testing (sources: tor, chutney)"
-      echo "    default: '$PRIVCOUNT_TOR_MAKE' (0: no make, 1: make)"
-      echo "  -f torrc-path: launch tor with the torrc at torrc-path"
-      echo "    an empty torrc path '' means 'no torrc file'"
-      echo "    default: '$PRIVCOUNT_TORRC'"
-      echo "  -d datadir-path: launch tor with the data directory datadir-path"
-      echo "    default: a new temp directory" # $PRIVCOUNT_TOR_DATADIR
-      echo "  -c chutney-path: launch chutney from chutney-path/chutney"
-      echo "    default: '$PRIVCOUNT_CHUTNEY_PATH'"
-      echo "  -n chutney-flavour: launch chutney with chutney-flavour"
-      echo "    default: '$PRIVCOUNT_CHUTNEY_FLAVOUR'"
-      echo "  -p chutney-port ... : launch a data collector for each port"
-      echo "    use: \`seq 8000 finish-port\` to generate a list"
-      echo "    default: '$PRIVCOUNT_CHUTNEY_PORTS'"
-      echo "  -o chutney-connections: make chutney-connections per client"
-      echo "    Each connection to the chutney data source uses one stream."
-      echo "    Chutney opens these streams simultanously."
-      echo "    default: '$PRIVCOUNT_CHUTNEY_CONNECTIONS'"
-      echo "  -u chutney-rounds: run chutney-rounds verification rounds"
-      echo "    Chutney runs rounds sequentially.."
-      echo "    default: '$PRIVCOUNT_CHUTNEY_ROUNDS'"
-      echo "  -b chutney-bytes: verify chutney-bytes per client connection"
-      echo "    default: '$PRIVCOUNT_CHUTNEY_BYTES'"
-      echo "  <privcount-directory>: the directory privcount is in"
-      echo "    default: '$PRIVCOUNT_DIRECTORY'"
-      echo "  <data-source-args...>: arguments appended to the data source"
-      echo "    defaults:"
-      echo "      inject first round: port 20003, password auth"
-      echo "      inject next rounds: unix /tmp/privcount-inject, cookie auth"
-      echo "      tor single round: port 20003, cookie auth"
-      echo "      chutney single round: chutney basic-min ports, cookie auth"
-      echo "Relative paths are supported."
-      echo "Paths with special characters or spaces are not supported."
+      "$W" "usage: $0 [...] [<privcount-directory>] -- [<data-source-args...>]"
+      "$W" "  -I: run 'pip install -I <privcount-directory>' before testing"
+      "$I" "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
+      "$W" "  -x: skip unit tests"
+      "$I" "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
+      "$W" "  -z: skip plot"
+      "$I" "    default: '$PRIVCOUNT_PLOT' (1: run, 0: skip)"
+      "$W" "  -v: verbose logging"
+      "$W" "  -q: quiet logging"
+      "$I" "    default: '$PRIVCOUNT_LOG' ('': standard (info) level logging)"
+      "$W" "  -r rounds: run this many rounds before stopping"
+      "$I" "    default: '$PRIVCOUNT_ROUNDS' (1 for tor and chutney)"
+      "$W" "  -s source: use inject, chutney, or tor as the data source"
+      "$I" "    default: '$PRIVCOUNT_SOURCE'"
+      "$I" "    inject: use 'privcount inject' on test/events.txt"
+      "$I" "    tor: use a privcount-patched tor binary"
+      "$I" "    chutney: use a chutney network with a privcount-patched tor"
+      "$W" "  -k sks: run this many share keepers"
+      "$I" "    default: '$PRIVCOUNT_SHARE_KEEPERS'"
+      "$W" "  -t tor-dir: use the privcount-patched tor binary in tor-dir/$PRIVCOUNT_TOR_BINARY"
+      "$I" "    default: '$PRIVCOUNT_TOR_DIR'"
+      "$W" "  -m: run make on tor-path before testing (sources: tor, chutney)"
+      "$I" "    default: '$PRIVCOUNT_TOR_MAKE' (0: no make, 1: make)"
+      "$W" "  -f torrc-path: launch tor with the torrc at torrc-path"
+      "$I" "    an empty torrc path '' means 'no torrc file'"
+      "$I" "    default: '$PRIVCOUNT_TORRC'"
+      "$W" "  -d datadir-path: launch tor with the data directory datadir-path"
+      "$I" "    default: a new temp directory" # $PRIVCOUNT_TOR_DATADIR
+      "$W" "  -c chutney-path: launch chutney from chutney-path/chutney"
+      "$I" "    default: '$PRIVCOUNT_CHUTNEY_PATH'"
+      "$W" "  -n chutney-flavour: launch chutney with chutney-flavour"
+      "$I" "    default: '$PRIVCOUNT_CHUTNEY_FLAVOUR'"
+      "$W" "  -p chutney-port ... : launch a data collector for each port"
+      "$I" "    use: \`seq 8000 finish-port\` to generate a list"
+      "$I" "    default: '$PRIVCOUNT_CHUTNEY_PORTS'"
+      "$W" "  -o chutney-connections: make chutney-connections per client"
+      "$I" "    Each connection to the chutney data source uses one stream."
+      "$I" "    Chutney opens these streams simultanously."
+      "$I" "    default: '$PRIVCOUNT_CHUTNEY_CONNECTIONS'"
+      "$W" "  -u chutney-rounds: run chutney-rounds verification rounds"
+      "$I" "    Chutney runs rounds sequentially.."
+      "$I" "    default: '$PRIVCOUNT_CHUTNEY_ROUNDS'"
+      "$W" "  -b chutney-bytes: verify chutney-bytes per client connection"
+      "$I" "    default: '$PRIVCOUNT_CHUTNEY_BYTES'"
+      "$W" "  <privcount-directory>: the directory privcount is in"
+      "$I" "    default: '$PRIVCOUNT_DIRECTORY'"
+      "$W" "  <data-source-args...>: arguments appended to the data source"
+      "$I" "    defaults:"
+      "$I" "      inject first round: port 20003, password auth"
+      "$I" "      inject next rounds: unix /tmp/privcount-inject, cookie auth"
+      "$I" "      tor single round: port 20003, cookie auth"
+      "$I" "      chutney single round: chutney basic-min ports, cookie auth"
+      "$I" "Relative paths are supported."
+      "$W" "Paths with special characters or spaces are not supported."
       exit 0
       ;;
     --)
@@ -199,13 +212,27 @@ done
 TEST_DIR="$PRIVCOUNT_DIRECTORY/test"
 TOOLS_DIR="$PRIVCOUNT_DIRECTORY/privcount/tools"
 
+# The logging option for this script itself
+case "$PRIVCOUNT_LOG" in
+  -q)
+    I="true"
+    ;;
+  -v)
+    # do nothing, it's already pretty verbose
+    ;;
+  *)
+    "$W" "Logging level $PRIVCOUNT_LOG not supported."
+    exit 1
+    ;;
+esac
+
 # Data source commands
 
 # Inject Source
 
 # We can either test --simulate, and get partial data, or get full data
 # It's better to get full data
-INJECT_BASE_CMD="privcount inject --log $TEST_DIR/events.txt"
+INJECT_BASE_CMD="privcount $PRIVCOUNT_LOG inject --log $TEST_DIR/events.txt"
 
 # The commands for IP port connection and password authentication
 INJECT_PORT_CMD="$INJECT_BASE_CMD --port 20003 --control-password $TEST_DIR/keys/control_password.txt $@"
@@ -225,11 +252,28 @@ INJECT_CONFIG=config.yaml
 # Find tor
 PRIVCOUNT_TOR=$PRIVCOUNT_TOR_DIR/$PRIVCOUNT_TOR_BINARY
 
+# the default is Log notice stderr
+TOR_LOG=""
+# The logging option for tor
+case "$PRIVCOUNT_LOG" in
+  -q)
+    TOR_LOG="--hush"
+    ;;
+  -v)
+    # we want info, not debug
+    TOR_LOG="--Log 'info stderr'"
+    ;;
+  *)
+    "$W" "Logging level $PRIVCOUNT_LOG not supported."
+    exit 1
+    ;;
+esac
+
 # The command to start a tor relay
 # Sets the data directory to a newly created temporary directory (by default)
 # Uses a torrc with the same control port as the injector (if set)
 # Appends any remaining command-line arguments
-TOR_CMD="$PRIVCOUNT_TOR DataDirectory $PRIVCOUNT_TOR_DATADIR ${PRIVCOUNT_TORRC+-f $TEST_DIR/$PRIVCOUNT_TORRC} $@"
+TOR_CMD="$PRIVCOUNT_TOR DataDirectory $PRIVCOUNT_TOR_DATADIR ${PRIVCOUNT_TORRC+-f $TEST_DIR/$PRIVCOUNT_TORRC} $TOR_LOG $@"
 
 # logs go to standard output/error and need no special treatment
 # TODO: write to file and ignore standard warnings when displaying messages?
@@ -252,18 +296,41 @@ export CHUTNEY_DATA_BYTES=${PRIVCOUNT_CHUTNEY_BYTES:-$CHUTNEY_DATA_BYTES}
 
 # The command to start a tor test network using chutney
 CHUTNEY_TEST_NETWORK=$PRIVCOUNT_CHUTNEY_PATH/$PRIVCOUNT_CHUTNEY_LAUNCH
+
+# when running, we make chutney log all warnings
+CHUTNEY_LOG_DURING="--all-warnings"
+# at the end, we use chutney's default unexpected warning mode
+CHUTNEY_LOG_END=""
+# The logging option for chutney
+case "$PRIVCOUNT_LOG" in
+  -q)
+    # defaults to summarising unexpected warnings
+    CHUTNEY_LOG_DURING="--quiet"
+    # don't duplicate the warnings at the end 
+    CHUTNEY_LOG_END="--quiet --no-warnings"
+    ;;
+  -v)
+    CHUTNEY_LOG_DURING="--debug --all-warnings"
+    CHUTNEY_LOG_END="--all-warnings"
+    ;;
+  *)
+    "$W" "Logging level $PRIVCOUNT_LOG not supported."
+    exit 1
+    ;;
+esac
+
 # Needs to know all the variables listed above
-CHUTNEY_CMD="$CHUTNEY_TEST_NETWORK --all-warnings $@"
+CHUTNEY_CMD="$CHUTNEY_TEST_NETWORK $CHUTNEY_LOG_DURING $@"
 
 # Recent chutney versions log warnings automatically, but we want a summary
 # at the end of the script output
-CHUTNEY_LOG_CMD="$CHUTNEY_PATH/tools/warnings.sh"
+CHUTNEY_LOG_CMD="$CHUTNEY_TEST_NETWORK --only-warnings $CHUTNEY_LOG_END"
 
 # A config template: we need one config per data collector
 CHUTNEY_CONFIG=config.chutney.yaml
 
 # Now select the source command
-echo "Selecting data source $PRIVCOUNT_SOURCE..."
+"$I" "Selecting data source $PRIVCOUNT_SOURCE..."
 
 case "$PRIVCOUNT_SOURCE" in
   inject)
@@ -289,14 +356,14 @@ case "$PRIVCOUNT_SOURCE" in
     CONFIG=$CHUTNEY_CONFIG
     ;;
   *)
-    echo "Source $PRIVCOUNT_SOURCE not supported."
+    "$W" "Source $PRIVCOUNT_SOURCE not supported."
     exit 1
     ;;
 esac
 
 # source the venv if it exists
 if [ -f "$PRIVCOUNT_DIRECTORY/venv/bin/activate" ]; then
-    echo "Using virtualenv in venv..."
+    "$I" "Using virtualenv in venv..."
     set +u
     . "$PRIVCOUNT_DIRECTORY/venv/bin/activate"
     set -u
@@ -305,11 +372,11 @@ fi
 if [ "$PRIVCOUNT_INSTALL" -eq 1 ]; then
   # Install the latest requirements
   # Unfortunately, this doesn't work on my OS X install without sudo
-  #echo "Installing requirements from '$PRIVCOUNT_DIRECTORY' ..."
+  #"$I" "Installing requirements from '$PRIVCOUNT_DIRECTORY' ..."
   #pip install -r "$PRIVCOUNT_DIRECTORY/requirements.txt"
 
   # Install the latest privcount version
-  echo "Installing latest version of privcount from '$PRIVCOUNT_DIRECTORY' ..."
+  "$I" "Installing latest version of privcount from '$PRIVCOUNT_DIRECTORY' ..."
   pip install -I "$PRIVCOUNT_DIRECTORY"
 fi
 
@@ -322,34 +389,34 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
       # nothing
       ;;
     tor)
-      echo "Making tor binary in '$TOR_MAKE_DIR' ..."
+      "$I" "Making tor binary in '$TOR_MAKE_DIR' ..."
       make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY"
       ;;
     chutney)
       # chutney needs tor-gencert as well as tor
-      echo "Making tor binaries in '$TOR_MAKE_DIR' ..."
+      "$I" "Making tor binaries in '$TOR_MAKE_DIR' ..."
       make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" \
         "$PRIVCOUNT_TOR_GENCERT_BINARY"
       ;;
     *)
-      echo "Source $PRIVCOUNT_SOURCE not supported."
+      "$W" "Source $PRIVCOUNT_SOURCE not supported."
       exit 1
       ;;
   esac
 fi
 
 # Run the counter matching checks
-echo "Checking that all counters have events, increments, and tests:"
+"$I" "Checking that all counters have events, increments, and tests:"
 "$TEST_DIR/test_counter_match.sh"
-echo ""
+"$I" ""
 
 if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
   # Run the python-based unit tests
-  echo "Testing time formatting:"
+  "$I" "Testing time formatting:"
   python "$TEST_DIR/test_format_time.py"
-  echo ""
+  "$I" ""
 
-  echo "Testing encryption:"
+  "$I" "Testing encryption:"
   # Generate a 4096-bit RSA key for testing
   TEST_KEY_PATH="$TEST_DIR/keys/test.pem"
   TEST_CERT_PATH="$TEST_DIR/keys/test.cert"
@@ -360,21 +427,21 @@ if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
     "$PRIVCOUNT_OPENSSL" rsa -pubout < "$TEST_KEY_PATH" > "$TEST_CERT_PATH"
   fi
   python "$TEST_DIR/test_encryption.py"
-  echo ""
+  "$I" ""
 
-  echo "Testing random numbers:"
+  "$I" "Testing random numbers:"
   python "$TEST_DIR/test_random.py"
-  echo ""
+  "$I" ""
 
-  echo "Testing counters:"
+  "$I" "Testing counters:"
   python "$TEST_DIR/test_counter.py"
-  echo ""
+  "$I" ""
 
-  echo "Testing traffic model:"
+  "$I" "Testing traffic model:"
   python "$TEST_DIR/test_traffic_model.py"
-  echo ""
+  "$I" ""
 
-  echo "Testing noise:"
+  "$I" "Testing noise:"
   python "$TOOLS_DIR/compute_noise.py"
 
   # Requires a local privcount-patched Tor instance
@@ -390,7 +457,7 @@ STARTSEC="`$TIMESTAMP_COMMAND`"
 
 OLD_DIR="$TEST_DIR/old"
 # Move aside the old result files
-echo "Moving old results files to '$OLD_DIR' ..."
+"$I" "Moving old results files to '$OLD_DIR' ..."
 mkdir -p "$OLD_DIR"
 # Save the commands for re-use during multiple round tests
 MOVE_JSON_COMMAND="mv $TEST_DIR/privcount.*.json $OLD_DIR/"
@@ -436,7 +503,7 @@ function save_to_log() {
 }
 
 # Then run the ts, sk, dc, and injector
-echo "Launching $PRIVCOUNT_SOURCE, tally server, share keeper, and data collector..."
+"$I" "Launching $PRIVCOUNT_SOURCE, tally server, share keeper, and data collector..."
 # This won't match the timestamp logged by the TS, because the TS waits before
 # starting the round
 LOG_TIMESTAMP="$STARTSEC"
@@ -457,7 +524,7 @@ case "$PRIVCOUNT_SOURCE" in
   inject)
     # Prepare for password authentication: the data collector and injector both
     # read this file
-    echo "Generating random password file for injector..."
+    "$I" "Generating random password file for injector..."
     # sometimes cat /dev/{random,urandom,zero} exits with error 141
     # even though the file is actually written out
     if [ ! -e "$TEST_DIR/keys/control_password.txt" ]; then
@@ -476,7 +543,7 @@ case "$PRIVCOUNT_SOURCE" in
     DATA_COLLECTOR_COUNT=${#CHUTNEY_PORT_ARRAY[@]}
     ;;
   *)
-    echo "Source $PRIVCOUNT_SOURCE not supported."
+    "$W" "Source $PRIVCOUNT_SOURCE not supported."
     exit 1
     ;;
 esac
@@ -525,33 +592,35 @@ function template_to_config() {
 
 # this config makes the TS expect the right number of DCs and SKs
 CONFIG="$TEMPLATE_CONFIG.ts"
-echo "Generating TS config from $TEMPLATE_CONFIG in $CONFIG..."
+"$I" "Generating TS config from $TEMPLATE_CONFIG in $CONFIG..."
 template_to_config
 
 # launch the TS
-privcount ts "$CONFIG" 2>&1 | `save_to_log . ts "$LOG_TIMESTAMP"` &
+privcount "$PRIVCOUNT_LOG" ts "$CONFIG" 2>&1 \
+    | `save_to_log . ts "$LOG_TIMESTAMP"` &
 
 # launch enough SKs
 for SK_NUM in `seq "$PRIVCOUNT_SHARE_KEEPERS"`; do
   CONFIG="$TEMPLATE_CONFIG.sk.$SK_NUM"
-  echo "Generating SK config $SK_NUM from $TEMPLATE_CONFIG in $CONFIG..."
+  "$I" "Generating SK config $SK_NUM from $TEMPLATE_CONFIG in $CONFIG..."
   template_to_config
 
   # Launch an SK with this config
-  privcount sk "$CONFIG" 2>&1 | `save_to_log . "sk.$SK_NUM" "$LOG_TIMESTAMP"` &
+  privcount "$PRIVCOUNT_LOG" --log-id ".$SK_NUM" sk "$CONFIG" 2>&1 \
+      | `save_to_log . "sk.$SK_NUM" "$LOG_TIMESTAMP"` &
 done
 
 # find the SK fingerprints
 for SK_NUM in `seq "$PRIVCOUNT_SHARE_KEEPERS"`; do
   SK_KEY_PATH="keys/sk.$SK_NUM.pem"
-  echo -n "Generating SK fingerprint for $SK_KEY_PATH"
+  "$I" -n "Generating SK fingerprint for $SK_KEY_PATH"
   echo -n "        - '" >> "$SK_LIST_FILE"
   # Let the SKs finish launching
   while [ ! -e "$SK_KEY_PATH" ]; do
-    echo -n "."
+    "$I" -n "."
     sleep 1
   done
-  echo ""
+  "$I" ""
   # Some versions of openssl dgst use (stdin)= before the hash, others don't
   "$PRIVCOUNT_OPENSSL" rsa -pubout < "$SK_KEY_PATH" \
     | "$PRIVCOUNT_OPENSSL" dgst -sha256 | cut -d" " -f2 | tr -d '\r\n' \
@@ -570,11 +639,11 @@ SK_NUM=0
 # for inject and tor, there is one placeholder port in the array
 for DC_SOURCE_PORT in ${CHUTNEY_PORT_ARRAY[@]} ; do
   CONFIG="$TEMPLATE_CONFIG.dc.$DC_SOURCE_PORT"
-  echo "Generating DC config $DC_SOURCE_PORT from $TEMPLATE_CONFIG in $CONFIG..."
+  "$I" "Generating DC config $DC_SOURCE_PORT from $TEMPLATE_CONFIG in $CONFIG..."
   template_to_config
 
   # Launch a DC with this config
-  privcount dc "$CONFIG" 2>&1 \
+  privcount "$PRIVCOUNT_LOG" --log-id ".$DC_SOURCE_PORT" dc "$CONFIG" 2>&1 \
       | `save_to_log . "dc.$DC_SOURCE_PORT" "$LOG_TIMESTAMP"` &
 done
 
@@ -589,11 +658,11 @@ case "$PRIVCOUNT_SOURCE" in
   chutney)
     # The chutney output is very verbose: don't save it to the log
     $FIRST_ROUND_CMD 2>&1 &
-    echo "For full chutney logs run $CHUTNEY_LOG_CMD" | \
+    "$I" "For full chutney logs run $CHUTNEY_LOG_CMD" | \
         `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP`
     ;;
   *)
-    echo "Source $PRIVCOUNT_SOURCE not supported."
+    "$W" "Source $PRIVCOUNT_SOURCE not supported."
     exit 1
     ;;
 esac
@@ -601,26 +670,26 @@ esac
 # Then wait for each job, terminating if any job produces an error
 # Ideally, we'd want to use wait, or wait $job, but that only checks one job
 # at a time, so continuing processes can cause the script to run forever
-echo "Waiting for PrivCount to finish..."
+"$I" "Waiting for PrivCount to finish..."
 JOB_STATUS=`jobs`
-echo "$JOB_STATUS"
+"$I" "$JOB_STATUS"
 while echo "$JOB_STATUS" | grep -q "Running"; do
   # fail if any job has failed
   if echo "$JOB_STATUS" | grep -q "Exit"; then
     # and kill everything
-    echo "Error: Privcount or $PRIVCOUNT_SOURCE process exited with error..."
+    "$W" "Error: Privcount or $PRIVCOUNT_SOURCE process exited with error..."
     pkill -P $$
     exit 1
   fi
   # succeed if an outcome file is produced
   if [ -f "$TEST_DIR/"privcount.outcome.*.json ]; then
     if [ $ROUNDS -lt $PRIVCOUNT_ROUNDS ]; then
-      echo "Moving round $ROUNDS results to '$OLD_DIR' ..."
+      "$I" "Moving round $ROUNDS results to '$OLD_DIR' ..."
       $MOVE_JSON_COMMAND || true
       # If the plot libraries are not installed, this will always fail
       $MOVE_PDF_COMMAND 2> /dev/null || true
       ROUNDS=$[$ROUNDS+1]
-      echo "Launching $PRIVCOUNT_SOURCE for round $ROUNDS..."
+      "$I" "Launching $PRIVCOUNT_SOURCE for round $ROUNDS..."
       $OTHER_ROUND_CMD 2>&1 | \
         `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
     else
@@ -629,7 +698,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   fi
   sleep 3
   JOB_STATUS=`jobs`
-  echo "$JOB_STATUS"
+  "$I" "$JOB_STATUS"
 done
 
 # Measure how long the actual tests took
@@ -637,7 +706,7 @@ ENDDATE="`$DATE_COMMAND`"
 ENDSEC="`$TIMESTAMP_COMMAND`"
 
 # And terminate all the privcount processes
-echo "Terminating privcount and $PRIVCOUNT_SOURCE after $ROUNDS round(s)..."
+"$I" "Terminating privcount and $PRIVCOUNT_SOURCE after $ROUNDS round(s)..."
 pkill -P $$
 wait
 
@@ -659,10 +728,10 @@ function link_latest() {
   if [ -f $GLOB_PATTERN ]; then
     ln -s $GLOB_PATTERN "$LATEST_NAME"
   elif [ "$IS_MANDATORY" -eq 1 ]; then
-    echo "Error: No $PREFIX $SUFFIX file produced."
+    "$W" "Error: No $PREFIX $SUFFIX file produced."
     exit 1
   else
-    echo "Warning: No $PREFIX $SUFFIX file produced."
+    "$W" "Warning: No $PREFIX $SUFFIX file produced."
   fi
   popd > /dev/null
 }
@@ -677,12 +746,12 @@ link_latest traffic.model json 0
 link_latest tallies json
 if [ -f "$TEST_DIR/privcount.tallies.latest.json" -a \
     "$PRIVCOUNT_PLOT" -eq 1 ]; then
-  echo "Plotting results..."
+  "$I" "Plotting results..."
   # plot will fail if the optional dependencies are not installed
   # tolerate this failure
   privcount plot -d "$TEST_DIR/privcount.tallies.latest.json" data 2>&1 | \
     `save_to_log "$TEST_DIR" plot $LOG_TIMESTAMP` || \
-    echo "Plot failed. Install the dependencies in requirements-plot.txt to run plot."
+    "$W" "Plot failed. Install the dependencies in requirements-plot.txt to run plot."
 fi
 
 # If log files were produced, link to the latest files
@@ -700,47 +769,54 @@ for round_number in `seq $PRIVCOUNT_ROUNDS`; do
   link_latest $PRIVCOUNT_SOURCE.$round_number log
 done
 
-# Show the differences between the latest and old latest outcome files
-if [ -e "$TEST_DIR/privcount.outcome.latest.json" -a \
-     -e "$OLD_DIR/privcount.outcome.latest.json" ]; then
-  # there's no point in comparing the tallies JSON or results PDF
-  echo "Comparing latest outcomes file with previous outcomes file..."
-  # skip expected differences due to time or network jitter
-  # PrivCount is entirely deterministic: if there are any other differences,
-  # they are due to code changes, or are a bug, or need to be filtered out here
-  diff --minimal --unified=10 \
-    -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
-    -I "[Dd]elay" -I "Collect" -I "End" -I "peer" -I "fingerprint" \
-    "$OLD_DIR/privcount.outcome.latest.json" \
-    "$TEST_DIR/privcount.outcome.latest.json" || true
-else
-  # Since we need old/latest and latest, it takes two runs to generate the
-  # first outcome file comparison
-  echo "Warning: Outcomes files could not be compared."
-  echo "$0 must be run twice to produce the first comparison."
-fi
+# Don't do diffs in quiet mode
+if [ "$PRIVCOUNT_LOG" != "-q" ]; then
 
-# Show the differences between the latest and old latest traffic model files
-if [ -e "$TEST_DIR/privcount.traffic.model.latest.json" -a \
-     -e "$OLD_DIR/privcount.traffic.model.latest.json" ]; then
-  echo "Comparing latest traffic model with previous traffic model..."
-  # PrivCount is entirely deterministic: if there are any other differences,
-  # they are due to code changes, or are a bug, or need to be filtered out here
-  diff --minimal --unified=10 \
-    "$OLD_DIR/privcount.traffic.model.latest.json" \
-    "$TEST_DIR/privcount.traffic.model.latest.json" || true
-else
-  # Since we need old/latest and latest, it takes two runs to generate the
-  # first traffic model file comparison
-  echo "Warning: traffic model files could not be compared."
-  echo "$0 must be run twice to produce the first comparison."
+  # Show the differences between the latest and old latest outcome files
+  if [ -e "$TEST_DIR/privcount.outcome.latest.json" -a \
+      -e "$OLD_DIR/privcount.outcome.latest.json" ]; then
+    # there's no point in comparing the tallies JSON or results PDF
+    "$I" "Comparing latest outcomes file with previous outcomes file..."
+    # skip expected differences due to time or network jitter
+    # PrivCount is entirely deterministic: if there are any other differences,
+    # they are due to code changes, or are a bug, or need to be filtered out
+    # here
+    diff --minimal --unified=10 \
+      -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
+      -I "[Dd]elay" -I "Collect" -I "End" -I "peer" -I "fingerprint" \
+      "$OLD_DIR/privcount.outcome.latest.json" \
+      "$TEST_DIR/privcount.outcome.latest.json" || true
+  else
+    # Since we need old/latest and latest, it takes two runs to generate the
+    # first outcome file comparison
+    "$W" "Warning: Outcomes files could not be compared."
+    "$W" "$0 must be run twice to produce the first comparison."
+  fi
+
+  # Show the differences between the latest and old latest traffic model files
+  if [ -e "$TEST_DIR/privcount.traffic.model.latest.json" -a \
+       -e "$OLD_DIR/privcount.traffic.model.latest.json" ]; then
+    "$I" "Comparing latest traffic model with previous traffic model..."
+    # PrivCount is entirely deterministic: if there are any other differences,
+    # they are due to code changes, or are a bug, or need to be filtered out
+    # here
+    diff --minimal --unified=10 \
+      "$OLD_DIR/privcount.traffic.model.latest.json" \
+      "$TEST_DIR/privcount.traffic.model.latest.json" || true
+  else
+    # Since we need old/latest and latest, it takes two runs to generate the
+    # first traffic model file comparison
+    "$W" "Warning: traffic model files could not be compared."
+    "$W" "$0 must be run twice to produce the first comparison."
+  fi
+
 fi
 
 # Grep the warnings out of the log files
 # $LOG_CMD displays warnings from all logs produced by the chutney data source
 # We don't diff the previous log files with the latest log files, because many
 # of the timestamps and other irrelevant details are different
-echo "Extracting warnings from privcount and $PRIVCOUNT_SOURCE output..."
+"$I" "Extracting warnings from privcount and $PRIVCOUNT_SOURCE output..."
 grep -v -e NOTICE -e INFO -e DEBUG \
   -e "seconds of user activity" -e "delay_period not specified" \
   -e notice \
@@ -753,6 +829,6 @@ grep -v -e NOTICE -e INFO -e DEBUG \
 CHUTNEY_WARNINGS_IGNORE_EXPECTED=true CHUTNEY_WARNINGS_SUMMARY=true $LOG_CMD
 
 # Show how long it took
-echo "$ENDDATE"
+"$I" "$ENDDATE"
 ELAPSEDSEC=$[ $ENDSEC - $STARTSEC ]
-echo "Seconds Elapsed: $ELAPSEDSEC for $ROUNDS round(s)"
+"$I" "Seconds Elapsed: $ELAPSEDSEC for $ROUNDS round(s)"

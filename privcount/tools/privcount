@@ -31,9 +31,19 @@ def main():
         action="store", dest="logpath",
         default="-")
 
-    main_parser.add_argument('-v', '--debug',
+    main_parser.add_argument('-i', '--log-id',
+        help="""a suffix appended to the mode in every log message""",
+        metavar="LOG_ID", action="store", dest="logid", default="")
+
+    verbosity_group = main_parser.add_mutually_exclusive_group()
+
+    verbosity_group.add_argument('-v', '--debug',
         help="""configure debug log level for verbose output""",
         action="store_true", dest="verbose")
+
+    verbosity_group.add_argument('-q', '--warn', '--warning',
+        help="""configure warning log level for quiet output""",
+        action="store_true", dest="quiet")
 
     sub_parser = main_parser.add_subparsers(help="")
 
@@ -75,9 +85,16 @@ def main():
     args = main_parser.parse_args()
 
     logfile_path = None if args.logpath == '-' else args.logpath
-    loglevel = logging.DEBUG if args.verbose else logging.INFO
+
+    loglevel = logging.INFO
+    assert not (args.verbose and args.quiet)
+    if args.verbose:
+        loglevel = logging.DEBUG
+    if args.quiet:
+        loglevel = logging.WARNING
+
     logging.basicConfig(filename=logfile_path, level=loglevel, datefmt='%Y-%m-%d %H:%M:%S',
-        format='%(asctime)s %(created)f [privcount-{0}] [%(levelname)s] %(message)s'.format(args.mode))
+        format='%(asctime)s %(created)f [privcount-{0}{1}] [%(levelname)s] %(message)s'.format(args.mode, args.logid))
 
     if logfile_path is not None:
         print "privcount: output redirected to '{0}'".format(logfile_path)
