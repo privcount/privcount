@@ -8,6 +8,8 @@ See LICENSE for licensing information
 import math
 import logging
 
+from time import clock
+
 from privcount.counter import register_dynamic_counter, BYTES_EVENT, STREAM_EVENT, SecureCounters
 SINGLE_BIN = SecureCounters.SINGLE_BIN
 
@@ -256,7 +258,20 @@ class TrafficModel(object):
         return opt # list of highest probable states, in order
 
     # the maximum number of packets we will split a bandwidth event into
-    MAX_SPLIT_PACKET_COUNT = 100
+    # higher limits cause the process to stall for too long
+    MAX_EVENT_PACKET_COUNT = 100
+    # the approximate MTU of the network
+    PACKET_BYTE_COUNT = 1500
+    # the maximum number of bytes we can have in an event before we start
+    # ignoring some bytes
+    MAX_EVENT_BYTE_COUNT = MAX_EVENT_PACKET_COUNT * PACKET_BYTE_COUNT
+
+    # the maximum number of packets we will handle in a stream before issuing
+    # a delay warning. On my machine, this takes 1 second of processing time
+    MAX_STREAM_PACKET_COUNT = 2000
+    # the maximum number of seconds we will take to process a stream before
+    # issuing a delay warning
+    MAX_STREAM_PROCESSING_TIME = 1.0
 
     def _get_inter_packet_delays(self, strm_start_ts, byte_events):
         '''
@@ -269,6 +284,9 @@ class TrafficModel(object):
         '''
         packet_delays = []
         num_events = len(byte_events)
+        stream_packet_count = 0
+        logged_event_warning = False
+        logged_stream_warning = False
         for i in xrange(num_events):
             (bw_bytes, is_outbound, ts) = byte_events[i]
 
@@ -280,14 +298,42 @@ class TrafficModel(object):
             micros = seconds_since_stream_start * 1000000
             delay = max(long(0), long(micros))
 
+            # ceil(), but with integers
+            event_packet_count = ((bw_bytes + TrafficModel.PACKET_BYTE_COUNT - 1)
+                                  /TrafficModel.PACKET_BYTE_COUNT)
+            stream_packet_count += min(event_packet_count,
+                                       TrafficModel.MAX_EVENT_PACKET_COUNT)
+
+            # warn on large events and large streams, but only once per stream
+            if (event_packet_count > TrafficModel.MAX_EVENT_PACKET_COUNT
+                and not logged_event_warning):
+                logging.warning("Large byte transfer event: {} bytes is {} packets. Limiting event to {} packets of {} bytes."
+                                .format(bw_bytes,
+                                        event_packet_count,
+                                        TrafficModel.MAX_EVENT_PACKET_COUNT,
+                                        TrafficModel.PACKET_BYTE_COUNT))
+                logged_event_warning = True
+            # we log a warning here in case PrivCount hangs
+            if (stream_packet_count > TrafficModel.MAX_STREAM_PACKET_COUNT
+                and not logged_stream_warning):
+                logging.warning("Large stream with more than {} packets. PrivCount may be slow."
+                                .format(TrafficModel.MAX_STREAM_PACKET_COUNT))
+                logged_stream_warning = True
+
             # create a packet delay for each packet
-            split_packet_count = 0
-            while bw_bytes > 0 and split_packet_count < TrafficModel.MAX_SPLIT_PACKET_COUNT:
+            event_packet_count = 0
+            while bw_bytes > 0 and event_packet_count < TrafficModel.MAX_EVENT_PACKET_COUNT:
                 packet_delays.append((dir_code, delay))
-                split_packet_count += 1
+                event_packet_count += 1
                 # the first packet gets all of the delay, the others arrive at the same time
                 delay = 0
-                bw_bytes -= 1500 # MTU
+                bw_bytes -= TrafficModel.PACKET_BYTE_COUNT
+
+        # we log a warning here with the total number of packets
+        if logged_stream_warning:
+            logging.warning("Large stream packet count: {} packets. Stream packet limit is {} packets."
+                          .format(stream_packet_count,
+                                  TrafficModel.MAX_STREAM_PACKET_COUNT))
         return packet_delays
 
     def increment_traffic_counters(self, strm_start_ts, byte_events, secure_counters):
@@ -300,12 +346,17 @@ class TrafficModel(object):
           secure_counters: the SecureCounters object whose counters should get incremented
             as a result of the observed bytes events
         '''
+        packet_start_time = clock()
 
         # turn the bytes events into 'packet' events, and compute delay between packets
         observed_packet_delays = self._get_inter_packet_delays(strm_start_ts, byte_events)
 
+        viterbi_start_time = clock()
+
         # get the likliest path through our model given the observed delays
         likliest_states = self.run_viterbi(observed_packet_delays)
+
+        counter_start_time = clock()
 
         # do some sanity checks
         num_packets = len(observed_packet_delays)
@@ -380,6 +431,19 @@ class TrafficModel(object):
                 secure_counters.increment(label,
                                           bin=SINGLE_BIN,
                                           inc=1)
+
+        algo_end_time = clock()
+        algo_elapsed = algo_end_time - packet_start_time
+        packet_elapsed = viterbi_start_time - packet_start_time
+        viterbi_elapsed = counter_start_time - viterbi_start_time
+        counter_elapsed = algo_end_time - counter_start_time
+
+        if algo_elapsed > TrafficModel.MAX_STREAM_PROCESSING_TIME:
+          logging.warning("Long stream processing time: {:.3f} seconds to process {} packets exceeds limit of {:.3f} seconds. Breakdown: packet {:.3f} viterbi {:.3f} counter {:.3f}."
+                          .format(algo_elapsed, num_packets,
+                                  TrafficModel.MAX_STREAM_PROCESSING_TIME,
+                                  packet_elapsed, viterbi_elapsed,
+                                  counter_elapsed))
 
     def update_from_tallies(self, tallies, trans_inertia=0.1, emit_inertia=0.1):
         '''
