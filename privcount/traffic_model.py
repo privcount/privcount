@@ -343,43 +343,43 @@ class TrafficModel(object):
             ldelay = 0 if delay < 1 else int(math.log(delay))
 
             secure_counters.increment('ExitStreamTrafficModelEmissionCount',
-bin=SINGLE_BIN,
-inc=1)
+                                      bin=SINGLE_BIN,
+                                      inc=1)
             label = 'ExitStreamTrafficModelEmissionCount_{}_{}'.format(state, dir_code)
             secure_counters.increment(label,
-bin=SINGLE_BIN,
-inc=1)
+                                      bin=SINGLE_BIN,
+                                      inc=1)
 
             secure_counters.increment('ExitStreamTrafficModelLogDelayTime',
-bin=SINGLE_BIN,
-inc=ldelay)
+                                      bin=SINGLE_BIN,
+                                      inc=ldelay)
             label = 'ExitStreamTrafficModelLogDelayTime_{}_{}'.format(state, dir_code)
             secure_counters.increment(label,
-bin=SINGLE_BIN,
-inc=ldelay)
+                                      bin=SINGLE_BIN,
+                                      inc=ldelay)
 
             secure_counters.increment('ExitStreamTrafficModelSquaredLogDelayTime',
-bin=SINGLE_BIN,
-inc=ldelay*ldelay)
+                                      bin=SINGLE_BIN,
+                                      inc=ldelay*ldelay)
             label = 'ExitStreamTrafficModelSquaredLogDelayTime_{}_{}'.format(state, dir_code)
             secure_counters.increment(label,
-bin=SINGLE_BIN,
-inc=ldelay*ldelay)
+                                      bin=SINGLE_BIN,
+                                      inc=ldelay*ldelay)
 
             if i == 0: # track starting transitions
                 label = 'ExitStreamTrafficModelTransitionCount_START_{}'.format(state)
                 secure_counters.increment(label,
-bin=SINGLE_BIN,
-inc=1)
+                                          bin=SINGLE_BIN,
+                                          inc=1)
             if (i+1) < num_states:
                 next_state = likliest_states[i+1]
                 secure_counters.increment('ExitStreamTrafficModelTransitionCount',
-bin=SINGLE_BIN,
-inc=1)
+                                          bin=SINGLE_BIN,
+                                          inc=1)
                 label = 'ExitStreamTrafficModelTransitionCount_{}_{}'.format(state, next_state)
                 secure_counters.increment(label,
-bin=SINGLE_BIN,
-inc=1)
+                                          bin=SINGLE_BIN,
+                                          inc=1)
 
     def update_from_tallies(self, tallies, trans_inertia=0.1, emit_inertia=0.1):
         '''
