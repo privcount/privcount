@@ -1294,23 +1294,32 @@ class SecureCounters(object):
                 return True
         return False
 
-    def increment(self, counter_key, bin_value=SINGLE_BIN, num_increments=1L):
+    def increment(self, counter_name, bin=SINGLE_BIN, inc=1):
         '''
-        Increment bin bin_value in counter counter_key by num_increments
-        (default 1). If there is only one bin for the counter, pass SINGLE_BIN
-        for bin_value.
+        Increment a bin in counter counter_name by inc.
+        Uses is_in_bin() to work out which bin to increment.
+        Example:
+            secure_counters.increment('ExampleHistogram',
+                                      bin=25,
+                                      inc=1)
+
+        If there is only one bin for the counter, you must pass SINGLE_BIN
+        for bin:
+            secure_counters.increment('ExampleCount',
+                                      bin=SINGLE_BIN,
+                                      inc=1)
         '''
-        if self.counters is not None and counter_key in self.counters:
-            # You must pass SINGLE_BIN for the bin_value of a single bin
-            if len(self.counters[counter_key]['bins']) == 1:
-                assert(SecureCounters.is_single_bin_value(bin_value))
-                bin_value = 1.0
+        if self.counters is not None and counter_name in self.counters:
+            # You must pass SINGLE_BIN if counter_name is a single bin
+            if len(self.counters[counter_name]['bins']) == 1:
+                assert(SecureCounters.is_single_bin_value(bin))
+                bin = 1.0
             else:
-                assert(not SecureCounters.is_single_bin_value(bin_value))
-                bin_value = float(bin_value)
-            for item in self.counters[counter_key]['bins']:
-                if SecureCounters.is_in_bin(item[0], item[1], bin_value):
-                    item[2] = ((long(item[2]) + long(num_increments))
+                assert(not SecureCounters.is_single_bin_value(bin))
+                bin = float(bin)
+            for item in self.counters[counter_name]['bins']:
+                if SecureCounters.is_in_bin(item[0], item[1], bin):
+                    item[2] = ((long(item[2]) + long(inc))
                                % self.modulus)
 
     def _tally_counter(self, counter):
