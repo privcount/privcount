@@ -797,41 +797,101 @@ class Aggregator(ReconnectingClientFactory):
         ratio = Aggregator._encode_ratio(readbw, writebw)
         lifetime = end-start
 
-        self.secure_counters.increment('ExitStreamCount', SINGLE_BIN)
-        self.secure_counters.increment('ExitStreamByteCount', SINGLE_BIN, totalbw)
-        self.secure_counters.increment('ExitStreamOutboundByteCount', writebw)
-        self.secure_counters.increment('ExitStreamInboundByteCount', readbw)
-        self.secure_counters.increment('ExitStreamByteRatio', ratio)
-        self.secure_counters.increment('ExitStreamLifeTime', lifetime)
+        self.secure_counters.increment('ExitStreamCount',
+bin=SINGLE_BIN,
+inc=1)
+        self.secure_counters.increment('ExitStreamByteCount',
+bin=SINGLE_BIN,
+inc=totalbw)
+        self.secure_counters.increment('ExitStreamOutboundByteCount',
+bin=writebw,
+inc=1)
+        self.secure_counters.increment('ExitStreamInboundByteCount',
+bin=readbw,
+inc=1)
+        self.secure_counters.increment('ExitStreamByteRatio',
+bin=ratio,
+inc=1)
+        self.secure_counters.increment('ExitStreamLifeTime',
+bin=lifetime,
+inc=1)
 
         if stream_class == 'web':
-            self.secure_counters.increment('ExitWebStreamCount', SINGLE_BIN)
-            self.secure_counters.increment('ExitWebStreamByteCount', SINGLE_BIN, totalbw)
-            self.secure_counters.increment('ExitWebStreamOutboundByteCount', writebw)
-            self.secure_counters.increment('ExitWebStreamInboundByteCount', readbw)
-            self.secure_counters.increment('ExitWebStreamByteRatio', ratio)
-            self.secure_counters.increment('ExitWebStreamLifeTime', lifetime)
+            self.secure_counters.increment('ExitWebStreamCount',
+bin=SINGLE_BIN,
+inc=1)
+            self.secure_counters.increment('ExitWebStreamByteCount',
+bin=SINGLE_BIN,
+inc=totalbw)
+            self.secure_counters.increment('ExitWebStreamOutboundByteCount',
+bin=writebw,
+inc=1)
+            self.secure_counters.increment('ExitWebStreamInboundByteCount',
+bin=readbw,
+inc=1)
+            self.secure_counters.increment('ExitWebStreamByteRatio',
+bin=ratio,
+inc=1)
+            self.secure_counters.increment('ExitWebStreamLifeTime',
+bin=lifetime,
+inc=1)
         elif stream_class == 'interactive':
-            self.secure_counters.increment('ExitInteractiveStreamCount', SINGLE_BIN)
-            self.secure_counters.increment('ExitInteractiveStreamByteCount', SINGLE_BIN, totalbw)
-            self.secure_counters.increment('ExitInteractiveStreamOutboundByteCount', writebw)
-            self.secure_counters.increment('ExitInteractiveStreamInboundByteCount', readbw)
-            self.secure_counters.increment('ExitInteractiveStreamByteRatio', ratio)
-            self.secure_counters.increment('ExitInteractiveStreamLifeTime', lifetime)
+            self.secure_counters.increment('ExitInteractiveStreamCount',
+bin=SINGLE_BIN,
+inc=1)
+            self.secure_counters.increment('ExitInteractiveStreamByteCount',
+bin=SINGLE_BIN,
+inc=totalbw)
+            self.secure_counters.increment('ExitInteractiveStreamOutboundByteCount',
+bin=writebw,
+inc=1)
+            self.secure_counters.increment('ExitInteractiveStreamInboundByteCount',
+bin=readbw,
+inc=1)
+            self.secure_counters.increment('ExitInteractiveStreamByteRatio',
+bin=ratio,
+inc=1)
+            self.secure_counters.increment('ExitInteractiveStreamLifeTime',
+bin=lifetime,
+inc=1)
         elif stream_class == 'p2p':
-            self.secure_counters.increment('ExitP2PStreamCount', SINGLE_BIN)
-            self.secure_counters.increment('ExitP2PStreamByteCount', SINGLE_BIN, totalbw)
-            self.secure_counters.increment('ExitP2PStreamOutboundByteCount', writebw)
-            self.secure_counters.increment('ExitP2PStreamInboundByteCount', readbw)
-            self.secure_counters.increment('ExitP2PStreamByteRatio', ratio)
-            self.secure_counters.increment('ExitP2PStreamLifeTime', lifetime)
+            self.secure_counters.increment('ExitP2PStreamCount',
+bin=SINGLE_BIN,
+inc=1)
+            self.secure_counters.increment('ExitP2PStreamByteCount',
+bin=SINGLE_BIN,
+inc=totalbw)
+            self.secure_counters.increment('ExitP2PStreamOutboundByteCount',
+bin=writebw,
+inc=1)
+            self.secure_counters.increment('ExitP2PStreamInboundByteCount',
+bin=readbw,
+inc=1)
+            self.secure_counters.increment('ExitP2PStreamByteRatio',
+bin=ratio,
+inc=1)
+            self.secure_counters.increment('ExitP2PStreamLifeTime',
+bin=lifetime,
+inc=1)
         elif stream_class == 'other':
-            self.secure_counters.increment('ExitOtherPortStreamCount', SINGLE_BIN)
-            self.secure_counters.increment('ExitOtherPortStreamByteCount', SINGLE_BIN, totalbw)
-            self.secure_counters.increment('ExitOtherPortStreamOutboundByteCount', writebw)
-            self.secure_counters.increment('ExitOtherPortStreamInboundByteCount', readbw)
-            self.secure_counters.increment('ExitOtherPortStreamByteRatio', ratio)
-            self.secure_counters.increment('ExitOtherPortStreamLifeTime', lifetime)
+            self.secure_counters.increment('ExitOtherPortStreamCount',
+bin=SINGLE_BIN,
+inc=1)
+            self.secure_counters.increment('ExitOtherPortStreamByteCount',
+bin=SINGLE_BIN,
+inc=totalbw)
+            self.secure_counters.increment('ExitOtherPortStreamOutboundByteCount',
+bin=writebw,
+inc=1)
+            self.secure_counters.increment('ExitOtherPortStreamInboundByteCount',
+bin=readbw,
+inc=1)
+            self.secure_counters.increment('ExitOtherPortStreamByteRatio',
+bin=ratio,
+inc=1)
+            self.secure_counters.increment('ExitOtherPortStreamLifeTime',
+bin=lifetime,
+inc=1)
 
         # if we have a traffic model object, then we should use our observations to find the
         # most likely path through the HMM, and then count some aggregate statistics
@@ -921,17 +981,27 @@ class Aggregator(ReconnectingClientFactory):
         # stream bw info is only avail on exits
         if prevIsClient:
             # prev hop is a client, we are entry
-            self.secure_counters.increment('EntryCircuitCount', SINGLE_BIN)
+            self.secure_counters.increment('EntryCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
 
             # only count cells ratio on active circuits with legitimate transfers
             is_active = True if ncellsin + ncellsout >= 8 else False
             if is_active:
-                self.secure_counters.increment('EntryActiveCircuitCount', SINGLE_BIN)
-                self.secure_counters.increment('EntryCircuitInboundCellCount', ncellsin)
-                self.secure_counters.increment('EntryCircuitOutboundCellCount', ncellsout)
-                self.secure_counters.increment('EntryCircuitCellRatio', Aggregator._encode_ratio(ncellsin, ncellsout))
+                self.secure_counters.increment('EntryActiveCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
+                self.secure_counters.increment('EntryCircuitInboundCellCount',
+bin=ncellsin,
+inc=1)
+                self.secure_counters.increment('EntryCircuitOutboundCellCount',
+bin=ncellsout,
+inc=1)
+                self.secure_counters.increment('EntryCircuitCellRatio', bin=Aggregator._encode_ratio(ncellsin, ncellsout), inc=1)
             else:
-                self.secure_counters.increment('EntryInactiveCircuitCount', SINGLE_BIN)
+                self.secure_counters.increment('EntryInactiveCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
 
             # count unique client ips
             # we saw this client within current rotation window
@@ -957,8 +1027,12 @@ class Aggregator(ReconnectingClientFactory):
         elif nextIsEdge:
             # prev hop is a relay and next is an edge connection, we are exit
             # don't count single-hop exits
-            self.secure_counters.increment('ExitCircuitCount', SINGLE_BIN)
-            self.secure_counters.increment('ExitCircuitLifeTime', end - start)
+            self.secure_counters.increment('ExitCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
+            self.secure_counters.increment('ExitCircuitLifeTime',
+bin=(end - start),
+inc=1)
 
             # check if we have any stream info in this circuit
             circ_is_known, has_completed_stream = False, False
@@ -969,44 +1043,80 @@ class Aggregator(ReconnectingClientFactory):
 
             if circ_is_known and has_completed_stream:
                 # we have circuit info and at least one stream ended on it
-                self.secure_counters.increment('ExitActiveCircuitCount', SINGLE_BIN)
-                self.secure_counters.increment('ExitActiveCircuitLifeTime', end - start)
+                self.secure_counters.increment('ExitActiveCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
+                self.secure_counters.increment('ExitActiveCircuitLifeTime',
+bin=(end - start),
+inc=1)
 
                 # convenience
                 counts = self.circ_info[chanid][circid]['num_streams']
                 times = self.circ_info[chanid][circid]['stream_starttimes']
 
                 # first increment general counters
-                self.secure_counters.increment('ExitCircuitStreamCount', sum(counts.values()))
+                self.secure_counters.increment('ExitCircuitStreamCount',
+bin=sum(counts.values()),
+inc=1)
                 for isct in Aggregator._compute_interstream_creation_times(times['web'] + times['interactive'] + times['p2p'] + times['other']):
-                    self.secure_counters.increment('ExitCircuitInterStreamCreationTime', isct)
+                    self.secure_counters.increment('ExitCircuitInterStreamCreationTime',
+bin=isct,
+inc=1)
 
                 # now only increment the classes that have positive counts
                 if counts['web'] > 0:
-                    self.secure_counters.increment('ExitWebCircuitCount', SINGLE_BIN)
-                    self.secure_counters.increment('ExitCircuitWebStreamCount', counts['web'])
+                    self.secure_counters.increment('ExitWebCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
+                    self.secure_counters.increment('ExitCircuitWebStreamCount',
+bin=counts['web'],
+inc=1)
                     for isct in Aggregator._compute_interstream_creation_times(times['web']):
-                        self.secure_counters.increment('ExitCircuitWebInterStreamCreationTime', isct)
+                        self.secure_counters.increment('ExitCircuitWebInterStreamCreationTime',
+bin=isct,
+inc=1)
                 if counts['interactive'] > 0:
-                    self.secure_counters.increment('ExitInteractiveCircuitCount', SINGLE_BIN)
-                    self.secure_counters.increment('ExitCircuitInteractiveStreamCount', counts['interactive'])
+                    self.secure_counters.increment('ExitInteractiveCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
+                    self.secure_counters.increment('ExitCircuitInteractiveStreamCount',
+bin=counts['interactive'],
+inc=1)
                     for isct in Aggregator._compute_interstream_creation_times(times['interactive']):
-                        self.secure_counters.increment('ExitCircuitInteractiveInterStreamCreationTime', isct)
+                        self.secure_counters.increment('ExitCircuitInteractiveInterStreamCreationTime',
+bin=isct,
+inc=1)
                 if counts['p2p'] > 0:
-                    self.secure_counters.increment('ExitP2PCircuitCount', SINGLE_BIN)
-                    self.secure_counters.increment('ExitCircuitP2PStreamCount', counts['p2p'])
+                    self.secure_counters.increment('ExitP2PCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
+                    self.secure_counters.increment('ExitCircuitP2PStreamCount',
+bin=counts['p2p'],
+inc=1)
                     for isct in Aggregator._compute_interstream_creation_times(times['p2p']):
-                        self.secure_counters.increment('ExitCircuitP2PInterStreamCreationTime', isct)
+                        self.secure_counters.increment('ExitCircuitP2PInterStreamCreationTime',
+bin=isct,
+inc=1)
                 if counts['other'] > 0:
-                    self.secure_counters.increment('ExitOtherPortCircuitCount', SINGLE_BIN)
-                    self.secure_counters.increment('ExitCircuitOtherPortStreamCount', counts['other'])
+                    self.secure_counters.increment('ExitOtherPortCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
+                    self.secure_counters.increment('ExitCircuitOtherPortStreamCount',
+bin=counts['other'],
+inc=1)
                     for isct in Aggregator._compute_interstream_creation_times(times['other']):
-                        self.secure_counters.increment('ExitCircuitOtherPortInterStreamCreationTime', isct)
+                        self.secure_counters.increment('ExitCircuitOtherPortInterStreamCreationTime',
+bin=isct,
+inc=1)
 
             else:
                 # either we dont know circ, or no streams ended on it
-                self.secure_counters.increment('ExitInactiveCircuitCount', SINGLE_BIN)
-                self.secure_counters.increment('ExitInactiveCircuitLifeTime', end - start)
+                self.secure_counters.increment('ExitInactiveCircuitCount',
+bin=SINGLE_BIN,
+inc=1)
+                self.secure_counters.increment('ExitInactiveCircuitLifeTime',
+bin=(end - start),
+inc=1)
 
             # cleanup
             if circ_is_known:
@@ -1028,8 +1138,12 @@ class Aggregator(ReconnectingClientFactory):
         ip = items[3]
         isclient = True if int(items[4]) > 0 else False
         if isclient:
-            self.secure_counters.increment('EntryConnectionCount', SINGLE_BIN)
-            self.secure_counters.increment('EntryConnectionLifeTime', end - start)
+            self.secure_counters.increment('EntryConnectionCount',
+bin=SINGLE_BIN,
+inc=1)
+            self.secure_counters.increment('EntryConnectionLifeTime',
+bin=(end - start),
+inc=1)
         return True
 
     def _do_rotate(self):
@@ -1055,13 +1169,23 @@ class Aggregator(ReconnectingClientFactory):
                 client_ips_inactive += 1
 
             if 'num_active_completed' in client:
-                self.secure_counters.increment('EntryClientIPActiveCircuitCount', client['num_active_completed'])
+                self.secure_counters.increment('EntryClientIPActiveCircuitCount',
+bin=client['num_active_completed'],
+inc=1)
             if 'num_inactive_completed' in client:
-                self.secure_counters.increment('EntryClientIPInactiveCircuitCount', client['num_inactive_completed'])
+                self.secure_counters.increment('EntryClientIPInactiveCircuitCount',
+bin=client['num_inactive_completed'],
+inc=1)
 
-        self.secure_counters.increment('EntryClientIPCount', SINGLE_BIN, client_ips_active + client_ips_inactive)
-        self.secure_counters.increment('EntryActiveClientIPCount', SINGLE_BIN, client_ips_active)
-        self.secure_counters.increment('EntryInactiveClientIPCount', SINGLE_BIN, client_ips_inactive)
+        self.secure_counters.increment('EntryClientIPCount',
+bin=SINGLE_BIN,
+inc=(client_ips_active + client_ips_inactive))
+        self.secure_counters.increment('EntryActiveClientIPCount',
+bin=SINGLE_BIN,
+inc=client_ips_active)
+        self.secure_counters.increment('EntryInactiveClientIPCount',
+bin=SINGLE_BIN,
+inc=client_ips_inactive)
 
         # reset for next interval
         # make cli_ips_previous the IPs from period to 0 seconds ago
