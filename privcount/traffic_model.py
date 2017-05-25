@@ -444,6 +444,9 @@ class TrafficModel(object):
                                   TrafficModel.MAX_STREAM_PROCESSING_TIME,
                                   packet_elapsed, viterbi_elapsed,
                                   counter_elapsed))
+        # TODO: secure delete
+        #del observed_packet_delays
+        #del likliest_states
 
     def update_from_tallies(self, tallies, trans_inertia=0.1, emit_inertia=0.1):
         '''

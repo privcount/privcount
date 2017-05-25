@@ -766,6 +766,9 @@ class Aggregator(ReconnectingClientFactory):
         chanid, circid, strmid, is_outbound, bw_bytes = [int(v) for v in items[0:5]]
         ts = float(items[5])
 
+        # TODO: secure delete
+        #del items
+
         self.strm_bytes.setdefault(strmid, {}).setdefault(circid, [])
         self.strm_bytes[strmid][circid].append([bw_bytes, is_outbound, ts])
         return True
@@ -780,6 +783,9 @@ class Aggregator(ReconnectingClientFactory):
         start, end = float(items[6]), float(items[7])
         remote_host = items[8]
         remote_ip = items[9]
+
+        # TODO: secure delete
+        #del items
 
         # only count streams with legitimate transfers
         totalbw = readbw + writebw
@@ -903,6 +909,7 @@ class Aggregator(ReconnectingClientFactory):
             self.traffic_model.increment_traffic_counters(strm_start_ts, byte_events, self.secure_counters)
 
         # clear all 'traffic' data for this stream
+        # TODO: secure delete
         if strmid in self.strm_bytes:
             self.strm_bytes[strmid].pop(circid, None)
             if len(self.strm_bytes[strmid]) == 0:
@@ -976,6 +983,9 @@ class Aggregator(ReconnectingClientFactory):
         prevIsClient = True if int(items[9]) > 0 else False
         nextip = items[10]
         nextIsEdge = True if int(items[11]) > 0 else False
+
+        # TODO: secure delete
+        #del items
 
         # we get circuit events on both exits and entries
         # stream bw info is only avail on exits
@@ -1119,6 +1129,7 @@ class Aggregator(ReconnectingClientFactory):
                                                inc=1)
 
             # cleanup
+            # TODO: secure delete
             if circ_is_known:
                 # remove circ from channel
                 self.circ_info[chanid].pop(circid, None)
@@ -1137,6 +1148,10 @@ class Aggregator(ReconnectingClientFactory):
         start, end = float(items[1]), float(items[2])
         ip = items[3]
         isclient = True if int(items[4]) > 0 else False
+
+        # TODO: secure delete
+        #del items
+
         if isclient:
             self.secure_counters.increment('EntryConnectionCount',
                                            bin=SINGLE_BIN,
