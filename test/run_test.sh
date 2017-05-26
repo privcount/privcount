@@ -23,6 +23,7 @@ PRIVCOUNT_SOURCE=${PRIVCOUNT_SOURCE:-inject}
 PRIVCOUNT_SHARE_KEEPERS=${PRIVCOUNT_SHARE_KEEPERS:-1}
 PRIVCOUNT_UNIT_TESTS=${PRIVCOUNT_UNIT_TESTS:-1}
 PRIVCOUNT_PLOT=${PRIVCOUNT_PLOT:-1}
+PRIVCOUNT_CLEAN_KEYS=${PRIVCOUNT_CLEAN_KEYS:-0}
 PRIVCOUNT_LOG=${PRIVCOUNT_LOG:-""}
 # The default is to echo info and warning messages
 I="echo"
@@ -84,6 +85,9 @@ do
       ;;
     --warn|--warning|-q)
       PRIVCOUNT_LOG="-q"
+      ;;
+    --clean-keys|-e)
+      PRIVCOUNT_CLEAN_KEYS=1
       ;;
     --rounds|-r)
       PRIVCOUNT_ROUNDS=$2
@@ -147,6 +151,10 @@ do
       "$I" "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
       "$W" "  -z: skip plot"
       "$I" "    default: '$PRIVCOUNT_PLOT' (1: run, 0: skip)"
+      "$W" "  -e: clean keys before starting PrivCount"
+      "$I" "    PrivCount automatically creates keys when it runs."
+      "$I" "    Set to 1 to remove keys and make it generate new ones."
+      "$I" "    default: '$PRIVCOUNT_CLEAN_KEYS' (1: new, 0: existing)"
       "$W" "  -v: verbose logging"
       "$W" "  -q: quiet logging"
       "$I" "    default: '$PRIVCOUNT_LOG' ('': standard (info) level logging)"
@@ -472,11 +480,21 @@ mkdir -p "$OLD_DIR"
 MOVE_JSON_COMMAND="mv $TEST_DIR/privcount.*.json $OLD_DIR/"
 MOVE_PDF_COMMAND="mv $TEST_DIR/privcount.*.pdf $OLD_DIR/"
 MOVE_LOG_COMMAND="mv $TEST_DIR/privcount.*.log $OLD_DIR/"
+if [ "$PRIVCOUNT_CLEAN_KEYS" -eq 1 ]; then
+  # We can only move the keys at the start of the round, because some nodes
+  # keep running all round
+  "$I" "Moving test keys to '$OLD_DIR' ..."
+  # You only get one backup copy of your keys
+  MOVE_KEYS_COMMAND="mv $TEST_DIR/keys/* $OLD_DIR/"
+else
+  MOVE_KEYS_COMMAND="true"
+fi
 # Clean up before running the test
 $MOVE_JSON_COMMAND || true
 # If the plot libraries are not installed, this will always fail
 $MOVE_PDF_COMMAND 2> /dev/null || true
 $MOVE_LOG_COMMAND || true
+$MOVE_KEYS_COMMAND || true
 
 # Generate a log file name
 # Usage:
