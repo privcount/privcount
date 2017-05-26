@@ -14,10 +14,21 @@ from time import time, strftime, gmtime
 
 def log_error():
     _, _, tb = sys.exc_info()
-    #traceback.print_tb(tb) # Fixed format
-    tb_info = traceback.extract_tb(tb)
-    filename, line, func, text = tb_info[-1]
-    logging.error("An error occurred in file '%s', at line %d, in func %s, in statement '%s'", filename, line, func, text)
+    if tb is not None:
+        tb_info = traceback.extract_tb(tb)
+        if len(tb_info) > 0:
+            loc = tb_info[-1]
+            if len(loc) == 4:
+                filename, line, func, text = loc
+                logging.error("An error occurred in file '%s', at line %d, in func %s, in statement '%s'", filename, line, func, text)
+            else:
+                logging.error("An error occurred, but the error location was in an unexpected format. Trying to print it...")
+                logging.error("Error location: {}", loc)
+        else:
+            logging.error("An error occurred, but the traceback has no info.")
+    else:
+        # Hopefully the error details have already been printed by errorCallback
+        logging.error("An error occurred, but the traceback has already been cleared.")
     logging.debug(traceback.format_exc())
 
 ## Logging: Time Formatting Functions ##

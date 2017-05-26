@@ -1,6 +1,6 @@
 # See LICENSE for licensing information
 
-import logging, json, math, subprocess
+import logging, json, math, subprocess, sys, os
 
 from time import time
 from os import urandom, path
@@ -63,11 +63,39 @@ def errorCallback(failure):
     '''
     Called by twisted when a deferred function fails
     '''
+    logging.warning("failure in deferred task: {}".format(failure))
     log_error()
+    stop_reactor(1)
+
+def stop_reactor(exit_code=0):
+    '''
+    Stop the reactor and exit with exit_code.
+    If exit_code is None, don't exit, just return to the caller.
+    exit_code must be between 1 and 255.
+    '''
+    if exit_code is not None:
+        logging.warning("Exiting with code {}".format(exit_code))
+    else:
+        # Let's hope the calling code exits pretty soon after this
+        logging.warning("Stopping reactor")
+
     try:
         reactor.stop()
     except ReactorNotRunning:
         pass
+
+    # return to the caller and let it decide what to do
+    if exit_code == None:
+        return
+
+    # a graceful exit
+    if exit_code == 0:
+        sys.exit()
+
+    # a hard exit
+    assert exit_code >= 0
+    assert exit_code <= 127
+    os._exit(exit_code)
 
 class PrivCountProtocol(LineOnlyReceiver):
     '''
@@ -98,10 +126,7 @@ class PrivCountProtocol(LineOnlyReceiver):
                 .format(e))
             log_error()
 
-            try:
-                reactor.stop()
-            except ReactorNotRunning:
-                pass
+            stop_reactor(1)
 
     def clear(self):
         '''
@@ -165,10 +190,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             self.protocol_failed()
         # if we generate an overlength line, it is a coding or config bug: fail
         if is_length_exceeded and not is_line_received:
-            try:
-                reactor.stop()
-            except ReactorNotRunning:
-                pass
+            stop_reactor(1)
 
     def connectionMade(self):
         '''
@@ -251,10 +273,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             # bring down the privcount network.
             # Since we ignore unrecognised events, the client would have to be
             # maliciously crafted, not just a port scanner.
-            try:
-                reactor.stop()
-            except ReactorNotRunning:
-                pass
+            stop_reactor(1)
 
         if not self.is_valid_connection:
             self.protocol_failed()
@@ -1574,11 +1593,7 @@ class TorControlProtocol(object):
                                     transport_info(self.transport)))
         # if we send or receive an overlength line, fail
         if is_length_exceeded:
-            self.quit()
-            try:
-                reactor.stop()
-            except ReactorNotRunning:
-                pass
+            stop_reactor(1)
 
 class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
 

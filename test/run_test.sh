@@ -657,9 +657,9 @@ case "$PRIVCOUNT_SOURCE" in
     ;;
   chutney)
     # The chutney output is very verbose: don't save it to the log
-    $FIRST_ROUND_CMD 2>&1 &
     "$I" "For full chutney logs run $CHUTNEY_LOG_CMD" | \
         `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP`
+    $FIRST_ROUND_CMD 2>&1 &
     ;;
   *)
     "$W" "Source $PRIVCOUNT_SOURCE not supported."
