@@ -162,6 +162,20 @@ class TallyServer(ServerFactory, PrivCountServer):
                 conf = yaml.load(fin)
             ts_conf = conf['tally_server']
 
+            # a private/public key pair and a cert containing the public key
+            # if either path is not specified, use the default path
+            if 'key' in ts_conf and 'cert' in ts_conf:
+                ts_conf['key'] = normalise_path(ts_conf['key'])
+                ts_conf['cert'] = normalise_path(ts_conf['cert'])
+            else:
+                ts_conf['key'] = normalise_path('privcount.rsa_key.pem')
+                ts_conf['cert'] = normalise_path('privcount.rsa_key.cert')
+            # generate a new key and cert if either file does not exist
+            if (not os.path.exists(ts_conf['key']) or
+                not os.path.exists(ts_conf['cert'])):
+                generate_keypair(ts_conf['key'])
+                generate_cert(ts_conf['key'], ts_conf['cert'])
+
             # find the path for the secret handshake file
             ts_conf['secret_handshake'] = choose_secret_handshake_path(
                 ts_conf, conf)
@@ -288,20 +302,6 @@ class TallyServer(ServerFactory, PrivCountServer):
             # perform sanity checks
             assert check_counters_config(ts_conf['counters'],
                                          ts_conf['noise']['counters'])
-
-            # a private/public key pair and a cert containing the public key
-            # if either path is not specified, use the default path
-            if 'key' in ts_conf and 'cert' in ts_conf:
-                ts_conf['key'] = normalise_path(ts_conf['key'])
-                ts_conf['cert'] = normalise_path(ts_conf['cert'])
-            else:
-                ts_conf['key'] = normalise_path('privcount.rsa_key.pem')
-                ts_conf['cert'] = normalise_path('privcount.rsa_key.cert')
-            # generate a new key and cert if either file does not exist
-            if (not os.path.exists(ts_conf['key']) or
-                not os.path.exists(ts_conf['cert'])):
-                generate_keypair(ts_conf['key'])
-                generate_cert(ts_conf['key'], ts_conf['cert'])
 
             # a directory for results files
             if 'results' in ts_conf:

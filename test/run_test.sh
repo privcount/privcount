@@ -608,6 +608,14 @@ template_to_config
 privcount $PRIVCOUNT_LOG ts "$CONFIG" 2>&1 \
     | `save_to_log . ts "$LOG_TIMESTAMP"` &
 
+TS_CERT_PATH="keys/ts.cert"
+TS_SECRET_PATH="keys/secret_handshake.yaml"
+# Let the TS finish launching
+while [ ! -e "$TS_CERT_PATH" -o ! -e "$TS_SECRET_PATH" ]; do
+  "$I" -n "."
+  sleep 1
+done
+
 # launch enough SKs
 for SK_NUM in `seq "$PRIVCOUNT_SHARE_KEEPERS"`; do
   CONFIG="$TEMPLATE_CONFIG.sk.$SK_NUM"
