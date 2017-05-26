@@ -80,10 +80,10 @@ do
     --no-plot|-z)
       PRIVCOUNT_PLOT=0
       ;;
-    --debug|-v)
+    --debug|-v|--verbose)
       PRIVCOUNT_LOG="-v"
       ;;
-    --warn|--warning|-q)
+    --warn|--warning|-q|--quiet)
       PRIVCOUNT_LOG="-q"
       ;;
     --clean-keys|-e)
