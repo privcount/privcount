@@ -985,8 +985,11 @@ class PrivCountServerProtocol(PrivCountProtocol):
                 client_time = float(parts[0])
                 client_status['clock_skew'] = abs(time() - latency - client_time)
                 self.last_sent_time = 0
-
-            self.client_uid = "{}~{}".format(client_status['host'], client_status['name'])
+            # Share Keepers use their public key hash as their name
+            # Data Collectors must each have a unique name
+            # to disambiguate data collectors by IP address, add:
+            # transport_peer_hostname(self.transport)
+            self.client_uid = client_status['name']
             self.factory.set_client_status(self.client_uid, client_status)
 
             config = self.factory.get_stop_config(self.client_uid)
