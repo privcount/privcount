@@ -352,50 +352,83 @@ def transport_info(transport):
     Return a string describing the remote peer and local endpoint connected
     via transport
     '''
-    host_str = transport_host(transport)
-    peer_str = transport_peer(transport)
-    if host_str is not None and peer_str is not None:
-        return "remote: {} local: {}".format(peer_str, host_str)
-    elif host_str is not None:
-        return host_str
+    local_str = transport_local_info(transport)
+    peer_str = transport_peer_info(transport)
+    if local_str is not None and peer_str is not None:
+        return "remote: {} local: {}".format(peer_str, local_str)
+    elif local_str is not None:
+        return "local: {}".format(local_str)
     elif peer_str is not None:
-        return peer_str
+        return "remote: {}".format(peer_str)
     else:
         return None
 
-def transport_peer(transport):
+def transport_peer_info(transport):
     '''
     Return a string describing the remote peer connected to transport
     '''
     peer = transport.getPeer()
     return address_info(peer)
 
-def transport_host(transport):
+def transport_local_info(transport):
     '''
     Return a string describing the local endpoint connected to transport
     '''
     try:
-        host = transport.getHost()
+        local = transport.getHost()
     except AttributeError:
         return None
-    if host is None:
+    if local is None:
         return None
-    return address_info(host)
+    return address_info(local)
+
+def transport_peer_hostname(transport):
+    '''
+    Return a string describing the hostname of the remote peer connected to
+    transport
+    '''
+    peer = transport.getPeer()
+    return address_hostname(peer)
+
+def transport_local_hostname(transport):
+    '''
+    Return a string describing the hostname of the local endpoint connected to
+    transport
+    '''
+    try:
+        local = transport.getHost()
+    except AttributeError:
+        return None
+    if local is None:
+        return None
+    return address_hostname(local)
 
 def address_info(address):
     '''
     Return a string describing the address
     '''
+    local_str = address_hostname(address)
+    port_str = address_port(address)
+    if local_str is None:
+        return "(port:{})".format(port_str)
+    if port_str is None:
+        return local_str
+    return "{}:{}".format(local_str, port_str)
+
+def address_hostname(address):
+    '''
+    Return a string describing the host portion of an address.
+    '''
     # Looks like an IPv4Address or IPv6Address
     try:
         # ignore type, it's always TCP
-        return "{}:{}".format(address.host, address.port)
+        return "{}".format(address.host)
     except AttributeError:
         pass
     # Looks like a HostnameAddress
     # (we don't yet support hostnames in connect and listen)
     try:
-        return "{}:{}".format(address.hostname, address.port)
+        return "{}".format(address.hostname)
     except AttributeError:
         pass
     # Looks like a UNIXAddress
@@ -411,3 +444,23 @@ def address_info(address):
         return None
     # Just ask it how it wants to be represented
     return str(address)
+
+def address_port(address):
+    '''
+    Return a string describing port portion of an address
+    If there is no port portion, returns None
+    '''
+    # Looks like an IPv4Address or IPv6Address
+    try:
+        # ignore type, it's always TCP
+        return "{}".format(address.port)
+    except AttributeError:
+        pass
+    # Looks like a HostnameAddress
+    # (we don't yet support hostnames in connect and listen)
+    try:
+        return "{}".format(address.port)
+    except AttributeError:
+        pass
+    # We don't know any other way to get a port
+    return None

@@ -13,7 +13,7 @@ from twisted.protocols.basic import LineOnlyReceiver
 
 from cryptography.hazmat.primitives.hashes import SHA256
 
-from privcount.connection import transport_info, transport_peer, transport_host
+from privcount.connection import transport_info, transport_peer_info, transport_local_info
 from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
 from privcount.log import log_error
@@ -969,11 +969,10 @@ class PrivCountServerProtocol(PrivCountProtocol):
             client_status = json.loads(parts[1])
 
             client_status['alive'] = time()
-            host = transport_host(self.transport)
-            if host is None:
-                host = '(unknown)'
-            client_status['host'] = host
-            peer = transport_peer(self.transport)
+            local = transport_local_info(self.transport)
+            if local is not None:
+                client_status['local'] = local
+            peer = transport_peer_info(self.transport)
             if peer is not None:
                 client_status['peer'] = peer
             client_status['clock_skew'] = 0.0
