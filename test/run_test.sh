@@ -684,6 +684,7 @@ JOB_STATUS=`jobs`
 "$I" "$JOB_STATUS"
 while echo "$JOB_STATUS" | grep -q "Running"; do
   # fail if any job has failed
+  # sometimes this doesn't work, and the script just loops, see #316
   if echo "$JOB_STATUS" | grep -q "Exit"; then
     # and kill everything
     "$W" "Error: Privcount or $PRIVCOUNT_SOURCE process exited with error..."
