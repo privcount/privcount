@@ -229,7 +229,9 @@ case "$PRIVCOUNT_LOG" in
     # do nothing by default
     ;;
   -v)
-    # do nothing, it's already pretty verbose
+    # it's already pretty verbose, but we can echo commands as well
+    # they'll be easier to find and use in xtrace mode
+    set -o xtrace
     ;;
   *)
     "$W" "Logging level $PRIVCOUNT_LOG not supported."
