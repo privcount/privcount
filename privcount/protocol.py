@@ -1,6 +1,6 @@
 # See LICENSE for licensing information
 
-import logging, json, math, subprocess
+import logging, json, math, subprocess, sys, os
 
 from time import time
 from os import urandom, path
@@ -13,7 +13,7 @@ from twisted.protocols.basic import LineOnlyReceiver
 
 from cryptography.hazmat.primitives.hashes import SHA256
 
-from privcount.connection import transport_info, transport_peer, transport_host
+from privcount.connection import transport_info, transport_peer_info, transport_local_info
 from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
 from privcount.log import log_error
@@ -63,11 +63,39 @@ def errorCallback(failure):
     '''
     Called by twisted when a deferred function fails
     '''
+    logging.warning("failure in deferred task: {}".format(failure))
     log_error()
+    stop_reactor(1)
+
+def stop_reactor(exit_code=0):
+    '''
+    Stop the reactor and exit with exit_code.
+    If exit_code is None, don't exit, just return to the caller.
+    exit_code must be between 1 and 255.
+    '''
+    if exit_code is not None:
+        logging.warning("Exiting with code {}".format(exit_code))
+    else:
+        # Let's hope the calling code exits pretty soon after this
+        logging.warning("Stopping reactor")
+
     try:
         reactor.stop()
     except ReactorNotRunning:
         pass
+
+    # return to the caller and let it decide what to do
+    if exit_code == None:
+        return
+
+    # a graceful exit
+    if exit_code == 0:
+        sys.exit()
+
+    # a hard exit
+    assert exit_code >= 0
+    assert exit_code <= 127
+    os._exit(exit_code)
 
 class PrivCountProtocol(LineOnlyReceiver):
     '''
@@ -98,10 +126,7 @@ class PrivCountProtocol(LineOnlyReceiver):
                 .format(e))
             log_error()
 
-            try:
-                reactor.stop()
-            except ReactorNotRunning:
-                pass
+            stop_reactor(1)
 
     def clear(self):
         '''
@@ -165,10 +190,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             self.protocol_failed()
         # if we generate an overlength line, it is a coding or config bug: fail
         if is_length_exceeded and not is_line_received:
-            try:
-                reactor.stop()
-            except ReactorNotRunning:
-                pass
+            stop_reactor(1)
 
     def connectionMade(self):
         '''
@@ -251,10 +273,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             # bring down the privcount network.
             # Since we ignore unrecognised events, the client would have to be
             # maliciously crafted, not just a port scanner.
-            try:
-                reactor.stop()
-            except ReactorNotRunning:
-                pass
+            stop_reactor(1)
 
         if not self.is_valid_connection:
             self.protocol_failed()
@@ -950,11 +969,10 @@ class PrivCountServerProtocol(PrivCountProtocol):
             client_status = json.loads(parts[1])
 
             client_status['alive'] = time()
-            host = transport_host(self.transport)
-            if host is None:
-                host = '(unknown)'
-            client_status['host'] = host
-            peer = transport_peer(self.transport)
+            local = transport_local_info(self.transport)
+            if local is not None:
+                client_status['local'] = local
+            peer = transport_peer_info(self.transport)
             if peer is not None:
                 client_status['peer'] = peer
             client_status['clock_skew'] = 0.0
@@ -966,8 +984,11 @@ class PrivCountServerProtocol(PrivCountProtocol):
                 client_time = float(parts[0])
                 client_status['clock_skew'] = abs(time() - latency - client_time)
                 self.last_sent_time = 0
-
-            self.client_uid = "{}~{}".format(client_status['host'], client_status['name'])
+            # Share Keepers use their public key hash as their name
+            # Data Collectors must each have a unique name
+            # to disambiguate data collectors by IP address, add:
+            # transport_peer_hostname(self.transport)
+            self.client_uid = client_status['name']
             self.factory.set_client_status(self.client_uid, client_status)
 
             config = self.factory.get_stop_config(self.client_uid)
@@ -1574,11 +1595,7 @@ class TorControlProtocol(object):
                                     transport_info(self.transport)))
         # if we send or receive an overlength line, fail
         if is_length_exceeded:
-            self.quit()
-            try:
-                reactor.stop()
-            except ReactorNotRunning:
-                pass
+            stop_reactor(1)
 
 class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
 

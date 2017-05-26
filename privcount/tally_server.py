@@ -424,13 +424,16 @@ class TallyServer(ServerFactory, PrivCountServer):
             # so add a few seconds unconditionally
             rtt = c_status.get('rtt', 15.0) + 5.0
 
+            cdetail = self.get_client_detail(uid)
+
             if time_since_checkin > 3 * self.get_checkin_period() + rtt:
-                logging.warning("last checkin was {} for client {}".format(
+                logging.warning("last checkin was {} for client {} {}".format(
                         format_elapsed_time_wait(time_since_checkin, 'at'),
-                        c_status))
+                        uid, c_status))
 
             if time_since_checkin > 7 * self.get_checkin_period() + rtt:
-                logging.warning("marking dead client {}".format(c_status))
+                logging.warning("marking dead client {} {}"
+                                .format(uid, cdetail))
                 c_status['state'] = 'dead'
 
                 if self.collection_phase is not None and self.collection_phase.is_participating(uid):
@@ -499,57 +502,115 @@ class TallyServer(ServerFactory, PrivCountServer):
 
         return status
 
-    def get_client_uidname(self, uid, status=None):
+    def _get_client_item(self, uid, item, status=None, substitute=None):
         '''
-        Tries to find nickname in status, or, if status is None, tries
+        Tries to find item in status, or, if status is None, tries
         self.clients[uid].
-        Returns uid + ' ' + nickname if nickname is present, or uid otherwise.
+        Returns substitute if there is no item.
         '''
         assert uid is not None
 
         if status is None:
             status = self.clients[uid]
 
-        # if we're not expecting a nickname, just use the UID
-        if status['type'] != 'DataCollector':
-            return uid
+        return status.get(item, substitute)
 
-        nickname = status.get('nickname', '(pending)')
-        return uid + ' ' + nickname
+    def get_client_address(self, uid, status=None):
+        '''
+        Uses _get_client_item to find the remote peer info (hostname and port)
+        for uid.
+        Returns a placeholder string if client does not have an address.
+        '''
+        return self._get_client_item(uid,
+                                     'peer',
+                                     status,
+                                     '(no remote address)')
+
+    def get_client_nickname(self, uid, status=None):
+        '''
+        Uses _get_client_item to find a fingerprint.
+        Returns None if client will never have a nickname, anda placeholder
+        string if we expect a nickname in future.
+        '''
+        if self._get_client_item(uid, 'type', status) != 'DataCollector':
+            return None
+
+        return self._get_client_item(uid,
+                                     'nickname',
+                                     status,
+                                     '(nickname pending)')
+
+    def get_client_fingerprint(self, uid, status=None):
+        '''
+        Uses _get_client_item to find a fingerprint.
+        Returns None if client will never have a fingerprint, and a
+        placeholder string if we expect a fingerprint in future.
+        '''
+        if self._get_client_item(uid, 'type', status) != 'DataCollector':
+            return None
+
+        return self._get_client_item(uid,
+                                     'fingerprint',
+                                     status,
+                                     '(fingerprint pending)')
+
+    def get_client_info(self, uid, status=None):
+        '''
+        Returns a formatted string containing basic information: the
+        client's address (if present).
+        '''
+        return self.get_client_address(uid, status)
+
+    def get_client_detail(self, uid, status=None):
+        '''
+        Returns a formatted string containing detailed information: the
+        client's nickname, address, and fingerprint (if present).
+        '''
+        if self._get_client_item(uid, 'type', status) != 'DataCollector':
+            return self.get_client_info(uid, status)
+
+        return "{} {} {}".format(self.get_client_nickname(uid, status),
+                                 self.get_client_address(uid, status),
+                                 self.get_client_fingerprint(uid, status))
 
     def get_client_version(self, uid, status=None):
         '''
-        Tries to find privcount-version, tor-version, and tor-privcount-version
-        in status, or, if status is None, tries self.clients[uid].
+        Uses _get_client_item to find privcount-version, tor-version, and
+        tor-privcount-version.
         Returns a formatted string containing the versions that are present.
         '''
-        assert uid is not None
-
-        if status is None:
-            status = self.clients[uid]
-
-        assert 'privcount-version' in status
-        privcount_version = status['privcount-version']
+        privcount_version = self._get_client_item(uid,
+                                                  'privcount-version',
+                                                  status,
+                                                  '(no privcount version)')
 
         # if we're not expecting additional versions, just use privcount
-        if status['type'] != 'DataCollector':
+        if self._get_client_item(uid, 'type', status) != 'DataCollector':
             return privcount_version
 
-        tor_version = status.get('tor-version',
-                                 '(pending)')
-        tor_privcount_version = status.get('tor-privcount-version',
-                                           '(pending)')
+        tor_version = self._get_client_item(uid,
+                                            'tor-version',
+                                            status,
+                                            '(pending)')
+        tor_privcount_version = self._get_client_item(uid,
+                                                      'tor-privcount-version',
+                                                      status,
+                                                      '(pending)')
 
-        return ('privcount: {}, tor: {}, tor privcount: {}'
+        return ('privcount: {} tor: {} tor privcount: {}'
                 .format(privcount_version, tor_version, tor_privcount_version))
 
     def set_client_status(self, uid, status): # called by protocol
+        cinfo = self.get_client_info(uid, status)
+        cdetail = self.get_client_detail(uid, status)
+        cversion = self.get_client_version(uid, status)
+
         # dump the status content at debug level
-        for k in status.keys():
-            logging.debug("{} sent status: {}: {}".format(uid, k, status[k]))
+        logging.debug("{} {} sent status: {}"
+                      .format(uid, cdetail, status))
         if uid in self.clients:
-            for k in self.clients[uid].keys():
-                logging.debug("{} has stored state: {}: {}".format(uid, k, self.clients[uid][k]))
+            logging.debug("{} {} has stored state: {}"
+                          .format(uid, cdetail, self.clients[uid]))
 
         # only data collectors have a fingerprint
         # oldfingerprint is the previous fingerprint for this client (if any)
@@ -561,15 +622,15 @@ class TallyServer(ServerFactory, PrivCountServer):
         # complain if fingerprint changes, and keep the old one
         if (fingerprint is not None and oldfingerprint is not None and
             fingerprint != oldfingerprint):
-            logging.warning("Ignoring fingerprint update from {} {} state {}: kept old {} ignored new {}"
-                            .format(status['type'], uid, status['state'],
+            logging.warning("Ignoring fingerprint update from {} {} {} (version: {}) state {}: kept old {} ignored new {}"
+                            .format(status['type'], uid, cinfo, cversion, status['state'],
                                     oldfingerprint, fingerprint))
 
-        uidname = self.get_client_uidname(uid, status)
         if uid not in self.clients:
-            logging.info("new {} {} joined and is {} (client version {})"
-                         .format(status['type'], uidname, status['state'],
-                                 self.get_client_version(uid, status)))
+            # data collectors don't have nickname, fingerprint, or tor
+            # versions until the round starts
+            logging.info("new {} {} {} joined and is {}"
+                         .format(status['type'], uid, cinfo, status['state']))
 
         oldstate = self.clients[uid]['state'] if uid in self.clients else status['state']
         # for each key, replace the client value with the value from status,
@@ -588,12 +649,16 @@ class TallyServer(ServerFactory, PrivCountServer):
         # only log a message if we expect events
         if self.clients[uid]['type'] == 'DataCollector':
             last_event_message = ' ' + format_last_event_time_since(last_event_time)
-        logging.info("----client status: {} {} is alive and {} for {}{} (client version {})"
-                     .format(self.clients[uid]['type'], uidname,
+        logging.info("----client status: {} {} is alive and {} for {}{}"
+                     .format(self.clients[uid]['type'], uid,
                              self.clients[uid]['state'],
                              format_elapsed_time_since(self.clients[uid]['time'], 'since'),
-                             last_event_message,
-                             self.get_client_version(uid, status)))
+                             last_event_message))
+        logging.info("----client status: {} detail {} {} version: {}"
+                     .format(self.clients[uid]['type'],
+                             uid,
+                             cdetail,
+                             cversion))
 
     def get_clock_padding(self, client_uids):
         max_delay = max([self.clients[uid]['rtt']+self.clients[uid]['clock_skew'] for uid in client_uids])
@@ -640,20 +705,20 @@ class TallyServer(ServerFactory, PrivCountServer):
             for uid in self.clients:
                 if self.clients[uid]['type'] == 'DataCollector':
                     last_event = self.clients[uid].get('last_event_time', None)
-                    uidname = self.get_client_uidname(uid)
                     event_issue = None
                     if last_event is None:
                         event_issue = 'never received any events'
                     elif last_event < self.collection_phase.get_start_ts():
                         event_issue = 'received an event before collection started'
                     if event_issue is not None:
+                        cdetail = self.get_client_detail(uid)
                         # we could refuse to provide any results here, but they
                         # could still be useful even if they are missing a DC
                         # (or the DC has clock skew). So deliver the results
                         # and allow the operator to decide how to interpret
                         # them
                         logging.warning('Data Collector {} {}. Check the results before using them.'
-                                        .format(uidname, event_issue))
+                                        .format(cdetail, event_issue))
 
             # we want the end time after all clients have definitely stopped
             # and returned their results, not the time the TS told the
@@ -816,10 +881,12 @@ class CollectionPhase(object):
         pass
 
     def store_data(self, client_uid, data):
+
         if data == None:
             # this can happen if the SK (or DC) is enforcing a delay because
             # the noise allocation has changed
-            logging.warning("received error response from {} while in state {}".format(client_uid, self.state))
+            logging.warning("received error response from {} while in state {}"
+                            .format(client_uid, self.state))
             return
 
         if self.state == 'starting_dcs':
@@ -833,7 +900,8 @@ class CollectionPhase(object):
                 shares = data # dict of {sk_uid : share}
                 for sk_uid in shares:
                     self.encrypted_shares.setdefault(sk_uid, []).append(shares[sk_uid])
-                logging.info("received {} shares from data collector {}".format(len(shares), client_uid))
+                logging.info("received {} shares from data collector {}"
+                             .format(len(shares), client_uid))
 
                 # mark that we got another one
                 self.need_shares.remove(client_uid)
@@ -846,7 +914,8 @@ class CollectionPhase(object):
 
         elif self.state == 'starting_sks':
             # the sk got our encrypted share successfully
-            logging.info("share keeper {} started and received its shares".format(client_uid))
+            logging.info("share keeper {} started and received its shares"
+                         .format(client_uid))
             self.need_shares.remove(client_uid)
             if len(self.need_shares) == 0:
                 self._change_state('started')
@@ -862,18 +931,22 @@ class CollectionPhase(object):
                 counts = data.get('Counts', None)
 
                 if counts is None:
-                    logging.warning("received no counts from {}, final results will not be available".format(client_uid))
+                    logging.warning("received no counts from {}, final results will not be available"
+                                    .format(client_uid))
                     self.error_flag = True
                 elif not self.is_error() and len(counts) == 0:
-                    logging.warning("received empty counts from {}, final results will not be available".format(client_uid))
+                    logging.warning("received empty counts from {}, final results will not be available"
+                                    .format(client_uid))
                     self.error_flag = True
                 elif not self.is_error():
                     logging.info("received {} counters ({} bins) from stopped client {}"
-                                 .format(len(counts), count_bins(counts), client_uid))
+                                 .format(len(counts), count_bins(counts),
+                                         client_uid))
                     # add up the tallies from the client
                     self.final_counts[client_uid] = counts
                 else:
-                    logging.warning("received counts: error from stopped client {}".format(client_uid))
+                    logging.warning("received counts: error from stopped client {}"
+                                    .format(client_uid))
                 self.need_counts.remove(client_uid)
 
     def is_participating(self, client_uid):
@@ -949,9 +1022,11 @@ class CollectionPhase(object):
             return None
 
         assert self.state == 'stopping'
+
         config = {'send_counters' : not self.is_error()}
         msg = "without" if self.is_error() else "with"
-        logging.info("sending stop command to {} {} request for counters".format(client_uid, msg))
+        logging.info("sending stop command to {} {} request for counters"
+                     .format(client_uid, msg))
         return config
 
     def set_tally_server_status(self, status):

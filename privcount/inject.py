@@ -17,7 +17,7 @@ from twisted.internet.error import ReactorNotRunning
 
 from privcount.config import normalise_path
 from privcount.connection import listen, stopListening
-from privcount.protocol import TorControlServerProtocol, errorCallback
+from privcount.protocol import TorControlServerProtocol, errorCallback, stop_reactor
 from privcount.data_collector import Aggregator
 
 # set the log level
@@ -147,13 +147,8 @@ class PrivCountDataInjector(ServerFactory):
         # close the connection from our server side
         if self.protocol is not None and self.protocol.transport is not None:
             self.protocol.transport.loseConnection()
-        # stop the reactor
-        try:
-            # we should no longer be listening, so the reactor should end here
-            reactor.stop()
-        except ReactorNotRunning:
-            # it's ok if the reactor stopped before we told it to
-            pass
+        # stop the reactor gracefully
+        stop_reactor()
 
     def _get_line(self):
         if self.event_file == None:

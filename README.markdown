@@ -178,6 +178,13 @@ To run PrivCount, simply activate the virtual environment that you created earli
 
 # Deployment
 
+## Unique Node Names
+
+PrivCount uses the name supplied by each node to uniquely identify it.
+Each Data Collector must be configured with a unique 'name:' in config.yaml.
+Share Keepers use their public key hash as their name, so it is automatically
+unique.
+
 ## PrivCount keys
 
 On first run, PrivCount creates the keys that it needs to run:

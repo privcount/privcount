@@ -217,6 +217,9 @@ case "$PRIVCOUNT_LOG" in
   -q)
     I="true"
     ;;
+  "")
+    # do nothing by default
+    ;;
   -v)
     # do nothing, it's already pretty verbose
     ;;
@@ -258,6 +261,9 @@ TOR_LOG=""
 case "$PRIVCOUNT_LOG" in
   -q)
     TOR_LOG="--hush"
+    ;;
+  "")
+    # do nothing by default
     ;;
   -v)
     # we want info, not debug
@@ -308,6 +314,9 @@ case "$PRIVCOUNT_LOG" in
     CHUTNEY_LOG_DURING="--quiet"
     # don't duplicate the warnings at the end 
     CHUTNEY_LOG_END="--quiet --no-warnings"
+    ;;
+  "")
+    # do nothing by default
     ;;
   -v)
     CHUTNEY_LOG_DURING="--debug --all-warnings"
@@ -596,7 +605,7 @@ CONFIG="$TEMPLATE_CONFIG.ts"
 template_to_config
 
 # launch the TS
-privcount "$PRIVCOUNT_LOG" ts "$CONFIG" 2>&1 \
+privcount $PRIVCOUNT_LOG ts "$CONFIG" 2>&1 \
     | `save_to_log . ts "$LOG_TIMESTAMP"` &
 
 # launch enough SKs
@@ -606,7 +615,7 @@ for SK_NUM in `seq "$PRIVCOUNT_SHARE_KEEPERS"`; do
   template_to_config
 
   # Launch an SK with this config
-  privcount "$PRIVCOUNT_LOG" --log-id ".$SK_NUM" sk "$CONFIG" 2>&1 \
+  privcount $PRIVCOUNT_LOG --log-id ".$SK_NUM" sk "$CONFIG" 2>&1 \
       | `save_to_log . "sk.$SK_NUM" "$LOG_TIMESTAMP"` &
 done
 
@@ -643,7 +652,7 @@ for DC_SOURCE_PORT in ${CHUTNEY_PORT_ARRAY[@]} ; do
   template_to_config
 
   # Launch a DC with this config
-  privcount "$PRIVCOUNT_LOG" --log-id ".$DC_SOURCE_PORT" dc "$CONFIG" 2>&1 \
+  privcount $PRIVCOUNT_LOG --log-id ".$DC_SOURCE_PORT" dc "$CONFIG" 2>&1 \
       | `save_to_log . "dc.$DC_SOURCE_PORT" "$LOG_TIMESTAMP"` &
 done
 
@@ -657,9 +666,9 @@ case "$PRIVCOUNT_SOURCE" in
     ;;
   chutney)
     # The chutney output is very verbose: don't save it to the log
-    $FIRST_ROUND_CMD 2>&1 &
     "$I" "For full chutney logs run $CHUTNEY_LOG_CMD" | \
         `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP`
+    $FIRST_ROUND_CMD 2>&1 &
     ;;
   *)
     "$W" "Source $PRIVCOUNT_SOURCE not supported."
@@ -675,6 +684,7 @@ JOB_STATUS=`jobs`
 "$I" "$JOB_STATUS"
 while echo "$JOB_STATUS" | grep -q "Running"; do
   # fail if any job has failed
+  # sometimes this doesn't work, and the script just loops, see #316
   if echo "$JOB_STATUS" | grep -q "Exit"; then
     # and kill everything
     "$W" "Error: Privcount or $PRIVCOUNT_SOURCE process exited with error..."
