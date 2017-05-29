@@ -6,6 +6,9 @@ The TallyServer creates a RSA key pair for SSL encryption:
 * client SSL certificate fingerprint checks are not yet implemented
 * no configuration is required
 * the private key must be kept secret
+* to manually generate this key and certificate:
+    openssl genrsa -out ts.key 4096
+    openssl req -new -x509 -key ts.key -out ts.cert -days 1825
 
 The TallyServer creates a PrivCount secret handshake key:
 * each ShareKeeper and DataCollector needs to know this key to
@@ -26,6 +29,8 @@ The TallyServer creates a PrivCount secret handshake key:
   using a hash construction similar to tor's SAFECOOKIE authentication
   (for more details, see privcount/protocol.py)
 * this key must be kept secret: it is equivalent to a symmetric secret key
+* to manually generate the secret handshake key:
+    cat /dev/random | head -c 32 | base64 > keys/secret_handshake.yaml
 
 Each ShareKeeper creates a RSA key pair for public key encryption:
 * each DataCollector needs to know the SHA256 hash of the public key of
@@ -39,7 +44,7 @@ Each ShareKeeper creates a RSA key pair for public key encryption:
 ```
 * the fingerprints can be generated from the ShareKeeper keys using:
 ```
-  openssl rsa -pubout < keys/sk.pem | sha256sum
+  openssl rsa -pubout < keys/sk.pem | openssl dgst -sha256 | cut -d" " -f2
 ```
 * the fingerprints should be authentically transferred to the
   DataCollector operators: signed emails are a good choice
@@ -51,3 +56,5 @@ Each ShareKeeper creates a RSA key pair for public key encryption:
 * the public keys and their fingerprints do not need to be kept secret,
   but they must be transferred authentically
 * the private keys on each ShareKeeper must be kept secret
+* to manually generate this key and certificate:
+    openssl genrsa -out sk.key 4096
