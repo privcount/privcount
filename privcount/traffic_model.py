@@ -277,6 +277,8 @@ class TrafficModel(object):
         '''
         Take a list of (bw_bytes, is_outbound, ts) and turn them into packet delay
         observations of the form [('+', 20), ('+', 10), ('+',50), ('+',1000)]
+          - the first delay is the delay between the stream start and the first
+            packet. Subsequent delays are inter-packet delays
           - the returned delays will be in microseconds
           - the returned list of observations is suitable to pass to
             TrafficModel.run_viterbi() to find the most likly path (series of states)
@@ -287,6 +289,7 @@ class TrafficModel(object):
         stream_packet_count = 0
         logged_event_warning = False
         logged_stream_warning = False
+        last_packet_ts = strm_start_ts
         for i in xrange(num_events):
             (bw_bytes, is_outbound, ts) = byte_events[i]
 
@@ -294,8 +297,9 @@ class TrafficModel(object):
             dir_code = '+' if is_outbound else '-' # '-' for "inbound" direction
             # ts is unix timestamp in sec.microsec, like 12345678.123456
             # so delay will be in microseconds
-            seconds_since_stream_start = ts - strm_start_ts
-            micros = seconds_since_stream_start * 1000000
+            inter_packet_delay_seconds = ts - last_packet_ts
+            last_packet_ts = ts
+            micros = inter_packet_delay_seconds * 1000000
             delay = max(long(0), long(micros))
 
             # ceil(), but with integers
