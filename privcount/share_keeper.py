@@ -230,7 +230,7 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
                 self.get_valid_sigma_decrease_tolerance(sk_conf)
 
             assert validate_connection_config(sk_conf['tally_server_info'],
-                                           must_have_ip=True)
+                                              must_have_ip=True)
 
             if self.config == None:
                 self.config = sk_conf

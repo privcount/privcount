@@ -279,7 +279,7 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             assert dc_conf['name'] != ''
 
             assert validate_connection_config(dc_conf['tally_server_info'],
-                                           must_have_ip=True)
+                                              must_have_ip=True)
             assert validate_connection_config(dc_conf['event_source'])
 
             assert 'share_keepers' in dc_conf
