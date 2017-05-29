@@ -17,7 +17,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 
 from privcount.config import normalise_path, choose_secret_handshake_path
 from privcount.connection import validate_connection_config
-from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters
+from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, count_bins
 from privcount.crypto import get_public_digest, generate_keypair, get_serialized_public_key, load_private_key_file, decrypt
 from privcount.log import log_error
 from privcount.protocol import PrivCountClientProtocol, get_privcount_version
@@ -158,7 +158,8 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
                 del private_key
                 return None
 
-        logging.info("successfully started and imported {} blinding shares for {} counters".format(len(share_list), len(config['counters'])))
+        logging.info("successfully started and imported {} blinding shares for {} counters ({} bins)"
+                     .format(len(share_list), len(config['counters']), count_bins(config['counters'])))
         # TODO: secure delete
         del private_key
         return {}

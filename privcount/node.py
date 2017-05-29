@@ -11,7 +11,7 @@ import logging
 from time import time
 
 from privcount.config import normalise_path
-from privcount.counter import check_counters_config, check_noise_weight_config, combine_counters, CollectionDelay, float_accuracy, add_counter_limits_to_config
+from privcount.counter import check_counters_config, check_noise_weight_config, combine_counters, CollectionDelay, float_accuracy, add_counter_limits_to_config, count_bins
 from privcount.log import format_delay_time_until, format_elapsed_time_since
 from privcount.statistics_noise import DEFAULT_SIGMA_TOLERANCE
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
@@ -365,7 +365,8 @@ class PrivCountClient(PrivCountNode):
                      .format("wants" if wants_counters else "does not want"))
 
         if wants_counters and counts is not None:
-            logging.info("sending counts from {} counters".format(len(counts)))
+            logging.info("sending counts from {} counters ({} bins)"
+                         .format(len(counts), count_bins(counts)))
             response['Counts'] = counts
             # only delay a round if we have sent our counters
             round_successful = True
