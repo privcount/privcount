@@ -16,7 +16,7 @@ from cryptography.hazmat.primitives.hashes import SHA256
 from privcount.connection import transport_info, transport_remote_info, transport_local_info
 from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
-from privcount.log import log_error
+from privcount.log import log_error, errorCallback, stop_reactor
 
 PRIVCOUNT_SHORT_VERSION_STRING = "1.0.0"
 
@@ -58,44 +58,6 @@ def privcount_git_revision():
         PRIVCOUNT_GIT_CACHE = "(no revision)"
 
     return PRIVCOUNT_GIT_CACHE
-
-def errorCallback(failure):
-    '''
-    Called by twisted when a deferred function fails
-    '''
-    logging.warning("failure in deferred task: {}".format(failure))
-    log_error()
-    stop_reactor(1)
-
-def stop_reactor(exit_code=0):
-    '''
-    Stop the reactor and exit with exit_code.
-    If exit_code is None, don't exit, just return to the caller.
-    exit_code must be between 1 and 255.
-    '''
-    if exit_code is not None:
-        logging.warning("Exiting with code {}".format(exit_code))
-    else:
-        # Let's hope the calling code exits pretty soon after this
-        logging.warning("Stopping reactor")
-
-    try:
-        reactor.stop()
-    except ReactorNotRunning:
-        pass
-
-    # return to the caller and let it decide what to do
-    if exit_code == None:
-        return
-
-    # a graceful exit
-    if exit_code == 0:
-        sys.exit()
-
-    # a hard exit
-    assert exit_code >= 0
-    assert exit_code <= 127
-    os._exit(exit_code)
 
 class PrivCountProtocol(LineOnlyReceiver):
     '''

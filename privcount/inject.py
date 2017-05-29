@@ -17,8 +17,9 @@ from twisted.internet.error import ReactorNotRunning
 
 from privcount.config import normalise_path
 from privcount.connection import listen, stopListening
-from privcount.protocol import TorControlServerProtocol, errorCallback, stop_reactor
 from privcount.data_collector import Aggregator
+from privcount.log import errorCallback, stop_reactor
+from privcount.protocol import TorControlServerProtocol
 
 # set the log level
 #logging.basicConfig(level=logging.DEBUG)

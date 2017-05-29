@@ -19,9 +19,9 @@ from privcount.config import normalise_path, choose_secret_handshake_path
 from privcount.connection import connect, disconnect, validate_connection_config, choose_a_connection, get_a_control_password
 from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, has_noise_weight, get_noise_weight, count_bins
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
-from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since
+from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since, errorCallback
 from privcount.node import PrivCountClient
-from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, errorCallback, get_privcount_version
+from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, get_privcount_version
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
 SINGLE_BIN = SecureCounters.SINGLE_BIN
