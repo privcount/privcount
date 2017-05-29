@@ -209,10 +209,9 @@ class PrivCountDataInjector(ServerFactory):
             self.output_line_count += 1
 
             # if we need to simulate event inter-arrival times
-            do_wait, wait_time = False, 0.0
+            wait_time = 0.0
             if self.do_pause:
                 wait_time = this_time_end - self.last_time_end
-                do_wait = True if self.last_time_end != 0.0 and wait_time > 0.0 else False
                 self.last_time_end = this_time_end
 
             # ensure wait_time is sensible
