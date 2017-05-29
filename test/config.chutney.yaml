@@ -1,11 +1,11 @@
 # TS & SK config for chutney single-round, multi-DC, multi-SK integration test
 
 tally_server:
-    counters: './counters.bins.yaml'
-    noise: './counters.noise.yaml'
+    counters: 'counters.bins.yaml'
+    noise: 'counters.noise.yaml'
     traffic_model: 'traffic.model.json'
     traffic_noise: 'traffic.noise.yaml'
-    allocation: './counters.allocation.yaml'
+    allocation: 'counters.allocation.yaml'
     noise_weight:
         # We can't know our test tor relay's fingerprint in advance
         # * means 'any other relay', and should only be used for testing

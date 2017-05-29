@@ -2,10 +2,10 @@
 
 # only the tally server needs these
 tally_server:
-    counters: './counters.bins.yaml' # path to a yaml file containing our counter bin configurations
+    counters: 'counters.bins.yaml' # path to a yaml file containing our counter bin configurations
     # Either noise or sigmas must be provided (if noise is present, sigmas is ignored)
-    noise: './counters.noise.yaml' # path to a yaml file containing noise allocation parameters
-    #sigmas: './counters.sigmas.yaml' # path to a yaml file containing pre-calculated sigmas
+    noise: 'counters.noise.yaml' # path to a yaml file containing noise allocation parameters
+    #sigmas: 'counters.sigmas.yaml' # path to a yaml file containing pre-calculated sigmas
     # The following two traffic model keys are only required if we want to enable traffic model learning
     # The traffic_model file specifies the actual model in the format that PrivCount requires.
     # From this model, PrivCount will extract all of the counters that are necessary to count
@@ -16,7 +16,7 @@ tally_server:
     # are required to count the model.
     traffic_noise: 'traffic.noise.yaml' # path to file specifying counter key templates and noise parameters
     # path to a yaml file where the noise allocation is written immediately after calculation. The noise allocation also forms part of the results context.
-    allocation: './counters.allocation.yaml'
+    allocation: 'counters.allocation.yaml'
     noise_weight: # distribute noise among all machines / data collectors
         # The tor relay fingerprints must be quoted, as some start with 0-9
         # This is the hard-coded fingerprint from the injector
@@ -50,7 +50,7 @@ tally_server:
     # optional overrides:
     key: 'keys/ts.pem' # path to the rsa private key
     cert: 'keys/ts.cert' # path to the public key certificate
-    #results: './' # path to directory where the result files will be written
+    #results: '.' # path to directory where the result files will be written
     #
     # the security of each PrivCount deployment depends on the handshake key
     # being unique, random, and secret
