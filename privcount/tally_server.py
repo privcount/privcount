@@ -424,16 +424,17 @@ class TallyServer(ServerFactory, PrivCountServer):
             # so add a few seconds unconditionally
             rtt = c_status.get('rtt', 15.0) + 5.0
 
+            cname = TallyServer.get_client_display_name(uid)
             cdetail = self.get_client_detail(uid)
 
             if time_since_checkin > 3 * self.get_checkin_period() + rtt:
                 logging.warning("last checkin was {} for client {} {}".format(
                         format_elapsed_time_wait(time_since_checkin, 'at'),
-                        uid, c_status))
+                        cname, c_status))
 
             if time_since_checkin > 7 * self.get_checkin_period() + rtt:
                 logging.warning("marking dead client {} {}"
-                                .format(uid, cdetail))
+                                .format(cname, cdetail))
                 c_status['state'] = 'dead'
 
                 if self.collection_phase is not None and self.collection_phase.is_participating(uid):
@@ -514,6 +515,19 @@ class TallyServer(ServerFactory, PrivCountServer):
             status = self.clients[uid]
 
         return status.get(item, substitute)
+
+    @staticmethod
+    def get_client_display_name(uid):
+        '''
+        Returns a display name, based on uid, that is a suitable length for
+        logging.
+        '''
+        # Allow standard-length tor relay nicknames and fingerprints
+        if len(uid) <= 20:
+            return uid
+        else:
+            # 8 prefix + 4 dots + 8 suffix
+            return uid[0:8] + '....' + uid[-9:-1]
 
     def get_client_address(self, uid, status=None):
         '''
@@ -601,16 +615,17 @@ class TallyServer(ServerFactory, PrivCountServer):
                 .format(privcount_version, tor_version, tor_privcount_version))
 
     def set_client_status(self, uid, status): # called by protocol
+        cname = TallyServer.get_client_display_name(uid)
         cinfo = self.get_client_info(uid, status)
         cdetail = self.get_client_detail(uid, status)
         cversion = self.get_client_version(uid, status)
 
         # dump the status content at debug level
         logging.debug("{} {} sent status: {}"
-                      .format(uid, cdetail, status))
+                      .format(cname, cdetail, status))
         if uid in self.clients:
             logging.debug("{} {} has stored state: {}"
-                          .format(uid, cdetail, self.clients[uid]))
+                          .format(cname, cdetail, self.clients[uid]))
 
         # only data collectors have a fingerprint
         # oldfingerprint is the previous fingerprint for this client (if any)
@@ -623,14 +638,15 @@ class TallyServer(ServerFactory, PrivCountServer):
         if (fingerprint is not None and oldfingerprint is not None and
             fingerprint != oldfingerprint):
             logging.warning("Ignoring fingerprint update from {} {} {} (version: {}) state {}: kept old {} ignored new {}"
-                            .format(status['type'], uid, cinfo, cversion, status['state'],
-                                    oldfingerprint, fingerprint))
+                            .format(status['type'], cname, cinfo, cversion,
+                                    status['state'], oldfingerprint, fingerprint))
 
         if uid not in self.clients:
             # data collectors don't have nickname, fingerprint, or tor
             # versions until the round starts
             logging.info("new {} {} {} joined and is {}"
-                         .format(status['type'], uid, cinfo, status['state']))
+                         .format(status['type'], cname, cinfo,
+                                 status['state']))
 
         oldstate = self.clients[uid]['state'] if uid in self.clients else status['state']
         # for each key, replace the client value with the value from status,
@@ -650,7 +666,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         if self.clients[uid]['type'] == 'DataCollector':
             last_event_message = ' ' + format_last_event_time_since(last_event_time)
         logging.info("----client status: {} {} is alive and {} for {}{}"
-                     .format(self.clients[uid]['type'], uid,
+                     .format(self.clients[uid]['type'], cname,
                              self.clients[uid]['state'],
                              format_elapsed_time_since(self.clients[uid]['time'], 'since'),
                              last_event_message))
@@ -711,14 +727,15 @@ class TallyServer(ServerFactory, PrivCountServer):
                     elif last_event < self.collection_phase.get_start_ts():
                         event_issue = 'received an event before collection started'
                     if event_issue is not None:
+                        cname = TallyServer.get_client_display_name(uid)
                         cdetail = self.get_client_detail(uid)
                         # we could refuse to provide any results here, but they
                         # could still be useful even if they are missing a DC
                         # (or the DC has clock skew). So deliver the results
                         # and allow the operator to decide how to interpret
                         # them
-                        logging.warning('Data Collector {} {}. Check the results before using them.'
-                                        .format(cdetail, event_issue))
+                        logging.warning('Data Collector {} {} {}. Check the results before using them.'
+                                        .format(cname, cdetail, event_issue))
 
             # we want the end time after all clients have definitely stopped
             # and returned their results, not the time the TS told the
@@ -881,12 +898,13 @@ class CollectionPhase(object):
         pass
 
     def store_data(self, client_uid, data):
+        cname = TallyServer.get_client_display_name(client_uid)
 
         if data == None:
             # this can happen if the SK (or DC) is enforcing a delay because
             # the noise allocation has changed
             logging.warning("received error response from {} while in state {}"
-                            .format(client_uid, self.state))
+                            .format(cname, self.state))
             return
 
         if self.state == 'starting_dcs':
@@ -901,7 +919,7 @@ class CollectionPhase(object):
                 for sk_uid in shares:
                     self.encrypted_shares.setdefault(sk_uid, []).append(shares[sk_uid])
                 logging.info("received {} shares from data collector {}"
-                             .format(len(shares), client_uid))
+                             .format(len(shares), cname))
 
                 # mark that we got another one
                 self.need_shares.remove(client_uid)
@@ -915,7 +933,7 @@ class CollectionPhase(object):
         elif self.state == 'starting_sks':
             # the sk got our encrypted share successfully
             logging.info("share keeper {} started and received its shares"
-                         .format(client_uid))
+                         .format(cname))
             self.need_shares.remove(client_uid)
             if len(self.need_shares) == 0:
                 self._change_state('started')
@@ -932,21 +950,21 @@ class CollectionPhase(object):
 
                 if counts is None:
                     logging.warning("received no counts from {}, final results will not be available"
-                                    .format(client_uid))
+                                    .format(cname))
                     self.error_flag = True
                 elif not self.is_error() and len(counts) == 0:
                     logging.warning("received empty counts from {}, final results will not be available"
-                                    .format(client_uid))
+                                    .format(cname))
                     self.error_flag = True
                 elif not self.is_error():
                     logging.info("received {} counters ({} bins) from stopped client {}"
                                  .format(len(counts), count_bins(counts),
-                                         client_uid))
+                                         cname))
                     # add up the tallies from the client
                     self.final_counts[client_uid] = counts
                 else:
                     logging.warning("received counts: error from stopped client {}"
-                                    .format(client_uid))
+                                    .format(cname))
                 self.need_counts.remove(client_uid)
 
     def is_participating(self, client_uid):
@@ -980,6 +998,8 @@ class CollectionPhase(object):
         assert self.state == 'starting_dcs' or self.state == 'starting_sks'
         config = {}
 
+        cname = TallyServer.get_client_display_name(client_uid)
+
         if self.state == 'starting_dcs' and client_uid in self.dc_uids:
             config['sharekeepers'] = {}
             for sk_uid in self.sk_public_keys:
@@ -996,7 +1016,7 @@ class CollectionPhase(object):
                          .format(len(config['counters']),
                                  count_bins(config['counters']),
                                  len(config['sharekeepers']),
-                                 client_uid))
+                                 cname))
             logging.debug("full data collector start config {}".format(config))
 
         elif self.state == 'starting_sks' and client_uid in self.sk_uids:
@@ -1012,7 +1032,7 @@ class CollectionPhase(object):
                          .format(len(config['counters']),
                                  count_bins(config['counters']),
                                  len(config['shares']),
-                                 client_uid))
+                                 cname))
             logging.debug("full share keeper start config {}".format(config))
 
         return config
@@ -1023,10 +1043,12 @@ class CollectionPhase(object):
 
         assert self.state == 'stopping'
 
+        cname = TallyServer.get_client_display_name(client_uid)
+
         config = {'send_counters' : not self.is_error()}
         msg = "without" if self.is_error() else "with"
         logging.info("sending stop command to {} {} request for counters"
-                     .format(client_uid, msg))
+                     .format(cname, msg))
         return config
 
     def set_tally_server_status(self, status):
@@ -1313,13 +1335,13 @@ class CollectionPhase(object):
         message = "collection phase is in '{}' state".format(self.state)
 
         if self.state == 'starting_dcs':
-            message += ", waiting to receive shares from {} DCs: {}".format(len(self.need_shares), ','.join([ uid for uid in self.need_shares]))
+            message += ", waiting to receive shares from {} DCs: {}".format(len(self.need_shares), ','.join([ TallyServer.get_client_display_name(uid) for uid in self.need_shares]))
         elif self.state == 'starting_sks':
-            message += ", waiting to send shares to {} SKs: {}".format(len(self.need_shares), ','.join([ uid for uid in self.need_shares]))
+            message += ", waiting to send shares to {} SKs: {}".format(len(self.need_shares), ','.join([ TallyServer.get_client_display_name(uid) for uid in self.need_shares]))
         elif self.state == 'started':
             message += ", running for {}".format(format_elapsed_time_since(self.starting_ts, 'since'))
         elif self.state == 'stopping':
             message += ", trying to stop for {}".format(format_elapsed_time_since(self.stopping_ts, 'since'))
-            message += ", waiting to receive counts from {} DCs/SKs: {}".format(len(self.need_counts), ','.join([ uid for uid in self.need_counts]))
+            message += ", waiting to receive counts from {} DCs/SKs: {}".format(len(self.need_counts), ','.join([ TallyServer.get_client_display_name(uid) for uid in self.need_counts]))
 
         logging.info(message)
