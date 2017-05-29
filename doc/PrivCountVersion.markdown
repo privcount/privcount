@@ -85,7 +85,12 @@ The master branch for Tor PrivCount development is called:
 Release tags are created as-needed. They are named after the corresponding
 PrivCount release. Tor PrivCount tags have a suffix with the Tor branch or tag.
 
-Release tags look like:
+PrivCount release tags look like:
+
+    privcount-1.0.0
+    privcount-0.1.1
+
+PrivCount Tor release tags look like:
 
     privcount-1.0.0-tor-0.3.0.7
     privcount-0.1.1-tor-0.2.7.6
@@ -102,8 +107,8 @@ because they change too often, and avoid outdated or alpha versions.
 
 To rebase privcount onto a newer version of tor, use commands like:
 ```
-git checkout -b privcount-0.1.1-tor-0.3.0.7 privcount-0.1.1-tor-0.2.7.6
-git rebase --onto tor-0.3.0.7 tor-0.2.7.6 privcount-0.1.1-tor-0.3.0.7
+git checkout -b privcount-maint-1.0-tor-0.3.0.7 privcount-maint-1.0-tor-0.2.7.6
+git rebase --onto tor-0.3.0.7 tor-0.2.7.6 privcount-maint-1.0-tor-0.3.0.7
 ```
 Then deal with any merge conflicts until the rebase is completed.
 
@@ -117,6 +122,6 @@ To force update the old privcount branch with the newly rebased code:
 ```
 git checkout -b privcount-old privcount
 git branch -D privcount
-git checkout -b privcount privcount-1.0.0-tor-0.3.0.7
+git checkout -b privcount privcount-maint-1.0-tor-0.3.0.7
 git push --force privcount-remote privcount
 ```
