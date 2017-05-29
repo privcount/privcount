@@ -1,7 +1,6 @@
 # TS & SK config for chutney single-round, multi-DC, multi-SK integration test
 
 tally_server:
-    state: 'privcount.ts.state'
     counters: './counters.bins.yaml'
     noise: './counters.noise.yaml'
     traffic_model: 'traffic.model.json'
@@ -35,7 +34,6 @@ tally_server:
 
 share_keeper:
     # Template values, replaced by run_test.sh
-    state: 'privcount.sk.SK_NUM.state'
     key: 'keys/sk.SK_NUM.pem'
     tally_server_info:
         ip: '127.0.0.1'
@@ -47,7 +45,6 @@ share_keeper:
 data_collector:
     # Template values, replaced by run_test.sh
     name: 'dc-chutney-test-DC_SOURCE_PORT'
-    state: 'privcount.dc.DC_SOURCE_PORT.state'
     # the Tor control connection from which we will receive events
     # Can be:
     # - port, with ip optional (default 127.0.0.1), or

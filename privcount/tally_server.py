@@ -310,9 +310,11 @@ class TallyServer(ServerFactory, PrivCountServer):
                 ts_conf['results'] = normalise_path('./')
             assert os.path.exists(ts_conf['results'])
 
-            # the state file
-            ts_conf['state'] = normalise_path(ts_conf['state'])
-            assert os.path.exists(os.path.dirname(ts_conf['state']))
+            # the state file (unused)
+            if 'state' in ts_conf:
+                del ts_conf['state']
+            #ts_conf['state'] = normalise_path(ts_conf['state'])
+            #assert os.path.exists(os.path.dirname(ts_conf['state']))
 
             # Must be configured manually
             assert 'collect_period' in ts_conf

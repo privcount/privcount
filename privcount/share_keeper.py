@@ -215,9 +215,11 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
 
             sk_conf['name'] = get_public_digest(sk_conf['key'])
 
-            # the state file
-            sk_conf['state'] = normalise_path(sk_conf['state'])
-            assert os.path.exists(os.path.dirname(sk_conf['state']))
+            # the state file (unused)
+            if 'state' in sk_conf:
+                del sk_conf['state']
+            #sk_conf['state'] = normalise_path(sk_conf['state'])
+            #assert os.path.exists(os.path.dirname(sk_conf['state']))
 
             sk_conf['delay_period'] = self.get_valid_delay_period(sk_conf)
 

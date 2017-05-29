@@ -257,9 +257,11 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             dc_conf['secret_handshake'] = choose_secret_handshake_path(
                 dc_conf, conf)
 
-            # the state file
-            dc_conf['state'] = normalise_path(dc_conf['state'])
-            assert os.path.exists(os.path.dirname(dc_conf['state']))
+            # the state file (unused)
+            if 'state' in dc_conf:
+                del dc_conf['state']
+            #dc_conf['state'] = normalise_path(dc_conf['state'])
+            #assert os.path.exists(os.path.dirname(dc_conf['state']))
 
             dc_conf['delay_period'] = self.get_valid_delay_period(dc_conf)
 

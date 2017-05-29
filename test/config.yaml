@@ -2,7 +2,6 @@
 
 # only the tally server needs these
 tally_server:
-    state: 'privcount.ts.state' # path to file where persistent state will be stored
     counters: './counters.bins.yaml' # path to a yaml file containing our counter bin configurations
     # Either noise or sigmas must be provided (if noise is present, sigmas is ignored)
     noise: './counters.noise.yaml' # path to a yaml file containing noise allocation parameters
@@ -62,8 +61,6 @@ tally_server:
 # only the share keepers need these
 share_keeper:
     # Template values, replaced by run_test.sh
-    # path to file where persistent state will be stored
-    state: 'privcount.sk.SK_NUM.state'
     # path to the rsa private key (optional)
     key: 'keys/sk.SK_NUM.pem'
     tally_server_info: # where the tally server is located
@@ -79,7 +76,6 @@ share_keeper:
 # only the data collectors need these
 data_collector:
     name: 'dc-inject-test' # a unique, human meaningful name for debugging
-    state: 'privcount.dc.state' # path to file where persistent state will be stored
     # the Tor control connection from which we will receive events
     # Can be:
     # - port, with ip optional (default 127.0.0.1), or
