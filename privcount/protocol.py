@@ -821,10 +821,32 @@ class PrivCountProtocol(LineOnlyReceiver):
         '''
         overrides twisted function
         '''
-        self.clear()
-        logging.debug("Connection with {} was lost: {}"
+        logging.debug("Protocol connection with {} was lost: {}"
                       .format(transport_info(self.transport),
                               reason.getErrorMessage()))
+        self.clear()
+
+    def clientConnectionFailed(self, connector, reason):
+        '''
+        overrides twisted function: only for clients
+        '''
+        logging.warning("Protocol client connection with transport: {} destination: {} failed: {}"
+                        .format(transport_info(self.transport),
+                                connector.getDestination(),
+                                reason.getErrorMessage()))
+        connector.stopConnecting()
+        self.clear()
+
+    def clientConnectionLost(self, connector, reason):
+        '''
+        overrides twisted function: only for clients
+        '''
+        logging.warning("Protocol client connection with transport: {} destination: {} was lost: {}"
+                        .format(transport_info(self.transport),
+                                connector.getDestination(),
+                                reason.getErrorMessage()))
+        connector.stopConnecting()
+        self.clear()
 
     def handle_handshake_event(self, event_type, event_payload):
         '''
@@ -1965,9 +1987,31 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         '''
         self.clear()
         self.state = "disconnected"
-        logging.debug("Connection with {} was lost: {}"
+        logging.debug("Control connection with {} was lost: {}"
                       .format(transport_info(self.transport),
                               reason.getErrorMessage()))
+
+    def clientConnectionFailed(self, connector, reason):
+        '''
+        overrides twisted function: only for clients
+        '''
+        logging.warning("Control connection with transport: {} destination: {} failed: {}"
+                        .format(transport_info(self.transport),
+                                connector.getDestination(),
+                                reason.getErrorMessage()))
+        connector.stopConnecting()
+        self.clear()
+
+    def clientConnectionLost(self, connector, reason):
+        '''
+        overrides twisted function: only for clients
+        '''
+        logging.warning("Control connection with transport: {} destination: {} was lost: {}"
+                        .format(transport_info(self.transport),
+                                connector.getDestination(),
+                                reason.getErrorMessage()))
+        connector.stopConnecting()
+        self.clear()
 
 class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
     '''
