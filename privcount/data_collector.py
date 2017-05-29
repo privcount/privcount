@@ -123,7 +123,7 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         if (self.aggregator is not None and not self.is_aggregator_pending and
             self.expected_aggregator_start_time is not None and
             self.expected_aggregator_start_time < time()):
-            aggregator_live_time = self.expected_aggregator_start_time - time()
+            aggregator_live_time = time() - self.expected_aggregator_start_time
             if ((self.aggregator.protocol is None or
                  self.aggregator.protocol.state != "processing") and
                 aggregator_live_time > 10.0):
