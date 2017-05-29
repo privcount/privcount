@@ -522,7 +522,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         Returns a placeholder string if client does not have an address.
         '''
         return self._get_client_item(uid,
-                                     'peer',
+                                     'client_address',
                                      status,
                                      '(no remote address)')
 

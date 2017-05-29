@@ -13,7 +13,7 @@ from twisted.protocols.basic import LineOnlyReceiver
 
 from cryptography.hazmat.primitives.hashes import SHA256
 
-from privcount.connection import transport_info, transport_peer_info, transport_local_info
+from privcount.connection import transport_info, transport_remote_info, transport_local_info
 from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
 from privcount.log import log_error
@@ -971,10 +971,10 @@ class PrivCountServerProtocol(PrivCountProtocol):
             client_status['alive'] = time()
             local = transport_local_info(self.transport)
             if local is not None:
-                client_status['local'] = local
-            peer = transport_peer_info(self.transport)
-            if peer is not None:
-                client_status['peer'] = peer
+                client_status['tally_server_address'] = local
+            remote = transport_remote_info(self.transport)
+            if remote is not None:
+                client_status['client_address'] = remote
             client_status['clock_skew'] = 0.0
             client_status['rtt'] = 0.0
 
@@ -986,8 +986,8 @@ class PrivCountServerProtocol(PrivCountProtocol):
                 self.last_sent_time = 0
             # Share Keepers use their public key hash as their name
             # Data Collectors must each have a unique name
-            # to disambiguate data collectors by IP address, add:
-            # transport_peer_hostname(self.transport)
+            # We used to disambiguate data collectors by IP address, using:
+            # transport_remote_hostname(self.transport)
             self.client_uid = client_status['name']
             self.factory.set_client_status(self.client_uid, client_status)
 

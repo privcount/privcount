@@ -353,7 +353,7 @@ def transport_info(transport):
     via transport
     '''
     local_str = transport_local_info(transport)
-    peer_str = transport_peer_info(transport)
+    peer_str = transport_remote_info(transport)
     if local_str is not None and peer_str is not None:
         return "remote: {} local: {}".format(peer_str, local_str)
     elif local_str is not None:
@@ -363,12 +363,12 @@ def transport_info(transport):
     else:
         return None
 
-def transport_peer_info(transport):
+def transport_remote_info(transport):
     '''
     Return a string describing the remote peer connected to transport
     '''
-    peer = transport.getPeer()
-    return address_info(peer)
+    remote = transport.getPeer()
+    return address_info(remote)
 
 def transport_local_info(transport):
     '''
@@ -387,8 +387,8 @@ def transport_peer_hostname(transport):
     Return a string describing the hostname of the remote peer connected to
     transport
     '''
-    peer = transport.getPeer()
-    return address_hostname(peer)
+    remote = transport.getPeer()
+    return address_hostname(remote)
 
 def transport_local_hostname(transport):
     '''
@@ -407,13 +407,13 @@ def address_info(address):
     '''
     Return a string describing the address
     '''
-    local_str = address_hostname(address)
+    host_str = address_hostname(address)
     port_str = address_port(address)
-    if local_str is None:
+    if host_str is None:
         return "(port:{})".format(port_str)
     if port_str is None:
-        return local_str
-    return "{}:{}".format(local_str, port_str)
+        return host_str
+    return "{}:{}".format(host_str, port_str)
 
 def address_hostname(address):
     '''

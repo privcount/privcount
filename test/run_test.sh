@@ -821,7 +821,8 @@ if [ "$PRIVCOUNT_LOG" != "-q" ]; then
     # here
     diff --minimal --unified=10 \
       -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
-      -I "[Dd]elay" -I "Collect" -I "End" -I "peer" -I "fingerprint" \
+      -I "[Dd]elay" -I "Collect" -I "End" -I "client_address" \
+      -I "fingerprint" \
       "$OLD_DIR/privcount.outcome.latest.json" \
       "$TEST_DIR/privcount.outcome.latest.json" || true
   else
