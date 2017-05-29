@@ -184,9 +184,9 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
 
         # sync the time that we start listening for Tor events
+        self.is_aggregator_pending = True
         aggregator_deferred = task.deferLater(reactor, defer_time,
                                               self._start_aggregator_deferred)
-        self.is_aggregator_pending = True
         aggregator_deferred.addErrback(errorCallback)
         # return the generated shares now
         shares = self.aggregator.get_shares()
