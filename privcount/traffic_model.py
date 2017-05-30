@@ -267,11 +267,12 @@ class TrafficModel(object):
     MAX_EVENT_BYTE_COUNT = MAX_EVENT_PACKET_COUNT * PACKET_BYTE_COUNT
 
     # the maximum number of packets we will handle in a stream before issuing
-    # a delay warning. On my machine, this takes 1 second of processing time
-    MAX_STREAM_PACKET_COUNT = 2000
+    # a delay warning. On my relays, this takes 10 seconds of processing time
+    # on a large model
+    MAX_STREAM_PACKET_COUNT = 10000
     # the maximum number of seconds we will take to process a stream before
     # issuing a delay warning
-    MAX_STREAM_PROCESSING_TIME = 1.0
+    MAX_STREAM_PROCESSING_TIME = 10.0
 
     def _get_inter_packet_delays(self, strm_start_ts, byte_events):
         '''
@@ -308,7 +309,8 @@ class TrafficModel(object):
             stream_packet_count += min(event_packet_count,
                                        TrafficModel.MAX_EVENT_PACKET_COUNT)
 
-            # warn on large events and large streams, but only once per stream
+            # warn on large events, but only once per stream
+            # tor should never send us an event this big
             if (event_packet_count > TrafficModel.MAX_EVENT_PACKET_COUNT
                 and not logged_event_warning):
                 logging.warning("Large byte transfer event: {} bytes is {} packets. Limiting event to {} packets of {} bytes."
@@ -317,12 +319,6 @@ class TrafficModel(object):
                                         TrafficModel.MAX_EVENT_PACKET_COUNT,
                                         TrafficModel.PACKET_BYTE_COUNT))
                 logged_event_warning = True
-            # we log a warning here in case PrivCount hangs
-            if (stream_packet_count > TrafficModel.MAX_STREAM_PACKET_COUNT
-                and not logged_stream_warning):
-                logging.warning("Large stream with more than {} packets. PrivCount may be slow."
-                                .format(TrafficModel.MAX_STREAM_PACKET_COUNT))
-                logged_stream_warning = True
 
             # create a packet delay for each packet
             event_packet_count = 0
@@ -333,11 +329,15 @@ class TrafficModel(object):
                 delay = 0
                 bw_bytes -= TrafficModel.PACKET_BYTE_COUNT
 
-        # we log a warning here with the total number of packets
-        if logged_stream_warning:
-            logging.warning("Large stream packet count: {} packets. Stream packet limit is {} packets."
-                          .format(stream_packet_count,
-                                  TrafficModel.MAX_STREAM_PACKET_COUNT))
+        # we log a warning here in case PrivCount hangs in vitterbi
+        # (it could hang processing packets, but that's very unlikely)
+        if stream_packet_count > TrafficModel.MAX_STREAM_PACKET_COUNT:
+            # round the packet count to the nearest TrafficModel.MAX_STREAM_PACKET_COUNT, for at least a little user protection
+            rounded_stream_packet_count = ((stream_packet_count + TrafficModel.MAX_STREAM_PACKET_COUNT/2)
+                                           /TrafficModel.MAX_STREAM_PACKET_COUNT*TrafficModel.MAX_STREAM_PACKET_COUNT)
+            logging.info("Large stream packet count: ~{} packets. Stream packet limit is {} packets."
+                            .format(rounded_stream_packet_count,
+                                    TrafficModel.MAX_STREAM_PACKET_COUNT))
         return packet_delays
 
     def increment_traffic_counters(self, strm_start_ts, byte_events, secure_counters):
