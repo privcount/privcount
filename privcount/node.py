@@ -47,6 +47,12 @@ def continue_collecting(completed_phases, continue_config, current_state):
                                          current_state)
         return remaining is None or remaining > 0
 
+# We expect the control connection to take at most this amount of time
+EXPECTED_CONTROL_ESTABLISH_MAX = 10.0
+
+# We expect data collectors to get an event at least as often as this interval
+EXPECTED_EVENT_INTERVAL_MAX = 3600.0
+
 def log_tally_server_status(status):
     '''
     clients must only use the expected end time for logging: the tally
@@ -70,10 +76,12 @@ def log_tally_server_status(status):
                          format_elapsed_time_since(status['time'], 'since'),
                          expected_end_msg))
     logging.info("--server status: PrivCount server version {}"
-                 .format(status['privcount-version']))
+                 .format(status['privcount_version']))
     t, r = status['dcs_total'], status['dcs_required']
     a, i = status['dcs_active'], status['dcs_idle']
-    logging.info("--server status: DataCollectors: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
+    c = status['dcs_control']
+    e = status['dcs_event']
+    logging.info("--server status: DataCollectors: have {}, need {}, {}/{} active ({} control, {} event), {}/{} idle".format(t, r, a, t, c, e, i, t))
     t, r = status['sks_total'], status['sks_required']
     a, i = status['sks_active'], status['sks_idle']
     logging.info("--server status: ShareKeepers: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))

@@ -22,7 +22,7 @@ from privcount.config import normalise_path, choose_secret_handshake_path
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback
-from privcount.node import PrivCountServer, continue_collecting, log_tally_server_status
+from privcount.node import PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
 from privcount.statistics_noise import get_noise_allocation
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
@@ -406,11 +406,81 @@ class TallyServer(ServerFactory, PrivCountServer):
             logging.warning("problem reading config file: missing required keys")
             log_error()
 
+    def get_max_client_rtt(self, uid):
+        '''
+        Get the maximum reasonable rtt for uid
+        '''
+        # Maximum RTT in ~2005 was 20 seconds
+        # http://www3.cs.stonybrook.edu/~phillipa/papers/SPECTS.pdf
+        # There's no guarantee the last rtt will be the same as this one,
+        # so add a few seconds unconditionally
+        return self.clients[uid].get('rtt', 15.0) + 5.0
+
+    def is_client_control_ok(self, uid):
+        '''
+        Has uid completed the control protocol with its tor instance within a
+        reasonable amount of time, taking into account checkin period, rtt,
+        collection phase start time, and clock padding?
+        '''
+        now = time()
+        c_status = self.clients[uid]
+        if c_status['type'] != 'DataCollector':
+            return True
+
+        # if the collection phase hasn't started, everything is ok
+        if self.collection_phase is None:
+            return True
+        start_ts = self.collection_phase.get_start_ts()
+        if start_ts is None:
+            return True
+
+        # if we've completed the control protocol, everything is ok
+        if 'tor_privcount_version' in c_status:
+            return True
+
+        rtt = self.get_max_client_rtt(uid)
+        clock_padding = self.collection_phase.clock_padding
+        time_since_start = now - (start_ts + clock_padding)
+
+        # This will also trigger if we miss a checkin at the start of the
+        # round. That's ok.
+        return time_since_start <= (EXPECTED_CONTROL_ESTABLISH_MAX +
+                                    self.get_checkin_period() +
+                                    rtt)
+
+    def is_last_client_event_recent(self, uid):
+        '''
+        Is the last event from uid newer than EXPECTED_EVENT_INTERVAL_MAX,
+        taking into account the checkin period, rtt, the collection phase
+        start time, and clock padding?
+        '''
+        now = time()
+        c_status = self.clients[uid]
+        if c_status['type'] != 'DataCollector':
+            return True
+
+        # if the collection phase hasn't started, everything is ok
+        if self.collection_phase is None:
+            return True
+        start_ts = self.collection_phase.get_start_ts()
+        if start_ts is None:
+            return True
+
+        rtt = self.get_max_client_rtt(uid)
+        clock_padding = self.collection_phase.clock_padding
+        time_since_event = now - c_status.get('last_event_time',
+                                              start_ts + clock_padding)
+
+        return time_since_event <= (EXPECTED_EVENT_INTERVAL_MAX +
+                                    2*self.get_checkin_period() +
+                                    rtt)
+
     def clear_dead_clients(self):
         '''
         Check how long it has been since clients have successfully contacted
         us, and mark clients that have been down for too long.
-        Also warns if clients have been done for a smaller amount of time.
+        Also warns if clients have been various kinds of down for a smaller
+        amount of time.
         '''
         now = time()
 
@@ -420,19 +490,36 @@ class TallyServer(ServerFactory, PrivCountServer):
             if 'public_key' in c_status:
                 c_status['public_key'] = "(public key)"
             time_since_checkin = now - c_status['alive']
-            # Maximum RTT in ~2005 was 20 seconds
-            # http://www3.cs.stonybrook.edu/~phillipa/papers/SPECTS.pdf
-            # There's no guarantee the last rtt will be the same as this one,
-            # so add a few seconds unconditionally
-            rtt = c_status.get('rtt', 15.0) + 5.0
+            start_ts = None
+            if self.collection_phase is not None:
+                start_ts = self.collection_phase.get_start_ts()
+            time_since_event = 0.0
+            if c_status['type'] == 'DataCollector' and start_ts:
+                time_since_event = now - c_status.get('last_event_time',
+                                                      start_ts)
+            rtt = self.get_max_client_rtt(uid)
 
             cname = TallyServer.get_client_display_name(uid)
             cdetail = self.get_client_detail(uid)
 
+            if not self.is_client_control_ok(uid):
+                logging.warning("control connection delayed more than {}s for client {} {}"
+                                .format(EXPECTED_CONTROL_ESTABLISH_MAX,
+                                        cname, c_status))
+
+            if not self.is_last_client_event_recent(uid):
+                logging.warning("last event was {} for client {} {}"
+                                .format(
+                                        format_last_event_time_since(
+                                            c_status.get('last_event_time')),
+                                        cname, c_status))
+
             if time_since_checkin > 3 * self.get_checkin_period() + rtt:
-                logging.warning("last checkin was {} for client {} {}".format(
-                        format_elapsed_time_wait(time_since_checkin, 'at'),
-                        cname, c_status))
+                logging.warning("last checkin was {} for client {} {}"
+                                .format(
+                                        format_elapsed_time_wait(
+                                            time_since_checkin, 'at'),
+                                        cname, c_status))
 
             if time_since_checkin > 7 * self.get_checkin_period() + rtt:
                 logging.warning("marking dead client {} {}"
@@ -444,10 +531,12 @@ class TallyServer(ServerFactory, PrivCountServer):
 
                 self.clients.pop(uid, None)
 
-    def _get_matching_clients(self, c_type, c_state):
+    def _get_matching_clients(self, c_type, c_state, c_key=None):
         matching_clients = []
         for uid in self.clients:
-            if self.clients[uid]['type'] == c_type and self.clients[uid]['state'] == c_state:
+            if (self.clients[uid]['type'] == c_type and
+                self.clients[uid]['state'] == c_state and
+                (c_key is None or c_key in self.clients[uid])):
                 matching_clients.append(uid)
         return matching_clients
 
@@ -456,6 +545,26 @@ class TallyServer(ServerFactory, PrivCountServer):
 
     def get_active_dcs(self):
         return self._get_matching_clients('DataCollector', 'active')
+
+    def get_control_dcs(self):
+        '''
+        Return the set of DCs that have successfully controlled a tor process.
+        This does *not* use is_client_control_ok().
+        '''
+        return self._get_matching_clients('DataCollector', 'active',
+                                          'tor_privcount_version')
+
+    def get_event_dcs(self):
+        '''
+        Return the set of DCs that have received an event recently.
+        See is_last_client_event_recent() for details.
+        '''
+        matching_clients = []
+        control_dcs = self.get_control_dcs()
+        for uid in control_dcs:
+            if self.is_last_client_event_recent(uid):
+                matching_clients.append(uid)
+        return matching_clients
 
     def get_idle_sks(self):
         return self._get_matching_clients('ShareKeeper', 'idle')
@@ -483,6 +592,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             'dcs_active' : dc_active,
             'dcs_total' : dc_idle+dc_active,
             'dcs_required' : self.config['dc_threshold'],
+            'dcs_control' : len(self.get_control_dcs()),
+            'dcs_event' : len(self.get_event_dcs()),
             'sks_idle' : sk_idle,
             'sks_active' : sk_active,
             'sks_total' : sk_idle+sk_active,

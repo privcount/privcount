@@ -861,6 +861,7 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e notice \
   -e "Path for PidFile" -e "Your log may contain" \
   -e "no nameservers" -e "any working nameservers" \
+  -e "is not connected to the control port" \
   "$TEST_DIR/"privcount.*.latest.log \
   || true
 # Log any source-specific warnings

@@ -812,8 +812,9 @@ class PrivCountProtocol(LineOnlyReceiver):
         '''
         Called when the prococol finishes in failure
         '''
-        logging.warning("Protocol with {} failed"
-                        .format(transport_info(self.transport)))
+        # Don't log a warning, because port scanners fail the protocol
+        logging.info("Protocol with {} failed"
+                     .format(transport_info(self.transport)))
         self.transport.loseConnection()
         self.clear()
 
@@ -1660,8 +1661,10 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         # only start PrivCount if we are ready to handle events,
         # and know which events we want to handle
         if self.collection_events is None:
+            logging.warning('Not enabling events: no events selected')
             return
         if self.state is None:
+            logging.info('Not enabling events: not connected yet')
             return
         if self.state == 'waiting' or self.state == 'processing':
             self.active_events = self.collection_events
@@ -1670,6 +1673,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             self.state = 'processing'
             logging.info("Enabled PrivCount events: {}"
                          .format(" ".join(self.active_events)))
+        else:
+            logging.warning('Not enabling events: in state {}'
+                            .format(self.state))
 
     def disableEvents(self):
         '''
@@ -1686,6 +1692,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             self.sendLine("SETEVENTS")
             self.active_events = None
             self.state = 'waiting'
+        else:
+            logging.warning('Not disabling events, not connected')
 
     def sendLine(self, line):
         '''

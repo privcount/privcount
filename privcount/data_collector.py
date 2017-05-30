@@ -20,7 +20,7 @@ from privcount.connection import connect, disconnect, validate_connection_config
 from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, has_noise_weight, get_noise_weight, count_bins
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since, format_elapsed_time_since, errorCallback
-from privcount.node import PrivCountClient
+from privcount.node import PrivCountClient, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, get_privcount_version
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
@@ -104,6 +104,39 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         status.update(self.context)
         return status
 
+    def check_aggregator(self):
+        '''
+        If the aggregator is live, but isn't getting events, log a diagnostic
+        warning.
+        This function is sometimes called using deferLater, so any exceptions
+        will be handled by errorCallback.
+        '''
+        if (self.aggregator is not None and not self.is_aggregator_pending and
+            self.expected_aggregator_start_time is not None and
+            self.expected_aggregator_start_time < time()):
+            aggregator_live_time = time() - self.expected_aggregator_start_time
+            if ((self.aggregator.protocol is None or
+                 self.aggregator.protocol.state != "processing") and
+                aggregator_live_time > EXPECTED_CONTROL_ESTABLISH_MAX):
+                logging.warning("Aggregator has been running {}, but is not connected to the control port. Is your control port working?"
+                                .format(
+                                    format_elapsed_time_since(
+                                        self.expected_aggregator_start_time,
+                                        'since')))
+            elif (self.aggregator.last_event_time is None and
+                  aggregator_live_time > EXPECTED_EVENT_INTERVAL_MAX):
+                logging.warning("Aggregator has been running {}, but has not seen a tor event. Is your relay in the Tor consensus?"
+                                .format(
+                                    format_elapsed_time_since(
+                                        self.expected_aggregator_start_time,
+                                        'since')))
+            elif (self.aggregator.last_event_time is not None and
+                  self.aggregator.last_event_time < time() - EXPECTED_EVENT_INTERVAL_MAX):
+                logging.warning("Aggregator has not received any events recently, {}. Is your relay in the Tor consensus?"
+                                .format(
+                                    format_last_event_time_since(
+                                        self.aggregator.last_event_time)))
+
     def do_checkin(self):
         '''
         Called by protocol
@@ -113,38 +146,14 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         '''
         # TODO: Refactor common client code - issue #121
         self.refresh_config()
+        self.check_aggregator()
+
         ts_ip = self.config['tally_server_info']['ip']
         ts_port = self.config['tally_server_info']['port']
         # turn on reconnecting mode and reset backoff
         self.resetDelay()
         logging.info("checking in with TallyServer at {}:{}".format(ts_ip, ts_port))
         reactor.connectSSL(ts_ip, ts_port, self, ssl.ClientContextFactory()) # pylint: disable=E1101
-        # if the aggregator is live, but isn't getting events, try to diagnose
-        if (self.aggregator is not None and not self.is_aggregator_pending and
-            self.expected_aggregator_start_time is not None and
-            self.expected_aggregator_start_time < time()):
-            aggregator_live_time = time() - self.expected_aggregator_start_time
-            if ((self.aggregator.protocol is None or
-                 self.aggregator.protocol.state != "processing") and
-                aggregator_live_time > 10.0):
-                logging.warning("Aggregator has been running {}, but has not completed the control port protocol. Is your control port working?"
-                                .format(
-                                    format_elapsed_time_since(
-                                        self.expected_aggregator_start_time,
-                                        'since')))
-            elif (self.aggregator.last_event_time is None and
-                  aggregator_live_time > 600.0):
-                logging.warning("Aggregator has been running {}, but has not seen a tor event. Is your relay in the Tor consensus?"
-                                .format(
-                                    format_elapsed_time_since(
-                                        self.expected_aggregator_start_time,
-                                        'since')))
-            elif (self.aggregator.last_event_time is not None and
-                  self.aggregator.last_event_time < time() - 3600.0):
-                logging.warning("Aggregator has not seen any events for more than an hour, {}. Is your relay in the Tor consensus?"
-                                .format(
-                                    format_last_event_time_since(
-                                        self.aggregator.last_event_time)))
 
     def do_start(self, config):
         '''
@@ -241,6 +250,12 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         if self.is_aggregator_pending:
             self.is_aggregator_pending = False
             self.aggregator.start()
+            # schedule a once-off check that the aggregator has connected
+            check_aggregator_deferred = task.deferLater(
+                                            reactor,
+                                            EXPECTED_CONTROL_ESTABLISH_MAX + 1.0,
+                                            self.check_aggregator)
+            check_aggregator_deferred.addErrback(errorCallback)
 
     def do_stop(self, config):
         '''

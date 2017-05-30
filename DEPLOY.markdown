@@ -225,6 +225,15 @@ data_collector:
     event_source:
         control_password: 'control_password.txt'
 
+PrivCount doesn't give good diagnostics when Control Port connections fail.
+This appears to be an unavoidable consequence of using an outdated connection
+API. See issue #303 for more details.
+
+As a workaround, PrivCount will log warnings on both the data collector and
+tally server when:
+* the control port connection has not been successfully completed, and
+* the aggregator stops receiving events for a long period of time.
+
 For more details and troubleshooting steps, see
 doc/TorControlAuthentication.markdown.
 
