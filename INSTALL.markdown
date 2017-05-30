@@ -68,24 +68,53 @@ It is also used to run the PrivCount tor relay ('tor') and tor network
     Debian/Ubuntu:  libseccomp-dev
     Other Linux:    libseccomp2 libseccomp-devel
 
+    On by default, if the libraries are available.
+
+#### Linux systemd notifications:
+
+    Debian/Ubuntu:  libsystemd-dev pkg-config
+    Other Linux:    ?
+
+    --enable-systemd
+
+The Debian tor packages are built with systemd notifications by default. If
+you want to use systemd to manage your privcount-patched tor, install it in
+/usr/local, so that systemd's ProtectHome works correctly.
+
+Once tor is installed in /usr/local, use the systemd drop-in file
+    dist/systemd_privcount_tor.conf
+to activate it. Instructions are in that file.
+
 #### scrypt Control Port Password Encryption:
 
     Debian/Ubuntu:  libscrypt-dev
     Other Linux:    libscrypt-devel
 
+    On by default, if the libraries are available.
+
+Recommended if you are using a control port password.
+
 #### Other Optional Tor Dependencies:
 
-Tor also supports systemd notifications, and xz and zstd compression of
-directory documents (in 0.3.1 and later).
+Tor also supports xz and zstd compression of directory documents (in 0.3.1 and
+later).
 
 For details, read the output of:
     ./configure --help
 
 ### Building Tor:
 
+Tor builds with --prefix=/usr/local by default.
+
+We recommend that you perform the following steps to install a
+privcount-patched tor in /usr/local:
+
     git clone https://github.com/privcount/tor.git tor-privcount
     git checkout privcount
-    ./autogen.sh && ./configure --disable-asciidoc && make
+    ./autogen.sh
+    ./configure --disable-asciidoc --prefix=/usr/local
+    make
+    sudo make install
 
 ### Optional Tor tests:
 

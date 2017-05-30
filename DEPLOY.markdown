@@ -153,6 +153,17 @@ See doc/PrivCountAuthentication.markdown for more details.
 
 ## Data Collectors
 
+You need one PrivCount DataCollector per tor relay.
+
+We recommend you configure your tor relays using:
+    tor-instance-create
+(If available on your system.)
+
+And then use the systemd drop in file in:
+    dist/systemd_privcount_tor.conf
+to make your relays run a PrivCount-patched Tor binary. See the instructions in
+INSTALL.markdown for details.
+
 ### Configuration
 
 #### Name
