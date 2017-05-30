@@ -6,6 +6,12 @@ to a particular service, which may or may not be Internet-accessible.
 
 The Tor network also has the following overheads:
 
+## General Overheads
+
+In general, PrivCount ignores some invalid events, such as DNS resolution
+failures. It also ignores or has incomplete data for some events where the
+relevant hooks have not yet been implemented.
+
 ## Directory
 
 Tor's directory documents are used by clients to locate relays and build
