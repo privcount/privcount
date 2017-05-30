@@ -400,6 +400,8 @@ class Aggregator(ReconnectingClientFactory):
         self.fingerprint = None
 
     def buildProtocol(self, addr):
+        if self.protocol is not None:
+            return self.protocol
         self.protocol = TorControlClientProtocol(self)
         # if we didn't build the protocol until after starting
         if self.connector is not None:
