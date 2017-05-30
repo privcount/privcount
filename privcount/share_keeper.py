@@ -87,7 +87,7 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
             'name' : self.config['name'],
             'state' : 'active' if self.keystore is not None else 'idle',
             'public_key' : get_serialized_public_key(self.config['key']),
-            'privcount-version' : get_privcount_version(),
+            'privcount_version' : get_privcount_version(),
                }
 
     def do_checkin(self):

@@ -605,7 +605,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                 self.config['delay_period'],
                 self.config['always_delay'],
                 self.config['sigma_decrease_tolerance']),
-            'privcount-version' : get_privcount_version(),
+            'privcount_version' : get_privcount_version(),
         }
 
         # we can't know the expected end time until we have started
@@ -702,12 +702,12 @@ class TallyServer(ServerFactory, PrivCountServer):
 
     def get_client_version(self, uid, status=None):
         '''
-        Uses _get_client_item to find privcount-version, tor-version, and
-        tor-privcount-version.
+        Uses _get_client_item to find privcount_version, tor_version, and
+        tor_privcount_version.
         Returns a formatted string containing the versions that are present.
         '''
         privcount_version = self._get_client_item(uid,
-                                                  'privcount-version',
+                                                  'privcount_version',
                                                   status,
                                                   '(no privcount version)')
 
@@ -716,11 +716,11 @@ class TallyServer(ServerFactory, PrivCountServer):
             return privcount_version
 
         tor_version = self._get_client_item(uid,
-                                            'tor-version',
+                                            'tor_version',
                                             status,
                                             '(pending)')
         tor_privcount_version = self._get_client_item(uid,
-                                                      'tor-privcount-version',
+                                                      'tor_privcount_version',
                                                       status,
                                                       '(pending)')
 

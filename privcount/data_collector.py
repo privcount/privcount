@@ -95,7 +95,7 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             'type' : 'DataCollector',
             'name' : self.config['name'],
             'state' : 'active' if self.aggregator is not None else 'idle',
-            'privcount-version' : get_privcount_version(),
+            'privcount_version' : get_privcount_version(),
                  }
         # store the latest context, so we have it even when the aggregator goes away
         if self.aggregator is not None:
@@ -775,9 +775,9 @@ class Aggregator(ReconnectingClientFactory):
         if self.get_dirport() is not None:
             context['dirport'] = self.get_dirport()
         if self.get_tor_version() is not None:
-            context['tor-version'] = self.get_tor_version()
+            context['tor_version'] = self.get_tor_version()
         if self.get_tor_privcount_version() is not None:
-            context['tor-privcount-version'] = self.get_tor_privcount_version()
+            context['tor_privcount_version'] = self.get_tor_privcount_version()
         if self.get_address() is not None:
             context['address'] = self.get_address()
         if self.get_fingerprint() is not None:
