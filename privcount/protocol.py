@@ -7,8 +7,7 @@ from os import urandom, path
 from base64 import b64encode, b64decode
 from binascii import hexlify, unhexlify
 
-from twisted.internet import reactor, task
-from twisted.internet.error import ReactorNotRunning
+from twisted.internet import task
 from twisted.protocols.basic import LineOnlyReceiver
 
 from cryptography.hazmat.primitives.hashes import SHA256

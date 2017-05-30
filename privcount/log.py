@@ -12,6 +12,9 @@ import traceback
 
 from time import time, strftime, gmtime
 
+from twisted.internet import reactor
+from twisted.internet.error import ReactorNotRunning
+
 def log_error():
     _, _, tb = sys.exc_info()
     if tb is not None:

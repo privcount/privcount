@@ -13,7 +13,6 @@ from time import time
 
 from twisted.internet import reactor, task
 from twisted.internet.protocol import ServerFactory
-from twisted.internet.error import ReactorNotRunning
 
 from privcount.config import normalise_path
 from privcount.connection import listen, stopListening
