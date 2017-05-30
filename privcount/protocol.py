@@ -1854,8 +1854,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             elif line == "250 Nickname":
                 logging.info("Connection with {}: no Nickname"
                              .format(transport_info(self.transport)))
-            # It's a relay, and it's just told us its ORPort
-            elif line.startswith("250 ORPort="):
+            # It's a relay, and it's just told us one of its ORPorts
+            elif (line.startswith("250 ORPort=") or
+                  line.startswith("250-ORPort=")):
                 _, _, orport = line.partition("ORPort=")
                 self.setDiscoveredValue('set_orport', orport, 'ORPort')
             # It doesn't have an ORPort, maybe it's a client?
@@ -1863,8 +1864,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             elif line == "250 ORPort":
                 logging.warning("Connection with {}: no ORPort"
                                 .format(transport_info(self.transport)))
-            # It's a relay, and it's just told us its DirPort
-            elif line.startswith("250 DirPort="):
+            # It's a relay, and it's just told us one of its DirPorts
+            elif (line.startswith("250 DirPort=") or
+                  line.startswith("250-DirPort=")):
                 _, _, dirport = line.partition("DirPort=")
                 self.setDiscoveredValue('set_dirport', dirport, 'DirPort')
             elif line == "250 DirPort":
@@ -2274,7 +2276,9 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                 elif len(parts) == 2 and parts[1].lower() == "nickname":
                     self.sendLine("250 Nickname=PrivCountTorRelay99")
                 elif len(parts) == 2 and parts[1].lower() == "orport":
-                    self.sendLine("250 ORPort=9001")
+                    # yes, relays can have multiple ORPorts (and DirPorts)
+                    self.sendLine("250-ORPort=9001")
+                    self.sendLine("250 ORPort=[::1]:12345")
                 elif len(parts) == 2 and parts[1].lower() == "dirport":
                     self.sendLine("250 DirPort=9030")
                 else:

@@ -392,8 +392,8 @@ class Aggregator(ReconnectingClientFactory):
         self.cli_ips_previous = {}
 
         self.nickname = None
-        self.orport = None
-        self.dirport = None
+        self.orport_list = []
+        self.dirport_list = []
         self.tor_version = None
         self.tor_privcount_version = None
         self.address = None
@@ -548,63 +548,88 @@ class Aggregator(ReconnectingClientFactory):
     def get_nickname(self):
         return self.nickname
 
+    @staticmethod
+    def validate_tor_port(tor_port, description):
+        '''
+        Validate a single Tor ORPort or DirPort entry, using description as
+        the port type in any log messages.
+        tor_port is an ORPort or DirPort config line.
+        Some can be IPv6 *Ports, which have an IPv6 address and a port.
+        Others include options, such as NoListen.
+        '''
+        # Do some basic validation of the port
+        # There isn't much we can do here, because port lines vary so much
+        if len(tor_port) < 1 or len(tor_port) > 200:
+            logging.warning("Bad %s length %d: %s",
+                          description, len(tor_port), tor_port)
+            return False
+        if not all(c in string.printable for c in tor_port):
+            logging.warning("Bad %s characters: %s", description, tor_port)
+            return False
+        return True
+
+    @staticmethod
+    def add_tor_port(tor_port, tor_port_list, description):
+        '''
+        Add a single Tor ORPort or DirPort entry to tor_port_list, using
+        description as the port type in any log messages.
+        '''
+        if tor_port in tor_port_list:
+            logging.info("Ignoring duplicate %s: %s", description, tor_port)
+        else:
+            tor_port_list.append(tor_port)
+            tor_port_list.sort()
+
+    @staticmethod
+    def get_tor_port(tor_port_list, description):
+        '''
+        Create a list of all known *Ports on the relay from tor_port_list,
+        using description as the port type in any log messages.
+        '''
+        if len(tor_port_list) == 0:
+            return None
+        else:
+            return ", ".join(tor_port_list)
+
     def set_orport(self, orport):
+        '''
+        Add an ORPort to the set of ORPorts on the relay.
+        A relay can have multiple ORPorts.
+        See validate_tor_port for how ORPorts are validated.
+        '''
         orport = orport.strip()
 
-        # Do some basic validation of the orport
-        if len(orport) < 1 or len(orport) > 5:
-            logging.warning("Bad orport length %d: %s", len(orport), orport)
-            return False
-        if not all(c in string.digits for c in orport):
-            logging.warning("Bad orport characters: %s", orport)
-            return False
-        orport_n = int(orport)
-        if orport_n < 1 or orport_n > 65535:
-            logging.warning("Bad orport: out of range: %s", orport)
+        if not Aggregator.validate_tor_port(orport, 'ORPort'):
             return False
 
-        # Are we replacing an existing nickname?
-        if self.orport is not None:
-            if self.orport != orport:
-                logging.warning("Replacing orport %s with %s", self.orport, orport)
-            else:
-                logging.debug("Duplicate orport received %s", orport)
-
-        self.orport = orport
+        Aggregator.add_tor_port(orport, self.orport_list, 'ORPort')
 
         return True
 
     def get_orport(self):
-        return self.orport
+        '''
+        Get a comma-separated list of ORPorts on the relay.
+        '''
+        return Aggregator.get_tor_port(self.orport_list, 'ORPort')
 
     def set_dirport(self, dirport):
+        '''
+        Like set_orport, but for DirPorts.
+        '''
         dirport = dirport.strip()
 
-        # Do some basic validation of the dirport
-        if len(dirport) < 1 or len(dirport) > 5:
-            logging.warning("Bad dirport length %d: %s", len(dirport), dirport)
-            return False
-        if not all(c in string.digits for c in dirport):
-            logging.warning("Bad dirport characters: %s", dirport)
-            return False
-        dirport_n = int(dirport)
-        if dirport_n < 1 or dirport_n > 65535:
-            logging.warning("Bad dirport: out of range: %s", dirport)
+        if not Aggregator.validate_tor_port(dirport, 'DirPort'):
             return False
 
-        # Are we replacing an existing nickname?
-        if self.dirport is not None:
-            if self.dirport != dirport:
-                logging.warning("Replacing dirport %s with %s", self.dirport, dirport)
-            else:
-                logging.debug("Duplicate dirport received %s", dirport)
-
-        self.dirport = dirport
+        Aggregator.add_tor_port(dirport, self.dirport_list, 'DirPort')
 
         return True
 
     def get_dirport(self):
-        return self.dirport
+        '''
+        Like get_orport, but for DirPorts.
+        '''
+        return Aggregator.get_tor_port(self.dirport_list, 'DirPort')
 
     @staticmethod
     def validate_version(version, old_version, description):
