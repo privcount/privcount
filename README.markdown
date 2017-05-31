@@ -1,5 +1,42 @@
 # Intro
 
+PrivCount makes Tor statistics collection more secure. PrivCount produces
+totals across all participating relays. Noise is added to each total to hide
+typical user activity.
+
+PrivCount protects individual relay totals by adding a blinding factor, which
+is only removed when the statistics are aggregated.
+
+## Should I Run PrivCount?
+
+Don't run PrivCount unless you enjoy running experimental code.
+We're still working on getting the instructions right.
+
+If you do run PrivCount, don't release the results publicly.
+(If you get the noise settings wrong, it could expose individual users.)
+
+PrivCount isn't ready for production deployment:
+* there are many known security and robustness issues,
+* there are some known inaccuracies in the statistics,
+* it doesn't scale to the size of the public Tor network,
+* we haven't tested the PrivCount python code in enough environments, and
+* we haven't tested the PrivCount Tor Patch on enough Tor relays
+  (nor has it undergone code review by other Tor developers).
+
+## How does PrivCount compare to Tor's existing statistics?
+
+Tor relays currently collect and publish statistics for each relay. Some
+statistics have noise added, but the amount of noise is calculated on an
+ad-hoc basis. Tor's statistics collection is a stable, proven process that
+scales well to production networks.
+
+PrivCount collects totals for all participating relays. Individual relay totals
+are not published. Noise is calculated across the entire set of statistics
+collected. PrivCount is experimental code. It does not scale well beyond tens
+of relays.
+
+# Research Background
+
 PrivCount is an independent implementation of the PrivEx Secret Sharing (S2)
 variant, that has been customized in order to be able to aggregate a large
 variety of statistical counts from Tor while providing differential privacy
