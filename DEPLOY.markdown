@@ -67,7 +67,7 @@ tally_server:
     traffic_model: 'traffic.model.json'
     traffic_noise: 'traffic.noise.yaml'
 
-Be careful collecing and releasing PrivCount results: the configured noise
+Be careful collecting and releasing PrivCount results: the configured noise
 must protect a typical user's activity over a long enough period.
 (We use 10 minutes.) And the collection period must be long enough to aggregate
 usage from many users (we use multiple days or weeks).

@@ -12,7 +12,7 @@ is only removed when the statistics are aggregated.
 Don't run PrivCount unless you enjoy running experimental code.
 We're still working on getting the instructions right.
 
-Be careful collecing and releasing PrivCount results: the configured noise
+Be careful collecting and releasing PrivCount results: the configured noise
 and the length of collection must protect user privacy.
 (If you don't know what this means, find out before running PrivCount!)
 

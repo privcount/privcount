@@ -11,7 +11,7 @@ typical user activity.
 Don't run PrivCount unless you enjoy running experimental code.
 It has several known accuracy, security, scaling and robustness issues.
 
-Be careful collecing and releasing PrivCount results: the configured noise
+Be careful collecting and releasing PrivCount results: the configured noise
 and the length of collection must protect user privacy.
 (If you don't know what this means, find out before running PrivCount!)
 
