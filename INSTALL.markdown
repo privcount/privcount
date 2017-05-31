@@ -10,12 +10,14 @@ A PrivCount network consists of a Tally Server (TS), at least two Share Keepers
 
 ### Install PrivCount Depencencies
 
-    Debian/Ubuntu:  libssl-dev libffi-dev
-    Other Linux:    libssl libssl-devel cffi
+    Debian/Ubuntu:  python2.7 libssl-dev libffi-dev
+    Other Linux:    python2.7 libssl libssl-devel cffi
     (PrivCount supports BSD and macOS, the package names are similar.)
 
     python libs:    pyyaml, twisted, pyopenssl, cryptography, ...
                     (see requirements.txt for full list and versions)
+
+PrivCount has been tested with Python 2.7: other versions may not work.
 
 We require OpenSSL version 1.0.2 or later for SHA256-padded RSA encryption.
 Some tests require the openssl command.

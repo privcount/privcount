@@ -67,6 +67,18 @@ tally_server:
     traffic_model: 'traffic.model.json'
     traffic_noise: 'traffic.noise.yaml'
 
+Be careful collecing and releasing PrivCount results: the configured noise
+must protect a typical user's activity over a long enough period.
+(We use 10 minutes.) And the collection period must be long enough to aggregate
+usage from many users (we use multiple days or weeks).
+
+PrivCount protects multiple collections as long as there is a delay between
+collections with different noise values. See "Round Start Checks" in
+doc/CounterChecks.markdown for details.
+
+PrivCount is not designed for automated collection and results release: a long
+enough series of results can identify the activity of a single user.
+
 #### Collection Configuration
 
 Configure the start thresholds and collection period (in seconds):

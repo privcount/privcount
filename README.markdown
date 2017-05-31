@@ -12,8 +12,9 @@ is only removed when the statistics are aggregated.
 Don't run PrivCount unless you enjoy running experimental code.
 We're still working on getting the instructions right.
 
-If you do run PrivCount, don't release the results publicly.
-(If you get the noise settings wrong, it could expose individual users.)
+Be careful collecing and releasing PrivCount results: the configured noise
+and the length of collection must protect user privacy.
+(If you don't know what this means, find out before running PrivCount!)
 
 PrivCount isn't ready for production deployment:
 * there are many known security and robustness issues,
@@ -85,9 +86,11 @@ PrivCount log messages are in UTC.
 
 # Deployment
 
-To deploy a PrivCount network, install and start the Tally Server. Use a
-signed, encrypted transport (email works well) to send the shared symmetric
-network key to all participants.
+To deploy a PrivCount network, install and start the Tally Server. The
+configured collection period and noise must protect typical user activity.
+
+Use a signed, encrypted transport (email works well) to send the shared
+symmetric network key to all participants.
 
 Install, configure, and start all the Share Keepers. Use a signed transport to
 send the public key fingerprints of the Share Keepers to the Data Collectors.
