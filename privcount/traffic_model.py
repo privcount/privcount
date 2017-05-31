@@ -274,6 +274,13 @@ class TrafficModel(object):
     # issuing a delay warning
     MAX_STREAM_PROCESSING_TIME = 10.0
 
+    @staticmethod
+    def _integer_round(amount, factor):
+        '''
+        Round amount to a multiple of factor, rounding halfway up.
+        '''
+        return (((amount + factor/2)/factor)*factor)
+
     def _get_inter_packet_delays(self, strm_start_ts, byte_events):
         '''
         Take a list of (bw_bytes, is_outbound, ts) and turn them into packet delay
@@ -313,9 +320,17 @@ class TrafficModel(object):
             # tor should never send us an event this big
             if (event_packet_count > TrafficModel.MAX_EVENT_PACKET_COUNT
                 and not logged_event_warning):
+                # round the counts, for at least a little user protection
+                rounded_bw_bytes = TrafficModel._integer_round(
+                                            bw_bytes,
+                                            TrafficModel.MAX_EVENT_BYTE_COUNT)
+                rounded_event_packet_count = TrafficModel._integer_round(
+                                            event_packet_count,
+                                            TrafficModel.MAX_EVENT_PACKET_COUNT)
+
                 logging.warning("Large byte transfer event: {} bytes is {} packets. Limiting event to {} packets of {} bytes."
-                                .format(bw_bytes,
-                                        event_packet_count,
+                                .format(rounded_bw_bytes,
+                                        rounded_event_packet_count,
                                         TrafficModel.MAX_EVENT_PACKET_COUNT,
                                         TrafficModel.PACKET_BYTE_COUNT))
                 logged_event_warning = True
@@ -332,12 +347,15 @@ class TrafficModel(object):
         # we log a warning here in case PrivCount hangs in vitterbi
         # (it could hang processing packets, but that's very unlikely)
         if stream_packet_count > TrafficModel.MAX_STREAM_PACKET_COUNT:
-            # round the packet count to the nearest TrafficModel.MAX_STREAM_PACKET_COUNT, for at least a little user protection
-            rounded_stream_packet_count = ((stream_packet_count + TrafficModel.MAX_STREAM_PACKET_COUNT/2)
-                                           /TrafficModel.MAX_STREAM_PACKET_COUNT*TrafficModel.MAX_STREAM_PACKET_COUNT)
+            # round the packet count to the nearest
+            # TrafficModel.MAX_STREAM_PACKET_COUNT, for at least a little user
+            # protection
+            rounded_stream_packet_count = TrafficModel._integer_round(
+                                          stream_packet_count,
+                                          TrafficModel.MAX_STREAM_PACKET_COUNT)
             logging.info("Large stream packet count: ~{} packets. Stream packet limit is {} packets."
-                            .format(rounded_stream_packet_count,
-                                    TrafficModel.MAX_STREAM_PACKET_COUNT))
+                         .format(rounded_stream_packet_count,
+                                 TrafficModel.MAX_STREAM_PACKET_COUNT))
         return packet_delays
 
     def increment_traffic_counters(self, strm_start_ts, byte_events, secure_counters):
@@ -443,11 +461,14 @@ class TrafficModel(object):
         counter_elapsed = algo_end_time - counter_start_time
 
         if algo_elapsed > TrafficModel.MAX_STREAM_PROCESSING_TIME:
-          logging.warning("Long stream processing time: {:.3f} seconds to process {} packets exceeds limit of {:.3f} seconds. Breakdown: packet {:.3f} viterbi {:.3f} counter {:.3f}."
-                          .format(algo_elapsed, num_packets,
-                                  TrafficModel.MAX_STREAM_PROCESSING_TIME,
-                                  packet_elapsed, viterbi_elapsed,
-                                  counter_elapsed))
+            rounded_num_packets = TrafficModel._integer_round(
+                                          num_packets,
+                                          TrafficModel.MAX_STREAM_PACKET_COUNT)
+            logging.warning("Long stream processing time: {:.1f} seconds to process ~{} packets exceeds limit of {:.1f} seconds. Breakdown: packet {:.1f} viterbi {:.1f} counter {:.1f}."
+                            .format(algo_elapsed, rounded_num_packets,
+                                    TrafficModel.MAX_STREAM_PROCESSING_TIME,
+                                    packet_elapsed, viterbi_elapsed,
+                                    counter_elapsed))
         # TODO: secure delete
         #del observed_packet_delays
         #del likliest_states
