@@ -1611,6 +1611,12 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         self.sendLine("PROTOCOLINFO 1")
         self.state = 'protocolinfo'
 
+    def isConnected(self):
+        '''
+        Is this procotol connected?
+        '''
+        return self.state is not None and self.state != 'disconnected'
+
     def startCollection(self, counter_list, event_list=None):
         '''
         Enable events for all the events required by counter_list, and all
@@ -1662,11 +1668,13 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         if self.collection_events is None:
             logging.warning('Not enabling events: no events selected')
             return
-        if self.state is None:
+        if not self.isConnected():
             logging.info('Not enabling events: not connected yet')
             return
         if self.state == 'waiting' or self.state == 'processing':
             self.active_events = self.collection_events
+            # Protect the EnablePrivCount setting from logrotate and similar
+            self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=0")
             self.sendLine("SETCONF EnablePrivCount=1")
             self.sendLine("SETEVENTS {}".format(" ".join(self.active_events)))
             self.state = 'processing'
@@ -1683,16 +1691,17 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         # try to turn events off regardless of the state, as long as we have
         # connected and authenticated, this will work
         # (and if it doesn't, we haven't lost anything)
-        if self.state is not None:
+        if not self.isConnected():
+            logging.info('Not disabling events, not connected')
+        else:
             if self.active_events is not None:
                 logging.info("Disabled PrivCount events: {}"
                              .format(" ".join(self.active_events)))
-            self.sendLine("SETCONF EnablePrivCount=0")
             self.sendLine("SETEVENTS")
+            self.sendLine("SETCONF EnablePrivCount=0")
+            self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=1")
             self.active_events = None
             self.state = 'waiting'
-        else:
-            logging.warning('Not disabling events, not connected')
 
     def sendLine(self, line):
         '''
@@ -1978,49 +1987,67 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         self.check_line_length(line, True, True)
         return LineOnlyReceiver.lineLengthExceeded(self, line)
 
+    def clearConnection(self, how, error=None, destination=None):
+        '''
+        Clear the connection, regardless of how it failed.
+        Uses how, error, and destination in a log message, if present.
+        '''
+        if how != 'quit' and self.isConnected():
+            logging.warning("{} control connection with {}{} unexpectedly {}: {}."
+                            .format('Open',
+                                    transport_info(self.transport),
+                                    (' ' + destination) if destination is not None else '',
+                                    how,
+                                    error if error is not None else '(no error)'))
+        else:
+            logging.info("{} control connection with {}{} {}: {}."
+                         .format('Open' if self.isConnected() else 'Disconnected',
+                                 transport_info(self.transport),
+                                 (' ' + destination) if destination is not None else '',
+                                 how,
+                                 error if error is not None else '(no error)'))
+        if self.isConnected():
+            self.stopCollection()
+            self.sendLine("QUIT")
+            # Avoid a spurious reentrant warning from connectionLost
+            self.state = "disconnected"
+            self.transport.loseConnection()
+            # Don't rely on the remote side to end the connection
+            # Protocols should not send any more data once the connection has been
+            # terminated
+        self.clear()
+        self.state = "disconnected"
+
     def quit(self):
         '''
         Quit and close the connection
         '''
-        self.sendLine("QUIT")
-        self.state = "disconnected"
-        # Don't rely on the remote side to end the connection
-        # Protocols should not send any more data once the connection has been
-        # terminated
-        self.transport.loseConnection()
-        self.clear()
+        self.clearConnection('quit')
 
     def connectionLost(self, reason):
         '''
         overrides twisted function
         '''
-        self.clear()
-        self.state = "disconnected"
-        logging.debug("Control connection with {} was lost: {}"
-                      .format(transport_info(self.transport),
-                              reason.getErrorMessage()))
+        self.clearConnection('lost',
+                             reason.getErrorMessage())
 
     def clientConnectionFailed(self, connector, reason):
         '''
         overrides twisted function: only for clients
         '''
-        logging.warning("Control connection with transport: {} destination: {} failed: {}"
-                        .format(transport_info(self.transport),
-                                connector.getDestination(),
-                                reason.getErrorMessage()))
         connector.stopConnecting()
-        self.clear()
+        self.clearConnection('failed (client)',
+                             reason.getErrorMessage(),
+                             connector.getDestination())
 
     def clientConnectionLost(self, connector, reason):
         '''
         overrides twisted function: only for clients
         '''
-        logging.warning("Control connection with transport: {} destination: {} was lost: {}"
-                        .format(transport_info(self.transport),
-                                connector.getDestination(),
-                                reason.getErrorMessage()))
         connector.stopConnecting()
-        self.clear()
+        self.clearConnection('lost (client)',
+                             reason.getErrorMessage(),
+                             connector.getDestination())
 
 class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
     '''
@@ -2289,7 +2316,9 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                     self.sendLine("250 OK")
                 # Like GETCONF, SETCONF is case-insensitive, and returns one
                 # line: "250 OK"
-                elif len(parts) == 2 and parts[1].lower().startswith("enableprivcount"):
+                elif (len(parts) == 2 and
+                      (parts[1].lower().startswith("enableprivcount") or
+                       parts[1].lower().startswith("__reloadtorrconsighup"))):
                     # just ignore the value
                     self.sendLine("250 OK")
                 else:

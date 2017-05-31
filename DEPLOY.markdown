@@ -6,6 +6,20 @@ install, and launch the latest version of the Tor PrivCount patch.
 
 See INSTALL.markdown for details.
 
+If you have automatic updates turned on, turn off automatic restarts.
+Restarting during a collection round will cause the round to fail. Updating
+some dependencies during a round might also cause the round to fail, so you
+may want to subscribe to security announcements for your OS/distribution, and
+apply updates manually during a collection round.
+
+If you have logrotate (or any other regular HUP) turned on, turn it off. When
+it is sent a HUP, Tor lets all existing streams and circuits close. This
+excludes any events that were in progress at the time of the HUP. (PrivCount
+sets __ReloadTorrcOnSIGHUP to prevent the PrivCount option being turned off
+by a HUP.) If you use systemd, the systemd drop-in dist/systemd_nohup_tor.conf
+disables reload propagation, and issues an error message on manual reload. See
+the comments in that file for installation instructions.
+
 ## Tally Server
 
 ### Configuration

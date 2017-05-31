@@ -401,7 +401,14 @@ class Aggregator(ReconnectingClientFactory):
 
     def buildProtocol(self, addr):
         if self.protocol is not None:
-            return self.protocol
+            if self.protocol.isConnected():
+                logging.info('Request for existing protocol: returning existing connected procotol')
+                return self.protocol
+            else:
+                logging.info('Request for existing protocol: deleting disconnected protocol and returning new procotol')
+                self.protocol.clearConnection('build procotol')
+        else:
+            logging.debug('Request for new protocol: returning new procotol')
         self.protocol = TorControlClientProtocol(self)
         # if we didn't build the protocol until after starting
         if self.connector is not None:
