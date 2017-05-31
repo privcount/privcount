@@ -508,7 +508,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                         cname, c_status))
 
             if not self.is_last_client_event_recent(uid):
-                logging.warning("last event was {} for client {} {}"
+                logging.warning("{} for client {} {}"
                                 .format(
                                         format_last_event_time_since(
                                             c_status.get('last_event_time')),
