@@ -146,7 +146,7 @@ def format_datetime(timestamp):
     2016-07-16 17:58:00
     '''
     timestamp = normalise_time(timestamp)
-    return strftime("%Y-%m-%d %H:%M:%S", gmtime(timestamp))
+    return strftime("%Y-%m-%d %H:%M:%S UTC", gmtime(timestamp))
 
 def format_epoch(timestamp):
     '''
@@ -163,7 +163,7 @@ def format_time(period, desc, timestamp):
     Format a period and timestamp as a human-readable string in UTC
     period is in seconds, and timestamp is in seconds since the epoch
     Returns a string of the form:
-    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 1468691880)
+    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 UTC 1468691880)
     '''
     return "{} ({} {} {})".format(format_period(period),
                                   desc,
@@ -175,7 +175,7 @@ def format_interval(period, desc, begin_timestamp, end_timestamp):
     Format a period and two interval timestamps as a human-readable string in UTC
     period is in seconds, and the timestamps are in seconds since the epoch
     Returns a string of the form:
-    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 to 2016-07-27 06:18:32,
+    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 UTC to 2016-07-27 06:18:32 UTC,
     1468691880 to 1469600312)
     '''
     return "{} ({} {} to {}, {} to {})".format(format_period(period),
@@ -192,7 +192,7 @@ def format_elapsed_time_wait(elapsed_period, desc):
     The event time is the current time minus elapsed_period
     elapsed_period is typically time_since_checkin, and desc is typically 'at'
     Returns a string of the form:
-    1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 1469600312)
+    1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 UTC 1469600312)
     '''
     # Normalise before calculation to avoid truncation errors
     elapsed_period = normalise_time(elapsed_period)
@@ -206,7 +206,7 @@ def format_elapsed_time_since(past_timestamp, desc):
     The elapsed time is from past_timestamp to the current time
     past_timestamp is typically status['time'], and desc is typically 'since'
     Returns a string of the form:
-    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 1468691880)
+    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 UTC 1468691880)
     '''
     # Normalise before calculation to avoid truncation errors
     past_timestamp = normalise_time(past_timestamp)
@@ -221,7 +221,7 @@ def format_delay_time_wait(delay_period, desc):
     The event time is the current time plus delay_period
     delay_period is typically config['defer_time'], and desc is typically 'at'
     Returns a string of the form:
-    1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 1469600312)
+    1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 UTC 1469600312)
     '''
     # Normalise before calculation to avoid truncation errors
     delay_period = normalise_time(delay_period)
@@ -237,7 +237,7 @@ def format_delay_time_until(future_timestamp, desc):
     future_timestamp is in seconds since the epoch
     future_timestamp is typically config['defer_time'], and desc is typically 'at'
     returns a string of the form:
-    1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 1469600312)
+    1w 3d 12h 20m 32s (desc 2016-07-27 06:18:32 UTC 1469600312)
     '''
     # Normalise before calculation to avoid truncation errors
     future_timestamp = normalise_time(future_timestamp)
@@ -252,7 +252,7 @@ def format_interval_time_between(begin_timestamp, desc, end_timestamp):
     The interval is between begin_time and end_time
     desc is typically 'from'
     Returns a string of the form:
-    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 to 2016-07-27 06:18:32,
+    1w 3d 12h 20m 32s (desc 2016-07-16 17:58:00 UTC to 2016-07-27 06:18:32 UTC,
     1468691880 to 1469600312)
     '''
     # Normalise before calculation to avoid truncation errors
@@ -270,7 +270,8 @@ def format_last_event_time_since(last_event_timestamp):
     The elapsed time is from last_event_timestamp to the current time
     Returns a string in one of the following forms:
     no Tor events received
-    last Tor event was 1w 3d 12h 20m 32s (at 2016-07-16 17:58:00 1468691880)
+    last Tor event was 1w 3d 12h 20m 32s (at 2016-07-16 17:58:00 UTC
+    1468691880)
     '''
     if last_event_timestamp is None:
         return "no Tor events received"

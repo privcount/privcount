@@ -43,6 +43,9 @@ earlier and then run PrivCount as normal. For example:
     ...
     deactivate # exit the virtual environment
 
+PrivCount will log messages prefixed with your local timezone. Times within
+PrivCount log messages are in UTC.
+
 # Deployment
 
 To deploy a PrivCount network, install and start the Tally Server. Use a
