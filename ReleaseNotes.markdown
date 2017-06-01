@@ -54,8 +54,9 @@ Features:
 * Traffic Model Statistics: PrivCount updates the probabilities in an initial
   traffic model based on observed stream packet sizes and inter-packet delays.
   (This feature is experimental: event processing is delayed when large
-  streams end. These delays may cause out of memory errors in Tor's control
-  port event queues) #19
+  streams end. Tor will store events in RAM until processing resumes. This
+  may cause out of memory errors in Tor. Expected additional RAM usage is
+  150 MB - 2.5 GB per Tor process for a 1 GB stream.) #19
 
 * Add the following counters:
   * ZeroCount #1
