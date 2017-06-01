@@ -24,12 +24,15 @@ Choose an IP address and port that is accessible on the Internet.
 
 Add the following lines to the tally server config.yaml:
 
+```
 tally_server:
     listen_port: port
+```
 
 Send the following lines to the Share Keepers and Data Collectors for their
 config.yaml:
 
+```
 share_keeper:
     tally_server_info:
         ip: 'IP address'
@@ -39,6 +42,7 @@ data_collector:
     tally_server_info:
         ip: 'IP address'
         port: port
+```
 
 #### Counter Configuration
 
@@ -48,18 +52,22 @@ also need to know which physical machine each fingerprint is located on.
 Configure the counters for this round, and the noise amounts for those
 counters:
 
+```
 tally_server:
     counters: 'counters.bins.yaml'
     noise: 'counters.noise.yaml'
     noise_weight:
         'FACADE0000000000000000000123456789ABCDEF': 1.0
         '3DEADBEEF012345678900000000000000DEADC00': 1.0
+```
 
 If you want to collect a traffic model, configure it as well:
 
+```
 tally_server:
     traffic_model: 'traffic.model.json'
     traffic_noise: 'traffic.noise.yaml'
+```
 
 Be careful collecting and releasing PrivCount results: the configured noise
 must protect a typical user's activity over a long enough period.
@@ -77,11 +85,13 @@ enough series of results can identify the activity of a single user.
 
 Configure the start thresholds and collection period (in seconds):
 
+```
 tally_server:
     sk_threshold: 5
     dc_threshold: 2
     collect_period: 604800
     delay_period: 86400
+```
 
 The delay period is the number of seconds of user activity that is protected
 between rounds where the noise allocation changes. If you are using a custom
@@ -125,10 +135,12 @@ See doc/PrivCountAuthentication.markdown for more details.
 
 Add the following Tally Server details to the config.yaml:
 
+```
 share_keeper:
     tally_server_info:
         ip: 'IP address'
         port: port
+```
 
 #### Key Configuration
 
@@ -139,8 +151,10 @@ See doc/PrivCountAuthentication.markdown for more details.
 
 #### Collection Configuration
 
+```
 share_keeper:
     delay_period: 86400
+```
 
 The delay period is the number of seconds of user activity that is protected
 between rounds where the noise allocation changes. If you are using a custom
@@ -164,10 +178,14 @@ On first run, PrivCount creates the keys that it needs to run:
 
 Each ShareKeeper creates a RSA key pair for public key encryption:
     * each DataCollector needs to know the SHA256 hash of the public key of
-       each ShareKeeper.
-    * to find the fingerprints, read the Share Keeper logs, or use:
-    openssl rsa -pubout < keys/sk.pem | openssl dgst -sha256 | cut -d" " -f2
+      each ShareKeeper.
+    * to find the fingerprints, read the Share Keeper logs, or use the
+      command below,
     * sign and send the fingerprint to each Data Collector.
+    
+To manually find Share Keeper key fingerprints, use:
+
+    openssl rsa -pubout < keys/sk.pem | openssl dgst -sha256 | cut -d" " -f2
 
 See doc/PrivCountAuthentication.markdown for more details.
 
@@ -176,19 +194,23 @@ See doc/PrivCountAuthentication.markdown for more details.
 You need one PrivCount DataCollector per tor relay.
 
 We recommend you configure your tor relays using:
+
     tor-instance-create
+    
 (If available on your system.)
 
 And then use the systemd drop in file in:
+
     dist/systemd_privcount_tor.conf
+
 to make your relays run a PrivCount-patched Tor binary. See the instructions in
 INSTALL.markdown for details.
 
 ### Configuration
 
-When PrivCount is collecting data, it sets __ReloadTorrcOnSIGHUP 0 to prevent
-the PrivCount option being turned off by a HUP. This means that you can't
-change any torrc options during a collection.
+When PrivCount is collecting data, it sets ```__ReloadTorrcOnSIGHUP 0``` to
+prevent the PrivCount option being turned off by a HUP. This means that you
+can't change any torrc options during a collection.
 
 #### Name
 
@@ -202,17 +224,21 @@ Tally Server log messages.
 
 Configure each data collector with a unique name:
 
+```
 data_collector:
     name: 'MyRelayNickname'
+```
 
 #### Tally Server Address
 
 Add the following Tally Server details to the config.yaml:
 
+```
 data_collector:
     tally_server_info:
         ip: 'IP address'
         port: port
+```
 
 #### Tor Control Port
 
@@ -225,20 +251,33 @@ Unix Socket (more secure):
 
 torrc:
 
+```
 ControlPort 'unix:/var/run/tor/control'
+```
 
+config.yaml:
+
+```
 data_collector:
     event_source:
         unix: '/var/run/tor/control'
+```
 
 TCP Port:
 
 torrc:
-ControlPort 20003
 
+```
+ControlPort 20003
+```
+
+config.yaml:
+
+```
 data_collector:
     event_source:
         port: 20003
+```
 
 Cookie authentication requires the PrivCount user to have read access to tor's
 cookie file.Password authentication requires a shared secret configured using
@@ -246,28 +285,42 @@ the event_source's control_password option.
 
 Cookie Authentication (more secure, simpler):
 
+torrc:
+```
 CookieAuthentication 1
+```
 
 Password Authentication:
 
+```
 cat /dev/random | hexdump -e '"%x"' -n 32 -v > control_password.txt
 tor --hash-password `cat control_password.txt`
+```
 
 torrc:
-HashedControlPassword (output of tor --hash-password)
 
+```
+HashedControlPassword (output of tor --hash-password)
+```
+
+config.yaml:
+
+```
 data_collector:
     event_source:
         control_password: 'control_password.txt'
+```
 
-PrivCount doesn't give good diagnostics when Control Port connections fail.
-This appears to be an unavoidable consequence of using an outdated connection
-API. See issue #303 for more details.
+If Control Port connections fail, PrivCount doesn't issue any warnings
+straight away. As far as we can tell, the (legacy) connection API that
+PrivCount uses doesn't provide callbacks or exceptions. See issue #303
+for more details.
 
 As a workaround, PrivCount will log warnings on both the data collector and
 tally server when:
 * the control port connection has not been successfully completed, and
-* the aggregator stops receiving events for a long period of time.
+* the aggregator stops receiving events for a long period of time
+  (an hour or two).
 
 For more details and troubleshooting steps, see
 doc/TorControlAuthentication.markdown.
@@ -279,17 +332,21 @@ Data Collector's working directory.
 
 Add the Share Keepers' public key fingerprints to the config:
 
+```
 data_collector:
     share_keepers:
         - '0e193e4a66cf0332bc64ad613bb651579a10e08afdbb54aa49e9ea2286ccd41c'
         - '3f0f909d1c9b4aaa69e305404b916928f076ee9ea7940a4549550feb3276f676'
+```
 
 See doc/PrivCountAuthentication.markdown for more details.
 
 #### Collection Configuration
 
+```
 data_collector:
     delay_period: 86400
+```
 
 The delay period is the number of seconds of user activity that is protected
 between rounds where the noise allocation changes. If you are using a custom
