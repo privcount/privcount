@@ -38,7 +38,11 @@ to build your python dependencies from source:
     Debian/Ubuntu:  libpython2.7-dev
     Other Linux:    ?
 
-Some environments (macOS) might need help locating headers and libraries. If so, use 'CFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib"' (substituting your package manager's path) before pip install.
+Some environments (macOS) might need help locating headers and libraries. If so, use:
+
+    'CFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib"'
+    
+(substituting your package manager's path) before pip install.
 
 ### PrivCount Plot (Optional):
 
@@ -117,14 +121,14 @@ It is also used to run the PrivCount tor relay ('tor') and tor network
     Debian/Ubuntu:  libseccomp-dev
     Other Linux:    libseccomp2 libseccomp-devel
 
-    On by default, if the libraries are available.
+On by default, if the libraries are available.
 
 #### Linux systemd notifications (Required if using systemd)
 
     Debian/Ubuntu:  libsystemd-dev pkg-config
     Other Linux:    ?
 
-    --enable-systemd
+    ./configure --enable-systemd
 
 The Debian tor packages are built with systemd notifications by default. If
 you want to use systemd to manage your privcount-patched tor, install it in
@@ -139,8 +143,7 @@ to activate it. Instructions are in that file.
     Debian/Ubuntu:  libscrypt-dev
     Other Linux:    libscrypt-devel
 
-    On by default, if the libraries are available.
-
+On by default, if the libraries are available.
 Recommended if you are using a control port password.
 
 #### Other Tor Dependencies (Optional)
@@ -149,6 +152,7 @@ Tor also supports xz and zstd compression of directory documents (in 0.3.1 and
 later).
 
 For details, read the output of:
+
     ./configure --help
 
 ### Building Tor
