@@ -38,7 +38,8 @@ to build your python dependencies from source:
     Debian/Ubuntu:  libpython2.7-dev
     Other Linux:    ?
 
-Some environments (macOS) might need help locating headers and libraries. If so, use:
+Some environments (macOS) might need help locating headers and libraries. If
+so, use:
 
     'CFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib"'
     
@@ -59,11 +60,12 @@ Some environments (macOS) might need help locating headers and libraries. If so,
 
 ## Installing PrivCount
 
-I recommend using virtual environments to isolate the python environment and avoid conflicts.
-Run the following from the base directory of this package (i.e., the same location of this README).
+I recommend using virtual environments to isolate the python environment and
+avoid conflicts. Run the following from the privcount base directory (the
+directory that contains these instructions):
 
     pip install virtualenv
-    virtualenv --no-site-packages venv
+    virtualenv venv
     source venv/bin/activate
     pip install -r requirements.txt
     # if you want to use the optional privcount plot command
@@ -73,11 +75,20 @@ Run the following from the base directory of this package (i.e., the same locati
     pip install -I .
     deactivate
 
-If 'pip install virtualenv' fails due to permissions errors, install as root. Using 'sudo -H' before 'pip install' should work.
+If 'pip install virtualenv' fails due to permissions errors, install as root.
+Using 'sudo -H' before 'pip install' should work.
 
-Some environments (macOS) use the site packages, even if '--no-site-packages' is specified. This can cause failures. Use 'pip install -I' to work around this. 'pip --isolated' might also help, as may 'pip uninstall' outside the virtualenv.
+Some environments (macOS) have environmental variables or site packages that
+conflict with PrivCount depencencies. Try the following workarounds in the
+virtualenv:
+* pip --isolated install --ignore-installed <package>
+* pip --no-binary :all: install --ignore-installed <package>
+* pip --isolated --no-binary :all: install --ignore-installed <package>
+As a last resort, uninstall the conflicting packages outside the virtualenv:
+* pip uninstall <package>
 
-Some environments (VPSs) have limited RAM. If pip fails with a memory error, try using --no-cache.
+Some environments (VPSs) have limited RAM. If pip fails with a memory error,
+try using --no-cache.
 
 ### Optional PrivCount Tests
 
@@ -85,7 +96,12 @@ Unit tests and basic ('inject') integration test:
 
     test/run_test.sh -I .
 
-If the encryption unit tests fail with an "UnsupportedAlgorithm" exception, make sure you have cryptography >= 1.4 with OpenSSL >= 1.0.2. You may be using a binary wheel that was compiled with an older OpenSSL version. If so, rebuild and reinstall cryptography using 'pip install -I --no-binary cryptography cryptography'.
+If the encryption unit tests fail with an "UnsupportedAlgorithm" exception,
+make sure you have cryptography >= 1.4 with OpenSSL >= 1.0.2. You may be using
+a binary wheel that was compiled with an older OpenSSL version. If so, rebuild
+and reinstall cryptography using:
+
+    pip install --ignore-installed --no-binary cryptography cryptography
 
 Tor relay integration tests (requires a PrivCount-patched Tor):
 
