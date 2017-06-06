@@ -45,8 +45,8 @@ used. See http://semver.org for details.
 The PrivCount Tor Patch is versioned using the PrivCount release version, and
 the underlying Tor version. The versions of the PrivCount Tor Patch released
 with PrivCount 1.0.0 are:
-    privcount-1.0.0-tor-0.3.0.7 (Tor stable)
-    privcount-1.0.0-tor-0.2.9.10 (Tor LTS)
+* privcount-1.0.0-tor-0.3.0.7 (Tor stable)
+* privcount-1.0.0-tor-0.2.9.10 (Tor LTS)
 
 PrivCount 1.0.0 is not compatible with PrivCount 0.1.1 or 0.1.0.
 
@@ -155,6 +155,9 @@ https://github.com/privcount/privcount/issues?q=is%3Aissue+milestone%3A1.0.0+is%
 PrivCount version 0.1.1 removes a compiler warning introduced in
 PrivCount Tor Patch 0.1.0.
 
+The version of the PrivCount Tor Patch released with PrivCount 0.1.1 was:
+* privcount-0.1.1-tor-0.2.7.6
+
 ## PrivCount 0.1.0
 
 PrivCount 0.1.0 is an initial, independent implementation of the PrivEx Secret
@@ -163,6 +166,9 @@ Sharing (S2) variant. See README.markdown for more details.
 The major features in version 0.1.0 are:
 * PrivCount can aggregate a large variety of statistical counts from Tor,
 * PrivCount provides differential privacy guarantees.
+
+The version of the PrivCount Tor Patch released with PrivCount 0.1.0 was:
+* privcount-0.1.0-tor-0.2.7.6
 
 This version was used to collect the data used in the "Safely Measuring Tor"
 paper.
