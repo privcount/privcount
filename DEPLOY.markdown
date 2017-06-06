@@ -193,20 +193,29 @@ See doc/PrivCountAuthentication.markdown for more details.
 
 You need one PrivCount DataCollector per tor relay.
 
-We recommend you configure your tor relays using:
+### Configuration
+
+#### Relay Creation
+
+If you are setting up your relays for the first time, we recommend you use a
+script to create consistent relay configs. Debian and Ubuntu have:
 
     tor-instance-create
-    
-(If available on your system.)
 
-And then use the systemd drop in file in:
+It creates a --defaults-torrc file in /etc/tor, and individual torrc files and
+systemd configs for each relay.
 
-    dist/systemd_privcount_tor.conf
+If your distribution doesn't come with a script like this, we recommend you
+configure your tor relays using a --defaults-torrc file for common settings:
 
-to make your relays run a PrivCount-patched Tor binary. See the instructions in
-INSTALL.markdown for details.
+    tor --defaults-torrc /etc/tor/torrc-defaults
 
-### Configuration
+#### Automatic Configuration
+
+PrivCount sets ```EnablePrivCount 1``` when it starts a collection round, and
+turns it off at the end of the round. This makes sure that all the totals it
+collects are consistent. You MUST NOT set EnablePrivCount in the torrc: this
+biases the results towards long-running connections.
 
 When PrivCount is collecting data, it sets ```__ReloadTorrcOnSIGHUP 0``` to
 prevent the PrivCount option being turned off by a HUP. This means that you
@@ -311,20 +320,6 @@ data_collector:
         control_password: 'control_password.txt'
 ```
 
-If Control Port connections fail, PrivCount doesn't issue any warnings
-straight away. As far as we can tell, the (legacy) connection API that
-PrivCount uses doesn't provide callbacks or exceptions. See issue #303
-for more details.
-
-As a workaround, PrivCount will log warnings on both the data collector and
-tally server when:
-* the control port connection has not been successfully completed, and
-* the aggregator stops receiving events for a long period of time
-  (an hour or two).
-
-For more details and troubleshooting steps, see
-doc/TorControlAuthentication.markdown.
-
 #### Key Configuration
 
 Place the privcount.secret_handshake.yaml file from the Tally Server in the
@@ -355,6 +350,40 @@ delay period, it should be the same as the Tally Server's.
 See doc/CounterChecks.markdown for more details.
 
 ### First Run
+
+#### PrivCount-Patched Tor
+
+Start your PrivCount-patched tor relays.
+If you need to install a PrivCount-patched tor, see the instructions in
+INSTALL.markdown.
+
+If you are using systemd, use the systemd drop in file in:
+
+    dist/systemd_privcount_tor.conf
+
+to make your relays run a PrivCount-patched Tor binary.
+
+Otherwise, use your distribution's service config to start the relay, or start
+it manually:
+
+    screen
+    /usr/local/bin/tor -f /path/to/torrc --defaults-torrc /path/to/torrc-defaults 2>&1 | tee -a tor.log
+
+If Control Port connections fail, PrivCount doesn't issue any warnings
+straight away. As far as we can tell, the (legacy) connection API that
+PrivCount uses doesn't provide callbacks or exceptions. See issue #303
+for more details.
+
+As a workaround, PrivCount will log warnings on both the data collector and
+tally server when:
+* the control port connection has not been successfully completed, and
+* the aggregator stops receiving events for a long period of time
+  (an hour or two).
+
+For more details and troubleshooting steps, see
+doc/TorControlAuthentication.markdown.
+
+#### PrivCount
 
 Then run PrivCount in data collector mode:
 
