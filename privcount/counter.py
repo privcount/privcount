@@ -509,7 +509,8 @@ def extra_counters(first, second, first_name, second_name):
     # Log missing keys
     # sort names alphabetically, so the logs are in a sensible order
     for key in sorted(extra_keys):
-            logging.warning("skipping counter '{}' because it has a {}, but no {}".format(key, first, second))
+            logging.warning("skipping counter '{}' because it has a {}, but no {}"
+                            .format(key, first_name, second_name))
 
     return extra_keys
 
