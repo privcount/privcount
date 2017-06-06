@@ -20,7 +20,6 @@ relay.
 Some overheads are excluded:
 * Streams with zero (total read and write) or negative byte counts are ignored.
 * Cell counts are not collected on Inactive Circuits.
-* EntryClientIP{Active,Inactive}CircuitCount ignore zero counts.
 
 ### ClientIPCount
 

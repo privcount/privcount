@@ -1108,13 +1108,13 @@ class Aggregator(ReconnectingClientFactory):
                     self.cli_ips_previous[previp]['is_active'] = True
 
             # count number of completed circuits per client
+            self.cli_ips_current[previp].setdefault('num_active_completed',
+                                                    0)
+            self.cli_ips_current[previp].setdefault('num_inactive_completed',
+                                                    0)
             if is_active:
-                if 'num_active_completed' not in self.cli_ips_current[previp]:
-                    self.cli_ips_current[previp]['num_active_completed'] = 0
                 self.cli_ips_current[previp]['num_active_completed'] += 1
             else:
-                if 'num_inactive_completed' not in self.cli_ips_current[previp]:
-                    self.cli_ips_current[previp]['num_inactive_completed'] = 0
                 self.cli_ips_current[previp]['num_inactive_completed'] += 1
 
         elif nextIsEdge:
@@ -1266,14 +1266,14 @@ class Aggregator(ReconnectingClientFactory):
             else:
                 client_ips_inactive += 1
 
-            if 'num_active_completed' in client:
-                self.secure_counters.increment('EntryClientIPActiveCircuitCount',
-                                               bin=client['num_active_completed'],
-                                               inc=1)
-            if 'num_inactive_completed' in client:
-                self.secure_counters.increment('EntryClientIPInactiveCircuitCount',
-                                               bin=client['num_inactive_completed'],
-                                               inc=1)
+            num_active_completed = client.get('num_active_completed', 0)
+            self.secure_counters.increment('EntryClientIPActiveCircuitCount',
+                                           bin=num_active_completed,
+                                           inc=1)
+            num_inactive_completed = client.get('num_inactive_completed', 0)
+            self.secure_counters.increment('EntryClientIPInactiveCircuitCount',
+                                           bin=num_inactive_completed,
+                                           inc=1)
 
         self.secure_counters.increment('EntryClientIPCount',
                                        bin=SINGLE_BIN,
