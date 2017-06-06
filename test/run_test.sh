@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # See LICENSE for licensing information
 
 # Shell settings
