@@ -49,12 +49,15 @@ Compatibility:
   later PrivCount versions #340
 * Make shell scripts run on systems that don't have bash in /bin #334
 
-Counters:
+Accuracy:
 * Count zero EntryClientIPActiveCircuitCounts and
   EntryClientIPInactiveCircuitCounts, rather than ignoring them #306
 
 Documentation:
 * Revise the Data Collector section in DEPLOY.markdown #339
+
+A full list of issues resolved is available at:
+https://github.com/privcount/privcount/milestone/10?closed=1
 
 ## PrivCount 1.0.0
 
@@ -175,7 +178,7 @@ Robustness:
 * PrivCount stops when major errors occur #148
 
 A full list of issues resolved is available at:
-https://github.com/privcount/privcount/issues?q=is%3Aissue+milestone%3A1.0.0+is%3Aclosed
+https://github.com/privcount/privcount/milestone/1?closed=1
 
 ## PrivCount 0.1.1
 
