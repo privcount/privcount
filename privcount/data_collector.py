@@ -169,7 +169,8 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             logging.warning("start command from tally server cannot be completed due to missing sharekeepers")
             return None
 
-        dc_counters = self.check_start_config(config)
+        dc_counters = self.check_start_config(config,
+                                              allow_unknown_counters=False)
 
         if dc_counters is None:
             return None

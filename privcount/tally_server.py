@@ -299,9 +299,11 @@ class TallyServer(ServerFactory, PrivCountServer):
 
             # now we have bins and sigmas (and perhaps additional calculation
             # info along with the sigmas)
-            # perform sanity checks
+            # perform sanity checks, making sure all counter names are known
+            # counters
             assert check_counters_config(ts_conf['counters'],
-                                         ts_conf['noise']['counters'])
+                                         ts_conf['noise']['counters'],
+                                         allow_unknown_counters=False)
 
             # a directory for results files
             if 'results' in ts_conf:

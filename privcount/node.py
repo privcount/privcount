@@ -306,9 +306,11 @@ class PrivCountClient(PrivCountNode):
         self.last_noise_config = start_config['noise']
         self.collection_start_time = time()
 
-    def check_start_config(self, start_config):
+    def check_start_config(self, start_config, allow_unknown_counters=False):
         '''
         Perform the common client checks on the start config.
+        If allow_unknown_counters is False, also check that all counter names
+        are in the set of known counter names for this PrivCount version.
         Return the combined counters if the start_config is valid,
         or None if it is not.
         '''
@@ -333,7 +335,8 @@ class PrivCountClient(PrivCountNode):
 
         # if the counters don't pass the validity checks, fail
         if not check_counters_config(start_config['counters'],
-                                     start_config['noise']['counters']):
+                                     start_config['noise']['counters'],
+                                     allow_unknown_counters):
             return None
 
         # if the noise weights don't pass the validity checks, fail

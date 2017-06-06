@@ -425,15 +425,19 @@ def count_bins(counters):
     return sum([len(counter_config['bins'])
                 for counter_config in counters.values()])
 
-def check_bins_config(bins):
+def check_bins_config(bins, allow_unknown_counters=False):
     '''
     Check that bins are non-overlapping.
     Returns True if all bins are non-overlapping, and False if any overlap.
+    If allow_unknown_counters is False, also check that all counter names are
+    in the set of known counter names for this PrivCount version, returning
+    False if there are any unknown counters.
     Raises an exception if any counter does not have bins, or if any bin does
     not have a lower and upper bound
     '''
-    if not check_counter_names(bins):
-        return False
+    if not allow_unknown_counters:
+        if not check_counter_names(bins):
+            return False
     # sort names alphabetically, so the logs are in a sensible order
     for key in sorted(bins.keys()):
         # this sorts the bins by the first element in ascending order
@@ -471,14 +475,18 @@ def check_bins_config(bins):
             prev_bin = bin
     return True
 
-def check_sigmas_config(sigmas):
+def check_sigmas_config(sigmas, allow_unknown_counters=False):
     '''
     Check that each sigma value in sigmas is valid.
     Returns True if all sigma values are valid, and False if any are invalid.
+    If allow_unknown_counters is False, also check that all counter names are
+    in the set of known counter names for this PrivCount version, returning
+    False if there are any unknown counters.
     Raises an exception if any sigma value is missing.
     '''
-    if not check_counter_names(sigmas):
-        return False
+    if not allow_unknown_counters:
+        if not check_counter_names(sigmas):
+            return False
     # sort names alphabetically, so the logs are in a sensible order
     for key in sorted(sigmas.keys()):
         if sigmas[key]['sigma'] < 0.0:
@@ -602,12 +610,15 @@ def check_combined_counters(bins, sigmas):
     return (len(combined_counters) == len(bins) and
             len(combined_counters) == len(sigmas))
 
-def check_counters_config(bins, sigmas):
+def check_counters_config(bins, sigmas, allow_unknown_counters=False):
     '''
     Sanity check bins and sigmas individually.
     Check that bins and sigmas have the same set of counters.
+    If allow_unknown_counters is False, also check that all counter names are
+    in the set of known counter names for this PrivCount version.
     '''
-    return (check_bins_config(bins) and check_sigmas_config(sigmas) and
+    return (check_bins_config(bins, allow_unknown_counters) and
+            check_sigmas_config(sigmas, allow_unknown_counters) and
             check_combined_counters(bins, sigmas))
 
 def float_representation_accuracy():

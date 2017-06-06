@@ -17,8 +17,11 @@ If these checks fail, the configuration is rejected and no collection occurs.
 
 Each counter counts events in a set of bins.
 
-* Each counter name must be in the list of valid counter names  
-  (This list can have counters added to it at runtime)
+* Each counter name must be in the list of valid counter names.  
+  (This list can have counters added to it at runtime by the Traffic Model).  
+  This check is only performed by the Tally Server and Data Collector.  
+  Share Keepers will accept any counter names: this allows older Share Keeper  
+  versions to be used with newer Tally Server and Data Collector versions.
 * Counters for bins and sigmas must match
 
 ### Noise
