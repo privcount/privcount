@@ -29,6 +29,33 @@ BSD license. See LICENSE for details.
 Issue numbers are from:
     https://github.com/privcount/privcount/issues
 
+## PrivCount 1.0.1
+
+PrivCount 1.0.1 fixes a Share Keeper forward-compatibility issue, and makes
+other minor counter, compatibility and documentation fixes.
+
+PrivCount 1.0.1 is compatible with PrivCount 1.0.0.
+PrivCount 1.0.1 Share Keepers are forward-compatible with counters introduced
+in later versions.
+
+TODO
+The versions of the PrivCount Tor Patch released with PrivCount 1.0.1 are:
+* privcount-1.0.1-tor-0.3.0.7 (Tor stable)
+* privcount-1.0.1-tor-0.2.9.10 (Tor LTS)
+/TODO
+
+Compatibility:
+* Make Share Keepers accept blinding shares containing counters introduced in
+  later PrivCount versions #340
+* Make shell scripts run on systems that don't have bash in /bin #334
+
+Counters:
+* Count zero EntryClientIPActiveCircuitCounts and
+  EntryClientIPInactiveCircuitCounts, rather than ignoring them #306
+
+Documentation:
+* Revise the Data Collector section in DEPLOY.markdown #339
+
 ## PrivCount 1.0.0
 
 PrivCount 1.0.0 is a major rewrite of the PrivCount codebase, focusing on
