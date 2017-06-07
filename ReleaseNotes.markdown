@@ -68,6 +68,7 @@ Compatibility:
 Accuracy:
 * Count zero EntryClientIPActiveCircuitCounts and
   EntryClientIPInactiveCircuitCounts, rather than ignoring them #306
+* Stop filtering BadExits from non-exit positions in the weights script #346
 
 Documentation:
 * Revise the Data Collector section in DEPLOY.markdown #339
