@@ -65,10 +65,15 @@ def main():
             result = process_consensus(params)
             results.append(result)
 
-    guard_fracs, middle_fracs, exit_fracs = do_reduce(results)
+    guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir3_fracs = do_reduce(results)
     print "mean guard fraction is {}".format(mean(guard_fracs))
     print "mean middle fraction is {}".format(mean(middle_fracs))
     print "mean exit fraction is {}".format(mean(exit_fracs))
+    print "mean hsdir2 fraction is {} (6 HSDirs per service)".format(mean(hsdir2_fracs))
+    print "mean hsdir3 fraction is {} (3 HSDirs per blinded service replica)".format(mean(hsdir3_fracs))
+    print "mean intro fraction is {} (v2: 3-10, v3: 3-20 Intro Points per service)".format(mean(intro_fracs))
+    # the rend frac is the same as the middle frac
+    print "mean rend fraction is {}".format(mean(middle_fracs))
 
 def fetch_consensus():
     # if we had stem 1.5 we could do:
@@ -95,18 +100,21 @@ def do_map(pool, work_items):
 # this func is run by helper processes in process pool
 def process_consensus(params):
     consensus_path, prints = params[0], params[1]
-    guard_frac, middle_frac, exit_frac = get_fractional_weights(consensus_path, prints)
-    return [guard_frac, middle_frac, exit_frac]
+    guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir3_frac = get_fractional_weights(consensus_path, prints)
+    return [guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir3_frac]
 
 def do_reduce(async_results):
-    guard_fracs, middle_fracs, exit_fracs = [], [], []
+    guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir3_fracs = [], [], [], [], [], []
     for result in async_results:
         if result is None: continue
-        guard_frac, middle_frac, exit_frac = result[0], result[1], result[2]
+        guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir3_frac = result[0], result[1], result[2], result[3], result[4], result[5]
         guard_fracs.append(guard_frac)
         middle_fracs.append(middle_frac)
+        intro_fracs.append(intro_frac)
         exit_fracs.append(exit_frac)
-    return guard_fracs, middle_fracs, exit_fracs
+        hsdir2_fracs.append(hsdir2_frac)
+        hsdir3_fracs.append(hsdir3_frac)
+    return guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir3_fracs
 
 def safe_d(dividend, divisor):
     dividend = float(dividend)
@@ -117,27 +125,41 @@ def safe_d(dividend, divisor):
         return dividend/divisor
 
 def get_fractional_weights(consensus_path, my_fingerprints):
+    # returns a tuple with guard, middle, intro, exit, hsdir2 and hsdir3 fractions
+    # the rend fraction is the same as the middle fraction
     net_status = next(parse_file(consensus_path, document_handler='DOCUMENT', validate=False))
     bw_weight_scale = net_status.params['bwweightscale'] if 'bwweightscale' in net_status.params else 1.0
 
-    my_guard, total_guard, my_middle, total_middle, my_exit, total_exit = 0, 0, 0, 0, 0, 0
+    my_guard, total_guard, my_middle, total_middle, my_intro, total_intro, my_exit, total_exit = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    # this is the integer number of HSDirs (they don't use bandwidth weights)
+    my_hsdir2, total_hsdir2, my_hsdir3, total_hsdir3 = 0.0, 0.0, 0.0, 0.0
 
     for (fingerprint, router_entry) in net_status.routers.items():
         #print fingerprint
-        guard_weighted_bw, middle_weighted_bw, exit_weighted_bw = get_weighted_bandwidths(router_entry, net_status.bandwidth_weights, bw_weight_scale)
+        guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count = get_weighted_bandwidths(router_entry, net_status.bandwidth_weights, bw_weight_scale)
         total_guard += guard_weighted_bw
         total_middle += middle_weighted_bw
+        total_intro += intro_weighted_bw
         total_exit += exit_weighted_bw
+        total_hsdir2 += hsdir2_count
+        total_hsdir3 += hsdir3_count
         if fingerprint in my_fingerprints:
             my_guard += guard_weighted_bw
             my_middle += middle_weighted_bw
+            my_intro += intro_weighted_bw
             my_exit += exit_weighted_bw
+            my_hsdir2 += hsdir2_count
+            my_hsdir3 += hsdir3_count
 
-    return float(my_guard)/float(total_guard), float(my_middle)/float(total_middle), float(my_exit)/float(total_exit)
+    return safe_d(my_guard, total_guard), safe_d(my_middle, total_middle), safe_d(my_intro, total_intro), safe_d(my_exit, total_exit), safe_d(my_hsdir2, total_hsdir2), safe_d(my_hsdir3, total_hsdir3)
 
 def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
     # example bw_weights: {u'Web': 10000, u'Wdb': 10000, u'Weg': 10000, u'Wee': 10000, u'Wed': 10000, u'Wgd': 0, u'Wgb': 10000, u'Wgg': 5920, u'Wem': 10000, u'Wbg': 4080, u'Wbd': 0, u'Wbe': 0, u'Wmm': 10000, u'Wmb': 10000, u'Wgm': 5920, u'Wbm': 10000, u'Wmg': 4080, u'Wme': 0, u'Wmd': 0}
-    guard_weighted_bw, middle_weighted_bw, exit_weighted_bw = 0.0, 0.0, 0.0
+    # returns a tuple with guard, middle, intro, and exit weighted bandwidth, and hsdir2 and hsdir3 counts
+    # the rend bandwidth is the same as the middle bandwidth
+    guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw = 0.0, 0.0, 0.0, 0.0
+    # this is the integer number of HSDirs (they don't use bandwidth weights)
+    hsdir2_count, hsdir3_count = 0.0, 0.0
 
     bw = float(router_entry.bandwidth)
 
@@ -148,20 +170,30 @@ def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
     middle_weight = safe_d(get_bw_weight(router_entry.flags, 'm', bw_weights), bw_weight_scale)
     middle_weighted_bw = bw * middle_weight
 
+    intro_weight = safe_d(get_bw_weight(router_entry.flags, 'i', bw_weights), bw_weight_scale)
+    intro_weighted_bw = bw * intro_weight
+
     if 'BadExit' not in router_entry.flags:
         if router_entry.exit_policy.is_exiting_allowed():
             exit_weight = safe_d(get_bw_weight(router_entry.flags, 'e', bw_weights), bw_weight_scale)
             exit_weighted_bw = bw * exit_weight
 
-    return guard_weighted_bw, middle_weighted_bw, exit_weighted_bw
+    hsdir2_count = float(get_bw_weight(router_entry.flags, 'h2', None))
+    hsdir3_count = float(get_bw_weight(router_entry.flags, 'h3', None))
+
+    return guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count
 
 # from torps
 def get_bw_weight(flags, position, bw_weights):
-    """Returns weight to apply to relay's bandwidth for given position.
+    """Returns weight to apply to relay's bandwidth for given position, or for
+        HSDirs, returns 1.0 when a relay has the flag, and 0.0 when it does not
         flags: list of Flag values for relay from a consensus
         position: position for which to find selection weight,
-             one of 'g' for guard, 'm' for middle, and 'e' for exit
-        bw_weights: bandwidth_weights from NetworkStatusDocumentV3 consensus
+             one of 'g' for guard, 'm' for middle, 'e' for exit,
+             'h{2,3}' for HSDir{,3}, and 'i' for intro
+             (the rend weight is the same as the middle weight)
+        bw_weights: bandwidth_weights from NetworkStatusDocumentV3 consensus,
+             or None for HSDirs
     """
 
     if (position == 'g'):
@@ -175,8 +207,11 @@ def get_bw_weight(flags, position, bw_weights):
             # exit-flagged nodes without guard flag never serve in guard position
             #raise ValueError('Wge weight does not exist.')
             return 0
-    elif (position == 'm'):
-        if (Flag.GUARD in flags) and (Flag.EXIT in flags):
+    elif (position == 'm' or position == 'i'):
+        # intro points must have the Stable flag
+        if (position == 'i' and not Flag.STABLE in flags):
+            return 0.0
+        elif (Flag.GUARD in flags) and (Flag.EXIT in flags):
             return bw_weights['Wmd']
         elif (Flag.GUARD in flags):
             return bw_weights['Wmg']
@@ -193,6 +228,18 @@ def get_bw_weight(flags, position, bw_weights):
             return bw_weights['Wee']
         else:
             return bw_weights['Wem']
+    elif (position == 'h2'):
+        if (Flag.HSDIR in flags):
+            return 1.0
+        else:
+            return 0.0
+    elif (position == 'h3'):
+        # stem doesn't define Flag.HSDIR3 yet
+        # https://gitweb.torproject.org/torspec.git/tree/proposals/224-rend-spec-ng.txt#n635
+        if ('HSDir3' in flags):
+            return 1.0
+        else:
+            return 0.0
     else:
         raise ValueError('get_weight does not support position {0}.'.format(
             position))
