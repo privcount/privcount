@@ -45,6 +45,7 @@ def main():
         for filename in os.listdir(expanded_path):
             if filename.endswith("consensus"):
                 consensus_paths.append(os.path.join(expanded_path, filename))
+        assert len(consensus_paths) > 0, "consensus file names must end with 'consensus'"
     else:
         consensus_paths.append(expanded_path)
 
@@ -59,13 +60,15 @@ def main():
             print >> sys.stderr, "interrupted, terminating process pool"
             p.terminate()
             p.join()
-            sys.exit()
+            sys.exit(1)
     else:
         for params in work_items:
             result = process_consensus(params)
             results.append(result)
 
     guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir3_fracs = do_reduce(results)
+    assert len(guard_fracs) > 0
+
     print "mean guard fraction is {}".format(mean(guard_fracs))
     print "mean middle fraction is {}".format(mean(middle_fracs))
     print "mean exit fraction is {}".format(mean(exit_fracs))
@@ -83,7 +86,7 @@ def fetch_consensus():
     consensus = downloader.get_consensus(document_handler = DocumentHandler.DOCUMENT).run()[0]
 
     time_label = str(consensus.valid_after).replace(':', '-').replace(' ', '-')
-    file_path = "{}-consensus.txt".format(time_label)
+    file_path = "{}-consensus".format(time_label)
 
     if not os.path.exists(file_path):
         with open(file_path, 'w') as descriptor_file:
