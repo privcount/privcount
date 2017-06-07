@@ -45,6 +45,48 @@ BSD license. See LICENSE for details.
 Issue numbers are from:
     https://github.com/privcount/privcount/issues
 
+## PrivCount 1.2.0
+
+TODO
+PrivCount 1.2.0 adds support for Hidden Service Directory statistics
+collection, and ...
+/TODO
+
+TODO
+The versions of the PrivCount Tor Patch released with PrivCount 1.2.0 are:
+* privcount-1.0.1-tor-0.3.0.7 (Tor stable)
+* privcount-1.0.1-tor-0.2.9.10 (Tor LTS)
+/TODO
+
+Features:
+* Add HSDir[3], Intro, and Rend to the position weights script #289
+
+Accuracy:
+* Stop filtering BadExits from non-exit positions in the weights script #346
+
+A full list of issues resolved is available at:
+https://github.com/privcount/privcount/milestone/9?closed=1
+
+## PrivCount 1.1.0
+
+TODO
+PrivCount 1.1.0 adds counters for the Alexa Top N
+/TODO
+
+TODO
+The versions of the PrivCount Tor Patch released with PrivCount 1.1.0 are:
+* privcount-1.0.1-tor-0.3.0.7 (Tor stable)
+* privcount-1.0.1-tor-0.2.9.10 (Tor LTS)
+/TODO
+
+TODO
+Category:
+ * Item
+/TODO
+
+A full list of issues resolved is available at:
+https://github.com/privcount/privcount/milestone/6?closed=1
+
 ## PrivCount 1.0.1
 
 PrivCount 1.0.1 fixes a Share Keeper forward-compatibility issue, and makes
