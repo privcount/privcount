@@ -98,6 +98,14 @@ def do_reduce(async_results):
         exit_fracs.append(exit_frac)
     return guard_fracs, middle_fracs, exit_fracs
 
+def safe_d(dividend, divisor):
+    dividend = float(dividend)
+    divisor = float(divisor)
+    if divisor == 0.0:
+        return 0.0
+    else:
+        return dividend/divisor
+
 def get_fractional_weights(consensus_path, my_fingerprints):
     net_status = next(parse_file(consensus_path, document_handler='DOCUMENT', validate=False))
     bw_weight_scale = net_status.params['bwweightscale'] if 'bwweightscale' in net_status.params else 1.0
@@ -121,18 +129,18 @@ def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
     # example bw_weights: {u'Web': 10000, u'Wdb': 10000, u'Weg': 10000, u'Wee': 10000, u'Wed': 10000, u'Wgd': 0, u'Wgb': 10000, u'Wgg': 5920, u'Wem': 10000, u'Wbg': 4080, u'Wbd': 0, u'Wbe': 0, u'Wmm': 10000, u'Wmb': 10000, u'Wgm': 5920, u'Wbm': 10000, u'Wmg': 4080, u'Wme': 0, u'Wmd': 0}
     guard_weighted_bw, middle_weighted_bw, exit_weighted_bw = 0.0, 0.0, 0.0
 
+    bw = float(router_entry.bandwidth)
+
+    if Flag.GUARD in router_entry.flags and Flag.FAST in router_entry.flags and Flag.STABLE in router_entry.flags:
+        guard_weight = safe_d(get_bw_weight(router_entry.flags, 'g', bw_weights), bw_weight_scale)
+        guard_weighted_bw = bw * guard_weight
+
+    middle_weight = safe_d(get_bw_weight(router_entry.flags, 'm', bw_weights), bw_weight_scale)
+    middle_weighted_bw = bw * middle_weight
+
     if 'BadExit' not in router_entry.flags:
-        bw = float(router_entry.bandwidth)
-
-        if Flag.GUARD in router_entry.flags and Flag.FAST in router_entry.flags and Flag.STABLE in router_entry.flags:
-            guard_weight = float(get_bw_weight(router_entry.flags, 'g', bw_weights)) / float(bw_weight_scale)
-            guard_weighted_bw = bw * guard_weight
-
-        middle_weight = float(get_bw_weight(router_entry.flags, 'm', bw_weights)) / float(bw_weight_scale)
-        middle_weighted_bw = bw * middle_weight
-
         if router_entry.exit_policy.is_exiting_allowed():
-            exit_weight = float(get_bw_weight(router_entry.flags, 'e', bw_weights)) / float(bw_weight_scale)
+            exit_weight = safe_d(get_bw_weight(router_entry.flags, 'e', bw_weights), bw_weight_scale)
             exit_weighted_bw = bw * exit_weight
 
     return guard_weighted_bw, middle_weighted_bw, exit_weighted_bw
