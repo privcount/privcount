@@ -424,8 +424,12 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
   esac
 fi
 
-# Run the counter matching checks
-"$I" "Checking that all counters have events, increments, and tests:"
+# Run the counter and event matching checks
+"$I" "Checking that all events have counters, increments, tests, and docs:"
+"$TEST_DIR/test_event_match.sh"
+"$I" ""
+
+"$I" "Checking that all counters have events, increments, tests, and docs:"
 "$TEST_DIR/test_counter_match.sh"
 "$I" ""
 
