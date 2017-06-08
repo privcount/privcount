@@ -72,6 +72,7 @@ Accuracy:
 
 Documentation:
 * Revise the Data Collector section in DEPLOY.markdown #339
+* Document PrivCount's torrc reload behaviour in TorEvents.markdown #327
 
 A full list of issues resolved is available at:
 https://github.com/privcount/privcount/milestone/10?closed=1
