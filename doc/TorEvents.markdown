@@ -20,17 +20,21 @@ Controller interfaces.
 ### Collection
 
 1. PrivCount waits for the collection round to start
-2. PrivCount turns on the tor PrivCount code (SETCONF EnablePrivCount 1)
-3. PrivCount turns on the tor events required for the collection round
+2. PrivCount disables torrc reload on HUP (SETCONF __ReloadTorrcOnSIGHUP=1)
+   (This stops the EnablePrivCount option being reset by HUPs.)
+3. PrivCount turns on the tor PrivCount code (SETCONF EnablePrivCount=1)
+4. PrivCount turns on the tor events required for the collection round
    (SETEVENTS PRIVCOUNT_...)
-4. Tor starts sending events as they occur, and PrivCount processes these
+5. Tor starts sending events as they occur, and PrivCount processes these
    events. Events that started before PrivCount was enabled are ignored.
 
 ### Cleanup
 
 1. PrivCount waits for the collection round to stop
-2. PrivCount turns off EnablePrivCount and all tor events (SETCONF,
-   SETEVENTS)
+2. PrivCount turns off all events (SETEVENTS)
+3. PrivCount turns off EnablePrivCount (SETCONF EnablePrivCount=0)
+4. PrivCount enables torrc reload on HUP (SETCONF __ReloadTorrcOnSIGHUP=0)
+   (This allows operators to reload torrcs between collection rounds.)
 
 ## Tor Relay Roles
 
@@ -101,7 +105,7 @@ of traffic: this is a work in progress.
 PrivCount ignores events for connections, circuits, and streams that were
 created before PrivCount was last enabled. Otherwise, events could have
 incomplete cell or byte counts, and we would have a bias towards long-running
-events.
+events. (PrivCount does not send any events when EnablePrivCount is 0.)
 
 ### PRIVCOUNT_DNS_RESOLVED
 
