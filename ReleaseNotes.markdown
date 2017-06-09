@@ -55,7 +55,14 @@ collection, and ...
 TODO
 The versions of the PrivCount Tor Patch released with PrivCount 1.2.0 are:
 * privcount-1.0.1-tor-0.3.0.7 (Tor stable)
-* privcount-1.0.1-tor-0.2.9.10 (Tor LTS)
+
+All PrivCount relay operators should upgrade.
+
+These Tor versions fix:
+* multiple relay connection issues
+
+See Tor's release announcement for details:
+https://blog.torproject.org/blog/tor-0308-released-fix-hidden-services-also-are-02429-02514-02612-0278-02814-and-02911
 /TODO
 
 Features:
@@ -64,7 +71,7 @@ Features:
 Testing:
 * Check all events are tested and documented when running tests #347
 
-A full list of issues resolved is available at:
+A full list of issues resolved in this release is available at:
 https://github.com/privcount/privcount/milestone/9?closed=1
 
 ## PrivCount 1.1.0
@@ -77,6 +84,15 @@ TODO
 The versions of the PrivCount Tor Patch released with PrivCount 1.1.0 are:
 * privcount-1.0.1-tor-0.3.0.7 (Tor stable)
 * privcount-1.0.1-tor-0.2.9.10 (Tor LTS)
+
+All PrivCount relay operators should upgrade.
+
+These Tor versions fix:
+* multiple relay connection issues
+* HSDir3 descriptor upload issues (0.3.0.8 only)
+
+See Tor's release announcement for details:
+https://blog.torproject.org/blog/tor-0308-released-fix-hidden-services-also-are-02429-02514-02612-0278-02814-and-02911
 /TODO
 
 TODO
@@ -84,7 +100,7 @@ Category:
  * Item
 /TODO
 
-A full list of issues resolved is available at:
+A full list of issues resolved in this release is available at:
 https://github.com/privcount/privcount/milestone/6?closed=1
 
 ## PrivCount 1.0.1
