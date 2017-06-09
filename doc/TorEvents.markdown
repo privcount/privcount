@@ -175,6 +175,10 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/188
 * The channel and circuit fields in this event may be missing in some cases  
   https://github.com/privcount/privcount/issues/193
+* PrivCount's additional RAM allocations may affect the size of various queues
+  and caches. This can lead to dropped cells or a smaller Number of Bytes per
+  event
+  https://github.com/privcount/privcount/issues/349
 
 ### PRIVCOUNT_STREAM_ENDED
 
@@ -208,6 +212,8 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/188
 * The channel and circuit fields in this event may be missing in some cases  
   https://github.com/privcount/privcount/issues/193
+* PrivCount's additional RAM allocations may affect Tor's stream limits
+  https://github.com/privcount/privcount/issues/349
 
 ### PRIVCOUNT_CIRCUIT_ENDED
 
@@ -246,6 +252,8 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/193
 * If a Remote IP Address is missing, 0.0.0.0 is used as a placeholder  
   https://github.com/privcount/privcount/issues/196
+* PrivCount's additional RAM allocations may affect Tor's circuit limits
+  https://github.com/privcount/privcount/issues/349
 
 ### PRIVCOUNT_CONNECTION_ENDED
 
@@ -282,6 +290,8 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/193
 * If a Remote IP Address is missing, 0.0.0.0 is used as a placeholder  
   https://github.com/privcount/privcount/issues/196
+* PrivCount's additional RAM allocations may affect Tor's connection limits
+  https://github.com/privcount/privcount/issues/349
 
 ## PrivCount Event Field Detail
 

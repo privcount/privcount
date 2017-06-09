@@ -78,6 +78,10 @@ Tor sends CREATE* and DESTROY cells to manage circuits.
 
 Tor sends SENDME cells to request more data.
 
+### Retransmitted Cells
+
+Tor retransmits dropped cells. This can lead to double-counting in PrivCount.
+
 ### Padding
 
 Tor automatically drops [V]PADDING cells: upcoming versions of tor may send
