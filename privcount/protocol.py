@@ -17,7 +17,7 @@ from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
 from privcount.log import log_error, errorCallback, stop_reactor
 
-PRIVCOUNT_SHORT_VERSION_STRING = '1.0.1'
+PRIVCOUNT_SHORT_VERSION_STRING = '1.1.0'
 
 def get_privcount_version():
     '''
