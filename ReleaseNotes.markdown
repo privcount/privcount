@@ -48,17 +48,15 @@ Issue numbers are from:
 ## PrivCount 1.0.1
 
 PrivCount 1.0.1 fixes a Share Keeper forward-compatibility issue, and makes
-other minor counter, compatibility and documentation fixes.
+other minor accuracy, compatibility and documentation fixes.
 
 PrivCount 1.0.1 is compatible with PrivCount 1.0.0.
 PrivCount 1.0.1 Share Keepers are forward-compatible with counters introduced
 in later versions.
 
-TODO
 The versions of the PrivCount Tor Patch released with PrivCount 1.0.1 are:
-* privcount-1.0.1-tor-0.3.0.7 (Tor stable)
-* privcount-1.0.1-tor-0.2.9.10 (Tor LTS)
-/TODO
+* privcount-1.0.1-tor-0.3.0.8 (Tor stable)
+* privcount-1.0.1-tor-0.2.9.11 (Tor LTS)
 
 Compatibility:
 * Make Share Keepers accept blinding shares containing counters introduced in
@@ -75,7 +73,7 @@ Documentation:
 * Document PrivCount's torrc reload behaviour in TorEvents.markdown #327
 * Document minor inaccuracies in PrivCount's statistics #349, #350
 
-A full list of issues resolved is available at:
+A full list of issues resolved in this release is available at:
 https://github.com/privcount/privcount/milestone/10?closed=1
 
 ## PrivCount 1.0.0
@@ -196,7 +194,7 @@ Robustness:
 * The Tally Server warns if a Data Collector never received any events #304
 * PrivCount stops when major errors occur #148
 
-A full list of issues resolved is available at:
+A full list of issues resolved in this release is available at:
 https://github.com/privcount/privcount/milestone/1?closed=1
 
 ## PrivCount 0.1.1
