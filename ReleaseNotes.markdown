@@ -58,6 +58,16 @@ The versions of the PrivCount Tor Patch released with PrivCount 1.0.1 are:
 * privcount-1.0.1-tor-0.3.0.8 (Tor stable)
 * privcount-1.0.1-tor-0.2.9.11 (Tor LTS)
 
+All PrivCount relay operators should upgrade.
+
+These Tor versions fix:
+* multiple relay connection issues
+* HSDir3 descriptor upload issues (0.3.0.8 only)
+* undefined behaviour parsing geoip6 files
+
+See Tor's release announcement for details:
+https://blog.torproject.org/blog/tor-0308-released-fix-hidden-services-also-are-02429-02514-02612-0278-02814-and-02911
+
 Compatibility:
 * Make Share Keepers accept blinding shares containing counters introduced in
   later PrivCount versions #340
