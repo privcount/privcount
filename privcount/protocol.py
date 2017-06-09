@@ -2278,7 +2278,8 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                     self.sendLine("250-version=0.2.8.6 (git-4d217548e3f05569)")
                     self.sendLine("250 OK")
                 elif len(parts) == 2 and parts[1] == "privcount-version":
-                    self.sendLine("250-privcount-version=1.0.0")
+                    self.sendLine("250-privcount-version={}"
+                                  .format(PRIVCOUNT_SHORT_VERSION_STRING))
                     self.sendLine("250 OK")
                 elif len(parts) == 2 and parts[1] == "address":
                     # TEST-NET from https://tools.ietf.org/html/rfc5737
