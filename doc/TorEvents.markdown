@@ -179,6 +179,8 @@ It has the following known issues:
   and caches. This can lead to dropped cells or a smaller Number of Bytes per
   event
   https://github.com/privcount/privcount/issues/349
+* PrivCount double-counts some retransmitted cells
+  https://github.com/privcount/privcount/issues/350
 
 ### PRIVCOUNT_STREAM_ENDED
 
@@ -214,6 +216,8 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/193
 * PrivCount's additional RAM allocations may affect Tor's stream limits
   https://github.com/privcount/privcount/issues/349
+* PrivCount double-counts some retransmitted cells
+  https://github.com/privcount/privcount/issues/350
 
 ### PRIVCOUNT_CIRCUIT_ENDED
 
@@ -254,6 +258,8 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/196
 * PrivCount's additional RAM allocations may affect Tor's circuit limits
   https://github.com/privcount/privcount/issues/349
+* PrivCount double-counts some retransmitted cells
+  https://github.com/privcount/privcount/issues/350
 
 ### PRIVCOUNT_CONNECTION_ENDED
 
