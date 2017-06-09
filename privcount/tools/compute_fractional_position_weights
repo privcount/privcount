@@ -11,6 +11,14 @@ from stem.descriptor import parse_file
 from stem.descriptor import DocumentHandler
 from stem.descriptor.remote import DescriptorDownloader
 
+def get_unknown_privcount_version_stub():
+    return 'unknown (>= PrivCount 1.0.1)'
+
+try:
+    from privcount.protocol import get_privcount_version
+except:
+    get_privcount_version = get_unknown_privcount_version_stub
+
 '''
 This is a general purpose tool that will search through a consenus or all
 consensuses in a directory and compute the mean position weights that a
@@ -22,6 +30,8 @@ Example execution (the '-' means download the latest consensus from Tor):
 '''
 
 def main():
+    print "running weights privcount version {}".format(get_privcount_version())
+
     args = get_args()
 
     if args.consensus == '-':
