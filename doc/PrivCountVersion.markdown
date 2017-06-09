@@ -100,10 +100,20 @@ minor version and a git commit hash, like this:
 
     privcount-1.0.0-tor-0.2.9.10-a7bcab263
 
-# Rebasing onto the Latest Tor Version
+# Updating to the Latest Tor Version
 
 Try to use the latest stable release whenever possible: avoid maint tags,
 because they change too often, and avoid outdated or alpha versions.
+
+## Merging
+Try to merge tor updates: it's simpler and cleaner.
+```
+git checkout -b privcount-maint-1.0-tor-0.3.0.8 privcount-maint-1.0-tor-0.3.0.7
+git merge tor-0.3.0.8
+```
+Then deal with any merge conflicts.
+
+## Rebasing
 
 To rebase privcount onto a newer version of tor, use commands like:
 ```
@@ -112,11 +122,20 @@ git rebase --onto tor-0.3.0.7 tor-0.2.7.6 privcount-maint-1.0-tor-0.3.0.7
 ```
 Then deal with any merge conflicts until the rebase is completed.
 
+## Version Updates
+
 To bump the tor version in the git tags, use:
 ```
-bumpversion --tag-name "privcount-{new_version}-tor-0.3.0.7"
+# edit tag_name manually
+$EDITOR .bumpversion.cfg
+git add .bumpversion.cfg
+git commit -m "Update bumpversion tag for Tor 0.3.0.7"
+bumpversion major|minor|patch
+git tag -s -m "Release PrivCount 1.0.0 Tor 0.3.0.7" privcount-1.0.0-tor-0.3.0.7
 git push --tags privcount-remote
 ```
+
+## privcount branch updates
 
 To force update the old privcount branch with the newly rebased code:
 ```
@@ -125,3 +144,5 @@ git branch -D privcount
 git checkout -b privcount privcount-maint-1.0-tor-0.3.0.7
 git push --force privcount-remote privcount
 ```
+
+Use similar commands to update the privcount-master branch.
