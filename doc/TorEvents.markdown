@@ -107,6 +107,9 @@ created before PrivCount was last enabled. Otherwise, events could have
 incomplete cell or byte counts, and we would have a bias towards long-running
 events. (PrivCount does not send any events when EnablePrivCount is 0.)
 
+PrivCount measures some overheads, and excludes others.
+See doc/TorNetworkOverhead.markdown for details.
+
 ### PRIVCOUNT_DNS_RESOLVED
 
 This event is sent when an exit receives a client request, including:
@@ -179,8 +182,6 @@ It has the following known issues:
   and caches. This can lead to dropped cells or a smaller Number of Bytes per
   event
   https://github.com/privcount/privcount/issues/349
-* PrivCount double-counts some retransmitted cells
-  https://github.com/privcount/privcount/issues/350
 
 ### PRIVCOUNT_STREAM_ENDED
 
@@ -216,8 +217,6 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/193
 * PrivCount's additional RAM allocations may affect Tor's stream limits
   https://github.com/privcount/privcount/issues/349
-* PrivCount double-counts some retransmitted cells
-  https://github.com/privcount/privcount/issues/350
 
 ### PRIVCOUNT_CIRCUIT_ENDED
 
@@ -258,8 +257,6 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/196
 * PrivCount's additional RAM allocations may affect Tor's circuit limits
   https://github.com/privcount/privcount/issues/349
-* PrivCount double-counts some retransmitted cells
-  https://github.com/privcount/privcount/issues/350
 
 ### PRIVCOUNT_CONNECTION_ENDED
 

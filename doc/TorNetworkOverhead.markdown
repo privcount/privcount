@@ -12,6 +12,9 @@ In general, PrivCount ignores some invalid events, such as DNS resolution
 failures. It also ignores or has incomplete data for some events where the
 relevant hooks have not yet been implemented.
 
+In general, PrivCount counts every time a tor client attempts an action. This
+may include retries if the action fails.
+
 ## Directory
 
 Tor's directory documents are used by clients to locate relays and build
@@ -77,10 +80,6 @@ Tor sends CREATE* and DESTROY cells to manage circuits.
 ### Data Flow Management
 
 Tor sends SENDME cells to request more data.
-
-### Retransmitted Cells
-
-Tor retransmits dropped cells. This can lead to double-counting in PrivCount.
 
 ### Padding
 
