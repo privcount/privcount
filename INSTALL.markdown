@@ -139,6 +139,15 @@ It is also used to run the PrivCount tor relay ('tor') and tor network
 
 On by default, if the libraries are available.
 
+#### Linux Capabilities (Optional)
+
+    Debian/Ubuntu:  libcap-dev
+    Other Linux:    libcap libcap-devel
+
+On by default, if the libraries are available.
+Recommended if you are on Limux which supports capabilities, particularly if
+your init system uses them.
+
 #### Linux systemd notifications (Required if using systemd)
 
     Debian/Ubuntu:  libsystemd-dev pkg-config
