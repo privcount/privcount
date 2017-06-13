@@ -107,6 +107,9 @@ created before PrivCount was last enabled. Otherwise, events could have
 incomplete cell or byte counts, and we would have a bias towards long-running
 events. (PrivCount does not send any events when EnablePrivCount is 0.)
 
+PrivCount measures some overheads, and excludes others.
+See doc/TorNetworkOverhead.markdown for details.
+
 ### PRIVCOUNT_DNS_RESOLVED
 
 This event is sent when an exit receives a client request, including:
