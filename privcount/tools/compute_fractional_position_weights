@@ -74,7 +74,7 @@ def main():
     print "mean exit fraction is {}".format(mean(exit_fracs))
     print "mean hsdir2 fraction is {} (6 HSDirs per service)".format(mean(hsdir2_fracs))
     print "mean hsdir3 fraction is {} (3 HSDirs per blinded service replica)".format(mean(hsdir3_fracs))
-    print "mean intro fraction is {} (v2: 3-10, v3: 3-20 Intro Points per service)".format(mean(intro_fracs))
+    print "mean intro fraction is {} (3-10 (v3: max in consensus) Intro Points per service)".format(mean(intro_fracs))
     # the rend frac is the same as the middle frac
     print "mean rend fraction is {}".format(mean(middle_fracs))
 
