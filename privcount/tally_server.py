@@ -21,7 +21,7 @@ from twisted.internet.protocol import ServerFactory
 from privcount.config import normalise_path, choose_secret_handshake_path
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins
 from privcount.crypto import generate_keypair, generate_cert
-from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback
+from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
 from privcount.node import PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
 from privcount.statistics_noise import get_noise_allocation
@@ -650,11 +650,8 @@ class TallyServer(ServerFactory, PrivCountServer):
         logging.
         '''
         # Allow standard-length tor relay nicknames and fingerprints
-        if len(uid) <= 20:
-            return uid
-        else:
-            # 8 prefix + 4 dots + 8 suffix
-            return uid[0:8] + '....' + uid[-9:-1]
+        # Replace entire hex characters when summarising, not just ...
+        return summarise_string(uid, 20, ellipsis='....')
 
     def get_client_address(self, uid, status=None):
         '''

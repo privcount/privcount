@@ -80,6 +80,38 @@ def stop_reactor(exit_code=0):
     assert exit_code <= 127
     os._exit(exit_code)
 
+def summarise_string(str, max_len, ellipsis='...'):
+        '''
+        Summarise a string so it is a suitable length for logging.
+        Returns a string that is at most min(max_len, len(str)) characters
+        long, using ellipsis to replace one or more characters in the middle
+        of the string if necessary.
+        '''
+        max_len = int(max_len)
+        # using an empty ellipsis is ok, but it might confuse people
+        if ellipsis is None:
+            ellipsis = ''
+        # check the easy case
+        orig_len = len(str)
+        if orig_len <= max_len:
+            return str
+        # handle some degenerate cases
+        if max_len == 0 or orig_len == 0:
+            return ''
+        e_len = len(ellipsis)
+        if e_len >= max_len:
+            return ellipsis[0:max_len]
+        # now we are left with the summary case
+        content_len = max_len - e_len
+        assert content_len > 0
+        # if content_len is odd, put the extra character at the start
+        start_len = (content_len + 1) / 2
+        end_len = content_len / 2
+        assert start_len + e_len + end_len == max_len
+        summary_str = str[0:start_len] + ellipsis + str[(-end_len-1):-1]
+        assert len(summary_str) == max_len
+        return summary_str
+
 def normalise_time(time):
     '''
     Return the normalised value of time
