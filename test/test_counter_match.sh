@@ -30,7 +30,7 @@ grep -i "^ *$NAME_REGEX:$" "$TEST_DIR/traffic.noise.yaml" \
 # Process the test counter files
 for counters in "$TEST_DIR"/counters.{bins,noise,sigmas}.yaml; do
     #echo "Processing $counters:"
-    grep -i "$NAME_REGEX:$" "$counters" \
+    grep -i "^[ \t]*$NAME_REGEX:$" "$counters" \
         | grep -v -e '^#' -e 'bins:' -e 'privacy:' -e 'counters:' \
         | tr -d " \t:" > "$counters.names.unsorted"
     # The traffic model bins are automatic, and they don't support sigmas
@@ -65,6 +65,12 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
     if [ `basename "$code"` = 'data_collector.py' ]; then
         cat "$TEST_DIR/traffic_model.py.names.extra" \
             >> "$OUT_PATH.names.unsorted"
+    fi
+    # Add the HSDir bins to the data_collector file only
+    # The HSDir counters are code-driven, so they don't appear as literals
+    if [ `basename "$code"` = 'data_collector.py' ]; then
+        cat "$TEST_DIR/counters.bins.yaml.names" | grep "^HSDir[2-3]" \
+            >> "$OUT_PATH.names.unsorted" || true
     fi
     # Add the ZeroCount counter (it has no events and no increments)
     cat "$TEST_DIR/statistics_noise.py.names.extra" \

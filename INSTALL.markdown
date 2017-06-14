@@ -208,6 +208,9 @@ It can be used to test tor as well.
 
     git clone https://git.torproject.org/chutney.git
 
+You will need a recent version of chutney with networks/hs-exit-min, git
+revision 72fa261 or later.
+
 ### Optional PrivCount Data Collector Tests
 
 These tests require a PrivCount-patched Tor.

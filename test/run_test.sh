@@ -50,11 +50,11 @@ PRIVCOUNT_TOR_GENCERT_BINARY=src/tools/tor-gencert
 # Chutney source
 # use the chutney path, or assume chutney is beside privcount
 PRIVCOUNT_CHUTNEY_PATH=${PRIVCOUNT_CHUTNEY_PATH:-${CHUTNEY_PATH:-`dirname "$0"`/../../chutney/}}
-PRIVCOUNT_CHUTNEY_FLAVOUR=${PRIVCOUNT_CHUTNEY_FLAVOUR:-${NETWORK_FLAVOUR:-basic-min}}
+PRIVCOUNT_CHUTNEY_FLAVOUR=${PRIVCOUNT_CHUTNEY_FLAVOUR:-${NETWORK_FLAVOUR:-hs-exit-min}}
 # the relay control ports opened by the selected chutney flavour
 # this must be manually kept in sync with PRIVCOUNT_CHUTNEY_FLAVOUR
-# basic-min has 3 relays/authorities and starts at controlport_base (8000)
-PRIVCOUNT_CHUTNEY_PORTS=${PRIVCOUNT_CHUTNEY_PORTS:-`seq 8000 8002 | tr '\n' ' '`}
+# hs-exit-min has 5 relays/authorities and starts at controlport_base (8000)
+PRIVCOUNT_CHUTNEY_PORTS=${PRIVCOUNT_CHUTNEY_PORTS:-`seq 8000 8004 | tr '\n' ' '`}
 # Connections are simultaneous, rounds are sequential
 PRIVCOUNT_CHUTNEY_CONNECTIONS=${PRIVCOUNT_CHUTNEY_CONNECTIONS:-${CHUTNEY_CONNECTIONS:-1}}
 PRIVCOUNT_CHUTNEY_ROUNDS=${PRIVCOUNT_CHUTNEY_ROUNDS:-${CHUTNEY_ROUNDS:-1}}

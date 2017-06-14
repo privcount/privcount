@@ -1,4 +1,13 @@
-# histograms represent a collection of counters that together define a histogram
+# histograms represent a collection of counters (bins) that together define a
+# histogram
+
+# Follow these steps to update this file:
+# 1. Add new counters to privcount/counter.py
+# 2. Run privcount/tools/add_counter.sh
+# 3. Manually add bins to the multi-bin counters
+# All Time, Ratio, and Histogram counters are multi-bin.
+# Some legacy Count counters are multi-bin, check the source or run the
+# injector test and look for the assertion failures.
 
 # when you modify the counters in this file, run:
 # test/test_counter_match.sh
@@ -800,5 +809,1214 @@ counters:
         - [-.inf, .inf]
     # not counted - used only to make sure aggregation was performed correctly
     ZeroCount:
+        bins:
+        - [-.inf, .inf]
+# HSDir counters, see doc/CounterDefinitions.markdown for documentation
+# These are suggested bin bounds for initial data collection
+    # Creation times are rounded to the nearest hour by the service
+    # We expect most to be in [0, 3600), with a few outside due to clock skew
+    # or genuine upload delays
+    HSDir2StoreAddUploadDelayTime:
+        bins:
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,  7200.0]
+        - [ 7200.0,    .inf]
+    HSDir2StoreAddUpdatedUploadDelayTime:
+        bins:
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,  7200.0]
+        - [ 7200.0,    .inf]
+    HSDir2StoreUploadDelayTime:
+        bins:
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,  7200.0]
+        - [ 7200.0,    .inf]
+    HSDir2StoreRejectUploadDelayTime:
+        bins:
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,  7200.0]
+        - [ 7200.0,    .inf]
+    HSDir2StoreAddNewUploadDelayTime:
+        bins:
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,  7200.0]
+        - [ 7200.0,    .inf]
+    # HSv2 add 613 intro bytes and 828-833 descriptor bytes for each
+    # unencrypted intro point after the first. There is 1 extra intro byte and
+    # ~70 extra descriptor bytes for the first.
+    # The size of each intro point may vary.
+    # IntroPointCount EncodedIntroPointByteCount EncodedDescriptorByteCount
+    #  0                 0                        680
+    #  1               614                       1579
+    #  2              1227                       2408
+    #  3              1840                       3241
+    #  4              2453                       4070
+    #  5              3066                       4898
+    #  6              3679                       5731
+    #  7              4292                       6560
+    #  8              4905                       7389
+    #  9              5518                       8221
+    # 10              6131                       9050
+    #
+    # HSv2 add 613 intro bytes and 828-833 descriptor bytes for each
+    # basic auth intro point (with 1 client) after the first. There are
+    # 339 extra intro bytes and ~459 extra descriptor bytes for the first.
+    # Extra clients add extra intro and descriptor bytes.
+    # IntroPointCount EncodedIntroPointByteCount EncodedDescriptorByteCount
+    #  0              (indistinguishable from unencrypted intro points)
+    #  1               952                       2038
+    #  2              1565                       2867
+    #  3              2178                       3696
+    #  4              2791                       4526
+    #  5              3404                       5357
+    #  6              4017                       6186
+    #  7              4630                       7019
+    #  8              5243                       7848
+    #  9              5856                       8676
+    # 10              6469                       9509
+    #
+    # HSv2 add 613 intro bytes and 828-833 descriptor bytes for each
+    # stealth auth intro point after the first. There are 17 extra intro bytes
+    # and ~20 extra descriptor bytes for the first.
+    # There is one descriptor per client: extra clients add extra descriptors.
+    # IntroPointCount EncodedIntroPointByteCount EncodedDescriptorByteCount
+    #  0              (indistinguishable from unencrypted intro points)
+    #  1               630                       1600
+    #  2              1243                       2432
+    #  3              1856                       3261
+    #  4              2469                       4090
+    #  5              3082                       4923
+    #  6              3695                       5751
+    #  7              4308                       6580
+    #  8              4921                       7410
+    #  9              5534                       8240
+    # 10              6147                       9070
+    # We ignore stealth auth sizes, because they are close to no auth sizes.
+    #
+    # The maximum HSv2 descriptor size is 20kB.
+    #
+    # Intro bins can be produced using python:
+    # no_auth =    [(x*613)+1   for x in xrange(0,11)]
+    # basic_auth = [(x*613)+339 for x in xrange(1,11)]
+    # min_sizes = sorted(no_auth + basic_auth)
+    # bin_bounds = [(min_sizes[i] + min_sizes[i-1])/2 for i in xrange(1, len(min_sizes))]
+    # A similar calculation was used for descriptor bins:
+    # no_auth =    [680] + [(x*828)+1579   for x in xrange(0,10)]
+    # basic_auth = [(x*828)+2038   for x in xrange(0,10)]
+    # ...
+    HSDir2StoreAddIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    # We haven't done any testing on HSv3, because there is no service
+    # implementation available. So we just use 10kB blocks as a placeholder
+    # The maximum HSv3 descriptor size is 50kB, or the HSV3MaxDescriptorSize
+    # consensus parameter
+    HSDir3StoreAddIntroByteHistogram:
+        bins:
+        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    1, 10241]
+        - [10241, 20481]
+        - [20481, 30721]
+        - [30721, 40961]
+        - [40961, 51201]
+        - [51201,  .inf] # Over-size descriptors: should be rejected, check the HSV3MaxDescriptorSize consensus parameter
+    HSDir2StoreIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir3StoreIntroByteHistogram:
+        bins:
+        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    1, 10241]
+        - [10241, 20481]
+        - [20481, 30721]
+        - [30721, 40961]
+        - [40961, 51201]
+        - [51201,  .inf] # Over-size descriptors: should be rejected, check the HSV3MaxDescriptorSize consensus parameter
+    HSDir2StoreAddClientAuthIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreClientAuthIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreAddNoClientAuthIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreNoClientAuthIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreAddNewNoClientAuthIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreAddNewClientAuthIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreRejectIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir3StoreRejectIntroByteHistogram:
+        bins:
+        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    1, 10241]
+        - [10241, 20481]
+        - [20481, 30721]
+        - [30721, 40961]
+        - [40961, 51201]
+        - [51201,  .inf] # Over-size descriptors: should be rejected, check the HSV3MaxDescriptorSize consensus parameter
+    HSDir2StoreAddNewIntroByteHistogram:
+        bins:
+        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
+        - [    1,   307] # empty?
+        - [  307,   783] # plain(1) and stealth(1)
+        - [  783,  1089] # basic(1, n), n clients small
+        - [ 1089,  1396] # plain(2) and stealth(2)
+        - [ 1396,  1702] # basic(2, n), n clients small
+        - [ 1702,  2009] # plain(3) and stealth(3)
+        - [ 2009,  2315] # basic(3, n), n clients small
+        - [ 2315,  2622] # plain(4) and stealth(4)
+        - [ 2622,  2928] # basic(4, n), n clients small
+        - [ 2928,  3235] # plain(5) and stealth(5)
+        - [ 3235,  3541] # basic(5, n), n clients small
+        - [ 3541,  3848] # plain(6) and stealth(6)
+        - [ 3848,  4154] # basic(6, n), n clients small
+        - [ 4154,  4461] # plain(7) and stealth(7)
+        - [ 4461,  4767] # basic(7, n), n clients small
+        - [ 4767,  5074] # plain(8) and stealth(8)
+        - [ 5074,  5380] # basic(8, n), n clients small
+        - [ 5380,  5687] # plain(9) and stealth(9)
+        - [ 5687,  5993] # basic(9, n), n clients small
+        - [ 5993,  6300] # plain(10) and stealth(10)
+        - [ 6300,  6606] # basic(10, n), n clients small (same width as 9)
+        - [ 6606, 10241] # basic(1..m, n), m intro points unknown, n clients large
+        - [10241, 15361] # Measure large descriptors in 5kB blocks
+        - [15361, 20481]
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir3StoreAddNewIntroByteHistogram:
+        bins:
+        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    1, 10241]
+        - [10241, 20481]
+        - [20481, 30721]
+        - [30721, 40961]
+        - [40961, 51201]
+        - [51201,  .inf] # Over-size descriptors: should be rejected, check the HSV3MaxDescriptorSize consensus parameter
+    # Descriptor Bytes
+    HSDir2StoreAddDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir3StoreAddDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    1, 10241]
+        - [10241, 20481]
+        - [20481, 30721]
+        - [30721, 40961]
+        - [40961, 51201]
+        - [51201,  .inf] # Over-size descriptors: should be rejected, check the HSV3MaxDescriptorSize consensus parameter
+    HSDir2StoreDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir3StoreDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    1, 10241]
+        - [10241, 20481]
+        - [20481, 30721]
+        - [30721, 40961]
+        - [40961, 51201]
+        - [51201,  .inf] # Over-size descriptors: should be rejected, check the HSV3MaxDescriptorSize consensus parameter
+    HSDir2StoreAddClientAuthDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreClientAuthDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreAddNoClientAuthDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreNoClientAuthDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreAddNewNoClientAuthDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreAddNewClientAuthDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir2StoreRejectDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir3StoreRejectDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    1, 10241]
+        - [10241, 20481]
+        - [20481, 30721]
+        - [30721, 40961]
+        - [40961, 51201]
+        - [51201,  .inf] # Over-size descriptors: should be rejected, check the HSV3MaxDescriptorSize consensus parameter
+    HSDir2StoreAddNewDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # zero: empty descriptors: should be rejected
+        - [    1,   340] # empty?
+        - [  340,  1129] # plain(0) and stealth(0) and basic(0, n)
+        - [ 1129,  1808] # plain(1) and stealth(1)
+        - [ 1808,  2222] # basic(1, n), n clients small
+        - [ 2222,  2636] # plain(2) and stealth(2)
+        - [ 2636,  3050] # basic(2, n), n clients small
+        - [ 3050,  3464] # plain(3) and stealth(3)
+        - [ 3464,  3878] # basic(3, n), n clients small
+        - [ 3878,  4292] # plain(4) and stealth(4)
+        - [ 4292,  4706] # basic(4, n), n clients small
+        - [ 4706,  5120] # plain(5) and stealth(5)
+        - [ 5120,  5534] # basic(5, n), n clients small
+        - [ 5534,  5948] # plain(6) and stealth(6)
+        - [ 5948,  6362] # basic(6, n), n clients small
+        - [ 6362,  6776] # plain(7) and stealth(7)
+        - [ 6776,  7190] # basic(7, n), n clients small
+        - [ 7190,  7604] # plain(8) and stealth(8)
+        - [ 7604,  8018] # basic(8, n), n clients small
+        - [ 8018,  8432] # plain(9) and stealth(9)
+        - [ 8432,  8846] # basic(9, n), n clients small
+        - [ 8846,  9260] # plain(10) and stealth(10)
+        - [ 9260,  9674] # basic(10, n), n clients small (same width as 9)
+        - [ 9674, 15361] # basic(1..m, n), m intro points unknown, n clients large
+        - [15361, 20481] # Measure large descriptors in 5kB blocks
+        - [20481,  .inf] # Over-size descriptors: should be rejected
+    HSDir3StoreAddNewDescriptorByteHistogram:
+        bins:
+        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    1, 10241]
+        - [10241, 20481]
+        - [20481, 30721]
+        - [30721, 40961]
+        - [40961, 51201]
+        - [51201,  .inf] # Over-size descriptors: should be rejected, check the HSV3MaxDescriptorSize consensus parameter
+    # Each HSv3 Descriptor is updated for up to 36 hours (each SRV expires 36
+    # hours after the service first sees it in a consensus, and new SRVs are
+    # created every 24 hours). Descriptors are uploaded at least every 1-2
+    # hours, and expire after 3 hours.
+    HSDir3StoreAddRevisionHistogram:
+        bins:
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  2]
+        - [ 2,  3]
+        - [ 3,  4]
+        - [ 4,  5]
+        - [ 5,  6]
+        - [ 6,  7]
+        - [ 7,  8]
+        - [ 8,  9]
+        - [ 9, 10]
+        - [10, 11]
+        - [11, 12]
+        - [12, 13]
+        - [13, 14]
+        - [14, 15]
+        - [15, 16]
+        - [16, 17]
+        - [17, 18] # Descriptors updated every 2 hours
+        - [18, 19]
+        - [19, 20]
+        - [20, 21]
+        - [21, 22]
+        - [22, 23]
+        - [23, 24]
+        - [24, 25]
+        - [25, 26]
+        - [26, 27]
+        - [27, 28]
+        - [28, 29]
+        - [29, 30]
+        - [30, 31]
+        - [31, 32]
+        - [32, 33]
+        - [33, 34]
+        - [34, 35]
+        - [35, 36] # Descriptors updated every hour
+        - [36, 72] # Descriptors updated twice every hour
+        - [72, 96] # Descriptors updated 3x every hour
+        - [96, 108] # Descriptors updated 4x every hour
+        - [108, 144] # Descriptors updated 5x every hour
+        - [144, 180] # Descriptors updated 6x every hour
+        - [180, .inf] # Descriptors updated >6x every hour
+    HSDir3StoreAddUpdatedRevisionHistogram:
+        bins:
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  2]
+        - [ 2,  3]
+        - [ 3,  4]
+        - [ 4,  5]
+        - [ 5,  6]
+        - [ 6,  7]
+        - [ 7,  8]
+        - [ 8,  9]
+        - [ 9, 10]
+        - [10, 11]
+        - [11, 12]
+        - [12, 13]
+        - [13, 14]
+        - [14, 15]
+        - [15, 16]
+        - [16, 17]
+        - [17, 18] # Descriptors updated every 2 hours
+        - [18, 19]
+        - [19, 20]
+        - [20, 21]
+        - [21, 22]
+        - [22, 23]
+        - [23, 24]
+        - [24, 25]
+        - [25, 26]
+        - [26, 27]
+        - [27, 28]
+        - [28, 29]
+        - [29, 30]
+        - [30, 31]
+        - [31, 32]
+        - [32, 33]
+        - [33, 34]
+        - [34, 35]
+        - [35, 36] # Descriptors updated every hour
+        - [36, 72] # Descriptors updated twice every hour
+        - [72, 96] # Descriptors updated 3x every hour
+        - [96, 108] # Descriptors updated 4x every hour
+        - [108, 144] # Descriptors updated 5x every hour
+        - [144, 180] # Descriptors updated 6x every hour
+        - [180, .inf] # Descriptors updated >6x every hour
+    HSDir3StoreRevisionHistogram:
+        bins:
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  2]
+        - [ 2,  3]
+        - [ 3,  4]
+        - [ 4,  5]
+        - [ 5,  6]
+        - [ 6,  7]
+        - [ 7,  8]
+        - [ 8,  9]
+        - [ 9, 10]
+        - [10, 11]
+        - [11, 12]
+        - [12, 13]
+        - [13, 14]
+        - [14, 15]
+        - [15, 16]
+        - [16, 17]
+        - [17, 18] # Descriptors updated every 2 hours
+        - [18, 19]
+        - [19, 20]
+        - [20, 21]
+        - [21, 22]
+        - [22, 23]
+        - [23, 24]
+        - [24, 25]
+        - [25, 26]
+        - [26, 27]
+        - [27, 28]
+        - [28, 29]
+        - [29, 30]
+        - [30, 31]
+        - [31, 32]
+        - [32, 33]
+        - [33, 34]
+        - [34, 35]
+        - [35, 36] # Descriptors updated every hour
+        - [36, 72] # Descriptors updated twice every hour
+        - [72, 96] # Descriptors updated 3x every hour
+        - [96, 108] # Descriptors updated 4x every hour
+        - [108, 144] # Descriptors updated 5x every hour
+        - [144, 180] # Descriptors updated 6x every hour
+        - [180, .inf] # Descriptors updated >6x every hour
+    HSDir3StoreRejectRevisionHistogram:
+        bins:
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  2]
+        - [ 2,  3]
+        - [ 3,  4]
+        - [ 4,  5]
+        - [ 5,  6]
+        - [ 6,  7]
+        - [ 7,  8]
+        - [ 8,  9]
+        - [ 9, 10]
+        - [10, 11]
+        - [11, 12]
+        - [12, 13]
+        - [13, 14]
+        - [14, 15]
+        - [15, 16]
+        - [16, 17]
+        - [17, 18] # Descriptors updated every 2 hours
+        - [18, 19]
+        - [19, 20]
+        - [20, 21]
+        - [21, 22]
+        - [22, 23]
+        - [23, 24]
+        - [24, 25]
+        - [25, 26]
+        - [26, 27]
+        - [27, 28]
+        - [28, 29]
+        - [29, 30]
+        - [30, 31]
+        - [31, 32]
+        - [32, 33]
+        - [33, 34]
+        - [34, 35]
+        - [35, 36] # Descriptors updated every hour
+        - [36, 72] # Descriptors updated twice every hour
+        - [72, 96] # Descriptors updated 3x every hour
+        - [96, 108] # Descriptors updated 4x every hour
+        - [108, 144] # Descriptors updated 5x every hour
+        - [144, 180] # Descriptors updated 6x every hour
+        - [180, .inf] # Descriptors updated >6x every hour
+    HSDir3StoreAddNewRevisionHistogram:
+        bins:
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  2]
+        - [ 2,  3]
+        - [ 3,  4]
+        - [ 4,  5]
+        - [ 5,  6]
+        - [ 6,  7]
+        - [ 7,  8]
+        - [ 8,  9]
+        - [ 9, 10]
+        - [10, 11]
+        - [11, 12]
+        - [12, 13]
+        - [13, 14]
+        - [14, 15]
+        - [15, 16]
+        - [16, 17]
+        - [17, 18] # Descriptors updated every 2 hours
+        - [18, 19]
+        - [19, 20]
+        - [20, 21]
+        - [21, 22]
+        - [22, 23]
+        - [23, 24]
+        - [24, 25]
+        - [25, 26]
+        - [26, 27]
+        - [27, 28]
+        - [28, 29]
+        - [29, 30]
+        - [30, 31]
+        - [31, 32]
+        - [32, 33]
+        - [33, 34]
+        - [34, 35]
+        - [35, 36] # Descriptors updated every hour
+        - [36, 72] # Descriptors updated twice every hour
+        - [72, 96] # Descriptors updated 3x every hour
+        - [96, 108] # Descriptors updated 4x every hour
+        - [108, 144] # Descriptors updated 5x every hour
+        - [144, 180] # Descriptors updated 6x every hour
+        - [180, .inf] # Descriptors updated >6x every hour
+    # HSv2 allows a maximum of 10 intro points
+    # Data Collectors warn outside the [0, 10] range
+    HSDir2StoreAddIntroPointHistogram:
+        bins:
+        - [ 0,  1]
+        - [ 1,  2]
+        - [ 2,  3]
+        - [ 3,  4]
+        - [ 4,  5]
+        - [ 5,  6]
+        - [ 6,  7]
+        - [ 7,  8]
+        - [ 8,  9]
+        - [ 9, 10]
+    HSDir2StoreIntroPointHistogram:
+        bins:
+        - [ 0,  1]
+        - [ 1,  2]
+        - [ 2,  3]
+        - [ 3,  4]
+        - [ 4,  5]
+        - [ 5,  6]
+        - [ 6,  7]
+        - [ 7,  8]
+        - [ 8,  9]
+        - [ 9, 10]
+    HSDir2StoreRejectIntroPointHistogram:
+        bins:
+        - [ 0,  1]
+        - [ 1,  2]
+        - [ 2,  3]
+        - [ 3,  4]
+        - [ 4,  5]
+        - [ 5,  6]
+        - [ 6,  7]
+        - [ 7,  8]
+        - [ 8,  9]
+        - [ 9, 10]
+    HSDir2StoreAddNewIntroPointHistogram:
+        bins:
+        - [ 0,  1]
+        - [ 1,  2]
+        - [ 2,  3]
+        - [ 3,  4]
+        - [ 4,  5]
+        - [ 5,  6]
+        - [ 6,  7]
+        - [ 7,  8]
+        - [ 8,  9]
+        - [ 9, 10]
+    HSDir2StoreAddCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreAddCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectExpiredHaveCachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectFutureHaveCachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectExpiredNoCachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectFutureNoCachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddUpdatedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreAddUpdatedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectUnparseableCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreRejectUnparseableCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectDuplicateCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectObsoleteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreRejectObsoleteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreAddIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddUpdatedIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreAddUpdatedIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreClientAuthIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreNoClientAuthIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreRejectIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddNewIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreAddNewIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreAddDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddUpdatedDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreAddUpdatedDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreClientAuthDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreNoClientAuthDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreRejectDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddNewDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreAddNewDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectExpiredHaveCachedClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectFutureHaveCachedClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectExpiredNoCachedClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectFutureNoCachedClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddUpdatedClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectDuplicateClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectObsoleteClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectExpiredHaveCachedNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectFutureHaveCachedNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectExpiredNoCachedNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectFutureNoCachedNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddUpdatedNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectDuplicateNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectObsoleteNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddNewNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddNewClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreRejectCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreRejectCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2StoreAddNewCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3StoreAddNewCount:
         bins:
         - [-.inf, .inf]
