@@ -71,6 +71,7 @@ class TorCtlClient(ReconnectingClientFactory):
         '''
         self.client = TorControlClientProtocol(self)
         # ask for all the events
+        print "Relay events: {}".format(", ".join(get_valid_events()))
         self.client.startCollection(None, event_list=get_valid_events())
         return self.client
 
