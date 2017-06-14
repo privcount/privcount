@@ -4,16 +4,19 @@ The names of the PrivCount counters are used when communicating between nodes.
 
 ## Node Agreement
 
-All nodes in the network must agree on the counter names they intend to use.
+The Tally Server and all Data Collectors in the network must agree on the
+counter names they intend to use. Share Keepers will store shares for any
+counter name, even if it was added in a later version.
 (The tor patch does not know any counter names: the PrivCount python code maps
 each counter to the events it uses, and processes events to increment
 counters.)
 
 If new counters are added, they can not be reported by Data Collectors until
-all Share Keepers and the Tally Server know about them.
+the Tally Server upgrades to a version that has them listed as valid counters.
 
 If old counters are removed, all Data Collectors must stop reporting them
-before any Share Keeper or the Tally Server can stop processing them.
+before the Tally Server can upgrade (or downgrade) to a version that stops
+recognising them as valid counters.
 
 ## Naming PrivCount Counters
 
