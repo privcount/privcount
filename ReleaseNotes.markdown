@@ -124,6 +124,9 @@ See Tor's release announcement for details:
 https://blog.torproject.org/blog/tor-0308-released-fix-hidden-services-also-are-02429-02514-02612-0278-02814-and-02911
 /TODO
 
+Logging:
+* Downgrade warnings in the git revision check to info level #353
+
 Testing:
 * Create a directory required by the unit and integration tests #352
 
