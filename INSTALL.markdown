@@ -6,12 +6,13 @@ A PrivCount network consists of a Tally Server (TS), at least two Share Keepers
 ## Download PrivCount (TS, SK, DC)
 
     git clone https://github.com/privcount/privcount.git
-    git checkout privcount
+    cd privcount
+    git checkout origin/privcount
 
 ### Install PrivCount Depencencies
 
-    Debian/Ubuntu:  python2.7 libssl-dev libffi-dev
-    Other Linux:    python2.7 libssl libssl-devel cffi
+    Debian/Ubuntu:  python2.7 libssl-dev libffi-dev libyaml-dev
+    Other Linux:    python2.7 libssl libssl-devel cffi libyaml-devel
     (PrivCount supports BSD and macOS, the package names are similar.)
 
     python libs:    pyyaml, twisted, pyopenssl, cryptography, ...
@@ -20,7 +21,12 @@ A PrivCount network consists of a Tally Server (TS), at least two Share Keepers
 PrivCount has been tested with Python 2.7: other versions may not work.
 
 We require OpenSSL version 1.0.2 or later for SHA256-padded RSA encryption.
-Some tests require the openssl command.
+The tests require the openssl command.
+
+You may need to use your distribution's backports to get an updated OpenSSL.
+For example, on Debian 8 (Jessie), the required SSL packages are:
+
+    libssl1.0.0>=1.0.2k-1~bpo8+1 libssl-dev>=1.0.2k-1~bpo8+1
 
 System libs can be install with `apt-get`, `yum`, `brew`, etc. Python libs can
 be installed with `pip`, as we explain below.
@@ -81,11 +87,14 @@ Using 'sudo -H' before 'pip install' should work.
 Some environments (macOS) have environmental variables or site packages that
 conflict with PrivCount depencencies. Try the following workarounds in the
 virtualenv:
-* pip --isolated install --ignore-installed <package>
-* pip --no-binary :all: install --ignore-installed <package>
-* pip --isolated --no-binary :all: install --ignore-installed <package>
+
+    pip --isolated install --ignore-installed package
+    pip --no-binary :all: install --ignore-installed package
+    pip --isolated --no-binary :all: install --ignore-installed package
+
 As a last resort, uninstall the conflicting packages outside the virtualenv:
-* pip uninstall <package>
+
+    pip uninstall package
 
 Some environments (VPSs) have limited RAM. If pip fails with a memory error,
 try using --no-cache.
@@ -102,22 +111,6 @@ a binary wheel that was compiled with an older OpenSSL version. If so, rebuild
 and reinstall cryptography using:
 
     pip install --ignore-installed --no-binary cryptography cryptography
-
-Tor relay integration tests (requires a PrivCount-patched Tor):
-
-Start an unpublished relay:
-
-    test/run_test.sh -I . -x -z -s tor
-
-Check an existing relay:
-
-    source venv/bin/activate
-    test/test_tor_ctl_event.py <control-port-or-control-socket-path>
-    deactivate
-
-Tor network integration test (requires chutney):
-
-    test/run_test.sh -I . -x -z -s chutney
 
 ## Installing a PrivCount-patched Tor (Data Collectors)
 
@@ -205,3 +198,23 @@ Chutney is used to run the PrivCount tor network ('chutney') integration test.
 It can be used to test tor as well.
 
     git clone https://git.torproject.org/chutney.git
+
+### Optional PrivCount Data Collector Tests
+
+These tests require a PrivCount-patched Tor.
+
+Start an unpublished relay:
+
+    test/run_test.sh -I . -x -z -s tor
+
+Check an existing relay:
+
+    source venv/bin/activate
+    test/test_tor_ctl_event.py <control-port-or-control-socket-path>
+    deactivate
+
+#### PrivCount Network Integration Test
+
+This test requires chutney.
+
+    test/run_test.sh -I . -x -z -s chutney
