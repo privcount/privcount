@@ -45,6 +45,11 @@ BSD license. See LICENSE for details.
 Issue numbers are from:
     https://github.com/privcount/privcount/issues
 
+## PrivCount 1.0.2 (or 1.1.0)
+
+* Create a directory required by the unit and integration tests #352
+* Minor documentation updates #340, #350
+
 ## PrivCount 1.0.1
 
 PrivCount 1.0.1 fixes a Share Keeper forward-compatibility issue, and makes

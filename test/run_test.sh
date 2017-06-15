@@ -437,8 +437,10 @@ if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
 
   "$I" "Testing encryption:"
   # Generate a 4096-bit RSA key for testing
-  TEST_KEY_PATH="$TEST_DIR/keys/test.pem"
-  TEST_CERT_PATH="$TEST_DIR/keys/test.cert"
+  TEST_KEY_DIR="$TEST_DIR/keys"
+  mkdir -p "$TEST_KEY_DIR"
+  TEST_KEY_PATH="$TEST_KEY_DIR/test.pem"
+  TEST_CERT_PATH="$TEST_KEY_DIR/test.cert"
   if [ ! -e "$TEST_KEY_PATH" ]; then
     "$PRIVCOUNT_OPENSSL" genrsa -out "$TEST_KEY_PATH" 4096
   fi
@@ -543,6 +545,9 @@ DATA_COLLECTOR_COUNT=1
 CHUTNEY_PORT_ARRAY=( 0 )
 DC_SOURCE_PORT=0
 SK_NUM=0
+
+TEST_KEY_DIR="$TEST_DIR/keys"
+mkdir -p "$TEST_KEY_DIR"
 
 SK_LIST_FILE="keys/sk.sha256.list"
 rm "$TEST_DIR/$SK_LIST_FILE" || true

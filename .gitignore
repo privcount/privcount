@@ -22,16 +22,8 @@ privcount.*.log
 tor.pid
 
 # generated test keys and credentials
-test/keys/secret_handshake.yaml
-test/keys/control_password.txt
-test/keys/sk.pem
-test/keys/sk.cert
-test/keys/sk.*.pem
-test/keys/sk.sha256.list
-test/keys/test.pem
-test/keys/test.cert
-test/keys/ts.pem
-test/keys/ts.cert
+test/keys
+test/keys/*
 
 # generated test config files
 test/config.chutney.yaml.*
