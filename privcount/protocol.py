@@ -46,14 +46,14 @@ def privcount_git_revision():
     try:
         PRIVCOUNT_GIT_CACHE = subprocess.check_output(git_command_line).strip()
     except subprocess.CalledProcessError as e:
-        logging.warning('Git revision check {} returned {} cmd "{}" output "{}"'
-                        .format(git_command_line,
-                                e.returncode, e.cmd, e.output))
+        logging.info('Git revision check {} returned {} cmd "{}" output "{}"'
+                     .format(git_command_line,
+                             e.returncode, e.cmd, e.output))
         PRIVCOUNT_GIT_CACHE = "(no revision)"
     # if any error happens here, log but ignore it
     except BaseException as e:
-        logging.warning('Git revision check {} exception: "{}"'
-                        .format(git_command_line, e))
+        logging.info('Git revision check {} exception: "{}"'
+                     .format(git_command_line, e))
         PRIVCOUNT_GIT_CACHE = "(no revision)"
 
     return PRIVCOUNT_GIT_CACHE
