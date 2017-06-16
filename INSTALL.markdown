@@ -181,7 +181,8 @@ We recommend that you perform the following steps to install a
 privcount-patched tor in /usr/local:
 
     git clone https://github.com/privcount/tor.git tor-privcount
-    git checkout privcount
+    cd tor-privcount
+    git checkout origin/privcount
     ./autogen.sh
     ./configure --disable-asciidoc --prefix=/usr/local
     make
