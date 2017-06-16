@@ -310,6 +310,10 @@ torrc:
 CookieAuthentication 1
 ```
 
+config.yaml:
+
+(automatic, no config required)
+
 Password Authentication:
 
 ```
