@@ -8,9 +8,9 @@ SCRIPT_DIR=`dirname "$0"`/..
 cd "$SCRIPT_DIR"
 if [ -e venv/bin/activate ]; then
     . venv/bin/activate
-    privcount "$@" 2>&1 >> privcount.log &
+    privcount "$@" >> privcount.log 2>&1 &
 elif [ -x privcount/tools/privcount ]; then
-    privcount/tools/privcount "$@" 2>&1 >> privcount.log &
+    privcount/tools/privcount "$@" >> privcount.log 2>&1 &
 else
     echo "Can't find privcount"
     exit 1
