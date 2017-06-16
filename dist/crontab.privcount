@@ -1,0 +1,2 @@
+# Run privcount at reboot using run_privcount.sh in ~/privcount
+@reboot ~/privcount/dist/run_privcount.sh sk config.yaml

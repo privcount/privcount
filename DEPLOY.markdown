@@ -14,6 +14,17 @@ some dependencies during a round might also cause the round to fail, so you
 may want to subscribe to security announcements for your OS/distribution, and
 apply updates manually during a collection round.
 
+## Launching PrivCount Nodes Automatically
+
+If you are using cron, you can use dist/run_privcount.sh to start privcount:
+
+    crontab -l > crontab.old
+    cat crontab.old dist/crontab.privcount | crontab
+    # Edit the crontab for type of node you want to launch
+    crontab -e
+
+Or you can use your distribution's service configuration to launch privcount.
+
 ## Tally Server
 
 ### Configuration
@@ -363,8 +374,8 @@ If you are using systemd, use the systemd drop in file in:
 
 to make your relays run a PrivCount-patched Tor binary.
 
-Otherwise, use your distribution's service config to start the relay, or start
-it manually:
+Otherwise, use crontab or your distribution's service configuration to start
+the relay, or start it manually:
 
     screen
     /usr/local/bin/tor -f /path/to/torrc --defaults-torrc /path/to/torrc-defaults 2>&1 | tee -a tor.log
