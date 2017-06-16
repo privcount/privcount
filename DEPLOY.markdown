@@ -401,7 +401,7 @@ doc/TorControlAuthentication.markdown.
 
 Then run PrivCount in data collector mode.
 
-Use the commands under Tally Server First Run and Launch on Boot, but use sk
+Use the commands under Tally Server First Run and Launch on Boot, but use dc
 rather than ts.
 
 When a threshold of data collectors are alive, the tally server will start
