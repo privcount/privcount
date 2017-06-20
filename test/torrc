@@ -28,7 +28,7 @@ PublishServerDescriptor 0
 
 # Default is 30 seconds, which is too long for an integration test
 # (But we might want to extend it so that tor has time to close connections)
-ShutdownWaitLength 0
+ShutdownWaitLength 2
 
 # Use Cookie auth
 CookieAuthentication 1
