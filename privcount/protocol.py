@@ -1176,7 +1176,7 @@ class TorControlProtocol(object):
     PASSWORD_MAX_VALID_LENGTH = 1024
 
     @staticmethod
-    def encodeControllerString(str, hex_encode = True):
+    def encodeControllerString(cont_str, hex_encode = True):
         '''
         Encode a string for transmission over the control port.
         If hex_encode is True, encode in hexadecimal, otherwise, encode
@@ -1187,20 +1187,20 @@ class TorControlProtocol(object):
         '''
         if hex_encode:
             # hex encoded strings do not have an 0x prefix
-            encoded = hexlify(str)
+            encoded = hexlify(cont_str)
         else: # QuotedString
             # quoted strings escape \ and " with \, then quote with "
             # the order of these replacements is important: they ensure that
             # " becomes \" rather than \\"
-            str = str.replace("\\", "\\\\")
-            str = str.replace("\"", "\\\"")
-            encoded = "\"" + str + "\""
+            cont_str = cont_str.replace("\\", "\\\\")
+            cont_str = cont_str.replace("\"", "\\\"")
+            encoded = "\"" + cont_str + "\""
         # sanity check
-        assert TorControlProtocol.decodeControllerString(encoded) == str
+        assert TorControlProtocol.decodeControllerString(encoded) == cont_str
         return encoded
 
     @staticmethod
-    def decodeControllerString(str):
+    def decodeControllerString(cont_str):
         '''
         Decode an encoded string received via the control port.
         Decodes hexadecimal, and the Tor Control Protocol QuotedString format,
@@ -1211,18 +1211,19 @@ class TorControlProtocol(object):
         Only some strings in the tor control protocol need encoding.
         The same encodings are used by tor and the controller.
         '''
-        str = str.strip()
-        if str.startswith("\"") and str.endswith("\"") and len(str) >= 2:
+        cont_str = cont_str.strip()
+        if (cont_str.startswith("\"") and cont_str.endswith("\"") and
+            len(cont_str) >= 2):
             # quoted strings escape \ and " with \, then quote with "
             # this is safe, because we check the string is "*"
-            str = str[1:-1]
+            cont_str = cont_str[1:-1]
             # the order of these replacements is important: they ensure that
             # \\" becomes \" rather than "
-            str = str.replace("\\\"", "\"")
-            return str.replace("\\\\", "\\")
+            cont_str = cont_str.replace("\\\"", "\"")
+            return cont_str.replace("\\\\", "\\")
         else:
             # assume hex, throws TypeError on invalid hex
-            return unhexlify(str)
+            return unhexlify(cont_str)
 
     @staticmethod
     def generateNonce(len):
