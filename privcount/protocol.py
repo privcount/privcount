@@ -1136,6 +1136,10 @@ class TorControlProtocol(object):
 
     def __init__(self, factory):
         self.factory = factory
+        # Events can be up to ~1kB, start warning at 2kB, reject at 20kB
+        # We really don't care about the server maximum, because we only use
+        # the server for testing: in production, the server is tor
+        self.MAX_LENGTH = 2*10*1024
         self.clear()
 
     def clear(self):
