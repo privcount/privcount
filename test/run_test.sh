@@ -289,7 +289,7 @@ esac
 # Sets the data directory to a newly created temporary directory (by default)
 # Uses a torrc with the same control port as the injector (if set)
 # Appends any remaining command-line arguments
-TOR_CMD="$PRIVCOUNT_TOR DataDirectory $PRIVCOUNT_TOR_DATADIR ${PRIVCOUNT_TORRC+-f $TEST_DIR/$PRIVCOUNT_TORRC} $TOR_LOG $@"
+TOR_CMD="$PRIVCOUNT_TOR DataDirectory $PRIVCOUNT_TOR_DATADIR __OwningControllerProcess $$ ${PRIVCOUNT_TORRC+-f $TEST_DIR/$PRIVCOUNT_TORRC} $TOR_LOG $@"
 
 # logs go to standard output/error and need no special treatment
 # TODO: write to file and ignore standard warnings when displaying messages?
@@ -696,6 +696,13 @@ case "$PRIVCOUNT_SOURCE" in
   inject|tor)
     $FIRST_ROUND_CMD 2>&1 | \
         `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+    # If it hasn't finished in 30 seconds, kill it
+    # There is a small risk that it has exited and the pid is a new process
+    # We avoid this by killing all child processes when this script exits
+    SOURCE_PID="$!"
+    (sleep 45; \
+        echo "Killing $PRIVCOUNT_SOURCE $SOURCE_PID"; \
+        kill "$SOURCE_PID") &
     ;;
   chutney)
     # The chutney output is very verbose: don't save it to the log
