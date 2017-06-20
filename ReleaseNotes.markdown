@@ -71,6 +71,7 @@ Deployment:
 
 Logging:
 * Downgrade warnings in the git revision check to info level #353
+* Add log messages on more failures, summarise other log messages #357
 
 Testing:
 * Create a directory required by the unit and integration tests #352

@@ -390,12 +390,24 @@ class TallyServer(ServerFactory, PrivCountServer):
 
             if self.config == None:
                 self.config = ts_conf
-                logging.info("using config = %s", str(self.config))
+                logging.info("using config = %s",
+                             summarise_string(str(self.config), 100))
+                logging.debug("using config (full value) = %s",
+                              str(self.config))
             else:
                 changed = False
                 for k in ts_conf:
                     if k not in self.config or ts_conf[k] != self.config[k]:
-                        logging.info("updated config for key {} from {} to {}".format(k, self.config[k], ts_conf[k]))
+                        logging.info("updated config for key {} from {} to {}"
+                                     .format(k,
+                                             summarise_string(
+                                                          str(self.config[k]),
+                                                          100),
+                                             summarise_string(
+                                                          str(ts_conf[k]),
+                                                          100)))
+                        logging.debug("updated config for key {} (full values) from {} to {}"
+                                      .format(k, self.config[k], ts_conf[k]))
                         self.config[k] = ts_conf[k]
                         changed = True
                 if not changed:

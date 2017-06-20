@@ -15,7 +15,7 @@ from cryptography.hazmat.primitives.hashes import SHA256
 from privcount.connection import transport_info, transport_remote_info, transport_local_info
 from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
-from privcount.log import log_error, errorCallback, stop_reactor
+from privcount.log import log_error, errorCallback, stop_reactor, summarise_string
 
 PRIVCOUNT_SHORT_VERSION_STRING = '1.0.1'
 
@@ -1636,12 +1636,24 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                     self.collection_events.add(upper_event)
                 else:
                     logging.warning("Ignored unknown event: {}".format(event))
-        logging.info("Starting PrivCount collection with events: {} from counters: {} and events: {}"
-                        .format(" ".join(self.collection_events),
-                                "(none)" if counter_list is None else
-                                " ".join(counter_list),
-                                "(none)" if event_list is None else
-                                " ".join(event_list)))
+        logging.info("Starting PrivCount collection with {} events: {} from {} counters: {} and {} events: {}"
+                     .format(len(self.collection_events),
+                             " ".join(self.collection_events),
+                             0 if counter_list is None else len(counter_list),
+                             "(none)" if counter_list is None else
+                             summarise_string(" ".join(counter_list), 100),
+                             0 if event_list is None else len(event_list),
+                             "(none)" if event_list is None else
+                             " ".join(event_list)))
+        logging.debug("Starting PrivCount collection with {} events: {} from {} counters (full list): {} and {} events: {}"
+                      .format(len(self.collection_events),
+                              " ".join(self.collection_events),
+                              0 if counter_list is None else len(counter_list),
+                              "(none)" if counter_list is None else
+                              " ".join(counter_list),
+                              0 if event_list is None else len(event_list),
+                              "(none)" if event_list is None else
+                              " ".join(event_list)))
         self.enableEvents()
 
     def stopCollection(self):
@@ -1952,6 +1964,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                 logging.warning("Event with no data {}".format(line))
             # send the event, including the event type
             elif not self.factory.handle_event(parts[1:]):
+                logging.warning("Rejected event {}".format(line))
                 self.quit()
                 return
         else:
@@ -1999,6 +2012,11 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                                     (' ' + destination) if destination is not None else '',
                                     how,
                                     error if error is not None else '(no error)'))
+            # reason.getErrorMessage() is pretty useless
+            # Try to get something more informative, unless there was no error
+            if (error is not None and
+                not error.startswith("Connection was closed cleanly")):
+                log_error()
         else:
             logging.info("{} control connection with {}{} {}: {}."
                          .format('Open' if self.isConnected() else 'Disconnected',

@@ -17,7 +17,7 @@ from twisted.internet.protocol import ServerFactory
 from privcount.config import normalise_path
 from privcount.connection import listen, stopListening
 from privcount.data_collector import Aggregator
-from privcount.log import errorCallback, stop_reactor
+from privcount.log import errorCallback, stop_reactor, summarise_string
 from privcount.protocol import TorControlServerProtocol
 
 # set the log level
@@ -172,8 +172,11 @@ class PrivCountDataInjector(ServerFactory):
             msg_adjusted_times = self._set_event_times(msg, now-alive, now)
             event = "650 {}".format(msg_adjusted_times)
             self.output_event_count += 1
-            logging.info("sending event {} '{}'".format(
-                    self.output_event_count, event))
+            logging.info("sending event {} '{}'"
+                         .format(self.output_event_count,
+                                 summarise_string(event, 100)))
+            logging.debug("sending event {} (full event) '{}'"
+                          .format(self.output_event_count, event))
             self.protocol.sendLine(event)
         elif self.injecting:
             # No connection: stop sending
