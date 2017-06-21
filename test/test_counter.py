@@ -111,7 +111,7 @@ def create_counters(counters, modulus):
     uses modulus to generate the appropriate blinding factors
     returns a tuple containing a list of DCs and a list of SKs
     '''
-    sc_dc = SecureCounters(counters, modulus)
+    sc_dc = SecureCounters(counters, modulus, require_generate_noise=False)
     sc_dc.generate_blinding_shares(['sk1', 'sk2'])
     sc_dc.generate_noise(1.0)
     check_blinding_values(sc_dc, modulus)
@@ -119,10 +119,10 @@ def create_counters(counters, modulus):
     shares = sc_dc.detach_blinding_shares()
 
     # create share keeper versions of the counters
-    sc_sk1 = SecureCounters(counters, modulus)
+    sc_sk1 = SecureCounters(counters, modulus, require_generate_noise=False)
     sc_sk1.import_blinding_share(shares['sk1'])
     check_blinding_values(sc_sk1, modulus)
-    sc_sk2 = SecureCounters(counters, modulus)
+    sc_sk2 = SecureCounters(counters, modulus, require_generate_noise=False)
     sc_sk2.import_blinding_share(shares['sk2'])
     check_blinding_values(sc_sk2, modulus)
     return ([sc_dc], [sc_sk1, sc_sk2])
@@ -273,7 +273,7 @@ def sum_counters(counters, modulus, dc_list, sk_list):
     counts_sk_list = [sc_sk.detach_counts() for sc_sk in sk_list]
 
     # tally them up
-    sc_ts = SecureCounters(counters, modulus)
+    sc_ts = SecureCounters(counters, modulus, require_generate_noise=False)
     counts_list = counts_dc_list + counts_sk_list
     is_tally_success = sc_ts.tally_counters(counts_list)
     assert is_tally_success

@@ -1405,7 +1405,8 @@ class CollectionPhase(object):
             logging.warning("no tally results to write!")
         else:
             tallied_counter = SecureCounters(self.counters_config,
-                                             self.modulus)
+                                             self.modulus,
+                                             require_generate_noise=False)
             tally_was_successful = tallied_counter.tally_counters(
                 self.final_counts.values())
 

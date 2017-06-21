@@ -363,7 +363,8 @@ class Aggregator(ReconnectingClientFactory):
 
     def __init__(self, counters, traffic_model_config, sk_uids,
                  noise_weight, modulus, tor_control_port, rotate_period):
-        self.secure_counters = SecureCounters(counters, modulus)
+        self.secure_counters = SecureCounters(counters, modulus,
+                                              require_generate_noise=True)
         self.collection_counters = counters
         # we can't generate the noise yet, because we don't know the
         # DC fingerprint

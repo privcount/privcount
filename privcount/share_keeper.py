@@ -142,7 +142,8 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
         else:
             config['counters'] = combined_counters
 
-        self.keystore = SecureCounters(config['counters'], counter_modulus())
+        self.keystore = SecureCounters(config['counters'], counter_modulus(),
+                                       require_generate_noise=False)
         share_list = config['shares']
 
         private_key = load_private_key_file(self.config['key'])

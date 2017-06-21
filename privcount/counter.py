@@ -1117,14 +1117,17 @@ class SecureCounters(object):
     see privcount/test/test_counters.py for some test cases
     '''
 
-    def __init__(self, counters, modulus):
+    def __init__(self, counters, modulus, require_generate_noise=True):
         '''
         deepcopy counters and initialise each counter to 0L
         cast modulus to long and store it
+        If require_generate_noise is True, assert if we did not add noise
+        before detaching the counters
         '''
         self.counters = deepcopy(counters)
         self.modulus = long(modulus)
         self.shares = None
+        self.is_noise_pending = require_generate_noise
 
         # initialize all counters to 0L
         # counters use unlimited length integers to avoid overflow
@@ -1251,6 +1254,7 @@ class SecureCounters(object):
 
         # add the noise to each counter
         self._tally_counter(noise_values)
+        self.is_noise_pending = False
 
     def detach_blinding_shares(self):
         '''
@@ -1367,6 +1371,10 @@ class SecureCounters(object):
         return True
 
     def detach_counts(self):
+        '''
+        Asserts if we needed to add noise, and didn't add it
+        '''
+        assert not self.is_noise_pending
         counts = self.counters
         self.counters = None
         return counts
