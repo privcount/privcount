@@ -363,7 +363,8 @@ class Aggregator(ReconnectingClientFactory):
 
     def __init__(self, counters, traffic_model_config, sk_uids,
                  noise_weight, modulus, tor_control_port, rotate_period):
-        self.secure_counters = SecureCounters(counters, modulus)
+        self.secure_counters = SecureCounters(counters, modulus,
+                                              require_generate_noise=True)
         self.collection_counters = counters
         # we can't generate the noise yet, because we don't know the
         # DC fingerprint
@@ -515,6 +516,7 @@ class Aggregator(ReconnectingClientFactory):
         if has_noise_weight(self.noise_weight_config, self.fingerprint):
             self.noise_weight_value = get_noise_weight(
                 self.noise_weight_config, self.fingerprint)
+            self.secure_counters.generate_noise(self.noise_weight_value)
         else:
             logging.warning("Tally Server did not provide a noise weight for our fingerprint {} in noise weight config {}, we will not count in this round."
                             .format(self.fingerprint,
