@@ -515,6 +515,7 @@ class Aggregator(ReconnectingClientFactory):
         if has_noise_weight(self.noise_weight_config, self.fingerprint):
             self.noise_weight_value = get_noise_weight(
                 self.noise_weight_config, self.fingerprint)
+            self.secure_counters.generate_noise(self.noise_weight_value)
         else:
             logging.warning("Tally Server did not provide a noise weight for our fingerprint {} in noise weight config {}, we will not count in this round."
                             .format(self.fingerprint,
