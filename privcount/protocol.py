@@ -1435,6 +1435,9 @@ class TorControlProtocol(object):
                                     value_name, get_function_name, e))
             return None
 
+    # works for both configured and discovered values
+    getDiscoveredValue = getConfiguredValue
+
     @staticmethod
     def readFile(secret_file, min_len, max_len):
         '''
@@ -1585,6 +1588,8 @@ class TorControlProtocol(object):
 class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
 
     def __init__(self, factory):
+        # we want ancestors to be able to use this in clear()
+        self.consensus_refresher = None
         TorControlProtocol.__init__(self, factory)
         self.clear()
 
@@ -1600,6 +1605,11 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         self.collection_events = None
         self.active_events = None
         self.has_received_events = False
+        # Stop updating the flags when we're disconnected
+        if self.consensus_refresher is not None:
+            self.consensus_refresher.stop()
+            self.consensus_refresher = None
+        self.is_processing_ns = False
 
     def connectionMade(self):
         '''
@@ -1725,14 +1735,34 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         self.check_line_length(line, False, False)
         return LineOnlyReceiver.sendLine(self, line)
 
+    def sendInfoNs(self):
+        '''
+        Send a GETINFO ns/id/fingerprint request, where fingerprint is our
+        discovered fingerprint.
+        If there is no discovered fingerprint, quit.
+        '''
+        if self.state != 'waiting' and self.state != 'processing':
+            logging.warning("Ignoring request to send GETINFO ns in state {}"
+                            .format(self.state))
+            return
+        # get the validated fingerprint
+        fingerprint = self.getDiscoveredValue('get_fingerprint',
+                                              'fingerprint')
+        if fingerprint is not None:
+            self.sendLine("GETINFO ns/id/{}".format(fingerprint))
+        else:
+            self.quit()
+
     def lineReceived(self, line):
         '''
         Check that protocolinfo was successful.
         If so, authenticate using the best authentication method.
         Then, put the protocol in the 'discovering' state, and ask the relay
         for information about itself.
-        When the privcount version is received, put the protocol in the
-        'waiting' state.
+        When the fingerprint is received, put the protocol in the 'waiting'
+        state, and ask the relay for its own consensus entry.
+        When the consensus entry is received in the 'waiting' or 'processing'
+        states, temporarily set is_processing_ns, and clear it when done.
         When the round is started, put the protocol in the 'processing' state,
         and send the list of events we want.
         When events are received, process them.
@@ -1854,9 +1884,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             self.sendLine("GETCONF DirPort")
             self.sendLine("GETINFO version")
             self.sendLine("GETINFO address")
-            self.sendLine("GETINFO fingerprint")
             # Unpatched Tor will break the protocol in response to this:
             self.sendLine("GETINFO privcount-version")
+            self.sendLine("GETINFO fingerprint")
             self.state = 'discovering'
         elif self.state == 'discovering':
             # -- These cases continue discovering, or quit() -- #
@@ -1911,26 +1941,12 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             elif line == "551 Address unknown":
                 logging.info("Connection with {}: does not know its own address"
                              .format(transport_info(self.transport)))
-            # It's a relay, and it's just told us its fingerprint
-            elif line.startswith("250-fingerprint="):
-                _, _, fingerprint = line.partition("fingerprint=")
-                self.setDiscoveredValue('set_fingerprint', fingerprint,
-                                        'fingerprint')
-            # -- fingerprint discovery ends in waiting or quit() --
             # It's a PrivCount-patched Tor instance, and it's just told us its
             # PrivCount version
             elif line.startswith("250-privcount-version="):
                 _, _, version = line.partition("privcount-version=")
                 self.setDiscoveredValue('set_tor_privcount_version', version,
                                         'GETINFO privcount-version')
-                # waiting mode will skip all further lines, until collection
-                self.state = 'waiting'
-            # We asked for its fingerprint, and it said it's a client
-            elif line == "551 Not running in server mode":
-                logging.warning("Connection with {} failed: not a relay"
-                                .format(transport_info(self.transport)))
-                self.quit()
-                return
             # We asked for its PrivCount version, and it didn't know what we
             # meant
             elif line == '552 Unrecognized key "privcount-version"':
@@ -1938,13 +1954,56 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                                 .format(transport_info(self.transport)))
                 self.quit()
                 return
+            # -- fingerprint discovery ends in consensus or quit() --
+            # It's a relay, and it's just told us its fingerprint
+            elif line.startswith("250-fingerprint="):
+                _, _, fingerprint = line.partition("fingerprint=")
+                self.setDiscoveredValue('set_fingerprint', fingerprint,
+                                        'fingerprint')
+                # set the state in case the looping call is immediate
+                self.state = 'waiting'
+
+                # refresh our relay flags every consensus interval
+                wait_time = 60*60
+                self.consensus_refresher = task.LoopingCall(self.sendInfoNs)
+                consensus_deferred = self.consensus_refresher.start(wait_time,
+                                                                    now=True)
+                consensus_deferred.addErrback(errorCallback)
+
+                # If we already know what events we should have enabled, start
+                # processing them
+                self.enableEvents()
+            # We asked for its fingerprint, and it said it's a client
+            elif line == "551 Not running in server mode":
+                logging.warning("Connection with {} failed: not a relay"
+                                .format(transport_info(self.transport)))
+                self.quit()
+                return
             else:
                 self.handleUnexpectedLine(line)
-
-            # If we already know what events we should have enabled, start
-            # processing them
-            if self.state == 'waiting':
-                self.enableEvents()
+        # consensus processing: waiting or processing states
+        # handle other events interspersed between these lines
+        elif line.startswith("250-ns/id/"):
+            _, _, fingerprint = line.partition('ns/id/')
+            fingerprint, _, _ = fingerprint.partition('=')
+            logging.warning("Missing entry for relay {} in consensus, will check again in an hour"
+                            .format(fingerprint))
+            # clear the flag list
+            self.setDiscoveredValue('set_flag_list',
+                                    "",
+                                    'our consensus flags')
+        elif line.startswith("250+ns/id/"):
+            # The intro line for our consensus entry
+            self.is_processing_ns = True
+        elif self.is_processing_ns and line.startswith("s "):
+            # The flags line for our consensus entry
+            _, _, flag_string = line.partition(" ")
+            self.setDiscoveredValue('set_flag_list',
+                                    flag_string,
+                                    'our consensus flags')
+        elif self.is_processing_ns and line.startswith("."):
+            # The end line for our consensus entry
+            self.is_processing_ns = False
         elif self.state == 'waiting' and line.startswith("2"):
             # log ok events while we're waiting for round start
             self.handleUnexpectedLine(line)
@@ -1968,6 +2027,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                 logging.warning("Rejected event {}".format(line))
                 self.quit()
                 return
+        elif self.is_processing_ns:
+            # ignore unexpected lines
+            pass
         else:
             self.handleUnexpectedLine(line)
 
@@ -2097,6 +2159,14 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
     250 OK
     GETINFO fingerprint
     250-fingerprint=5E54527B88A544E1A6CBF412A1DE2B208E7BF9A2
+    250 OK
+    GETINFO ns/id/5E54527B88A544E1A6CBF412A1DE2B208E7BF9A2
+    250+ns/id/3BE2E10936A852E7137E8A250CD324EBB246FA0C=
+    r test000a O+LhCTaoUucTfoolDNMk67JG+gw BuWvIcuvDhapTNbrbHnglHluQ6c 2017-06-22 03:59:43 127.0.0.1 5000 7000
+    s Authority Exit Fast Guard HSDir Running Stable V2Dir Valid
+    w Bandwidth=0
+    p reject 1-65535
+    .
     250 OK
     GETINFO blah
     552 Unrecognized key "blah"
@@ -2306,6 +2376,18 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                     self.sendLine("250 OK")
                 elif len(parts) == 2 and parts[1] == "fingerprint":
                     self.sendLine("250-fingerprint=FACADE0000000000000000000123456789ABCDEF")
+                    self.sendLine("250 OK")
+                elif len(parts) == 2 and parts[1].startswith("ns/id/"):
+                    # pretend we know about the relay, and send a multi-line
+                    # response
+                    self.sendLine("250+{}=".format(parts[1]))
+                    # if you're doing fingerprint consistency checks, this
+                    # will fail
+                    self.sendLine("r test004r O+LhCTaoUucTfoolDNMk67JG+gw BuWvIcuvDhapTNbrbHnglHluQ6c 2017-06-22 03:59:43 127.0.0.1 5000 7000")
+                    self.sendLine("s Exit Fast Guard HSDir Running Stable V2Dir Valid")
+                    self.sendLine("w Bandwidth=100000")
+                    self.sendLine("p accept 1-65535")
+                    self.sendLine(".")
                     self.sendLine("250 OK")
                 else:
                     # strictly, GETINFO should process each word on the line
