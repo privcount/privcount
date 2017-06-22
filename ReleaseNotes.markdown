@@ -77,15 +77,19 @@ https://github.com/privcount/privcount/milestone/9?closed=1
 ## PrivCount 1.0.2
 
 PrivCount 1.0.2 fixes a critical Data Collector security bug, where noise
-was not being added to the results. It also fixes a logging bug on Data
-Collectors and Tally Servers.
+was not being added to the results. It also fixes several logging bugs on
+all node types: Tally Servers should upgrade for this fix.
 
 All PrivCount Data Collectors shoudld erase the results of collections made
 with version 1.0.0 or version 1.0.1 Data Collectors, and upgrade before
 running any more collections.
 
-The versions of the PrivCount Tor Patch released with PrivCount 1.0.2 are
-the same as those released with PrivCount 1.0.1. Please use the 1.0.1 tags.
+PrivCount Tally Servers on 1.0.2 and later refuse to use insecure Data
+Collectors with PrivCount versions 1.0.0 and 1.0.1. Share Keepers and the
+PrivCount Tor Patch are not affected by this restriction.
+
+There are no changes in the PrivCount Tor Patch for PrivCount 1.0.2.
+Please use the PrivCount Tor Patch 1.0.1 with PrivCount 1.0.2 Data Collectors.
 
 Security:
 * Actually add noise to counts on DCs. Bugfix on PrivCount 1.0.0 #360
@@ -98,6 +102,8 @@ Deployment:
 Logging:
 * Downgrade warnings in the git revision check to info level #353
 * Add log messages on more failures, summarise other log messages #357
+* Downgrade warnings when DCs are not expecting events #361
+* Add the relay flags to the results context #361
 
 Testing:
 * Create a directory required by the unit and integration tests #352
