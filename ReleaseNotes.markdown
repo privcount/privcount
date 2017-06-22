@@ -45,16 +45,16 @@ BSD license. See LICENSE for details.
 Issue numbers are from:
     https://github.com/privcount/privcount/issues
 
-## PrivCount 1.2.0
+## PrivCount 1.1.0
 
 TODO
-PrivCount 1.2.0 adds support for Hidden Service Directory statistics
+PrivCount 1.1.0 adds support for Hidden Service Directory statistics
 collection, and ...
 /TODO
 
 TODO
-The versions of the PrivCount Tor Patch released with PrivCount 1.2.0 are:
-* privcount-1.0.1-tor-0.3.0.7 (Tor stable)
+The versions of the PrivCount Tor Patch released with PrivCount 1.1.0 are:
+* privcount-1.1.0-tor-0.3.0.8 (Tor stable)
 
 All PrivCount relay operators should upgrade.
 
@@ -74,58 +74,26 @@ Testing:
 A full list of issues resolved in this release is available at:
 https://github.com/privcount/privcount/milestone/9?closed=1
 
-## PrivCount 1.1.0
+## PrivCount 1.0.2
 
-TODO
-PrivCount 1.1.0 adds counters for the Alexa Top N
-/TODO
+PrivCount 1.0.2 fixes a critical Data Collector security bug, where noise
+was not being added to the results. It also fixes a logging bug on Data
+Collectors and Tally Servers.
 
-TODO
-The versions of the PrivCount Tor Patch released with PrivCount 1.1.0 are:
-* privcount-1.0.1-tor-0.3.0.7 (Tor stable)
-* privcount-1.0.1-tor-0.2.9.10 (Tor LTS)
+All PrivCount Data Collectors shoudld erase the results of collections made
+with version 1.0.0 or version 1.0.1 Data Collectors, and upgrade before
+running any more collections.
 
-All PrivCount relay operators should upgrade.
+The versions of the PrivCount Tor Patch released with PrivCount 1.0.2 are
+the same as those released with PrivCount 1.0.1. Please use the 1.0.1 tags.
 
-These Tor versions fix:
-* multiple relay connection issues
-* HSDir3 descriptor upload issues (0.3.0.8 only)
-
-See Tor's release announcement for details:
-https://blog.torproject.org/blog/tor-0308-released-fix-hidden-services-also-are-02429-02514-02612-0278-02814-and-02911
-/TODO
-
-TODO
-Category:
- * Item
-/TODO
-
-A full list of issues resolved in this release is available at:
-https://github.com/privcount/privcount/milestone/6?closed=1
-
-## PrivCount 1.0.2 (or 1.1.0)
-
-TODO
-PrivCount 1.0.2 fixes a unit and integration test bug...
-/TODO
-
-TODO
-The versions of the PrivCount Tor Patch released with PrivCount 1.1.0 are:
-* privcount-1.0.1-tor-0.3.0.7 (Tor stable)
-* privcount-1.0.1-tor-0.2.9.10 (Tor LTS)
-
-All PrivCount relay operators should upgrade.
-
-These Tor versions fix:
-* multiple relay connection issues
-* HSDir3 descriptor upload issues (0.3.0.8 only)
-
-See Tor's release announcement for details:
-https://blog.torproject.org/blog/tor-0308-released-fix-hidden-services-also-are-02429-02514-02612-0278-02814-and-02911
-/TODO
+Security:
+* Actually add noise to counts on DCs. Bugfix on PrivCount 1.0.0 #360
+* Check that secure counters have generated noise before producing results #360
+* Make tally servers reject insecure Data Collector versions #360
 
 Deployment:
-* Add an exampke script and crontab entry for launching nodes on boot #354
+* Add an example script and crontab entry for launching nodes on boot #354
 
 Logging:
 * Downgrade warnings in the git revision check to info level #353
@@ -139,7 +107,7 @@ Documentation:
 * Minor documentation updates #340, #350
 
 A full list of issues resolved in this release is available at:
-TODO
+https://github.com/privcount/privcount/milestone/6?closed=1
 
 ## PrivCount 1.0.1
 

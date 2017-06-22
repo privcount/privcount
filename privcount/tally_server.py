@@ -738,6 +738,32 @@ class TallyServer(ServerFactory, PrivCountServer):
         return ('privcount: {} tor: {} tor privcount: {}'
                 .format(privcount_version, tor_version, tor_privcount_version))
 
+    def is_valid_client_version(self, uid, status=None):
+        '''
+        Check that the version of client is new enough that we want to use it.
+        Warn and return False if it is not.
+        '''
+        cname = TallyServer.get_client_display_name(uid)
+        cinfo = self.get_client_info(uid, status)
+        cdetail = self.get_client_detail(uid, status)
+        cversion = self.get_client_version(uid, status)
+
+        # Reject DC versions 1.0.0 and 1.0.1, they didn't add noise
+        client_type = self._get_client_item(uid, 'type', status, None)
+        pc_version = self._get_client_item(uid, 'privcount_version',
+                                                  status, None)
+        pc_version_number, _, _ = pc_version.partition(' ')
+        if client_type == 'DataCollector':
+            if pc_version_number == '1.0.0' or pc_version_number == '1.0.1':
+                logging.warning("Insecure Data Collector PrivCount version {}: {} {}"
+                                .format(pc_version_number, cname, cinfo))
+                logging.debug("Insecure Data Collector PrivCount version {}: {} detail {} {}"
+                              .format(pc_version_number, cname, cdetail,
+                                      cversion))
+                return False
+
+        return True
+
     def set_client_status(self, uid, status): # called by protocol
         cname = TallyServer.get_client_display_name(uid)
         cinfo = self.get_client_info(uid, status)
@@ -750,6 +776,10 @@ class TallyServer(ServerFactory, PrivCountServer):
         if uid in self.clients:
             logging.debug("{} {} has stored state: {}"
                           .format(cname, cdetail, self.clients[uid]))
+
+        # Warn and ignore invalid clients
+        if not self.is_valid_client_version(uid, status):
+            return
 
         # only data collectors have a fingerprint
         # oldfingerprint is the previous fingerprint for this client (if any)
