@@ -583,10 +583,17 @@ def are_events_expected(counter_list, relay_flag_list):
         return False
     has_entry = "Guard" in relay_flag_list
     has_exit = "Exit" in relay_flag_list
+    # relay_flag_list must be a list to avoid a substring match
+    has_hsdir2 = "HSDir" in relay_flag_list
+    has_hsdir3 = "HSDir3" in relay_flag_list
     for counter_name in counter_list:
         if has_entry and counter_name.startswith("Entry"):
             return True
         if has_exit and counter_name.startswith("Exit"):
+            return True
+        if has_hsdir2 and counter_name.startswith("HSDir2"):
+            return True
+        if has_hsdir3 and counter_name.startswith("HSDir3"):
             return True
     # no matching counters and flags
     return False
