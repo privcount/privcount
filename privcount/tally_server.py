@@ -702,7 +702,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         Returns None if client will never have a nickname, anda placeholder
         string if we expect a nickname in future.
         '''
-        if self._get_client_item(uid, 'type', status) != 'DataCollector':
+        if self.get_client_type(uid, status) != 'DataCollector':
             return None
 
         return self._get_client_item(uid,
@@ -716,7 +716,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         Returns None if client will never have a fingerprint, and a
         placeholder string if we expect a fingerprint in future.
         '''
-        if self._get_client_item(uid, 'type', status) != 'DataCollector':
+        if self.get_client_type(uid, status) != 'DataCollector':
             return None
 
         return self._get_client_item(uid,
@@ -751,7 +751,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         Returns a formatted string containing detailed information: the
         client's nickname, address, and fingerprint (if present).
         '''
-        if self._get_client_item(uid, 'type', status) != 'DataCollector':
+        if self.get_client_type(uid, status) != 'DataCollector':
             return self.get_client_info(uid, status)
 
         return "{} {} {}".format(self.get_client_nickname(uid, status),
@@ -770,7 +770,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                   '(no privcount version)')
 
         # if we're not expecting additional versions, just use privcount
-        if self._get_client_item(uid, 'type', status) != 'DataCollector':
+        if self.get_client_type(uid, status) != 'DataCollector':
             return privcount_version
 
         tor_version = self._get_client_item(uid,
@@ -796,7 +796,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         cversion = self.get_client_version(uid, status)
 
         # Reject DC versions 1.0.0 and 1.0.1, they didn't add noise
-        client_type = self._get_client_item(uid, 'type', status, None)
+        client_type = self.get_client_type(uid, status)
         pc_version = self._get_client_item(uid, 'privcount_version',
                                                   status, None)
         pc_version_number, _, _ = pc_version.partition(' ')
