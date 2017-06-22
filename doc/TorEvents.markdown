@@ -624,7 +624,9 @@ True (1) if:
 False (0) if:
 * the intro point section in the descriptor was successfully parsed, and the
   number of intro points was valid, or
-* there is no intro point section in the descriptor
+* there is no intro point section in the descriptor (if there are no intro
+  points, it is not possible to tell if a service requires client
+  authentication).
 Unknown (missing) if:
 * the descriptor was unparseable.
 

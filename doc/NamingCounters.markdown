@@ -56,22 +56,26 @@ Other general rules:
 #### A Pattern for PrivCount Counter Names
 
 Here is how you can construct a PrivCount counter name:
-* Entry/Exit/
+* Entry/Exit/HSDir{2,3}/
 * Active/Inactive/ (order varies: before the noun it qualifies)
 * Interactive/OtherPort/P2P/Web/ (order varies: before the noun it qualifies)
-* Connection/Circuit/Stream/ClientIP/Zero
+* Connection/Circuit/Stream/ClientIP/Store/Zero
 * Inbound/Outbound/Inter/ (prefer later if order is ambiguous)
-* Circuit/Stream/TrafficModel/
-* Cell/Byte/Creation/Life/Emission/Transition/SquaredLogDelay/LogDelay/
-* Count/Ratio/Time
+* Circuit/Stream/TrafficModel/Intro/Descriptor/Upload/Revision/
+* Add/Reject/
+* (Cache Reason String)/
+* HaveCached/NoCached/ (only if not implied by the cache reason)
+* ClientAuth/NoClientAuth/
+* Cell/Byte/Creation/Life/Emission/Transition/{SquaredLog,Log,}Delay/Point/
+* Count/Histogram/Ratio/Time
 
 A trailing slash means that the item is optional.
 
-We could also encode the difference between a single count and a histogram
-in the name, but we do not gain anything by doing this at the moment. In the
-future, if we have a histogram counter and a single bin counter for the same
-data, we should rename counters using multiple bins to Histogram, and single
-bins to Count. (Ratio and Time bins are also Histograms.)
+For counters introduced or renamed in PrivCount 1.0.0, we used Count for
+histograms and single bin counters. In later versions, we use Histogram for
+multi-bin counters, and Count for single bin counters.
+
+Ratio and Time are always histograms.
 
 #### Suffixes for PrivCount Traffic Model Counters
 

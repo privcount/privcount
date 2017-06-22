@@ -14,8 +14,8 @@ This section describes the types of counters that are collected.
 
 ### Count
 
-The number of Connections, Circuits, Streams, Cells, or Bytes seen by the
-relay.
+The number of Connections, Circuits, Streams, Cells, Bytes, or descriptor
+Stores seen by the relay.
 
 Some overheads are excluded:
 * Streams with zero (total read and write) or negative byte counts are ignored.
@@ -98,7 +98,7 @@ that one or more Share Keepers or Data Collectors failed to provide results.
 
 This section describes how some counters are split or filtered.
 
-### Entry/Exit
+### Entry/Exit/HSDir{2,3}
 
 This counter is only collected when the relay is in this position in the
 Connection or Circuit.
@@ -106,6 +106,8 @@ Connection or Circuit.
 For example:
 * When Tor clients connect to the Tor network, they make an Entry Connection.
 * When Tor clients access a remote server, they make an Exit Stream.
+* When legacy Tor onion services upload a descriptor, they perform an HSDir2
+  Store.
 
 ### Active/Inactive
 
@@ -144,6 +146,40 @@ as Outbound bytes to the Exit's edge connection.
 Inbound data is sent to the client, typically from an Exit.
 Inbound Bytes are read from the Exit's edge connection, and written to Inbound
 cells.
+
+### Upload Delay Time
+
+The difference between the DescriptorCreationTime, and the EventTimestamp.
+
+The DescriptorCreationTime is truncated to the nearest hour, so this field
+only captures significant delays.
+
+### Add/Reject
+
+Whether an onion service descriptor was added to the cache during an HSDir
+Store.
+
+The reasons that a descriptor may be added or rejected are documented in
+doc/TorEvent.markdown.
+
+### HaveCached/NoCached
+
+Whether an existing onion service descriptor was present in the cache during
+an HSDir Store. Only used for Future and Expired CacheReasonStrings.
+
+If the CacheReasonString already provides this information, it is not included
+in the counter name.
+
+CacheReasonString means NoCached:
+* New
+
+CacheReasonString means HaveCached:
+* Updated
+* Obsolete
+* Duplicate
+
+CacheReasonString means that we don't know if it was cached:
+* Unparseable
 
 ### Traffic Model Template Counters
 

@@ -11,6 +11,7 @@ __all__ = [
    'protocol',
    'share_keeper',
    'statistics_noise',
+   'tagged_event',
    'tally_server',
    'traffic_model',
 ]
