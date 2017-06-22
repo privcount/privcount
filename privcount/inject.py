@@ -264,7 +264,7 @@ class PrivCountDataInjector(ServerFactory):
         # Tagged Events: these events have fields with Key=Value pairs
         # All current tagged events have at least one field
         # Handles:
-        #  - 'PRIVCOUNT_HSDIR_CACHE_STORED'
+        #  - 'PRIVCOUNT_HSDIR_CACHE_STORE'
         elif '=' in msg and len(parts) >= 2:
             items = parts[1:]
             fields = parse_tagged_event(items)
@@ -273,7 +273,7 @@ class PrivCountDataInjector(ServerFactory):
                 logging.warning("Malformed tagged event in: '{}' {}"
                                 .format(msg, event_desc))
             else:
-                # PRIVCOUNT_HSDIR_CACHE_STORED has a single event time
+                # PRIVCOUNT_HSDIR_CACHE_STORE has a single event time
                 event_time = get_float_value(
                                           PrivCountDataInjector.TIMESTAMP_TAG,
                                           fields, event_desc,
@@ -306,7 +306,7 @@ class PrivCountDataInjector(ServerFactory):
         # Tagged Events: these events have fields with tags, order is irrelevant
         # All current tagged events have at least one field
         # Handles:
-        #  - 'PRIVCOUNT_HSDIR_CACHE_STORED'
+        #  - 'PRIVCOUNT_HSDIR_CACHE_STORE'
         elif '=' in msg and len(parts) >= 2:
             items = parts[1:]
             fields = parse_tagged_event(items)
@@ -315,7 +315,7 @@ class PrivCountDataInjector(ServerFactory):
                 logging.warning("Malformed tagged event in: '{}' {}"
                                 .format(msg, event_desc))
             else:
-                # PRIVCOUNT_HSDIR_CACHE_STORED has a single event time
+                # PRIVCOUNT_HSDIR_CACHE_STORE has a single event time
                 fields[PrivCountDataInjector.TIMESTAMP_TAG] = str(end_time)
                 # This reorders the fields in key hash order
                 # This is not a stable order: it may change between python

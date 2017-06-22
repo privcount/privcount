@@ -245,7 +245,7 @@ BYTES_EVENT = 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED'
 STREAM_EVENT = 'PRIVCOUNT_STREAM_ENDED'
 CIRCUIT_EVENT = 'PRIVCOUNT_CIRCUIT_ENDED'
 CONNECTION_EVENT = 'PRIVCOUNT_CONNECTION_ENDED'
-HSDIR_STORED_EVENT = 'PRIVCOUNT_HSDIR_CACHE_STORED'
+HSDIR_STORE_EVENT = 'PRIVCOUNT_HSDIR_CACHE_STORE'
 
 def get_valid_events():
     '''
@@ -256,7 +256,7 @@ def get_valid_events():
                   STREAM_EVENT,
                   CIRCUIT_EVENT,
                   CONNECTION_EVENT,
-                  HSDIR_STORED_EVENT,
+                  HSDIR_STORE_EVENT,
                   }
     assert check_event_set_case(event_set)
     return event_set
@@ -350,154 +350,154 @@ PRIVCOUNT_COUNTER_EVENTS = {
 
 # these counters depend on HSDir stored
 # Keep versions separate
-'HSDir2StoreCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreCount' : { HSDIR_STORE_EVENT },
 # HSDirStoreCount, for 2/3, Add/Reject
-'HSDir2StoreAddCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreRejectCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreAddCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreRejectCount' : { HSDIR_STORE_EVENT },
 
 # HSDirStoreCount, for 2 only, ClientAuth
-'HSDir2StoreClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreNoClientAuthCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreNoClientAuthCount' : { HSDIR_STORE_EVENT },
 # HSDirStoreCount, for 2 only, Add, ClientAuth
-'HSDir2StoreAddClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNoClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectNoClientAuthCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreAddClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectNoClientAuthCount' : { HSDIR_STORE_EVENT },
 
 # HSDirStoreCount, for each valid version, action, reason and
 # optional have cached descriptor combination
-'HSDir2StoreAddNewCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddNewCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddUpdatedCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddUpdatedCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreAddNewCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddNewCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddUpdatedCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddUpdatedCount' : { HSDIR_STORE_EVENT },
 # v2 only
-'HSDir2StoreRejectDuplicateCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreRejectDuplicateCount' : { HSDIR_STORE_EVENT },
 # All other reasons imply HaveCached or NoCached
-'HSDir2StoreRejectExpiredHaveCachedCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectExpiredNoCachedCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectFutureHaveCachedCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectFutureNoCachedCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreRejectExpiredHaveCachedCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectExpiredNoCachedCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureHaveCachedCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureNoCachedCount' : { HSDIR_STORE_EVENT },
 # Both versions
-'HSDir2StoreRejectObsoleteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreRejectObsoleteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectUnparseableCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreRejectUnparseableCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreRejectObsoleteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreRejectObsoleteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectUnparseableCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreRejectUnparseableCount' : { HSDIR_STORE_EVENT },
 
 # HSDirStoreCount, for v2 only, and each valid action, reason, client auth and
 # optional have cached descriptor combination
-'HSDir2StoreAddNewClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewNoClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddUpdatedClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddUpdatedNoClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectDuplicateClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectDuplicateNoClientAuthCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreAddNewClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddUpdatedClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddUpdatedNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectDuplicateClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectDuplicateNoClientAuthCount' : { HSDIR_STORE_EVENT },
 # All other reasons imply HaveCached or NoCached
 # Unparseable descriptors have unknown Client Auth
-'HSDir2StoreRejectExpiredHaveCachedClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectExpiredHaveCachedNoClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectExpiredNoCachedClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectExpiredNoCachedNoClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectFutureHaveCachedClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectFutureHaveCachedNoClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectFutureNoCachedClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectFutureNoCachedNoClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectObsoleteClientAuthCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectObsoleteNoClientAuthCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreRejectExpiredHaveCachedClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectExpiredHaveCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectExpiredNoCachedClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectExpiredNoCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureHaveCachedClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureHaveCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureNoCachedClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureNoCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectObsoleteClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectObsoleteNoClientAuthCount' : { HSDIR_STORE_EVENT },
 
 # From here on, we just focus on the subcategories we're interested in
 # To add extra subcategories, add the counter name here (and in the TS config)
 # (No extra code is required in the Aggregator)
 
 # v2 only, NoClientAuth only
-'HSDir2StoreIntroPointHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddIntroPointHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectIntroPointHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewIntroPointHistogram' : { HSDIR_STORED_EVENT },
+'HSDir2StoreIntroPointHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddIntroPointHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectIntroPointHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewIntroPointHistogram' : { HSDIR_STORE_EVENT },
 
 # Total Counts
 # Both versions, but a different format
-'HSDir2StoreIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreRejectIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddNewIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddUpdatedIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddUpdatedIntroByteCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreRejectIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddNewIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddUpdatedIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddUpdatedIntroByteCount' : { HSDIR_STORE_EVENT },
 # v2 only
-'HSDir2StoreClientAuthIntroByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreNoClientAuthIntroByteCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreClientAuthIntroByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreNoClientAuthIntroByteCount' : { HSDIR_STORE_EVENT },
 
 # Value Distribution Details
 # Both versions, but a different format
-'HSDir2StoreIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreRejectIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddNewIntroByteHistogram' : { HSDIR_STORED_EVENT },
+'HSDir2StoreIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreRejectIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddNewIntroByteHistogram' : { HSDIR_STORE_EVENT },
 # v2 only
-'HSDir2StoreClientAuthIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreNoClientAuthIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddClientAuthIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNoClientAuthIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewClientAuthIntroByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewNoClientAuthIntroByteHistogram' : { HSDIR_STORED_EVENT },
+'HSDir2StoreClientAuthIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreNoClientAuthIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddClientAuthIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNoClientAuthIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewClientAuthIntroByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewNoClientAuthIntroByteHistogram' : { HSDIR_STORE_EVENT },
 
 # Total Counts
 # Both versions, but a different format
-'HSDir2StoreDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreRejectDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddNewDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddUpdatedDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddUpdatedDescriptorByteCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreRejectDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddNewDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddUpdatedDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddUpdatedDescriptorByteCount' : { HSDIR_STORE_EVENT },
 # v2 only
-'HSDir2StoreClientAuthDescriptorByteCount' : { HSDIR_STORED_EVENT },
-'HSDir2StoreNoClientAuthDescriptorByteCount' : { HSDIR_STORED_EVENT },
+'HSDir2StoreClientAuthDescriptorByteCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreNoClientAuthDescriptorByteCount' : { HSDIR_STORE_EVENT },
 
 # Value Distribution Details
 # Both versions, but a different format
-'HSDir2StoreDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreRejectDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddNewDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
+'HSDir2StoreDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreRejectDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddNewDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
 # v2 only
-'HSDir2StoreClientAuthDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreNoClientAuthDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddClientAuthDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNoClientAuthDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewClientAuthDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewNoClientAuthDescriptorByteHistogram' : { HSDIR_STORED_EVENT },
+'HSDir2StoreClientAuthDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreNoClientAuthDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddClientAuthDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNoClientAuthDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewClientAuthDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewNoClientAuthDescriptorByteHistogram' : { HSDIR_STORE_EVENT },
 
 # v2 only
-'HSDir2StoreUploadDelayTime' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddUploadDelayTime' : { HSDIR_STORED_EVENT },
-'HSDir2StoreRejectUploadDelayTime' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddNewUploadDelayTime' : { HSDIR_STORED_EVENT },
-'HSDir2StoreAddUpdatedUploadDelayTime' : { HSDIR_STORED_EVENT },
+'HSDir2StoreUploadDelayTime' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddUploadDelayTime' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectUploadDelayTime' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddNewUploadDelayTime' : { HSDIR_STORE_EVENT },
+'HSDir2StoreAddUpdatedUploadDelayTime' : { HSDIR_STORE_EVENT },
 
 # v3 only
-'HSDir3StoreRevisionHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddRevisionHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreRejectRevisionHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddNewRevisionHistogram' : { HSDIR_STORED_EVENT },
-'HSDir3StoreAddUpdatedRevisionHistogram' : { HSDIR_STORED_EVENT },
+'HSDir3StoreRevisionHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddRevisionHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreRejectRevisionHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddNewRevisionHistogram' : { HSDIR_STORE_EVENT },
+'HSDir3StoreAddUpdatedRevisionHistogram' : { HSDIR_STORE_EVENT },
 
 # the sanity check counter doesn't depend on any events
 DEFAULT_DUMMY_COUNTER_NAME : set(),

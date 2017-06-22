@@ -71,7 +71,7 @@ https://blog.torproject.org/blog/tor-0308-released-fix-hidden-services-also-are-
 Features:
 * Add HSDir[3], Intro, and Rend to the position weights script #289
 * Allow multiple Data Collectors to use the same Tor instance #365
-* Add the PRIVCOUNT_HSDIR_CACHE_STORED event to the PrivCount Tor Patch #336
+* Add the PRIVCOUNT_HSDIR_CACHE_STORE event to the PrivCount Tor Patch #336
 * Add 107 HSDir{2,3}Store counters to PrivCount #336
 * Use tagged fields for new events #256
 * Create counter variants for new counters from template strings #229

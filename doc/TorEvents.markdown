@@ -330,7 +330,7 @@ It has the following known issues:
 * PrivCount's additional RAM allocations may affect Tor's connection limits
   https://github.com/privcount/privcount/issues/349
 
-### PRIVCOUNT_HSDIR_CACHE_STORED
+### PRIVCOUNT_HSDIR_CACHE_STORE
 
 This event is sent when tor attempts to parse and store an onion service
 descriptor. Any attempt to upload a service descriptor triggers this event,
@@ -349,9 +349,9 @@ and has an overlap period.
 #### Bias Avoidance
 
 The typical order of events for a single descriptor is:
-* PRIVCOUNT_HSDIR_CACHE_STORED CacheReasonString=new ...
+* PRIVCOUNT_HSDIR_CACHE_STORE CacheReasonString=new ...
 * PRIVCOUNT_HSDIR_CACHE_FETCH ... (multiple times)
-* PRIVCOUNT_HSDIR_CACHE_STORED CacheReasonString=updated ... (multiple times)
+* PRIVCOUNT_HSDIR_CACHE_STORE CacheReasonString=updated ... (multiple times)
 * PRIVCOUNT_HSDIR_CACHE_FETCH ... (multiple times)
 * PRIVCOUNT_HSDIR_CACHE_EVICT ...
 
