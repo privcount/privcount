@@ -60,6 +60,8 @@ the same as those released with PrivCount 1.0.1. Please use the 1.0.1 tags.
 
 Security:
 * Actually add noise to counts on DCs. Bugfix on PrivCount 1.0.0 #360
+* Check that secure counters have generated noise before producing results #360
+* Make tally servers reject insecure Data Collector versions #360
 
 Deployment:
 * Add an example script and crontab entry for launching nodes on boot #354
