@@ -405,6 +405,33 @@ def get_events_for_known_counters():
     '''
     return get_events_for_counters(PRIVCOUNT_COUNTER_EVENTS.keys())
 
+def are_events_expected(counter_list, relay_flag_list):
+    '''
+    Return True if we expect to receive regular events while collecting
+    counter_list, on a relay with the consensus flags in relay_flag_list.
+    relay_flag_list must be a list, not a string.
+    Return False if we don't expect to receive events regularly.
+    '''
+    # It really does need to be a list
+    if isinstance(relay_flag_list, (str, unicode)):
+        relay_flag_list = relay_flag_list.split()
+    # no counters
+    if counter_list is None or len(counter_list) == 0:
+        return False
+    event_list = get_events_for_counters(counter_list)
+    # no events: ZeroCount only
+    if event_list is None or len(event_list) == 0:
+        return False
+    has_entry = "Guard" in relay_flag_list
+    has_exit = "Exit" in relay_flag_list
+    for counter_name in counter_list:
+        if has_entry and counter_name.startswith("Entry"):
+            return True
+        if has_exit and counter_name.startswith("Exit"):
+            return True
+    # no matching counters and flags
+    return False
+
 def check_counter_names(counters):
     '''
     Check that each counter's name is in the set of valid counter names.

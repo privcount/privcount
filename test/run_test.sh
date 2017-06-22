@@ -879,6 +879,7 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e "HiddenServiceVersionNumber '4'" \
   -e "18446744073709500000 bytes" \
   -e "dc-tor-test PrivCountTorTest.*never received any events" \
+  -e "Missing entry for relay" \
   "$TEST_DIR/"privcount.*.latest.log \
   || true
 # Log any source-specific warnings

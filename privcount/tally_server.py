@@ -19,7 +19,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from privcount.config import normalise_path, choose_secret_handshake_path
-from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins
+from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
 from privcount.node import PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
@@ -489,6 +489,18 @@ class TallyServer(ServerFactory, PrivCountServer):
                                     2*self.get_checkin_period() +
                                     rtt)
 
+    def are_dc_events_expected(self, uid, status=None):
+        '''
+        Return True if we expect the Data Collector at uid to receive events
+        regularly.
+        Return False if we don't, or if it's not a Data Collector.
+        '''
+        if self.get_client_type(uid, status) != 'DataCollector':
+            return False
+
+        flag_list = self.get_client_flag_list(uid, status)
+        return are_events_expected(self.config['counters'], flag_list)
+
     def clear_dead_clients(self):
         '''
         Check how long it has been since clients have successfully contacted
@@ -513,6 +525,18 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                       start_ts)
             rtt = self.get_max_client_rtt(uid)
 
+            flag_message = "Is the relay in the Tor consensus?"
+            flag_list = self.get_client_flag_list(uid)
+            if flag_list is None:
+                flag_message = ""
+            elif len(flag_list) > 0:
+                flag_message = "Consensus flags: {}".format(" ".join(flag_list))
+
+            if self.are_dc_events_expected(uid):
+                log_fn = logging.warning
+            else:
+                log_fn = logging.info
+
             cname = TallyServer.get_client_display_name(uid)
             cdetail = self.get_client_detail(uid)
 
@@ -522,16 +546,14 @@ class TallyServer(ServerFactory, PrivCountServer):
                                         cname, c_status))
 
             if not self.is_last_client_event_recent(uid):
-                logging.warning("{} for client {} {}"
-                                .format(
-                                        format_last_event_time_since(
+                log_fn("{} for client {} {} {}"
+                       .format(format_last_event_time_since(
                                             c_status.get('last_event_time')),
-                                        cname, c_status))
+                               cname, c_status, flag_message))
 
             if time_since_checkin > 3 * self.get_checkin_period() + rtt:
                 logging.warning("last checkin was {} for client {} {}"
-                                .format(
-                                        format_elapsed_time_wait(
+                                .format(format_elapsed_time_wait(
                                             time_since_checkin, 'at'),
                                         cname, c_status))
 
@@ -653,6 +675,16 @@ class TallyServer(ServerFactory, PrivCountServer):
         # Replace entire hex characters when summarising, not just ...
         return summarise_string(uid, 20, ellipsis='....')
 
+    def get_client_type(self, uid, status=None):
+        '''
+        Uses _get_client_item to find the client type for uid.
+        Returns None if client does not have a type.
+        '''
+        return self._get_client_item(uid,
+                                     'type',
+                                     status,
+                                     None)
+
     def get_client_address(self, uid, status=None):
         '''
         Uses _get_client_item to find the remote peer info (hostname and port)
@@ -691,6 +723,21 @@ class TallyServer(ServerFactory, PrivCountServer):
                                      'fingerprint',
                                      status,
                                      '(fingerprint pending)')
+
+    def get_client_flag_list(self, uid, status=None):
+        '''
+        Return the flags for uid in latest status (updated from its latest
+        consensus).
+        If there are no flags, return an empty list.
+        If it's not a Data Collector, return None.
+        '''
+        if self.get_client_type(uid, status) != 'DataCollector':
+            return None
+
+        return self._get_client_item(uid,
+                                     'flag_list',
+                                     status,
+                                     [])
 
     def get_client_info(self, uid, status=None):
         '''

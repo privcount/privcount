@@ -17,7 +17,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 
 from privcount.config import normalise_path, choose_secret_handshake_path
 from privcount.connection import connect, disconnect, validate_connection_config, choose_a_connection, get_a_control_password
-from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, has_noise_weight, get_noise_weight, count_bins
+from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, has_noise_weight, get_noise_weight, count_bins, are_events_expected
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since, format_elapsed_time_since, errorCallback
 from privcount.node import PrivCountClient, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
@@ -104,6 +104,35 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         status.update(self.context)
         return status
 
+    def get_flag_list(self):
+        '''
+        Return the flags for our relay in the most recent consensus.
+        If there are no flags or no consensus entry or no context,
+        return an empty list.
+        '''
+        return self.context.get('flag_list', [])
+
+    def get_counter_list(self):
+        '''
+        Return the list of counters we are collecting, or None if we haven't
+        started yet.
+        '''
+        if self.start_config is None:
+            return None
+        else:
+            # we should have caught unknown counters when we started
+            return self.check_start_config(self.start_config,
+                                           allow_unknown_counters=False)
+
+    def are_dc_events_expected(self):
+        '''
+        Return True if we expect to receive events regularly.
+        Return False if we don't.
+        '''
+        dc_counters = self.get_counter_list()
+        flag_list = self.get_flag_list()
+        return are_events_expected(dc_counters, flag_list)
+
     def check_aggregator(self):
         '''
         If the aggregator is live, but isn't getting events, log a diagnostic
@@ -115,27 +144,34 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
             self.expected_aggregator_start_time is not None and
             self.expected_aggregator_start_time < time()):
             aggregator_live_time = time() - self.expected_aggregator_start_time
+            flag_message = "Is your relay in the Tor consensus?"
+            flag_list = self.get_flag_list()
+            if len(flag_list) > 0:
+                flag_message = "Consensus flags: {}".format(" ".join(flag_list))
+            if self.are_dc_events_expected():
+                log_fn = logging.warning
+            else:
+                log_fn = logging.info
             if ((self.aggregator.protocol is None or
                  self.aggregator.protocol.state != "processing") and
                 aggregator_live_time > EXPECTED_CONTROL_ESTABLISH_MAX):
                 logging.warning("Aggregator has been running {}, but is not connected to the control port. Is your control port working?"
-                                .format(
-                                    format_elapsed_time_since(
+                                .format(format_elapsed_time_since(
                                         self.expected_aggregator_start_time,
                                         'since')))
             elif (self.aggregator.last_event_time is None and
                   aggregator_live_time > EXPECTED_EVENT_INTERVAL_MAX):
-                logging.warning("Aggregator has been running {}, but has not seen a tor event. Is your relay in the Tor consensus?"
-                                .format(
-                                    format_elapsed_time_since(
-                                        self.expected_aggregator_start_time,
-                                        'since')))
+                log_fn("Aggregator has been running {}, but has not seen a tor event. {}"
+                       .format(format_elapsed_time_since(
+                                          self.expected_aggregator_start_time,
+                                          'since'),
+                               flag_message))
             elif (self.aggregator.last_event_time is not None and
                   self.aggregator.last_event_time < time() - EXPECTED_EVENT_INTERVAL_MAX):
-                logging.warning("Aggregator has not received any events recently, {}. Is your relay in the Tor consensus?"
-                                .format(
-                                    format_last_event_time_since(
-                                        self.aggregator.last_event_time)))
+                log_fn("Aggregator has not received any events recently, {}. {}"
+                       .format(format_last_event_time_since(
+                                             self.aggregator.last_event_time),
+                               flag_message))
 
     def do_checkin(self):
         '''
@@ -400,6 +436,7 @@ class Aggregator(ReconnectingClientFactory):
         self.tor_privcount_version = None
         self.address = None
         self.fingerprint = None
+        self.flag_list = []
 
     def buildProtocol(self, addr):
         if self.protocol is not None:
@@ -773,6 +810,28 @@ class Aggregator(ReconnectingClientFactory):
         '''
         return self.fingerprint
 
+    def set_flag_list(self, flag_string):
+        '''
+        Set our stored flag list to the list of space-separated flags in
+        fingerprint. Ignores flag_string if it is None.
+        Always returns True.
+        Called by TorControlClientProtocol.
+        '''
+        if flag_string is None:
+            logging.warning("flag_string was None in set_flag_list()")
+            return True
+
+        self.flag_list = flag_string.split()
+        logging.info("Updated relay flags to {}".format(self.flag_list))
+
+        return True
+
+    def get_flag_list(self):
+        '''
+        Return the stored flag list for this relay.
+        '''
+        return self.flag_list
+
     def get_context(self):
         '''
         return a dictionary containing each available context item
@@ -792,6 +851,8 @@ class Aggregator(ReconnectingClientFactory):
             context['address'] = self.get_address()
         if self.get_fingerprint() is not None:
             context['fingerprint'] = self.get_fingerprint()
+        if self.get_flag_list() is not None:
+            context['flag_list'] = self.get_flag_list()
         if self.last_event_time is not None:
             context['last_event_time'] = self.last_event_time
         if self.noise_weight_value is not None:
