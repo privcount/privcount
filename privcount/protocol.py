@@ -1905,6 +1905,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             elif line == "250 Nickname":
                 logging.info("Connection with {}: no Nickname"
                              .format(transport_info(self.transport)))
+                # It has no nickname, which is different to not knowing if it
+                # has a nickname or not
+                self.setDiscoveredValue('set_nickname', '', 'Nickname')
             # It's a relay, and it's just told us one of its ORPorts
             elif (line.startswith("250 ORPort=") or
                   line.startswith("250-ORPort=")):
