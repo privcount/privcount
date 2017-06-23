@@ -25,6 +25,9 @@ Share Keepers on version 1.0.1 and later can store shares for any counters,
 even counters introduced in subsequent Data Collector and Tally Server
 versions.
 
+Tally Servers on version 1.0.2 and later ignore Data Collectors on versions
+1.0.1 and earlier, because they have a critical security issue.
+
 Data Collectors can use any PrivCount Tor Patch that supports the events for
 the counters they are collecting. For example, you can collect the
 EntryActiveCircuitCount using the PrivCount Tor Patch 1.0.0 or later. The
