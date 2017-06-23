@@ -16,5 +16,7 @@ else
     exit 1
 fi
 
+sleep 1
+head privcount.log
 echo "Started privcount, to see logs, use:"
-echo "tail -f privcount.log"
+echo "tail -f $SCRIPT_DIR/privcount.log"
