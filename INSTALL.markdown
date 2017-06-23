@@ -12,7 +12,7 @@ A PrivCount network consists of a Tally Server (TS), at least two Share Keepers
 ### Upgrade PrivCount from a previous version
 
     cd privcount
-    git pull
+    git pull origin privcount
     source venv/bin/activate
     pip install -I .
     # relaunch privcount
