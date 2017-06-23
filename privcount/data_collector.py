@@ -686,6 +686,8 @@ class Aggregator(ReconnectingClientFactory):
         Returns a whitespace-stripped version string, or None if the version
         is invalid.
         '''
+        if "version" in version:
+            _, _, version = version.partition("version")
         version = version.strip()
 
         # Do some basic validation of the version

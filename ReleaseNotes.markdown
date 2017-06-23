@@ -48,6 +48,11 @@ BSD license. See LICENSE for details.
 Issue numbers are from:
     https://github.com/privcount/privcount/issues
 
+## PrivCount 1.0.3
+
+* Make Tor version parsing more reliable #363. Bugfix on #307 in 1.0.0.
+  Likely triggered by #361 in 1.0.2.
+
 ## PrivCount 1.0.2
 
 PrivCount 1.0.2 fixes a critical Data Collector security bug, where noise
