@@ -56,6 +56,7 @@ Issue numbers are from:
   Bugfix on #361 in 1.0.2
 * Distinguish between a missing nickname and an unknown nickname #366
   Bugfix on 1.0.0
+* Always check if EnablePrivCount is on before starting a collection #365
 
 ## PrivCount 1.0.2
 
