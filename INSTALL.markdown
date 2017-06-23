@@ -34,7 +34,7 @@ The tests require the openssl command.
 You may need to use your distribution's backports to get an updated OpenSSL.
 For example, on Debian 8 (Jessie), the required SSL packages are:
 
-    libssl1.0.0>=1.0.2k-1~bpo8+1 libssl-dev>=1.0.2k-1~bpo8+1
+    libssl1.0.0=1.0.2k-1~bpo8+1 libssl-dev=1.0.2k-1~bpo8+1
 
 System libs can be install with `apt-get`, `yum`, `brew`, etc. Python libs can
 be installed with `pip`, as we explain below.
