@@ -77,6 +77,13 @@ Testing:
 A full list of issues resolved in this release is available at:
 https://github.com/privcount/privcount/milestone/9?closed=1
 
+## PrivCount 1.0.3
+
+* Make Tor version parsing more reliable #363. Bugfix on #307 in 1.0.0.
+  Likely triggered by #361 in 1.0.2
+* Handle tor relays that haven't bootstrapped yet #364
+  Bugfix on #361 in 1.0.2
+
 ## PrivCount 1.0.2
 
 PrivCount 1.0.2 fixes a critical Data Collector security bug, where noise
