@@ -70,6 +70,7 @@ https://blog.torproject.org/blog/tor-0308-released-fix-hidden-services-also-are-
 
 Features:
 * Add HSDir[3], Intro, and Rend to the position weights script #289
+* Allow multiple Data Collectors to use the same Tor instance #365
 
 Testing:
 * Check all events are tested and documented when running tests #347

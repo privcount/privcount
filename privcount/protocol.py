@@ -1696,11 +1696,16 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             return
         if self.state == 'waiting' or self.state == 'processing':
             self.active_events = self.collection_events
-            # Protect the EnablePrivCount setting from logrotate and similar
-            self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=0")
-            self.sendLine("SETCONF EnablePrivCount=1")
+            use_setconf = self.getConfiguredValue('get_use_setconf',
+                                                  'use SETCONF')
+            if use_setconf:
+                # Protect the EnablePrivCount setting from logrotate and
+                # similar
+                self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=0")
+                self.sendLine("SETCONF EnablePrivCount=1")
             # Always check that EnablePrivCount is set, even if we just set it
             self.sendLine("GETCONF EnablePrivCount")
+            # SETEVENTS is fine, it only affects this control connection
             self.sendLine("SETEVENTS {}".format(" ".join(self.active_events)))
             self.state = 'processing'
             logging.info("Enabled PrivCount events: {}"
@@ -1723,8 +1728,13 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                 logging.info("Disabled PrivCount events: {}"
                              .format(" ".join(self.active_events)))
             self.sendLine("SETEVENTS")
-            self.sendLine("SETCONF EnablePrivCount=0")
-            self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=1")
+            use_setconf = self.getConfiguredValue('get_use_setconf',
+                                                  'use SETCONF')
+            if use_setconf:
+                self.sendLine("SETCONF EnablePrivCount=0")
+                self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=1")
+            # Don't check if EnablePrivCount is off: other instances might
+            # want it to stay on
             self.active_events = None
             self.state = 'waiting'
 
@@ -1735,6 +1745,15 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         logging.debug("Sending line '{}' to {}"
                       .format(line, transport_info(self.transport)))
         self.check_line_length(line, False, False)
+        # make sure we don't issue a SETCONF when we're not supposed to
+        if line.startswith("SETCONF"):
+            use_setconf = self.getConfiguredValue('get_use_setconf',
+                                                  'use SETCONF')
+            if not use_setconf:
+                logging.warning("Connection with {}: protocol tried to use SETCONF when use_setconf was False: '{}'"
+                            .format(transport_info(self.transport), line))
+                self.quit()
+                return
         return LineOnlyReceiver.sendLine(self, line)
 
     def sendInfoNs(self):

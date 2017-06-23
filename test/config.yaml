@@ -102,6 +102,7 @@ data_collector:
         # - '0e193e4a66cf0332bc64ad613bb651579a10e08afdbb54aa49e9ea2286ccd41c'
         # - ...
     # optional overrides:
+    #use_setconf: True (default: True) whether to use SETCONF to set EnablePrivCount, or rely on the torrc or some other PrivCount instance to do it. This biases results towards long-running connections. Intended for use when testing.
     #delay_period: 4 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
     #always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
     rotate_period: 1 # (default: 600) sensitive data (like client IP addresses) remains in memory for up to 2*rotate_period

@@ -251,7 +251,8 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                                      config['noise_weight'],
                                      counter_modulus(),
                                      self.config['event_source'],
-                                     self.config['rotate_period'])
+                                     self.config['rotate_period'],
+                                     self.config['use_setconf'])
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -357,6 +358,10 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                                                    DataCollector.DEFAULT_ROTATE_PERIOD))
             assert dc_conf['rotate_period'] > 0
 
+            # Data collectors use SETCONF by default
+            dc_conf.setdefault('use_setconf', True)
+            dc_conf['use_setconf'] = bool(dc_conf['use_setconf'])
+
             dc_conf['sigma_decrease_tolerance'] = \
                 self.get_valid_sigma_decrease_tolerance(dc_conf)
 
@@ -398,7 +403,8 @@ class Aggregator(ReconnectingClientFactory):
     '''
 
     def __init__(self, counters, traffic_model_config, sk_uids,
-                 noise_weight, modulus, tor_control_port, rotate_period):
+                 noise_weight, modulus, tor_control_port, rotate_period,
+                 use_setconf):
         self.secure_counters = SecureCounters(counters, modulus,
                                               require_generate_noise=True)
         self.collection_counters = counters
@@ -418,8 +424,10 @@ class Aggregator(ReconnectingClientFactory):
         self.connector_list = None
         self.protocol = None
         self.rotator = None
+
         self.tor_control_port = tor_control_port
         self.rotate_period = rotate_period
+        self.use_setconf = use_setconf
 
         self.last_event_time = None
         self.num_rotations = 0
@@ -569,6 +577,13 @@ class Aggregator(ReconnectingClientFactory):
         '''
         # Multiple different control passwords are not supported
         return get_a_control_password(self.tor_control_port)
+
+    def get_use_setconf(self):
+        '''
+        Returns True if the protocol should use SETCONF, and False if it should
+        rely on the torrc or another PrivCount instance to set EnablePrivCount.
+        '''
+        return self.use_setconf
 
     def set_nickname(self, nickname):
         nickname = nickname.strip()
