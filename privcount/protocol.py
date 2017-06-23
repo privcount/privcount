@@ -1699,6 +1699,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             # Protect the EnablePrivCount setting from logrotate and similar
             self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=0")
             self.sendLine("SETCONF EnablePrivCount=1")
+            # Always check that EnablePrivCount is set, even if we just set it
+            self.sendLine("GETCONF EnablePrivCount")
             self.sendLine("SETEVENTS {}".format(" ".join(self.active_events)))
             self.state = 'processing'
             logging.info("Enabled PrivCount events: {}"
@@ -1896,6 +1898,17 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                                  .format(transport_info(self.transport)))
                 self.quit()
                 return
+            # Check PrivCount is on
+            elif line.startswith("250 EnablePrivCount="):
+                _, _, privcount_enabled = line.partition("EnablePrivCount=")
+                if privcount_enabled != "1":
+                    logging.warning("Connection with {} failed: EnablePrivCount is {}"
+                                .format(transport_info(self.transport),
+                                        privcount_enabled))
+                    self.quit()
+                    return
+                else:
+                    logging.info("Confirmed that EnablePrivCount is 1")
             # It's a relay, and it's just told us its Nickname
             elif line.startswith("250 Nickname="):
                 _, _, nickname = line.partition("Nickname=")
@@ -1905,6 +1918,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             elif line == "250 Nickname":
                 logging.info("Connection with {}: no Nickname"
                              .format(transport_info(self.transport)))
+                # It has no nickname, which is different to not knowing if it
+                # has a nickname or not
+                self.setDiscoveredValue('set_nickname', '', 'Nickname')
             # It's a relay, and it's just told us one of its ORPorts
             elif (line.startswith("250 ORPort=") or
                   line.startswith("250-ORPort=")):
@@ -2410,6 +2426,8 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                     self.sendLine("250 ORPort=[::1]:12345")
                 elif len(parts) == 2 and parts[1].lower() == "dirport":
                     self.sendLine("250 DirPort=9030")
+                elif len(parts) == 2 and parts[1].lower() == "enableprivcount":
+                    self.sendLine("250 EnablePrivCount=1")
                 else:
                     # Like GETINFO, our GETCONF does not accept multiple words
                     self.sendLine('552 Unrecognized configuration key "{}"'.format(parts[1]))

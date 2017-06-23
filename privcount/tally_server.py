@@ -699,16 +699,21 @@ class TallyServer(ServerFactory, PrivCountServer):
     def get_client_nickname(self, uid, status=None):
         '''
         Uses _get_client_item to find a fingerprint.
-        Returns None if client will never have a nickname, anda placeholder
-        string if we expect a nickname in future.
+        Returns None if client will never have a nickname, and placeholder
+        strings if we know it has no nickname, or we expect a nickname in
+        future.
         '''
         if self.get_client_type(uid, status) != 'DataCollector':
             return None
 
-        return self._get_client_item(uid,
+        nick = self._get_client_item(uid,
                                      'nickname',
                                      status,
                                      '(nickname pending)')
+        # Distinguish between unknown and known empty nicknames
+        if len(nick) == 0:
+            nick = '(no nickname)'
+        return nick
 
     def get_client_fingerprint(self, uid, status=None):
         '''

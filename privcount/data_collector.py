@@ -574,7 +574,7 @@ class Aggregator(ReconnectingClientFactory):
         nickname = nickname.strip()
 
         # Do some basic validation of the nickname
-        if len(nickname) < 1 or len(nickname) > 19:
+        if len(nickname) > 19:
             logging.warning("Bad nickname length %d: %s", len(nickname), nickname)
             return False
         if not all(c in (string.ascii_letters + string.digits) for c in nickname):
