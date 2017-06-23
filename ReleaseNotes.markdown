@@ -51,7 +51,9 @@ Issue numbers are from:
 ## PrivCount 1.0.3
 
 * Make Tor version parsing more reliable #363. Bugfix on #307 in 1.0.0.
-  Likely triggered by #361 in 1.0.2.
+  Likely triggered by #361 in 1.0.2
+* Handle tor relays that haven't bootstrapped yet #364
+  Bugfix on #361 in 1.0.2
 
 ## PrivCount 1.0.2
 

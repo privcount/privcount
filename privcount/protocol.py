@@ -1983,9 +1983,10 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                 self.handleUnexpectedLine(line)
         # consensus processing: waiting or processing states
         # handle other events interspersed between these lines
-        elif line.startswith("250-ns/id/"):
+        elif line.startswith("250-ns/id/") or line.startswith('552 Unrecognized key "ns/id/'):
             _, _, fingerprint = line.partition('ns/id/')
             fingerprint, _, _ = fingerprint.partition('=')
+            fingerprint, _, _ = fingerprint.partition('"')
             logging.warning("Missing entry for relay {} in consensus, will check again in an hour"
                             .format(fingerprint))
             # clear the flag list
