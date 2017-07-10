@@ -109,6 +109,24 @@ events. (PrivCount does not send any events when EnablePrivCount is 0.)
 PrivCount measures some overheads, and excludes others.
 See doc/TorNetworkOverhead.markdown for details.
 
+### PRIVCOUNT_CIRCUIT_CELL
+
+TODO: expand documentation
+
+        Common:
+          EventTimestamp
+        Cell and Circuit Common:
+          EventTimestamp,
+          {Previous,Next}{ChannelId,CircuitId},
+          IsOriginFlag, IsEntryFlag, IsMidFlag, IsEndFlag,
+          IsExitFlag, IsDirFlag, IsHSDirFlag, IsIntroFlag, IsRendFlag,
+          IsHSClientSideFlag, HiddenServiceVersionNumber,
+          IsMarkedForCloseFlag
+        Cell-Specific:
+          IsSentFlag, IsOutboundFlag,
+          CellCommandString, RelayCommandString,
+          IsRecognizedFlag, WasRelayCryptSuccessfulFlag
+
 ### PRIVCOUNT_DNS_RESOLVED
 
 This event is sent when an exit receives a client request, including:
@@ -238,7 +256,31 @@ It has the following known issues:
 * PrivCount's additional RAM allocations may affect Tor's stream limits
   https://github.com/privcount/privcount/issues/349
 
+### PRIVCOUNT_CIRCUIT_CLOSE
+
+TODO: expand documentation
+
+        Common:
+          EventTimestamp
+        Cell and Circuit Common:
+          {Previous,Next}{ChannelId,CircuitId},
+          IsOriginFlag, IsEntryFlag, IsMidFlag, IsEndFlag,
+          IsExitFlag, IsDirFlag, IsHSDirFlag, IsIntroFlag, IsRendFlag,
+          IsHSClientSideFlag, HiddenServiceVersionNumber,
+          IsMarkedForCloseFlag
+        Circuit-Specific:
+          CreatedTimestamp, IsLegacyCircuitEndEventFlag,
+          StateString, PurposeCode, PurposeString, HSStateString,
+          {Previous,Next}Node{IPAddress,Fingerprint,RelayFlagList},
+          {IntroClientSink,RendSplice}[All Cell and Circuit Common Fields],
+          {Inbound,Outbound}{Sent,Received}CellCount,
+          {Inbound,Outbound}Exit{Cell,Byte}Count,
+          {Inbound,Outbound}DirByteCount
+
 ### PRIVCOUNT_CIRCUIT_ENDED
+
+As of PrivCount 1.1.0, this is a legacy event, use PRIVCOUNT_CIRCUIT_CLOSE in
+new code.
 
 This event is sent when tor closes a remote exit circuit.
 

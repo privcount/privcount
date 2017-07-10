@@ -884,6 +884,7 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e "18446744073709500000 bytes" \
   -e "dc-tor-test PrivCountTorTest.*never received any events" \
   -e "Missing entry for relay" \
+  -e "Unwanted event type PRIVCOUNT_CIRCUIT_ENDED" \
   "$TEST_DIR/"privcount.*.latest.log \
   || true
 # Log any source-specific warnings

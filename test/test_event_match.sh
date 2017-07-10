@@ -28,9 +28,10 @@ if [ -d "$TOR_DIR" ]; then
     for code in "$TOR_DIR"/src/or/control.{c,h}; do
         #echo "Processing $code:"
         OUT_PATH="$TEST_DIR"/`basename "$code"`
-        grep -i " EVENT_$NAME_REGEX[ ,]" "$code" \
-            | cut -d"_" -f 2- | cut -d"," -f 1 | cut -d" " -f 1 \
-            | sort > "$OUT_PATH.event_names"
+        grep -i "^[^*]*EVENT_$NAME_REGEX[ ,]" "$code" \
+            | cut -d"(" -f 2 | cut -d"_" -f 2- \
+            | cut -d"," -f 1 | cut -d" " -f 1 \
+            | sort -u > "$OUT_PATH.event_names"
     done
 fi
 

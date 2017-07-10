@@ -263,19 +263,37 @@ def is_float_valid(field_name, fields, event_desc,
     # it is valid and we want to keep on processing
     return True
 
+def is_ip_address_valid(field_name, fields, event_desc,
+                        is_mandatory=False):
+    '''
+    Check that fields[field_name] passes is_field_valid(), and is a valid
+    IPv4 or IPv6 address (TODO).
+
+    Return values are like is_string_valid.
+    '''
+    # TODO: actually try converting to IPv4 or IPv6, using the ipaddress
+    #       module (the backported one from python 3.3)
+    # TODO: check the version is in the set of allowed IP versions (?)
+    
+    # "::" is a valid IPv6 address, and they can be up to 39 characters long
+    return is_string_valid(field_name, fields, event_desc,
+                           is_mandatory=is_mandatory,
+                           min_len=2, max_len=39)
+
 def get_string_value(field_name, fields, event_desc,
-                     is_mandatory=False):
+                     is_mandatory=False,
+                     default=None):
     '''
     Check that fields[field_name] exists.
     Asserts if is_mandatory is True and it does not exist.
 
     If it does exist, return it as a string.
-    If it is missing, return None.
+    If it is missing, return default.
     (There are no invalid strings.)
     '''
     if field_name not in fields:
         assert not is_mandatory
-        return None
+        return default
 
     # This should have been checked earlier
     # There are no non-length string checks, but we do this for consistency
@@ -284,19 +302,20 @@ def get_string_value(field_name, fields, event_desc,
     return fields[field_name]
 
 def get_list_value(field_name, fields, event_desc,
-                   is_mandatory=False):
+                   is_mandatory=False,
+                   default=None):
     '''
     Check that fields[field_name] exists.
     Asserts if is_mandatory is True and it does not exist.
 
     If it does exist, return it as a list of strings, splitting on commas.
     If the field is a zero-length string, returns a list with no items.
-    If the field is missing, return None.
+    If the field is missing, return default.
     (There are no invalid lists.)
     '''
     if field_name not in fields:
         assert not is_mandatory
-        return None
+        return default
 
     # This should have been checked earlier
     # There are no non-count list checks, but we do this for consistency
@@ -310,7 +329,8 @@ def get_list_value(field_name, fields, event_desc,
         return []
 
 def get_int_value(field_name, fields, event_desc,
-                  is_mandatory=False):
+                  is_mandatory=False,
+                  default=None):
     '''
     Check that fields[field_name] exists and is a valid integer.
     If it is an invalid integer, assert.
@@ -318,7 +338,7 @@ def get_int_value(field_name, fields, event_desc,
     '''
     if field_name not in fields:
         assert not is_mandatory
-        return None
+        return default
 
     # This should have been checked earlier
     # We're just using this for its integer format check
@@ -327,7 +347,8 @@ def get_int_value(field_name, fields, event_desc,
     return int(fields[field_name])
 
 def get_flag_value(field_name, fields, event_desc,
-                   is_mandatory=False):
+                   is_mandatory=False,
+                   default=None):
     '''
     Check that fields[field_name] exists and is a valid numeric boolean
     flag.
@@ -336,7 +357,7 @@ def get_flag_value(field_name, fields, event_desc,
     '''
     if field_name not in fields:
         assert not is_mandatory
-        return None
+        return default
 
     # This should have been checked earlier
     # We're just using this for its integer format and bool range check
@@ -345,7 +366,8 @@ def get_flag_value(field_name, fields, event_desc,
     return bool(int(fields[field_name]))
 
 def get_float_value(field_name, fields, event_desc,
-                    is_mandatory=False):
+                    is_mandatory=False,
+                    default=None):
     '''
     Check that fields[field_name] exists and is a valid float (including
     integral values).
@@ -354,10 +376,29 @@ def get_float_value(field_name, fields, event_desc,
     '''
     if field_name not in fields:
         assert not is_mandatory
-        return None
+        return default
 
     # This should have been checked earlier
     # We're just using this for its float format check
     assert is_float_valid(field_name, fields, event_desc)
 
     return float(fields[field_name])
+
+def get_ip_address_value(field_name, fields, event_desc,
+                         is_mandatory=False,
+                         default=None):
+    '''
+    Check that fields[field_name] exists and is a valid IP address (TODO).
+    If it is an invalid IP address, assert.
+    Return values are like get_string_value.
+    '''
+    if field_name not in fields:
+        assert not is_mandatory
+        return default
+
+    # This should have been checked earlier
+    # We're just using this for its IP address format check
+    assert is_ip_address_valid(field_name, fields, event_desc)
+
+    # TODO: convert to an IP address object?
+    return fields[field_name]

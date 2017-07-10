@@ -76,55 +76,65 @@ The full results, including context, are in:
 
 Here is how I generate an events.txt file:
 
-1. Find the chutney control port of the Guard, Exit, or HSDir you are
-   interested in. Control ports start at 8000, and are assigned in order of
-   node creation in the chutney/networks/* file.
+1. Find the chutney control port of the node (Guard, Middle, Exit, Dir, HSDir,
+   Intro, Rend, or even Origin) you are interested in. Control ports start at
+   8000, and are assigned in order of node creation in the
+   chutney/networks/* file.
 
-2. Open a terminal in a privcount directory and run:
+2. Open another terminal in a privcount-patched tor directory:
+
+    ../chutney/tools/test-network.sh --flavour hs-exit-min --data 100
+
+   The single client in this network will produce 1 stream with 100 bytes of
+   data, to both the exit and the onion service in the network.
+   You might need to run the the network a few times to see all the different
+   events.
+
+   If your chutney doesn't have hs-exit-min, get the latest version using:
+
+   git clone https://git.torproject.org/chutney.git
+
+3. Open a terminal in a privcount directory and run:
 
     source venv/bin/activate
+    pip install -I .
     test/test_tor_ctl_event.py 8002 > raw_events.txt
 
    Where 8002 is the port you are interested in.
 
-3. Open another terminal in a privcount-patched tor directory
+   You might need to be careful with the timing here: too early, and the
+   reconnecting client will timeout, or Tor will end up in a broken state
+   (tor trac #9990 and #15421).
 
-4. Run one of the following commands:
+4. Wait around 60 seconds for chutney to finish
 
-    ../chutney/tools/test-network.sh --flavour basic-min --data 10240 --connections 10
-    ../chutney/tools/test-network.sh --flavour hs-min --data 10240 --connections 10
-
-   The single client in these networks will produce 10 streams with 10KB of
-   data each, or 100KB of data, through the single exit or onion service in the
-   network. You might need to run the hs-min network a few times to see all
-   the different events.
-
-5. Wait around 60 seconds for chutney to finish
-
-6. Process the raw file(s) with:
+5. Process the raw file(s) with:
 
     cat raw_events.txt | grep -v "^Relay" | cut -d" " -f 9- > events.txt
 
-7. Optionally, use 'localhost' instead of '127.0.0.1' for hostnames:
+6. Optionally, use 'localhost' instead of '127.0.0.1' for hostnames:
 
     sed "s/\(PRIVCOUNT_STREAM_ENDED.*\)127.0.0.1 127.0.0.1/\1localhost 127.0.0.1/" events.txt > local_events.txt
     mv local_events.txt events.txt
 
    (Chutney's automatic tests have no way of specifying a hostname.)
 
-8. Check the events file actually has some entries:
+7. Check the events file actually has some entries:
 
     head -10 events.txt
     wc -l events.txt
 
-9. Append the extreme test events to the events file:
+    If there are more than a few hundred events in the file, you might want
+    to remove similar event lines. This makes the integration tests faster.
+
+8. Append the extreme test events to the events file:
 
     cat extreme_events.txt >> events.txt
 
    We don't parse DNS_RESOLVED events, so they are kept separate in
    extreme_dns_resolved_events.txt
 
-10. Test the new events file in privcount using:
+9. Test the new events file in privcount using:
 
     test/run_test.sh -I . -x -s inject
 

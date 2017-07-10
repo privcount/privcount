@@ -2020,3 +2020,54 @@ counters:
     HSDir3StoreAddNewCount:
         bins:
         - [-.inf, .inf]
+    RendClientSentCellCount:
+        bins:
+        - [-.inf, .inf]
+    Intro2CircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2CircuitCount:
+        bins:
+        - [-.inf, .inf]
+    MidCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    EndCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    ExitAndRendServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    OriginCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    SingleHopCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    DirCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    ExitAndRendClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientCircuitCount:
+        bins:
+        - [-.inf, .inf]

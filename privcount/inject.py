@@ -21,9 +21,6 @@ from privcount.log import errorCallback, stop_reactor, summarise_string
 from privcount.protocol import TorControlServerProtocol
 from privcount.tagged_event import parse_tagged_event, get_float_value
 
-# set the log level
-#logging.basicConfig(level=logging.DEBUG)
-
 # We can't have the injector listen on a port by default, because it might
 # conflict with a running tor instance
 DEFAULT_PRIVCOUNT_INJECT_SOCKET = '/tmp/privcount-inject'
@@ -241,7 +238,8 @@ class PrivCountDataInjector(ServerFactory):
             # _flush_later will inject the next event when called
             return
 
-    TIMESTAMP_TAG = "EventTimestamp"
+    START_TIMESTAMP_TAG = "CreatedTimestamp"
+    END_TIMESTAMP_TAG = "EventTimestamp"
 
     def _get_event_times(self, msg):
         '''
@@ -264,6 +262,8 @@ class PrivCountDataInjector(ServerFactory):
         # Tagged Events: these events have fields with Key=Value pairs
         # All current tagged events have at least one field
         # Handles:
+        #  - 'PRIVCOUNT_CIRCUIT_CELL'
+        #  - 'PRIVCOUNT_CIRCUIT_CLOSE'
         #  - 'PRIVCOUNT_HSDIR_CACHE_STORE'
         elif '=' in msg and len(parts) >= 2:
             items = parts[1:]
@@ -273,12 +273,25 @@ class PrivCountDataInjector(ServerFactory):
                 logging.warning("Malformed tagged event in: '{}' {}"
                                 .format(msg, event_desc))
             else:
-                # PRIVCOUNT_HSDIR_CACHE_STORE has a single event time
-                event_time = get_float_value(
-                                          PrivCountDataInjector.TIMESTAMP_TAG,
-                                          fields, event_desc,
-                                          is_mandatory=True)
-                return event_time, event_time
+                # PRIVCOUNT_CIRCUIT_CLOSE has start and end times
+                start_time = get_float_value(
+                                    PrivCountDataInjector.START_TIMESTAMP_TAG,
+                                    fields, event_desc,
+                                    is_mandatory=False)
+
+                # PRIVCOUNT_CIRCUIT_CELL and PRIVCOUNT_HSDIR_CACHE_STORE have
+                # a single event time: the "end" time
+                end_time = get_float_value(
+                                    PrivCountDataInjector.END_TIMESTAMP_TAG,
+                                    fields, event_desc,
+                                    is_mandatory=True)
+
+                # use the end time as a dummy start time for single-time
+                # events
+                if start_time is None:
+                    start_time = end_time
+
+                return start_time, end_time
         else:
             logging.warning("Wrong event field count or unknown or empty event in: '{}' {}"
                             .format(msg, event_desc))
@@ -306,6 +319,8 @@ class PrivCountDataInjector(ServerFactory):
         # Tagged Events: these events have fields with tags, order is irrelevant
         # All current tagged events have at least one field
         # Handles:
+        #  - 'PRIVCOUNT_CIRCUIT_CELL'
+        #  - 'PRIVCOUNT_CIRCUIT_CLOSE'
         #  - 'PRIVCOUNT_HSDIR_CACHE_STORE'
         elif '=' in msg and len(parts) >= 2:
             items = parts[1:]
@@ -315,13 +330,21 @@ class PrivCountDataInjector(ServerFactory):
                 logging.warning("Malformed tagged event in: '{}' {}"
                                 .format(msg, event_desc))
             else:
-                # PRIVCOUNT_HSDIR_CACHE_STORE has a single event time
-                fields[PrivCountDataInjector.TIMESTAMP_TAG] = str(end_time)
+                # PRIVCOUNT_CIRCUIT_CLOSE has start and end times
+                if PrivCountDataInjector.START_TIMESTAMP_TAG in fields:
+                    fields[PrivCountDataInjector.START_TIMESTAMP_TAG] = str(start_time)
+
+                # PRIVCOUNT_CIRCUIT_CELL and PRIVCOUNT_HSDIR_CACHE_STORE have
+                # a single event time: the "end" time
+                fields[PrivCountDataInjector.END_TIMESTAMP_TAG] = str(end_time)
+
                 # This reorders the fields in key hash order
                 # This is not a stable order: it may change between python
-                # versions
+                # versions. And clients should not depend on the exact order
+                # anyway.
                 fields_list = ["{}={}".format(k, fields[k]) for k in fields]
                 parts_list = [parts[0]] + fields_list
+
                 return ' '.join(parts_list)
         else:
             logging.warning("Wrong event field count or unknown or empty event in: '{}' {}"

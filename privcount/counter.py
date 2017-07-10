@@ -240,23 +240,33 @@ def check_event_set_valid(event_set):
     return True
 
 # internal
-DNS_EVENT = 'PRIVCOUNT_DNS_RESOLVED'
+CELL_EVENT = 'PRIVCOUNT_CIRCUIT_CELL'
 BYTES_EVENT = 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED'
 STREAM_EVENT = 'PRIVCOUNT_STREAM_ENDED'
-CIRCUIT_EVENT = 'PRIVCOUNT_CIRCUIT_ENDED'
+CIRCUIT_EVENT = 'PRIVCOUNT_CIRCUIT_CLOSE'
 CONNECTION_EVENT = 'PRIVCOUNT_CONNECTION_ENDED'
 HSDIR_STORE_EVENT = 'PRIVCOUNT_HSDIR_CACHE_STORE'
+
+# Unused events
+# PrivCount never used this event, it was used by PrivEx
+DNS_EVENT = 'PRIVCOUNT_DNS_RESOLVED'
+# We don't use this event any more, but the Tor patch still produces it, for
+# compatibility with older versions
+LEGACY_CIRCUIT_EVENT = 'PRIVCOUNT_CIRCUIT_ENDED'
 
 def get_valid_events():
     '''
     Return a set containing the name of each privcount event, in uppercase
     '''
-    event_set = { DNS_EVENT,
+    event_set = { CELL_EVENT,
                   BYTES_EVENT,
                   STREAM_EVENT,
                   CIRCUIT_EVENT,
                   CONNECTION_EVENT,
                   HSDIR_STORE_EVENT,
+                  # Unused events
+                  DNS_EVENT,
+                  LEGACY_CIRCUIT_EVENT,
                   }
     assert check_event_set_case(event_set)
     return event_set
@@ -264,13 +274,20 @@ def get_valid_events():
 # when you modify this list, update the test counters, and run:
 # test/test_counter_match.sh
 PRIVCOUNT_COUNTER_EVENTS = {
+
+# these counters depend on the cell sent/received event
+# they are updated in _handle_circuit_cell_event
+'RendClientSentCellCount' : { CELL_EVENT },
+
 # these counters depend on bytes transferred event
 # they are updated in _handle_bytes_event
+
+# model-specific counters are added in register_dynamic_counter
 'ExitStreamTrafficModelEmissionCount' : { BYTES_EVENT, STREAM_EVENT },
 'ExitStreamTrafficModelTransitionCount' : { BYTES_EVENT, STREAM_EVENT },
 'ExitStreamTrafficModelLogDelayTime' : { BYTES_EVENT, STREAM_EVENT },
 'ExitStreamTrafficModelSquaredLogDelayTime' : { BYTES_EVENT, STREAM_EVENT },
-# NOTE: model-specific counters are added in register_dynamic_counter
+
 'ExitStreamCount' : { STREAM_EVENT },
 'ExitStreamByteCount' : { STREAM_EVENT },
 'ExitStreamOutboundByteCount' : { STREAM_EVENT },
@@ -303,8 +320,35 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitOtherPortStreamLifeTime' : { STREAM_EVENT },
 
 # these counters depend on circuit end
+# they are updated in _handle_circuit_close_event
+'OriginCircuitCount' : { CIRCUIT_EVENT },
+'EntryCircuitCount' : { CIRCUIT_EVENT },
+'MidCircuitCount' : { CIRCUIT_EVENT },
+'EndCircuitCount' : { CIRCUIT_EVENT },
+'SingleHopCircuitCount' : { CIRCUIT_EVENT },
+
+'ExitCircuitCount' : { CIRCUIT_EVENT },
+'DirCircuitCount' : { CIRCUIT_EVENT },
+'HSDir2CircuitCount' : { CIRCUIT_EVENT },
+'Intro2CircuitCount' : { CIRCUIT_EVENT },
+# We can't tell if rend circuits are version 2 or 3
+'RendCircuitCount' : { CIRCUIT_EVENT },
+
+'RendClientCircuitCount' : { CIRCUIT_EVENT },
+'RendTor2WebClientCircuitCount' : { CIRCUIT_EVENT },
+'RendMultiHopClientCircuitCount' : { CIRCUIT_EVENT },
+
+'RendServiceCircuitCount' : { CIRCUIT_EVENT },
+'RendMultiHopServiceCircuitCount' : { CIRCUIT_EVENT },
+'RendSingleOnionServiceCircuitCount' : { CIRCUIT_EVENT },
+
+# We collect these combined counters so there is only one lot of noise added
+'ExitAndRendClientCircuitCount' : { CIRCUIT_EVENT },
+'ExitAndRendServiceCircuitCount' : { CIRCUIT_EVENT },
+
+# these counters depend on circuit end
 # they are updated in _do_rotate,
-# and use data updated in _handle_circuit_event
+# and use data updated in _handle_legacy_exit_circuit_event
 'EntryClientIPCount' : { CIRCUIT_EVENT },
 'EntryActiveClientIPCount' : { CIRCUIT_EVENT },
 'EntryInactiveClientIPCount' : { CIRCUIT_EVENT },
@@ -312,18 +356,16 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'EntryClientIPInactiveCircuitCount' : { CIRCUIT_EVENT },
 
 # these counters depend on circuit end
-# they are updated in _handle_circuit_event
-'EntryCircuitCount' : { CIRCUIT_EVENT },
+# they are updated in _handle_legacy_exit_circuit_event
 'EntryActiveCircuitCount' : { CIRCUIT_EVENT },
 'EntryCircuitInboundCellCount' : { CIRCUIT_EVENT },
 'EntryCircuitOutboundCellCount' : { CIRCUIT_EVENT },
 'EntryCircuitCellRatio' : { CIRCUIT_EVENT },
 'EntryInactiveCircuitCount' : { CIRCUIT_EVENT },
-'ExitCircuitCount' : { CIRCUIT_EVENT },
 'ExitCircuitLifeTime' : { CIRCUIT_EVENT },
 
 # these counters depend on stream end and circuit end
-# they are updated in _handle_circuit_event,
+# they are updated in _handle_legacy_exit_circuit_event,
 # and use data updated in _handle_stream_event
 'ExitActiveCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitInactiveCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },

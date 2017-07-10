@@ -646,3 +646,45 @@ Using the instructions under EntryClientIPCount, I see 2 counts in the
 - HSDir3StoreRevisionHistogram
 - HSDir3StoreRejectRevisionHistogram
 - HSDir3StoreAddNewRevisionHistogram
+
+## Circuit Counter Tests
+
+### Circuit Position Counters
+
+- OriginCircuitCount
+x EntryCircuitCount
+
+TODO: Re-test and merge previous counter
+
+- MidCircuitCount
+- EndCircuitCount
+- SingleHopCircuitCount
+
+### Circuit End Position Subcategory Counters
+
+x ExitCircuitCount
+
+TODO: Re-test and merge previous counter
+
+- DirCircuitCount
+
+- HSDir2CircuitCount
+- Intro2CircuitCount
+
+- RendCircuitCount
+- ExitAndRendClientCircuitCount
+- ExitAndRendServiceCircuitCount
+
+- RendServiceCircuitCount
+- RendSingleOnionServiceCircuitCount
+- RendMultiHopServiceCircuitCount
+
+- RendClientCircuitCount
+- RendTor2WebClientCircuitCount
+- RendMultiHopClientCircuitCount
+
+## Cell Counter Tests
+
+### TODO: Category Name
+
+- RendClientSentCellCount

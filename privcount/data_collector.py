@@ -22,7 +22,7 @@ from privcount.crypto import get_public_digest_string, load_public_key_string, e
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since, format_elapsed_time_since, errorCallback, summarise_string
 from privcount.node import PrivCountClient, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, get_privcount_version
-from privcount.tagged_event import parse_tagged_event, is_string_valid, is_list_valid, is_int_valid, is_flag_valid, is_float_valid, get_string_value, get_list_value, get_int_value, get_flag_value, get_float_value
+from privcount.tagged_event import parse_tagged_event, is_string_valid, is_list_valid, is_int_valid, is_flag_valid, is_float_valid, is_ip_address_valid, get_string_value, get_list_value, get_int_value, get_flag_value, get_float_value, get_ip_address_value
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
 SINGLE_BIN = SecureCounters.SINGLE_BIN
@@ -889,9 +889,15 @@ class Aggregator(ReconnectingClientFactory):
         self.last_event_time = time()
 
         # hand valid events off to the aggregator
+        # keep events in order of frequency, particularly the cell and bytes
+        # events (cell happens every 514 bytes, bytes happens every ~16kB)
+
+        # This event has tagged fields: fields may be optional.
+        if event_code == 'PRIVCOUNT_CIRCUIT_CELL':
+            return self._handle_tagged_event(event_code, items)
 
         # these events have positional fields: order matters
-        if event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
+        elif event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
             if len(items) == Aggregator.STREAM_BYTES_ITEMS:
                 return self._handle_bytes_event(items[:Aggregator.STREAM_BYTES_ITEMS])
             else:
@@ -909,11 +915,14 @@ class Aggregator(ReconnectingClientFactory):
 
         elif event_code == 'PRIVCOUNT_CIRCUIT_ENDED':
             if len(items) == Aggregator.CIRCUIT_ENDED_ITEMS:
-                return self._handle_circuit_event(items[:Aggregator.CIRCUIT_ENDED_ITEMS])
+                # Since 1.1.0, this legacy event is ignored, and the
+                # fields are taken from PRIVCOUNT_CIRCUIT_CLOSE
+                return True
             else:
+                # Warn, but don't quit the connection
                 logging.warning("Rejected malformed {} event"
                                 .format(event_code))
-                return False
+                return True
 
         elif event_code == 'PRIVCOUNT_CONNECTION_ENDED':
             if len(items) == Aggregator.CONNECTION_ENDED_ITEMS:
@@ -922,18 +931,45 @@ class Aggregator(ReconnectingClientFactory):
                 logging.warning("Rejected malformed {} event"
                                 .format(event_code))
                 return False
+        # These events have tagged fields: fields may be optional.
+        else:
+            return self._handle_tagged_event(event_code, items)
 
-        # these events have tagged fields: fields may be optional
-        elif event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE':
+        # TODO: secure delete
+        #del items
+        #del fields
+
+        return True
+
+    def _handle_tagged_event(self, event_code, items):
+        '''
+        Handle an event with tagged fields.
+        '''
+
+        if (event_code == 'PRIVCOUNT_CIRCUIT_CELL' or
+            event_code == 'PRIVCOUNT_CIRCUIT_CLOSE' or
+            event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE'):
             fields = parse_tagged_event(items)
-            # malformed: handle by warning and ignoring
-            if len(items) > 0 and len(fields) == 0:
-                logging.warning("Ignored malformed {} event"
-                                .format(event_code))
-                return True
-            else:
-                return self._handle_hsdir_stored_event(fields)
+        else:
+            logging.warning("Unexpected {} event when parsing: '{}'"
+                            .format(event_code, " ".join(items)))
+            return True
 
+        # malformed: handle by warning and ignoring
+        if len(items) > 0 and len(fields) == 0:
+            logging.warning("Ignored malformed {} event: '{}'"
+                          .format(event_code, " ".join(items)))
+            return True
+        elif event_code == 'PRIVCOUNT_CIRCUIT_CELL':
+            return self._handle_circuit_cell_event(fields)
+        elif event_code == 'PRIVCOUNT_CIRCUIT_CLOSE':
+            return self._handle_circuit_close_event(fields)
+        elif event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE':
+            return self._handle_hsdir_stored_event(fields)
+        else:
+            logging.warning("Unexpected {} event when handling: '{}'"
+                            .format(event_code, " ".join(items)))
+            return True
         return True
 
     STREAM_BYTES_ITEMS = 6
@@ -1161,32 +1197,77 @@ class Aggregator(ReconnectingClientFactory):
             isc_times.append(start_times[i] - start_times[i-1])
         return isc_times
 
+    # The legacy event is still processed by the injector, but is ignored
+    # by PrivCount 1.1.0 and later
     CIRCUIT_ENDED_ITEMS = 12
 
-    # Positional event: fields is a list of Values.
-    # All fields are mandatory, order matters
-    # 'PRIVCOUNT_CIRCUIT_ENDED', ChanID, CircID, NCellsIn, NCellsOut, ReadBWExit, WriteBWExit, TimeStart, TimeEnd, PrevIP, PrevIsClient, NextIP, NextIsEdge
-    # See doc/TorEvents.markdown for details
-    def _handle_circuit_event(self, items):
-        assert(len(items) == Aggregator.CIRCUIT_ENDED_ITEMS)
+    def _handle_legacy_exit_circuit_event(self, fields, event_desc):
+        '''
+        Increment circuit-level counters and store circuit data for later
+        processing. This is the legacy code that used to process the
+        PRIVCOUNT_CIRCUIT_ENDED event, and now processes Exit events sent to
+        it via _handle_circuit_close_event.
+        '''
+        event_desc = event_desc + " processing legacy circuit end event counters"
 
-        chanid, circid, ncellsin, ncellsout, readbwexit, writebwexit = [int(v) for v in items[0:6]]
-        start, end = float(items[6]), float(items[7])
-        previp = items[8]
-        prevIsClient = True if int(items[9]) > 0 else False
-        nextip = items[10]
-        nextIsEdge = True if int(items[11]) > 0 else False
+        # Extract the field values we want
+        chanid = get_int_value("PreviousChannelId",
+                               fields, event_desc,
+                               is_mandatory=False)
+        circid = get_int_value("PreviousCircuitId",
+                               fields, event_desc,
+                               is_mandatory=False)
 
-        # TODO: secure delete
-        #del items
+        ncellsin = get_int_value("InboundExitCellCount",
+                                 fields, event_desc,
+                                 is_mandatory=False)
+        ncellsout = get_int_value("OutboundExitCellCount",
+                                  fields, event_desc,
+                                  is_mandatory=False)
+        readbwexit = get_int_value("InboundExitByteCount",
+                                   fields, event_desc,
+                                   is_mandatory=False)
+        writebwexit = get_int_value("OutboundExitByteCount",
+                                    fields, event_desc,
+                                    is_mandatory=False)
+
+        start = get_float_value("CreatedTimestamp",
+                                fields, event_desc,
+                                is_mandatory=False)
+        end = get_float_value("EventTimestamp",
+                              fields, event_desc,
+                              is_mandatory=False)
+
+        previp = get_ip_address_value("PreviousNodeIPAddress",
+                                      fields, event_desc,
+                                      is_mandatory=False)
+        prevIsClient = get_flag_value("IsEntryFlag",
+                                      fields, event_desc,
+                                      is_mandatory=False,
+                                      default=False)
+        nextip = get_ip_address_value("NextNodeIPAddress",
+                                      fields, event_desc,
+                                      is_mandatory=False,
+                                      default="0.0.0.0")
+        nextIsEdge = get_flag_value("IsExitFlag",
+                                    fields, event_desc,
+                                    is_mandatory=False,
+                                    default=False)
+
+        # check they are all present
+        if (chanid is None or circid is None or ncellsin is None or
+            ncellsout is None or readbwexit is None or writebwexit is None or
+            start is None or end is None or previp is None or
+            prevIsClient is None or nextip is None or nextIsEdge):
+            logging.warning("Unexpected missing field {}".format(event_desc))
+            return False
+
+        # Now process using the legacy code
 
         # we get circuit events on both exits and entries
         # stream bw info is only avail on exits
         if prevIsClient:
             # prev hop is a client, we are entry
-            self.secure_counters.increment('EntryCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
 
             # only count cells ratio on active circuits with legitimate transfers
             is_active = True if ncellsin + ncellsout >= 8 else False
@@ -1230,9 +1311,6 @@ class Aggregator(ReconnectingClientFactory):
         elif nextIsEdge:
             # prev hop is a relay and next is an edge connection, we are exit
             # don't count single-hop exits
-            self.secure_counters.increment('ExitCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
             self.secure_counters.increment('ExitCircuitLifeTime',
                                            bin=(end - start),
                                            inc=1)
@@ -1358,83 +1436,36 @@ class Aggregator(ReconnectingClientFactory):
         return True
 
     @staticmethod
-    def is_hs_version_valid(fields, event_desc):
+    def is_hs_version_valid(fields, event_desc,
+                            is_mandatory=False):
         '''
         Check that fields["HiddenServiceVersionNumber"] exists and is 2 or 3.
         See is_int_valid for details.
         '''
         return is_int_valid("HiddenServiceVersionNumber",
                             fields, event_desc,
-                            is_mandatory=True,
+                            is_mandatory=is_mandatory,
                             min_value=2, max_value=3)
 
     @staticmethod
-    def get_hs_version(fields, event_desc):
+    def get_hs_version(fields, event_desc,
+                       is_mandatory=False,
+                       default=None):
         '''
         Check that fields["HiddenServiceVersionNumber"] exists and is valid.
         If it is, return it as an integer.
-        Otherwise, assert.
+        Otherwise, if is_mandatory is True, assert.
+        Otherwise, return default.
         See is_hs_version_valid for details.
         '''
         # This should have been checked earlier
-        assert Aggregator.is_hs_version_valid(fields, event_desc)
+        assert Aggregator.is_hs_version_valid(fields, event_desc,
+                                              is_mandatory=is_mandatory)
 
         return get_int_value("HiddenServiceVersionNumber",
                              fields, event_desc,
-                             is_mandatory=True)
-
-    @staticmethod
-    def is_allowed_version_valid(field_name, fields, event_desc,
-                                 allowed_version=None):
-        '''
-        If allowed_version is not None, check if fields[field_name] exists,
-        and if allowed_version is the same as the hidden service version.
-        If it is not, return False and log a warning using event_desc.
-
-        Otherwise, return True (the event should be processed).
-        '''
-        if allowed_version is None:
-            # No version check
-            return True
-
-        assert allowed_version == 2 or allowed_version == 3
-
-        hs_version = Aggregator.get_hs_version(fields, event_desc)
-
-        # this should have been checked earlier
-        assert hs_version == 2 or hs_version == 3
-
-        if hs_version != allowed_version and field_name in fields:
-            logging.warning("Ignored unexpected v{} {} {}"
-                            .format(hs_version, field_name, event_desc))
-            return False
-
-        return True
-
-    @staticmethod
-    def is_descriptor_byte_count_valid(field_name, fields, event_desc):
-        '''
-        If fields[field_name] exists, checks that it is below the expected
-        maximum descriptor byte count for the hidden service version.
-        (There is no minimum.)
-        See is_int_valid for details.
-        '''
-        hs_version = Aggregator.get_hs_version(fields, event_desc)
-        if hs_version is None:
-            return False
-
-        assert hs_version == 2 or hs_version == 3
-        # The hard-coded v2 limit is 20kB, but services could exceed that
-        # So let's start warning at twice that.
-        # The default v3 limit is 50kB, but can be changed in the consensus
-        # So let's start warning if the actual v3 byte count is > 1MB
-        desc_max = 2*20*1024 if hs_version == 2 else 1024*1024
-
-        return is_int_valid(field_name,
-                            fields, event_desc,
-                            is_mandatory=False,
-                            min_value=0,
-                            max_value=desc_max)
+                             is_mandatory=is_mandatory,
+                             default=default)
 
     @staticmethod
     def warn_unexpected_field_value(field_name, fields, event_desc):
@@ -1470,6 +1501,755 @@ class Aggregator(ReconnectingClientFactory):
                             .format(counter_name, origin_desc, event_desc))
 
     @staticmethod
+    def are_circuit_id_fields_valid(fields, event_desc,
+                                    is_mandatory=False,
+                                    prefix=None):
+        '''
+        Check if the circuit id fields are valid.
+        If prefix is not none, use it as the field name prefix.
+
+        Returns True if they are all valid, False if one or more are not.
+        Logs a warning using event_desc for the first field that is invalid.
+        '''
+        if prefix is None:
+            prefix = ""
+
+        # Channel and Circuit IDs do have maximum values (and CircuitId can't
+        # be zero), but there's not much point in checking maxima: the code
+        # will work regardless
+        if not is_int_valid("{}ChannelId".format(prefix),
+                            fields, event_desc,
+                            is_mandatory=is_mandatory,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("{}CircuitId".format(prefix),
+                            fields, event_desc,
+                            is_mandatory=is_mandatory,
+                            min_value=0):
+            return False
+
+        return True
+
+    @staticmethod
+    def are_circuit_common_fields_valid(fields, event_desc,
+                                        is_mandatory=False,
+                                        prefix=None):
+        '''
+        Check if the common fields across the circuit and cell events are
+        valid. If is_mandatory is True, potentially mandatory fields are
+        treated as mandatory. (Some fields are always optional.)
+        If prefix is not none, use it as the field name prefix.
+
+        Returns True if they are all valid, False if one or more are not.
+        Logs a warning using event_desc for the first field that is invalid.
+        '''
+        # Validate the potentially mandatory fields
+
+        if not is_float_valid("EventTimestamp",
+                              fields, event_desc,
+                              is_mandatory=is_mandatory,
+                              min_value=0.0):
+            return False
+
+        if not Aggregator.are_circuit_id_fields_valid(
+                                                    fields, event_desc,
+                                                    is_mandatory=is_mandatory,
+                                                    prefix="Next"):
+            return False
+
+        # Validate the always optional fields
+
+        if not Aggregator.are_circuit_id_fields_valid(fields, event_desc,
+                                                      is_mandatory=False,
+                                                      prefix="Previous"):
+            return False
+
+        # We could try to validate that the position flags occur in the right
+        # combinations, but the Tor patch already does that
+
+        # These flags are only present when they are 1
+        if not is_flag_valid("IsOriginFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        if not is_flag_valid("IsEntryFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        if not is_flag_valid("IsMidFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        if not is_flag_valid("IsEndFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        # Similarly, we don't bother checking subcategory combinations
+        if not is_flag_valid("IsExitFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        if not is_flag_valid("IsDirFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        if not is_flag_valid("IsHSDirFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        if not is_flag_valid("IsIntroFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        if not is_flag_valid("IsRendFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        # This flag is only present for HSDir and Intro positions,
+        # but is present whether it is 0 or 1
+        if not is_flag_valid("IsHSClientSideFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        # This flag is only present when it is 1
+        if not is_flag_valid("IsMarkedForCloseFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        # Make sure we were designed to work with the event's
+        # HiddenServiceVersionNumber
+        if not Aggregator.is_hs_version_valid(fields, event_desc,
+                                              is_mandatory=False):
+            return False
+
+        # if everything passed, this much is ok
+        return True
+
+    @staticmethod
+    def are_circuit_cell_fields_valid(fields, event_desc):
+        '''
+        Check if the PRIVCOUNT_CIRCUIT_CELL fields are valid.
+        Returns True if they are all valid, False if one or more are not.
+        Logs a warning using event_desc for the first field that is invalid.
+        '''
+
+        if not Aggregator.are_circuit_common_fields_valid(fields, event_desc,
+                                                          is_mandatory=True,
+                                                          prefix=None):
+            return False
+
+        # Validate the mandatory cell-specific fields
+
+        
+        if not is_flag_valid("IsSentFlag",
+                             fields, event_desc,
+                             is_mandatory=True):
+            return False
+
+        # 50 is an arbitrary limit, the current maximum is 14 characters
+        if not is_string_valid("CellCommandString",
+                               fields, event_desc,
+                               is_mandatory=True,
+                               min_len=1,
+                               max_len=50):
+            return False
+
+        # Validate the optional cell-specific fields
+
+        if not is_flag_valid("IsOutboundFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        # 50 is an arbitrary limit, the current maximum is 22 characters
+        if not is_string_valid("RelayCommandString",
+                               fields, event_desc,
+                               is_mandatory=False,
+                               min_len=1,
+                               max_len=50):
+            return False
+
+        if not is_flag_valid("IsRecognizedFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        if not is_flag_valid("WasRelayCryptSuccessfulFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        # if everything passed, we're ok
+        return True
+
+    def _handle_circuit_cell_event(self, fields):
+        '''
+        Process a PRIVCOUNT_CIRCUIT_CELL event
+        This is a tagged event: fields is a dictionary of Key=Value pairs.
+        Fields may be optional, order is unimportant.
+
+        Fields available:
+        Common:
+          EventTimestamp
+        Cell and Circuit Common:
+          EventTimestamp,
+          {Previous,Next}{ChannelId,CircuitId},
+          IsOriginFlag, IsEntryFlag, IsMidFlag, IsEndFlag,
+          IsExitFlag, IsDirFlag, IsHSDirFlag, IsIntroFlag, IsRendFlag,
+          IsHSClientSideFlag, HiddenServiceVersionNumber,
+          IsMarkedForCloseFlag
+        Cell-Specific:
+          IsSentFlag, IsOutboundFlag,
+          CellCommandString, RelayCommandString,
+          IsRecognizedFlag, WasRelayCryptSuccessfulFlag
+        TODO: See doc/TorEvents.markdown for all field names and definitions.
+        
+        Returns True if an event was successfully processed (or ignored).
+        Never returns False: we prefer to warn about malformed events and
+        continue processing.
+        '''
+        event_desc = "in PRIVCOUNT_CIRCUIT_CELL event"
+
+        if not Aggregator.are_circuit_cell_fields_valid(fields, event_desc):
+            # handle the event by warning (in the validator) and ignoring it
+            return True
+
+        # Extract mandatory fields
+
+        is_sent = get_flag_value("IsSentFlag",
+                                 fields, event_desc,
+                                 is_mandatory=True)
+
+        # Extract the optional fields, and give them defaults
+
+        is_rend = get_flag_value("IsRendFlag",
+                                 fields, event_desc,
+                                 is_mandatory=False,
+                                 default=False)
+
+        # Extract the optional fields that don't have defaults
+
+        # If this flag is absent, we don't know if it's client or server
+        is_client = get_flag_value("IsHSClientSideFlag",
+                                   fields, event_desc,
+                                   is_mandatory=False)
+
+        # Increment counters for mandatory fields and optional fields that
+        # have defaults
+
+        # Increment counters for optional fields that don't have defaults
+
+        # TODO: generalise, building counter names in code
+        if is_client is not None:
+            if is_rend and is_client and is_sent:
+                self.secure_counters.increment('RendClientSentCellCount',
+                                               bin=SINGLE_BIN,
+                                               inc=1)
+
+        # we processed and handled the event
+        return True
+
+    @staticmethod
+    def are_circuit_node_fields_valid(fields, event_desc,
+                                      is_mandatory=False,
+                                      prefix=None):
+        '''
+        Check if the circuit node fields are valid.
+        If prefix is not none, use it as the field name prefix.
+
+        Returns True if they are all valid, False if one or more are not.
+        Logs a warning using event_desc for the first field that is invalid.
+        '''
+        if prefix is None:
+            prefix = ""
+
+        if not is_ip_address_valid("{}NodeIPAddress".format(prefix),
+                                   fields, event_desc,
+                                   is_mandatory=is_mandatory):
+            return False
+
+        if not is_string_valid("{}NodeFingerprint".format(prefix),
+                               fields, event_desc,
+                               is_mandatory=is_mandatory,
+                               min_len=40,
+                               max_len=40):
+            return False
+
+        # All nodes have the Running flag in their networkstatus.
+        # Almost all nodes have the Valid flag as well
+        # 20 is an arbitrary limit, there are currently only 10 flags
+        if not is_list_valid("{}NodeRelayFlagList".format(prefix),
+                               fields, event_desc,
+                               is_mandatory=is_mandatory,
+                               min_count=1,
+                               max_count=20):
+            return False
+
+        return True
+
+    @staticmethod
+    def are_circuit_close_fields_valid(fields, event_desc):
+        '''
+        Check if the PRIVCOUNT_CIRCUIT_CLOSE fields are valid.
+        Returns True if they are all valid, False if one or more are not.
+        Logs a warning using event_desc for the first field that is invalid.
+        '''
+
+        if not Aggregator.are_circuit_common_fields_valid(fields, event_desc,
+                                                          is_mandatory=True,
+                                                          prefix=None):
+            return False
+
+        # Validate the mandatory circuit-specific fields
+        if not is_float_valid("CreatedTimestamp",
+                              fields, event_desc,
+                              is_mandatory=True,
+                              min_value=0.0):
+            return False
+
+        if not is_flag_valid("IsLegacyCircuitEndEventFlag",
+                             fields, event_desc,
+                             is_mandatory=True):
+            return False
+
+        # 50 is an arbitrary limit, the current maximum is 11 characters
+        if not is_string_valid("StateString",
+                               fields, event_desc,
+                               is_mandatory=True,
+                               min_len=1,
+                               max_len=50):
+            return False
+
+        if not is_int_valid("PurposeCode",
+                            fields, event_desc,
+                            is_mandatory=True,
+                            min_value=1,
+                            max_value=20):
+            return False
+
+        # Validate the optional circuit-specific fields
+
+        # 50 is an arbitrary limit, the current maximum is 17 characters
+        if not is_string_valid("PurposeString",
+                               fields, event_desc,
+                               is_mandatory=False,
+                               min_len=1,
+                               max_len=50):
+            return False
+
+        # We don't check if the purpose and hidden service state match
+        # 50 is an arbitrary limit, the current maximum is 24 characters
+        if not is_string_valid("HSStateString",
+                               fields, event_desc,
+                               is_mandatory=False,
+                               min_len=1,
+                               max_len=50):
+            return False
+
+        # Check the connected node fields
+
+        if not Aggregator.are_circuit_node_fields_valid(fields, event_desc,
+                                                        is_mandatory=False,
+                                                        prefix="Previous"):
+            return False
+
+        if not Aggregator.are_circuit_node_fields_valid(fields, event_desc,
+                                                        is_mandatory=False,
+                                                        prefix="Next"):
+            return False
+
+        # Check the related circuit fields
+
+        if not Aggregator.are_circuit_common_fields_valid(
+                                                    fields, event_desc,
+                                                    is_mandatory=False,
+                                                    prefix="IntroClientSink"):
+            return False
+
+
+        if not Aggregator.are_circuit_common_fields_valid(
+                                                    fields, event_desc,
+                                                    is_mandatory=False,
+                                                    prefix="RendSplice"):
+            return False
+
+        # Check the cell and byte counts
+
+        if not is_int_valid("InboundSentCellCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("InboundReceivedCellCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("OutboundSentCellCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("OutboundReceivedCellCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("InboundExitCellCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("OutboundExitCellCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("InboundExitByteCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("OutboundExitByteCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("InboundDirByteCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("OutboundDirByteCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        # if everything passed, we're ok
+        return True
+
+    def _handle_circuit_close_event(self, fields):
+        '''
+        Process a PRIVCOUNT_CIRCUIT_CLOSE event
+        This is a tagged event: fields is a dictionary of Key=Value pairs.
+        Fields may be optional, order is unimportant.
+
+        Fields available:
+        Common:
+          EventTimestamp
+        Cell and Circuit Common:
+          {Previous,Next}{ChannelId,CircuitId},
+          IsOriginFlag, IsEntryFlag, IsMidFlag, IsEndFlag,
+          IsExitFlag, IsDirFlag, IsHSDirFlag, IsIntroFlag, IsRendFlag,
+          IsHSClientSideFlag, HiddenServiceVersionNumber,
+          IsMarkedForCloseFlag
+        Circuit-Specific:
+          CreatedTimestamp, IsLegacyCircuitEndEventFlag,
+          StateString, PurposeCode, PurposeString, HSStateString,
+          {Previous,Next}Node{IPAddress,Fingerprint,RelayFlagList},
+          {IntroClientSink,RendSplice}[All Cell and Circuit Common Fields],
+          {Inbound,Outbound}{Sent,Received}CellCount,
+          {Inbound,Outbound}Exit{Cell,Byte}Count,
+          {Inbound,Outbound}DirByteCount
+        TODO: See doc/TorEvents.markdown for all field names and definitions.
+        
+        Calls _handle_legacy_exit_circuit_event to increment legacy counters
+        that were based on the legacy PRIVCOUNT_CIRCUIT_ENDED event.
+
+        Returns True if an event was successfully processed (or ignored).
+        Never returns False: we prefer to warn about malformed events and
+        continue processing.
+        '''
+        event_desc = "in PRIVCOUNT_CIRCUIT_CLOSE event"
+
+        if not Aggregator.are_circuit_close_fields_valid(fields, event_desc):
+            # handle the event by warning (in the validator) and ignoring it
+            return True
+
+        # handle the legacy event
+        is_legacy = get_flag_value("IsLegacyCircuitEndEventFlag",
+                                   fields, event_desc,
+                                   is_mandatory=True)
+
+        if is_legacy:
+            if not self._handle_legacy_exit_circuit_event(fields, event_desc):
+                logging.warning("Error while processing legacy circuit event with '{}' in {}"
+                                .format(" ".join(fields), event_desc))
+
+        # Extract mandatory fields
+
+        # Extract the optional fields, and give them defaults
+
+        # Unused, included for completeness
+        is_origin = get_flag_value("IsOriginFlag",
+                                   fields, event_desc,
+                                   is_mandatory=False,
+                                   default=False)
+
+        is_entry = get_flag_value("IsEntryFlag",
+                                  fields, event_desc,
+                                  is_mandatory=False,
+                                  default=False)
+
+        is_mid = get_flag_value("IsMidFlag",
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=False)
+
+        is_end = get_flag_value("IsEndFlag",
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=False)
+
+        is_single_hop = is_entry and is_end
+
+        # The end position can be exit, dir, hsdir, intro, or rend
+        # (intro circuits can also be middle circuits)
+        # Exactly one of these should be true, except for unused preemptive
+        # circuits
+        is_exit = get_flag_value("IsExitFlag",
+                                 fields, event_desc,
+                                 is_mandatory=False,
+                                 default=False)
+
+        # Unused, included for completeness
+        is_dir = get_flag_value("IsDirFlag",
+                                 fields, event_desc,
+                                 is_mandatory=False,
+                                 default=False)
+
+        # Unused, included for completeness
+        is_hsdir = get_flag_value("IsHSDirFlag",
+                                 fields, event_desc,
+                                 is_mandatory=False,
+                                 default=False)
+
+        # Unused, included for completeness
+        is_intro = get_flag_value("IsIntroFlag",
+                                 fields, event_desc,
+                                 is_mandatory=False,
+                                 default=False)
+
+        is_rend = get_flag_value("IsRendFlag",
+                                 fields, event_desc,
+                                 is_mandatory=False,
+                                 default=False)
+
+        # Extract the optional fields that don't have defaults
+
+        # If this flag is absent, we don't know if it's client or server
+        is_client = get_flag_value("IsHSClientSideFlag",
+                                   fields, event_desc,
+                                   is_mandatory=False,
+                                   default=None)
+
+        hs_version = Aggregator.get_hs_version(fields, event_desc,
+                                               is_mandatory=False,
+                                               default=None)
+
+        # Increment counters for mandatory fields and optional fields that
+        # have defaults
+
+        # Increment counters for optional fields that don't have defaults
+
+        # TODO: generalise, building counter names in code
+
+        # Positions: at least one of these flags is true for each circuit
+
+        # Unused, included for completeness
+        if is_origin:
+            self.secure_counters.increment('OriginCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+
+        if is_entry:
+            self.secure_counters.increment('EntryCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+
+        if is_mid:
+            self.secure_counters.increment('MidCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+
+        if is_end:
+            self.secure_counters.increment('EndCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+
+        # Unused, included for completeness
+        if is_single_hop:
+                self.secure_counters.increment('SingleHopCircuitCount',
+                                               bin=SINGLE_BIN,
+                                               inc=1)
+
+        # End subcategories
+        if is_exit:
+            # includes single-hop exits (which aren't supposed to exist)
+            self.secure_counters.increment('ExitCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+            # Combined counters: collected so there is only one lot of noise added
+            # ExitAndRendClientCircuitCount = ExitCircuitCount + RendClientCircuitCount
+            self.secure_counters.increment('ExitAndRendClientCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+            # ExitAndRendServiceCircuitCount = RendExitCircuitCount + RendServiceCircuitCount
+            self.secure_counters.increment('ExitAndRendServiceCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+
+        # Unused, included for completeness
+        if is_dir:
+            self.secure_counters.increment('DirCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+
+        # Unused, included for completeness
+        if is_hsdir and hs_version is not None and hs_version == 2:
+            self.secure_counters.increment('HSDir2CircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+
+        # Unused, included for completeness
+        if is_intro and hs_version is not None and hs_version == 2:
+            self.secure_counters.increment('Intro2CircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+
+        # We can't tell if a rend circuit is HS version 2 or 3
+        if is_rend:
+            self.secure_counters.increment('RendCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
+            # ignore circuits where we don't know the client/server flag
+            if is_client is not None:
+                if is_client:
+                    # Unused, included for completeness
+                    self.secure_counters.increment('RendClientCircuitCount',
+                                                   bin=SINGLE_BIN,
+                                                   inc=1)
+                    # Combined counters: collected so there is only one lot of noise added
+                    # ExitAndRendClientCircuitCount = ExitCircuitCount + RendClientCircuitCount
+                    # Use double quotes, so test_counter_match.sh doesn't think it's a duplicate
+                    self.secure_counters.increment("ExitAndRendClientCircuitCount",
+                                                   bin=SINGLE_BIN,
+                                                   inc=1)
+
+                    if is_single_hop:
+                        # Unused, included for completeness
+                        self.secure_counters.increment(
+                                          'RendTor2WebClientCircuitCount',
+                                          bin=SINGLE_BIN,
+                                          inc=1)
+                    else:
+                        self.secure_counters.increment(
+                                          'RendMultiHopClientCircuitCount',
+                                          bin=SINGLE_BIN,
+                                          inc=1)
+                else:
+                    self.secure_counters.increment('RendServiceCircuitCount',
+                                                   bin=SINGLE_BIN,
+                                                   inc=1)
+                    # Combined counters: collected so there is only one lot of noise added
+                    # ExitAndRendServiceCircuitCount = RendExitCircuitCount + RendServiceCircuitCount
+                    # Use double quotes, so test_counter_match.sh doesn't think it's a duplicate
+                    self.secure_counters.increment("ExitAndRendServiceCircuitCount",
+                                                   bin=SINGLE_BIN,
+                                                   inc=1)
+                    if is_single_hop:
+                        self.secure_counters.increment(
+                                          'RendSingleOnionServiceCircuitCount',
+                                          bin=SINGLE_BIN,
+                                          inc=1)
+                    else:
+                        # Unused, included for completeness
+                        self.secure_counters.increment(
+                                          'RendMultiHopServiceCircuitCount',
+                                          bin=SINGLE_BIN,
+                                          inc=1)
+
+        # we processed and handled the event
+        return True
+
+    @staticmethod
+    def is_allowed_version_valid(field_name, fields, event_desc,
+                                 allowed_version=None):
+        '''
+        If allowed_version is not None, check if fields[field_name] exists,
+        and if allowed_version is the same as the hidden service version.
+        If it is not, return False and log a warning using event_desc.
+
+        Otherwise, return True (the event should be processed).
+        '''
+        if allowed_version is None:
+            # No version check
+            return True
+
+        assert allowed_version == 2 or allowed_version == 3
+
+        hs_version = Aggregator.get_hs_version(fields, event_desc,
+                                               is_mandatory=True)
+
+        # this should have been checked earlier
+        assert hs_version == 2 or hs_version == 3
+
+        if hs_version != allowed_version and field_name in fields:
+            logging.warning("Ignored unexpected v{} {} {}"
+                            .format(hs_version, field_name, event_desc))
+            return False
+
+        return True
+
+    @staticmethod
+    def is_descriptor_byte_count_valid(field_name, fields, event_desc):
+        '''
+        If fields[field_name] exists, checks that it is below the expected
+        maximum descriptor byte count for the hidden service version.
+        (There is no minimum.)
+        See is_int_valid for details.
+        '''
+        hs_version = Aggregator.get_hs_version(fields, event_desc,
+                                               is_mandatory=True)
+        if hs_version is None:
+            return False
+
+        assert hs_version == 2 or hs_version == 3
+        # The hard-coded v2 limit is 20kB, but services could exceed that
+        # So let's start warning at twice that.
+        # The default v3 limit is 50kB, but can be changed in the consensus
+        # So let's start warning if the actual v3 byte count is > 1MB
+        desc_max = 2*20*1024 if hs_version == 2 else 1024*1024
+
+        return is_int_valid(field_name,
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0,
+                            max_value=desc_max)
+
+    @staticmethod
     def are_hsdir_common_fields_valid(fields, event_desc):
         '''
         Check if the common fields across HSDir events are valid.
@@ -1480,10 +2260,12 @@ class Aggregator(ReconnectingClientFactory):
 
         # Make sure we were designed to work with the event's
         # HiddenServiceVersionNumber
-        if not Aggregator.is_hs_version_valid(fields, event_desc):
+        if not Aggregator.is_hs_version_valid(fields, event_desc,
+                                              is_mandatory=True):
             return False
 
-        hs_version = Aggregator.get_hs_version(fields, event_desc)
+        hs_version = Aggregator.get_hs_version(fields, event_desc,
+                                               is_mandatory=True)
 
         # Check the event timestamp
         if not is_float_valid("EventTimestamp",
@@ -1491,6 +2273,8 @@ class Aggregator(ReconnectingClientFactory):
                               is_mandatory=True,
                               min_value=0.0):
             return False
+
+        # Validate the mandatory fields
 
         # Check the cache flags
 
@@ -1662,7 +2446,8 @@ class Aggregator(ReconnectingClientFactory):
         if not Aggregator.are_hsdir_common_fields_valid(fields, event_desc):
             return False
 
-        hs_version = Aggregator.get_hs_version(fields, event_desc)
+        hs_version = Aggregator.get_hs_version(fields, event_desc,
+                                               is_mandatory=True)
 
         # Validate the mandatory cache fields
 
@@ -1836,6 +2621,7 @@ class Aggregator(ReconnectingClientFactory):
         Process a PRIVCOUNT_HSDIR_CACHE_STORE event
         This is a tagged event: fields is a dictionary of Key=Value pairs.
         Fields may be optional, order is unimportant.
+
         Fields used:
         Common:
           HiddenServiceVersionNumber, EventTimestamp,
@@ -1846,6 +2632,7 @@ class Aggregator(ReconnectingClientFactory):
           RequiresClientAuthFlag, IntroPointCount, IntroPointFingerprintList
         v3:
           RevisionNumber, DescriptorLifetime
+
         See doc/TorEvents.markdown for all field names and definitions.
         Returns True if an event was successfully processed (or ignored).
         Never returns False: we prefer to warn about malformed events and
@@ -1858,7 +2645,8 @@ class Aggregator(ReconnectingClientFactory):
             return True
 
         # Extract mandatory fields
-        hs_version = Aggregator.get_hs_version(fields, event_desc)
+        hs_version = Aggregator.get_hs_version(fields, event_desc,
+                                               is_mandatory=True)
         event_ts = get_float_value("EventTimestamp",
                                    fields, event_desc,
                                    is_mandatory=True)
