@@ -1425,19 +1425,21 @@ class TorControlProtocol(object):
                             .format(transport_info(self.transport),
                                     value_name, set_function_name, value, e))
 
-    def getConfiguredValue(self, get_function_name, value_name):
+    def getConfiguredValue(self, get_function_name, value_name,
+                           default=None):
         '''
-        When we need a value, call factory.get_function_name to get it, and
-        log a message containing value_name if this fails.
+        When we need a value, call factory.get_function_name to get it.
+        Log a message containing value_name if this fails, and return default.
         '''
         try:
             # Equivalent to self.factory.get_function_name()
             return getattr(self.factory, get_function_name)()
         except AttributeError as e:
-            logging.warning("Connection with {}: tried to get {} via {}, but factory raised {}, returning None"
+            logging.warning("Connection with {}: tried to get {} via {}, but factory raised {}, returning {}"
                             .format(transport_info(self.transport),
-                                    value_name, get_function_name, e))
-            return None
+                                    value_name, get_function_name,
+                                    e, default))
+            return default
 
     # works for both configured and discovered values
     getDiscoveredValue = getConfiguredValue
@@ -1595,6 +1597,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         # we want ancestors to be able to use this in clear()
         self.consensus_refresher = None
         TorControlProtocol.__init__(self, factory)
+        # we only want to clear this at the end of a round
+        self.collection_events = None
         self.clear()
 
     def clear(self):
@@ -1606,7 +1610,6 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         self.state = None
         self.auth_methods = None
         self.cookie_file = None
-        self.collection_events = None
         self.active_events = None
         self.has_received_events = False
         # Stop updating the flags when we're disconnected
@@ -1671,15 +1674,17 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                               " ".join(event_list)))
         self.enableEvents()
 
-    def stopCollection(self):
+    def stopCollection(self, clear_events=True):
         '''
         Disable all events. Remain connected to the control port, but wait for
-        the next collection to start.
+        the next collection to start. If clear_events is True, forget the last
+        set of events we used.
         '''
         logging.info("Stopping collection, {} events received."
                      .format("some" if self.has_received_events else "no"))
         self.has_received_events = False
-        self.collection_events = None
+        if clear_events:
+            self.collection_events = None
         self.disableEvents()
         # let the user know that we're waiting
         logging.info("Waiting for next PrivCount collection to start")
@@ -1701,7 +1706,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         if self.state == 'waiting' or self.state == 'processing':
             self.active_events = self.collection_events
             use_setconf = self.getConfiguredValue('get_use_setconf',
-                                                  'use SETCONF')
+                                                  'use SETCONF',
+                                                  default=True)
             if use_setconf:
                 # Protect the EnablePrivCount setting from logrotate and
                 # similar
@@ -1733,7 +1739,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                              .format(" ".join(self.active_events)))
             self.sendLine("SETEVENTS")
             use_setconf = self.getConfiguredValue('get_use_setconf',
-                                                  'use SETCONF')
+                                                  'use SETCONF',
+                                                  default=True)
             if use_setconf:
                 self.sendLine("SETCONF EnablePrivCount=0")
                 self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=1")
@@ -1752,7 +1759,8 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
         # make sure we don't issue a SETCONF when we're not supposed to
         if line.startswith("SETCONF"):
             use_setconf = self.getConfiguredValue('get_use_setconf',
-                                                  'use SETCONF')
+                                                  'use SETCONF',
+                                                  default=True)
             if not use_setconf:
                 logging.warning("Connection with {}: protocol tried to use SETCONF when use_setconf was False: '{}'"
                             .format(transport_info(self.transport), line))
@@ -2056,9 +2064,9 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
             # skip unwanted events
             if not parts[1] in self.active_events:
                 if not parts[1] in get_valid_events():
-                    logging.warning("Unknown event type {}".format(line))
+                    logging.warning("Unknown event type {}".format(parts[1]))
                 else:
-                    logging.warning("Unwanted event type {}".format(line))
+                    logging.warning("Unwanted event type {}".format(parts[1]))
             # skip empty events
             elif len(parts) <= 2:
                 logging.warning("Event with no data {}".format(line))
@@ -2128,10 +2136,13 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                                  how,
                                  error if error is not None else '(no error)'))
         if self.isConnected():
-            self.stopCollection()
+            # keep events for a reconnect
+            self.stopCollection(clear_events=False)
             self.sendLine("QUIT")
             # Avoid a spurious reentrant warning from connectionLost
             self.state = "disconnected"
+            # TODO: try to reconnect on failure? See #326
+            # We don't currently try to reconnect, because that hides bugs
             self.transport.loseConnection()
             # Don't rely on the remote side to end the connection
             # Protocols should not send any more data once the connection has been

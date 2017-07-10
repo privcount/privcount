@@ -18,6 +18,7 @@ from privcount.counter import get_valid_events
 
 # set the log level
 #logging.basicConfig(level=logging.DEBUG)
+logging.root.name = ''
 
 ## Usage:
 #
@@ -64,6 +65,7 @@ class TorCtlClient(ReconnectingClientFactory):
         '''
         self.nickname = None
         self.client = None
+        self.fingerprint = None
 
     def buildProtocol(self, addr):
         '''
@@ -71,8 +73,10 @@ class TorCtlClient(ReconnectingClientFactory):
         '''
         self.client = TorControlClientProtocol(self)
         # ask for all the events
-        print "Relay events: {}".format(", ".join(get_valid_events()))
-        self.client.startCollection(None, event_list=get_valid_events())
+        events = get_valid_events()
+        # events -= { 'PRIVCOUNT_CIRCUIT_CELL', }
+        print "Relay events: {}".format(", ".join(events))
+        self.client.startCollection(None, event_list=events)
         return self.client
 
     def get_control_password(self):
@@ -94,10 +98,17 @@ class TorCtlClient(ReconnectingClientFactory):
         '''
         Called when the relay provides its fingerprint
         '''
+        self.fingerprint = fingerprint
         print "Relay fingerprint: {}".format(fingerprint)
         if self.nickname is not None:
             print "Relay nickname: {}".format(self.nickname)
         return True
+
+    def get_fingerprint(self):
+        '''
+        Called when the protocol wants to know our relay's fingerprint
+        '''
+        return self.fingerprint
 
     def handle_event(self, event):
         '''
