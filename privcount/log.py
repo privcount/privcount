@@ -111,7 +111,7 @@ def summarise_string(long_str, max_len, ellipsis='...'):
         end_len = content_len / 2
         assert start_len + e_len + end_len == max_len
         summary_str = (long_str[0:start_len] + ellipsis +
-                       long_str[(-end_len-1):-1])
+                       long_str[-end_len:])
         assert len(summary_str) == max_len
         return summary_str
 
