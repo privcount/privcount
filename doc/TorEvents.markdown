@@ -124,7 +124,8 @@ TODO: expand documentation
           IsMarkedForCloseFlag
         Cell-Specific:
           IsSentFlag, IsOutboundFlag,
-          CellCommandString, RelayCommandString,
+          CellCircuitId, CellCommandString,
+          RelayCellPayloadByteCount, RelayCellStreamId, RelayCellCommandString,
           IsRecognizedFlag, WasRelayCryptSuccessfulFlag
 
 ### PRIVCOUNT_DNS_RESOLVED

@@ -1658,6 +1658,13 @@ class Aggregator(ReconnectingClientFactory):
                              is_mandatory=True):
             return False
 
+        # the cell circuit id is allowed to be zero, for non-circuit cells
+        if not is_int_valid("CellCircuitId",
+                            fields, event_desc,
+                            is_mandatory=True,
+                            min_value=0):
+            return False
+
         # 50 is an arbitrary limit, the current maximum is 14 characters
         if not is_string_valid("CellCommandString",
                                fields, event_desc,
@@ -1673,8 +1680,20 @@ class Aggregator(ReconnectingClientFactory):
                              is_mandatory=False):
             return False
 
+        if not is_int_valid("RelayCellPayloadByteCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
+        if not is_int_valid("RelayCellStreamId",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+
         # 50 is an arbitrary limit, the current maximum is 22 characters
-        if not is_string_valid("RelayCommandString",
+        if not is_string_valid("RelayCellCommandString",
                                fields, event_desc,
                                is_mandatory=False,
                                min_len=1,
@@ -1712,7 +1731,8 @@ class Aggregator(ReconnectingClientFactory):
           IsMarkedForCloseFlag
         Cell-Specific:
           IsSentFlag, IsOutboundFlag,
-          CellCommandString, RelayCommandString,
+          CellCircuitId, CellCommandString,
+          RelayCellPayloadByteCount, RelayCellStreamId, RelayCellCommandString,
           IsRecognizedFlag, WasRelayCryptSuccessfulFlag
         TODO: See doc/TorEvents.markdown for all field names and definitions.
         
