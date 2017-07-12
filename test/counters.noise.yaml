@@ -617,7 +617,7 @@ counters:
     HSDir3StoreAddNewCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    RendClientSentCellCount:
+    Rend2ClientSentCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2CircuitCount:
@@ -632,19 +632,19 @@ counters:
     EndCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    RendCircuitCount:
+    Rend2CircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    RendServiceCircuitCount:
+    Rend2ServiceCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitAndRendServiceCircuitCount:
+    ExitAndRend2ServiceCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    RendSingleOnionServiceCircuitCount:
+    Rend2SingleOnionServiceCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    RendMultiHopServiceCircuitCount:
+    Rend2MultiHopServiceCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginCircuitCount:
@@ -656,15 +656,15 @@ counters:
     DirCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    RendTor2WebClientCircuitCount:
+    Rend2Tor2WebClientCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    RendClientCircuitCount:
+    Rend2ClientCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitAndRendClientCircuitCount:
+    ExitAndRend2ClientCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    RendMultiHopClientCircuitCount:
+    Rend2MultiHopClientCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0

@@ -277,7 +277,7 @@ PRIVCOUNT_COUNTER_EVENTS = {
 
 # these counters depend on the cell sent/received event
 # they are updated in _handle_circuit_cell_event
-'RendClientSentCellCount' : { CELL_EVENT },
+'Rend2ClientSentCellCount' : { CELL_EVENT },
 
 # these counters depend on bytes transferred event
 # they are updated in _handle_bytes_event
@@ -332,19 +332,19 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'HSDir2CircuitCount' : { CIRCUIT_EVENT },
 'Intro2CircuitCount' : { CIRCUIT_EVENT },
 # We can't tell if rend circuits are version 2 or 3
-'RendCircuitCount' : { CIRCUIT_EVENT },
+'Rend2CircuitCount' : { CIRCUIT_EVENT },
 
-'RendClientCircuitCount' : { CIRCUIT_EVENT },
-'RendTor2WebClientCircuitCount' : { CIRCUIT_EVENT },
-'RendMultiHopClientCircuitCount' : { CIRCUIT_EVENT },
+'Rend2ClientCircuitCount' : { CIRCUIT_EVENT },
+'Rend2Tor2WebClientCircuitCount' : { CIRCUIT_EVENT },
+'Rend2MultiHopClientCircuitCount' : { CIRCUIT_EVENT },
 
-'RendServiceCircuitCount' : { CIRCUIT_EVENT },
-'RendMultiHopServiceCircuitCount' : { CIRCUIT_EVENT },
-'RendSingleOnionServiceCircuitCount' : { CIRCUIT_EVENT },
+'Rend2ServiceCircuitCount' : { CIRCUIT_EVENT },
+'Rend2MultiHopServiceCircuitCount' : { CIRCUIT_EVENT },
+'Rend2SingleOnionServiceCircuitCount' : { CIRCUIT_EVENT },
 
 # We collect these combined counters so there is only one lot of noise added
-'ExitAndRendClientCircuitCount' : { CIRCUIT_EVENT },
-'ExitAndRendServiceCircuitCount' : { CIRCUIT_EVENT },
+'ExitAndRend2ClientCircuitCount' : { CIRCUIT_EVENT },
+'ExitAndRend2ServiceCircuitCount' : { CIRCUIT_EVENT },
 
 # these counters depend on circuit end
 # they are updated in _do_rotate,

@@ -671,20 +671,20 @@ TODO: Re-test and merge previous counter
 - HSDir2CircuitCount
 - Intro2CircuitCount
 
-- RendCircuitCount
-- ExitAndRendClientCircuitCount
-- ExitAndRendServiceCircuitCount
+- Rend2CircuitCount
+- ExitAndRend2ClientCircuitCount
+- ExitAndRend2ServiceCircuitCount
 
-- RendServiceCircuitCount
-- RendSingleOnionServiceCircuitCount
-- RendMultiHopServiceCircuitCount
+- Rend2ServiceCircuitCount
+- Rend2SingleOnionServiceCircuitCount
+- Rend2MultiHopServiceCircuitCount
 
-- RendClientCircuitCount
-- RendTor2WebClientCircuitCount
-- RendMultiHopClientCircuitCount
+- Rend2ClientCircuitCount
+- Rend2Tor2WebClientCircuitCount
+- Rend2MultiHopClientCircuitCount
 
 ## Cell Counter Tests
 
 ### TODO: Category Name
 
-- RendClientSentCellCount
+- Rend2ClientSentCellCount

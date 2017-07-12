@@ -1746,15 +1746,19 @@ class Aggregator(ReconnectingClientFactory):
                                    fields, event_desc,
                                    is_mandatory=False)
 
+        hs_version = Aggregator.get_hs_version(fields, event_desc,
+                                               is_mandatory=False,
+                                               default=None)
+
         # Increment counters for mandatory fields and optional fields that
         # have defaults
 
         # Increment counters for optional fields that don't have defaults
 
         # TODO: generalise, building counter names in code
-        if is_client is not None:
-            if is_rend and is_client and is_sent:
-                self.secure_counters.increment('RendClientSentCellCount',
+        if is_client is not None and hs_version is not None:
+            if is_rend and is_client and is_sent and hs_version == 2:
+                self.secure_counters.increment('Rend2ClientSentCellCount',
                                                bin=SINGLE_BIN,
                                                inc=1)
 
@@ -2112,12 +2116,12 @@ class Aggregator(ReconnectingClientFactory):
                                            bin=SINGLE_BIN,
                                            inc=1)
             # Combined counters: collected so there is only one lot of noise added
-            # ExitAndRendClientCircuitCount = ExitCircuitCount + RendClientCircuitCount
-            self.secure_counters.increment('ExitAndRendClientCircuitCount',
+            # ExitAndRend2ClientCircuitCount = ExitCircuitCount + Rend2ClientCircuitCount
+            self.secure_counters.increment('ExitAndRend2ClientCircuitCount',
                                            bin=SINGLE_BIN,
                                            inc=1)
-            # ExitAndRendServiceCircuitCount = RendExitCircuitCount + RendServiceCircuitCount
-            self.secure_counters.increment('ExitAndRendServiceCircuitCount',
+            # ExitAndRend2ServiceCircuitCount = ExitCircuitCount + Rend2ServiceCircuitCount
+            self.secure_counters.increment('ExitAndRend2ServiceCircuitCount',
                                            bin=SINGLE_BIN,
                                            inc=1)
 
@@ -2139,55 +2143,54 @@ class Aggregator(ReconnectingClientFactory):
                                            bin=SINGLE_BIN,
                                            inc=1)
 
-        # We can't tell if a rend circuit is HS version 2 or 3
-        if is_rend:
-            self.secure_counters.increment('RendCircuitCount',
+        if is_rend and hs_version is not None and hs_version == 2:
+            self.secure_counters.increment('Rend2CircuitCount',
                                            bin=SINGLE_BIN,
                                            inc=1)
             # ignore circuits where we don't know the client/server flag
             if is_client is not None:
                 if is_client:
                     # Unused, included for completeness
-                    self.secure_counters.increment('RendClientCircuitCount',
+                    self.secure_counters.increment('Rend2ClientCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
                     # Combined counters: collected so there is only one lot of noise added
-                    # ExitAndRendClientCircuitCount = ExitCircuitCount + RendClientCircuitCount
+                    # ExitAndRend2ClientCircuitCount = ExitCircuitCount + Rend2ClientCircuitCount
                     # Use double quotes, so test_counter_match.sh doesn't think it's a duplicate
-                    self.secure_counters.increment("ExitAndRendClientCircuitCount",
+                    self.secure_counters.increment("ExitAndRend2ClientCircuitCount",
                                                    bin=SINGLE_BIN,
                                                    inc=1)
 
                     if is_single_hop:
                         # Unused, included for completeness
                         self.secure_counters.increment(
-                                          'RendTor2WebClientCircuitCount',
+                                          'Rend2Tor2WebClientCircuitCount',
                                           bin=SINGLE_BIN,
                                           inc=1)
                     else:
                         self.secure_counters.increment(
-                                          'RendMultiHopClientCircuitCount',
+                                          'Rend2MultiHopClientCircuitCount',
                                           bin=SINGLE_BIN,
                                           inc=1)
                 else:
-                    self.secure_counters.increment('RendServiceCircuitCount',
+                    self.secure_counters.increment('Rend2ServiceCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
                     # Combined counters: collected so there is only one lot of noise added
-                    # ExitAndRendServiceCircuitCount = RendExitCircuitCount + RendServiceCircuitCount
+                    # ExitAndRend2ServiceCircuitCount = ExitCircuitCount + Rend2ServiceCircuitCount
                     # Use double quotes, so test_counter_match.sh doesn't think it's a duplicate
-                    self.secure_counters.increment("ExitAndRendServiceCircuitCount",
+                    self.secure_counters.increment("ExitAndRend2ServiceCircuitCount",
                                                    bin=SINGLE_BIN,
                                                    inc=1)
                     if is_single_hop:
                         self.secure_counters.increment(
-                                          'RendSingleOnionServiceCircuitCount',
+                                          'Rend2SingleOnionServiceCircuitCount',
                                           bin=SINGLE_BIN,
                                           inc=1)
                     else:
                         # Unused, included for completeness
                         self.secure_counters.increment(
-                                          'RendMultiHopServiceCircuitCount',
+                                          'Rend2MultiHopServiceCircuitCount',
                                           bin=SINGLE_BIN,
                                           inc=1)
 

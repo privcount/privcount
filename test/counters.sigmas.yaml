@@ -431,7 +431,7 @@ counters:
         sigma: 0.0
     HSDir3StoreAddNewCount:
         sigma: 0.0
-    RendClientSentCellCount:
+    Rend2ClientSentCellCount:
         sigma: 0.0
     Intro2CircuitCount:
         sigma: 0.0
@@ -441,15 +441,15 @@ counters:
         sigma: 0.0
     EndCircuitCount:
         sigma: 0.0
-    RendCircuitCount:
+    Rend2CircuitCount:
         sigma: 0.0
-    RendServiceCircuitCount:
+    Rend2ServiceCircuitCount:
         sigma: 0.0
-    ExitAndRendServiceCircuitCount:
+    ExitAndRend2ServiceCircuitCount:
         sigma: 0.0
-    RendSingleOnionServiceCircuitCount:
+    Rend2SingleOnionServiceCircuitCount:
         sigma: 0.0
-    RendMultiHopServiceCircuitCount:
+    Rend2MultiHopServiceCircuitCount:
         sigma: 0.0
     OriginCircuitCount:
         sigma: 0.0
@@ -457,11 +457,11 @@ counters:
         sigma: 0.0
     DirCircuitCount:
         sigma: 0.0
-    RendTor2WebClientCircuitCount:
+    Rend2Tor2WebClientCircuitCount:
         sigma: 0.0
-    RendClientCircuitCount:
+    Rend2ClientCircuitCount:
         sigma: 0.0
-    ExitAndRendClientCircuitCount:
+    ExitAndRend2ClientCircuitCount:
         sigma: 0.0
-    RendMultiHopClientCircuitCount:
+    Rend2MultiHopClientCircuitCount:
         sigma: 0.0
