@@ -333,7 +333,9 @@ def get_int_value(field_name, fields, event_desc,
                   default=None):
     '''
     Check that fields[field_name] exists and is a valid integer.
+    Asserts if is_mandatory is True and it does not exist.
     If it is an invalid integer, assert.
+
     Return values are like get_string_value.
     '''
     if field_name not in fields:
@@ -352,7 +354,9 @@ def get_flag_value(field_name, fields, event_desc,
     '''
     Check that fields[field_name] exists and is a valid numeric boolean
     flag.
+    Asserts if is_mandatory is True and it does not exist.
     If it is an invalid integer or out of range of a bool, assert.
+
     Return values are like get_string_value.
     '''
     if field_name not in fields:
@@ -371,7 +375,9 @@ def get_float_value(field_name, fields, event_desc,
     '''
     Check that fields[field_name] exists and is a valid float (including
     integral values).
+    Asserts if is_mandatory is True and it does not exist.
     If it is an invalid float, assert.
+
     Return values are like get_string_value.
     '''
     if field_name not in fields:
@@ -389,7 +395,9 @@ def get_ip_address_value(field_name, fields, event_desc,
                          default=None):
     '''
     Check that fields[field_name] exists and is a valid IP address (TODO).
+    Asserts if is_mandatory is True and it does not exist.
     If it is an invalid IP address, assert.
+
     Return values are like get_string_value.
     '''
     if field_name not in fields:
