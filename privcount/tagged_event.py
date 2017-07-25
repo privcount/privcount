@@ -345,7 +345,9 @@ def get_int_value(field_name, fields, event_desc,
     Asserts if is_mandatory is True and it does not exist.
     If it is an invalid integer, assert.
 
-    Return values are like get_string_value.
+    If it exists and is valid, return it as an int or long.
+    (Large integers are automatically promoted to long in Python >= 2.7.)
+    If it is missing, return default.
     '''
     if field_name not in fields:
         assert not is_mandatory
@@ -366,7 +368,10 @@ def get_flag_value(field_name, fields, event_desc,
     Asserts if is_mandatory is True and it does not exist.
     If it is an invalid integer or out of range of a bool, assert.
 
-    Return values are like get_string_value.
+    If it exists and is valid, return it as an int or long.
+
+    If it exists and is valid, return it as a bool (True or False).
+    If it is missing, return default.
     '''
     if field_name not in fields:
         assert not is_mandatory
@@ -387,7 +392,8 @@ def get_float_value(field_name, fields, event_desc,
     Asserts if is_mandatory is True and it does not exist.
     If it is an invalid float, assert.
 
-    Return values are like get_string_value.
+    If it exists and is valid, return it as a float.
+    If it is missing, return default.
     '''
     if field_name not in fields:
         assert not is_mandatory
