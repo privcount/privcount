@@ -7,6 +7,7 @@
 '''
 
 import logging
+import ipaddress
 
 from privcount.log import summarise_string
 
@@ -267,18 +268,26 @@ def is_ip_address_valid(field_name, fields, event_desc,
                         is_mandatory=False):
     '''
     Check that fields[field_name] passes is_field_valid(), and is a valid
-    IPv4 or IPv6 address (TODO).
+    IPv4 or IPv6 address.
 
     Return values are like is_string_valid.
     '''
-    # TODO: actually try converting to IPv4 or IPv6, using the ipaddress
-    #       module (the backported one from python 3.3)
-    # TODO: check the version is in the set of allowed IP versions (?)
-    
-    # "::" is a valid IPv6 address, and they can be up to 39 characters long
-    return is_string_valid(field_name, fields, event_desc,
-                           is_mandatory=is_mandatory,
-                           min_len=2, max_len=39)
+    if not is_field_valid(field_name, fields, event_desc,
+                          is_mandatory=is_mandatory):
+        return False
+    if field_name not in fields:
+        # valid optional field, keep on processing
+        return True
+    try:
+        field_value = ipaddress.ip_address(unicode(fields[field_name]))
+    except ValueError as e:
+        # not an IP address
+        logging.warning("Ignored {} '{}', must be an IP address: '{}' {}"
+                        .format(field_name, fields[field_name], e,
+                                event_desc))
+        return False
+    # it is valid and we want to keep on processing
+    return True
 
 def get_string_value(field_name, fields, event_desc,
                      is_mandatory=False,
@@ -394,11 +403,12 @@ def get_ip_address_value(field_name, fields, event_desc,
                          is_mandatory=False,
                          default=None):
     '''
-    Check that fields[field_name] exists and is a valid IP address (TODO).
+    Check that fields[field_name] exists and is a valid IP address.
     Asserts if is_mandatory is True and it does not exist.
     If it is an invalid IP address, assert.
 
-    Return values are like get_string_value.
+    If it exists and is valid, return it as a string in canonical form.
+    If it is missing, return default.
     '''
     if field_name not in fields:
         assert not is_mandatory
@@ -408,5 +418,6 @@ def get_ip_address_value(field_name, fields, event_desc,
     # We're just using this for its IP address format check
     assert is_ip_address_valid(field_name, fields, event_desc)
 
-    # TODO: convert to an IP address object?
-    return fields[field_name]
+    # Canonicalise the IP address and return it as a string
+    # This provides maximum compatibility with existing code
+    return str(ipaddress.ip_address(unicode(fields[field_name])))
