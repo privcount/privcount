@@ -1240,7 +1240,8 @@ class Aggregator(ReconnectingClientFactory):
 
         previp = get_ip_address_value("PreviousNodeIPAddress",
                                       fields, event_desc,
-                                      is_mandatory=False)
+                                      is_mandatory=False,
+                                      default="0.0.0.0")
         prevIsClient = get_flag_value("IsEntryFlag",
                                       fields, event_desc,
                                       is_mandatory=False,
@@ -1258,7 +1259,7 @@ class Aggregator(ReconnectingClientFactory):
         if (chanid is None or circid is None or ncellsin is None or
             ncellsout is None or readbwexit is None or writebwexit is None or
             start is None or end is None or previp is None or
-            prevIsClient is None or nextip is None or nextIsEdge):
+            prevIsClient is None or nextip is None or nextIsEdge is None):
             logging.warning("Unexpected missing field {}".format(event_desc))
             return False
 
@@ -1552,13 +1553,14 @@ class Aggregator(ReconnectingClientFactory):
                               min_value=0.0):
             return False
 
-        if not Aggregator.are_circuit_id_fields_valid(
-                                                    fields, event_desc,
-                                                    is_mandatory=is_mandatory,
-                                                    prefix="Next"):
+        # Validate the always optional fields
+
+        # in some rare cases, NextChannelId can be missing
+        if not Aggregator.are_circuit_id_fields_valid(fields, event_desc,
+                                                      is_mandatory=False,
+                                                      prefix="Next"):
             return False
 
-        # Validate the always optional fields
 
         if not Aggregator.are_circuit_id_fields_valid(fields, event_desc,
                                                       is_mandatory=False,
@@ -2019,8 +2021,8 @@ class Aggregator(ReconnectingClientFactory):
 
         if is_legacy:
             if not self._handle_legacy_exit_circuit_event(fields, event_desc):
-                logging.warning("Error while processing legacy circuit event with '{}' in {}"
-                                .format(" ".join(fields), event_desc))
+                logging.warning("Error while processing legacy circuit event with '{}' {}"
+                                .format(" ".join(sorted(fields)), event_desc))
 
         # Extract mandatory fields
 
