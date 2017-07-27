@@ -53,6 +53,33 @@ Extract only the bins with non-zero counts from a histogram:
 
     jq '.Tally.CounterName.bins | map(select(.[2] > 0))'
 
+Show counter names containing "Circuit":
+
+    jq '.Tally | with_entries(select(.key | contains("Circuit")))'
+
+Filter out counters with all-zero bins:
+
+    jq '.Tally | with_entries(select(.value.bins[][2] > 0))'
+
+Filter out zero bins:
+(There is probably a nicer way of doing this)
+
+    jq '.Tally | with_entries(.value = (.value
+                   | with_entries(.value = (.value
+                       | map(select(.[2] > 0))))))'
+
+Remove the "bins" key, and place its value underneath the counter name:
+
+    jq '.Tally | with_entries(.value = .value.bins)'
+
+I like to use them combined, like this:
+
+    jq '.Tally | with_entries(select(.value.bins[][2] > 0))
+               | with_entries(.value = (.value
+                   | with_entries(.value = (.value
+                       | map(select(.[2] > 0))))))
+               | with_entries(.value = .value.bins)'
+
 ### Updating This Documentation
 
 When you add new counters, you can add their names to this file using:
