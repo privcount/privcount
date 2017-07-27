@@ -24,7 +24,7 @@ from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
 from privcount.node import PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
-from privcount.statistics_noise import get_noise_allocation
+from privcount.statistics_noise import get_noise_allocation, get_sanity_check_counter, DEFAULT_DUMMY_COUNTER_NAME
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
 # for warning about logging function and format # pylint: disable=W1202
@@ -296,6 +296,10 @@ class TallyServer(ServerFactory, PrivCountServer):
                     with open(ts_conf['allocation'], 'w') as fout:
                         yaml.dump(ts_conf['noise'], fout,
                                   default_flow_style=False)
+
+            # ensure we always add a sanity check counter
+            ts_conf['counters'][DEFAULT_DUMMY_COUNTER_NAME] = get_sanity_check_counter()
+            ts_conf['noise']['counters'][DEFAULT_DUMMY_COUNTER_NAME] = get_sanity_check_counter()
 
             # now we have bins and sigmas (and perhaps additional calculation
             # info along with the sigmas)
