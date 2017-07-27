@@ -246,13 +246,15 @@ def get_sanity_check_counter():
         counters['ZeroCount'] = get_sanity_check_counter()
     All of these values are unused, except for:
         bins:
-            - [0.0, inf] (a long counter is appended by SecureCounters,
+            - [-inf, inf] (a long counter is appended by SecureCounters,
                            it should only ever have blinding values added)
         estimated_value: 0.0 (TODO: used for checking if stats have changed)
         sigma: 0.0 (used for adding noise, 0.0 means no noise is added)
     '''
     sanity_check = {}
-    sanity_check['bins'] = [0.0, float('inf')]
+    sanity_check['bins'] = []
+    single_bin = [float('-inf'), float('inf')]
+    sanity_check['bins'].append(single_bin)
     sanity_check['sensitivity'] = 0.0
     sanity_check['estimated_value'] = 0.0
     sanity_check['sigma'] = 0.0
