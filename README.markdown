@@ -56,7 +56,7 @@ For more information about PrivEx, see:
 PrivEx: Private Collection of Traffic Statistics for Anonymous Communication Networks
 21st ACM Conference on Computer and Communications Security (CCS 2014)
 Tariq Elahi, George Danezis, and Ian Goldberg
-http://www.cypherpunks.ca/~iang/pubs/privex-ccs14.pdf
+https://www.cypherpunks.ca/~iang/pubs/privex-ccs14.pdf
 ```
 
 See LICENSE for licensing information.

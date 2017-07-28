@@ -431,7 +431,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         Get the maximum reasonable rtt for uid
         '''
         # Maximum RTT in ~2005 was 20 seconds
-        # http://www3.cs.stonybrook.edu/~phillipa/papers/SPECTS.pdf
+        # https://www3.cs.stonybrook.edu/~phillipa/papers/SPECTS.pdf
         # There's no guarantee the last rtt will be the same as this one,
         # so add a few seconds unconditionally
         return self.clients[uid].get('rtt', 15.0) + 5.0

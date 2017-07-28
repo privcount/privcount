@@ -89,7 +89,7 @@ def check_blinding_values(secure_counters, modulus):
     # are all the blinding values unique?
     # only check if the number of items is very small compared with modulus
     # RAM bit error rates are up to 10^-13 per second
-    # http://www.cs.toronto.edu/~bianca/papers/sigmetrics09.pdf
+    # https://www.cs.toronto.edu/~bianca/papers/sigmetrics09.pdf
     # So this check should fail by chance less often than a hardware error
     # Using the approximation from
     # https://en.wikipedia.org/wiki/Birthday_problem#Square_approximation
