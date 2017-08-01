@@ -308,17 +308,19 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
         logging.info("got command to stop collection phase")
 
         counts = None
-        if self.is_aggregator_pending:
-            self.is_aggregator_pending = False
-            assert self.aggregator is None
-            logging.info("Aggregator deferred, counts never started")
-        elif self.aggregator is not None:
+        if self.aggregator is not None and not self.is_aggregator_pending:
             counts = self.aggregator.stop()
+
+        if self.aggregator is not None:
             # TODO: secure delete
             del self.aggregator
             self.aggregator = None
         else:
             logging.info("No aggregator, counts never started")
+
+        if self.is_aggregator_pending:
+            self.is_aggregator_pending = False
+            logging.info("Aggregator deferred, counts never started")
 
         self.expected_aggregator_start_time = None
 
