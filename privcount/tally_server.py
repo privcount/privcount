@@ -296,7 +296,9 @@ class TallyServer(ServerFactory, PrivCountServer):
             # now all the files are loaded, use noise to calculate sigmas
             # (if noise was configured)
             if 'privacy' in ts_conf['noise']:
-                ts_conf['noise'] = get_noise_allocation(ts_conf['noise'])
+                ts_conf['noise'] = get_noise_allocation(
+                    ts_conf['noise'],
+                    circuit_sample_rate=ts_conf['circuit_sample_rate'])
                 # and write it to the specified file (if configured)
                 if 'allocation' in ts_conf:
                     with open(ts_conf['allocation'], 'w') as fout:
