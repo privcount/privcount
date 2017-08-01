@@ -27,6 +27,8 @@ tally_server:
     checkin_period: 5
     # We only run one round, so this is unused
     delay_period: 86400
+    # Ignore some circuits, so we test this feature
+    circuit_sample_rate: 0.5
     key: 'keys/ts.pem'
     cert: 'keys/ts.cert'
     # if the key file does not exist, the TS creates a file with a random key

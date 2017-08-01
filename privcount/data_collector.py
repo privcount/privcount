@@ -253,7 +253,8 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                                      counter_modulus(),
                                      self.config['event_source'],
                                      self.config['rotate_period'],
-                                     self.config['use_setconf'])
+                                     self.config['use_setconf'],
+                                     config.get('circuit_sample_rate', 1.0))
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -407,7 +408,7 @@ class Aggregator(ReconnectingClientFactory):
 
     def __init__(self, counters, traffic_model_config, sk_uids,
                  noise_weight, modulus, tor_control_port, rotate_period,
-                 use_setconf):
+                 use_setconf, circuit_sample_rate):
         self.secure_counters = SecureCounters(counters, modulus,
                                               require_generate_noise=True)
         self.collection_counters = counters
@@ -422,6 +423,7 @@ class Aggregator(ReconnectingClientFactory):
 
         self.noise_weight_config = noise_weight
         self.noise_weight_value = None
+        self.circuit_sample_rate = float(circuit_sample_rate)
 
         self.connector = None
         self.connector_list = None
@@ -587,6 +589,23 @@ class Aggregator(ReconnectingClientFactory):
         rely on the torrc or another PrivCount instance to set EnablePrivCount.
         '''
         return self.use_setconf
+
+    def get_circuit_sample_rate(self):
+        '''
+        Returns the PrivCountCircuitSampleRate, a floating-point number in
+        [0.0, 1.0]. Defaults to 1.0 (send events for all circuits, streams,
+        and cells).
+        '''
+        # check that the value is valid
+        assert self.circuit_sample_rate is not None
+        assert self.circuit_sample_rate >= 0.0
+        assert self.circuit_sample_rate <= 1.0
+        # check that we can apply non-default values
+        if (not self.get_use_setconf() and
+            self.circuit_sample_rate != 1.0):
+            logging.warning("PrivCountCircuitSampleRate {} ignored because use_setconf is False."
+                            .format(self.circuit_sample_rate))
+        return self.circuit_sample_rate
 
     def set_nickname(self, nickname):
         nickname = nickname.strip()

@@ -1709,9 +1709,19 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                                                   'use SETCONF',
                                                   default=True)
             if use_setconf:
+                circuit_sample_rate = self.getConfiguredValue(
+                                                  'get_circuit_sample_rate',
+                                                  'circuit sample rate',
+                                                  default=1.0)
                 # Protect the EnablePrivCount setting from logrotate and
                 # similar
                 self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=0")
+                # Avoid format string vulnerabilities
+                circuit_sample_rate = float(circuit_sample_rate)
+                # be tolerant of Tor versions without this feature
+                if circuit_sample_rate != 1.0:
+                    self.sendLine("SETCONF PrivCountCircuitSampleRate={}"
+                                  .format(circuit_sample_rate))
                 self.sendLine("SETCONF EnablePrivCount=1")
             # Always check that EnablePrivCount is set, even if we just set it
             self.sendLine("GETCONF EnablePrivCount")
@@ -1742,7 +1752,14 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                                                   'use SETCONF',
                                                   default=True)
             if use_setconf:
+                circuit_sample_rate = self.getConfiguredValue(
+                                                  'get_circuit_sample_rate',
+                                                  'circuit sample rate',
+                                                  default=1.0)
                 self.sendLine("SETCONF EnablePrivCount=0")
+                # be tolerant of Tor versions without this feature
+                if circuit_sample_rate != 1.0:
+                    self.sendLine("SETCONF PrivCountCircuitSampleRate=1.0")
                 self.sendLine("SETCONF __ReloadTorrcOnSIGHUP=1")
             # Don't check if EnablePrivCount is off: other instances might
             # want it to stay on
@@ -2206,6 +2223,8 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
     250 OK
     SETCONF EnablePrivCount=1
     250 OK
+    SETCONF PrivCountCircuitSampleRate=0.5
+    250 OK
     GETINFO
     250 OK
     GETINFO fingerprint
@@ -2473,7 +2492,8 @@ class TorControlServerProtocol(LineOnlyReceiver, TorControlProtocol):
                 # line: "250 OK"
                 elif (len(parts) == 2 and
                       (parts[1].lower().startswith("enableprivcount") or
-                       parts[1].lower().startswith("__reloadtorrconsighup"))):
+                       parts[1].lower().startswith("__reloadtorrconsighup") or
+                       parts[1].lower().startswith("privcountcircuitsamplerate"))):
                     # just ignore the value
                     self.sendLine("250 OK")
                 else:
