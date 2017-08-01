@@ -13,9 +13,13 @@ from random import SystemRandom
 from copy import deepcopy
 from math import sqrt, isnan
 
-from privcount.statistics_noise import DEFAULT_SIGMA_TOLERANCE, DEFAULT_DUMMY_COUNTER_NAME
 from privcount.log import format_period, format_elapsed_time_since, format_delay_time_until
 
+DEFAULT_SIGMA_TOLERANCE = 1e-6
+DEFAULT_EPSILON_TOLERANCE = 1e-15
+DEFAULT_SIGMA_RATIO_TOLERANCE = 1e-6
+
+DEFAULT_DUMMY_COUNTER_NAME = 'ZeroCount'
 # The label used for the default noise weight for testing
 # Labels are typically data collector relay fingerprints
 DEFAULT_NOISE_WEIGHT_NAME = '*'

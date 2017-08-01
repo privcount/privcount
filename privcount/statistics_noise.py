@@ -5,11 +5,7 @@ import math
 import scipy.stats
 import yaml
 
-DEFAULT_SIGMA_TOLERANCE = 1e-6
-DEFAULT_EPSILON_TOLERANCE = 1e-15
-DEFAULT_SIGMA_RATIO_TOLERANCE = 1e-6
-
-DEFAULT_DUMMY_COUNTER_NAME = 'ZeroCount'
+from privcount.counter import DEFAULT_SIGMA_TOLERANCE, DEFAULT_EPSILON_TOLERANCE, DEFAULT_SIGMA_RATIO_TOLERANCE, DEFAULT_DUMMY_COUNTER_NAME
 
 def satisfies_dp(sensitivity, epsilon, delta, std):
     '''

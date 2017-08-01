@@ -47,10 +47,10 @@ grep -i "'$NAME_REGEX'[],]" "$TEST_DIR/../privcount/traffic_model.py" \
     | grep -v -e 'counters' -e 'states' \
     | cut -d"'" -f 2 | sort -u > "$TEST_DIR/traffic_model.py.names.extra"
 
-#echo "Processing $TEST_DIR/../privcount/statistics_noise.py:"
+#echo "Processing DEFAULT_DUMMY_COUNTER_NAME in $TEST_DIR/../privcount/counter.py:"
 grep -i "DEFAULT_DUMMY_COUNTER_NAME *= *'$NAME_REGEX'" \
-    "$TEST_DIR/../privcount/statistics_noise.py" \
-    | cut -d"'" -f 2 > "$TEST_DIR/statistics_noise.py.names.extra"
+    "$TEST_DIR/../privcount/counter.py" \
+    | cut -d"'" -f 2 > "$TEST_DIR/dummy_counter.py.names.extra"
 
 # Process the code files
 for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
@@ -74,7 +74,7 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
             >> "$OUT_PATH.names.unsorted" || true
     fi
     # Add the ZeroCount counter (it has no events and no increments)
-    cat "$TEST_DIR/statistics_noise.py.names.extra" \
+    cat "$TEST_DIR/dummy_counter.py.names.extra" \
         >> "$OUT_PATH.names.unsorted"
     # And sort
     cat "$OUT_PATH.names.unsorted" | sort > "$OUT_PATH.names"
