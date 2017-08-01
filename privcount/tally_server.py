@@ -388,10 +388,6 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert max_tally_counter_value() < counter_modulus()
             assert -min_tally_counter_value() < counter_modulus()
 
-            for key in ts_conf['counters']:
-                if 'Histogram' in key:
-                    assert 'bins' in ts_conf['counters'][key] and ts_conf['counters'][key]['bins'] is not None
-
             if self.config == None:
                 self.config = ts_conf
                 logging.info("using config = %s",
