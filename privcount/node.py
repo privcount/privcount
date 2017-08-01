@@ -335,8 +335,8 @@ class PrivCountClient(PrivCountNode):
 
         # if the counters don't pass the validity checks, fail
         if not check_counters_config(start_config['counters'],
-                                     start_config['noise']['counters'],
-                                     allow_unknown_counters):
+                              start_config['noise']['counters'],
+                              allow_unknown_counters=allow_unknown_counters):
             return None
 
         # if the noise weights don't pass the validity checks, fail
