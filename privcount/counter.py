@@ -645,8 +645,10 @@ def check_counters_config(bins, sigmas, allow_unknown_counters=False):
     If allow_unknown_counters is False, also check that all counter names are
     in the set of known counter names for this PrivCount version.
     '''
-    return (check_bins_config(bins, allow_unknown_counters) and
-            check_sigmas_config(sigmas, allow_unknown_counters) and
+    return (check_bins_config(bins,
+                          allow_unknown_counters=allow_unknown_counters) and
+            check_sigmas_config(sigmas,
+                          allow_unknown_counters=allow_unknown_counters) and
             check_combined_counters(bins, sigmas))
 
 def float_representation_accuracy():
