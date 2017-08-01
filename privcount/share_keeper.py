@@ -133,9 +133,8 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
         # Share Keepers allow the Tally Server and Data Collectors to collect
         # counters, even if the Share Keeper is an earlier version that
         # doesn't know about the new counters
-        combined_counters = self.check_start_config(
-                                                  config,
-                                                  allow_unknown_counters=False)
+        combined_counters = self.check_start_config(config,
+                                                  allow_unknown_counters=True)
 
         if combined_counters is None:
             return None
