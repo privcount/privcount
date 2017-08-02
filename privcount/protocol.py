@@ -218,15 +218,21 @@ class PrivCountProtocol(LineOnlyReceiver):
             # failing due to an exception can cause an infinite retry loop.
             logging.error(
                 "Exception {} while processing event type: {} payload: {}"
+                .format(e, event_type, summarise_string(event_payload, 100)))
+            logging.debug(
+                "Exception {} while processing event type: {} payload: (full) {}"
                 .format(e, event_type, event_payload))
             log_error()
 
             try:
                 self.protocol_failed()
             except BaseException as e:
-                logging.error(
-                              "Exception {} in protocol failure after event type: {} payload: {}"
+                logging.error("Exception {} in protocol failure after event type: {} payload: {}"
+                              .format(e, event_type,
+                                      summarise_string(event_payload, 100)))
+                logging.debug("Exception {} in protocol failure after event type: {} payload: (full) {}"
                               .format(e, event_type, event_payload))
+
                 log_error()
 
             # That said, terminating on exception is a denial of service
