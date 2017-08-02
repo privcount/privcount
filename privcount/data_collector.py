@@ -2148,9 +2148,9 @@ class Aggregator(ReconnectingClientFactory):
 
         # Unused, included for completeness
         if is_single_hop:
-                self.secure_counters.increment('SingleHopCircuitCount',
-                                               bin=SINGLE_BIN,
-                                               inc=1)
+            self.secure_counters.increment('SingleHopCircuitCount',
+                                           bin=SINGLE_BIN,
+                                           inc=1)
 
         # End subcategories
         if is_exit:
