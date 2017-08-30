@@ -165,6 +165,12 @@ def get_fractional_weights(consensus_path, my_fingerprints):
     # this is the integer number of HSDirs (they don't use bandwidth weights)
     my_hsdir2, total_hsdir2, my_hsdir3, total_hsdir3 = 0.0, 0.0, 0.0, 0.0
 
+    if my_fingerprints is not None:
+        for fingerprint in sorted(my_fingerprints):
+            if fingerprint not in net_status.routers.keys():
+                print "{} is not in consensus '{}'".format(fingerprint,
+                                                           consensus_path)
+
     for (fingerprint, router_entry) in net_status.routers.items():
         #print fingerprint
         guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count = get_weighted_bandwidths(router_entry, net_status.bandwidth_weights, bw_weight_scale)
