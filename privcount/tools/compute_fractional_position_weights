@@ -10,6 +10,7 @@ from stem import Flag
 from stem.descriptor import parse_file
 from stem.descriptor import DocumentHandler
 from stem.descriptor.remote import DescriptorDownloader
+from stem.version import Version
 
 def get_unknown_privcount_version_stub():
     return 'unknown (>= PrivCount 1.0.1)'
@@ -201,6 +202,8 @@ def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
     hsdir2_count, hsdir3_count = 0.0, 0.0
 
     bw = float(router_entry.bandwidth)
+    version = router_entry.version
+    protocols = router_entry.protocols
 
     if Flag.GUARD in router_entry.flags and Flag.FAST in router_entry.flags and Flag.STABLE in router_entry.flags:
         guard_weight = safe_d(get_bw_weight(router_entry.flags, 'g', bw_weights), bw_weight_scale)
@@ -218,18 +221,22 @@ def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
             exit_weighted_bw = bw * exit_weight
 
     hsdir2_count = float(get_bw_weight(router_entry.flags, 'h2', None))
-    hsdir3_count = float(get_bw_weight(router_entry.flags, 'h3', None))
+    hsdir3_count = float(get_bw_weight(router_entry.flags, 'h3', None,
+                                       version=version, protocols=protocols))
 
     return guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count
 
+PROTOVER_HSDIR_V3 = 2
+
 # from torps
-def get_bw_weight(flags, position, bw_weights):
+def get_bw_weight(flags, position, bw_weights, version=None, protocols=None):
     """Returns weight to apply to relay's bandwidth for given position, or for
         HSDirs, returns 1.0 when a relay has the flag, and 0.0 when it does not
+        (version and protocols are used to check if a relay supports HSDir v3)
         flags: list of Flag values for relay from a consensus
         position: position for which to find selection weight,
              one of 'g' for guard, 'm' for middle, 'e' for exit,
-             'h{2,3}' for HSDir{,3}, and 'i' for intro
+             'h{2,3}' for HSDir v2 and v3, and 'i' for intro
              (the rend weight is the same as the middle weight)
         bw_weights: bandwidth_weights from NetworkStatusDocumentV3 consensus,
              or None for HSDirs
@@ -273,10 +280,17 @@ def get_bw_weight(flags, position, bw_weights):
         else:
             return 0.0
     elif (position == 'h3'):
-        # stem doesn't define Flag.HSDIR3 yet
-        # https://gitweb.torproject.org/torspec.git/tree/proposals/224-rend-spec-ng.txt#n635
-        if ('HSDir3' in flags):
-            return 1.0
+        # There is no HSDir3 flag. Instead, HSDir v3 must have the HSDir flag,
+        # the HSDir protocol version 2, and a tor version >= 0.3.0.8.
+        # https://trac.torproject.org/projects/tor/ticket/23340
+        if (Flag.HSDIR in flags):
+            if (version < Version('0.3.0.8')):
+                return 0.0
+            elif (protocols is not None and
+                  PROTOVER_HSDIR_V3 in protocols.get('HSDir',[])):
+                return 1.0
+            else:
+                return 0.0
         else:
             return 0.0
     else:

@@ -5,4 +5,7 @@
 
 # Listed versions worked with privcount when the dependency was added
 numpy>=1.11.2
-stem>=1.4.0
+
+# stem 1.6.0 has not been released yet
+#stem>=1.6.0
+-e git+https://git.torproject.org/stem.git@master#egg=stem
