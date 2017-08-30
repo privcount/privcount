@@ -25,6 +25,33 @@ This is a general purpose tool that will search through a consenus or all
 consensuses in a directory and compute the mean position weights that a
 group of relays by fingerprints had over all consensuses.
 
+Clients typically have a consensus that is between 1 and 3 hours old. You
+should choose a range of consensuses that reflect this delay. (For example, if
+you collect between 03:00 and 23:00, use consensuses 01:00 through 20:00.)
+
+HSDir v2s rotate every 24 hours at a time based on each service's onion
+address. To avoid introducing bias, you MUST collect v2 HSDir statistics for
+a multiple of  24 hours.
+
+HSDir v2s see one more set of descriptors than the number of days in the
+collection period, because the changeovers are distributed throughout the
+day. Therefore, any figures obtained from an N-day period need to be scaled by
+N/(N+1).
+
+This script provides simplified weights, which don't account for:
+* exit ports, exit policies, and exit and rend long-lived ports
+* HSDir v2 allocation variance due to fingerprint ranges
+* HSDir v2 bias due to descriptor upload times in the first and last hour
+* HSDir v3 allocation variance due to fingerprint ranges
+  (this requires relay ed25519 keys, which are not in the consensus)
+* overlapping HSDir descriptor upload periods
+* overlapping HSDir descriptor replicas
+* one descriptor per client for services using stealth authentication
+
+For more details, see:
+https://research.torproject.org/techreports/extrapolating-hidserv-stats-2015-01-31.pdf
+https://trac.torproject.org/projects/tor/ticket/23367
+
 Example execution (the '-' means download the latest consensus from Tor):
 
 ./compute_fractional_position_weights - 068308AD070849A71B8C1DB06C2509E82C40B908 11796EF96A84A328124B64383E768AFF90BA583F 11EAB5C9137906EF7E6A32365C4B37613698E647 1A4488A367D89D0EFDA88116059FEBCACF0F508A 1A58D4BF5B4A0AF0378F650D11A6569685C35C1D 363F42695F2DD825DA5A4E6ABF3FBDFCFD1E9AE2 3887BA09C064062B711125009404B372A90BF190 493CD90F239AE608D9C046C543C59ABB9815B4DB 87AA996EFB625724F8932EF789C761E33A66A83A A2D885A9B6F4D310372EA44FC0753F45CE44D1F7 B215FA3E0C37E71FF4330EA0A7D5F75D9BD2F2BE B6718125C43ECA2E5011B3C681BB6638617A9686 BA24CD0E76682C5AAFC09CC05476B94653699A39 C127882E54F77884F8D2764CB9744B1F2C94654B C6B3546CC6BCCB649FEC82D348D464554BC6323D CE46351D06E89C0047C34AF2CED26C441B57FDF0 DE684E6C6B7773B8BE74B4D941E4178988E15E26 F6D42724B636FDF05B0EAEBE5E830C586DCFD114 0DA9BD201766EDB19F57F49F1A013A8A5432C008 12B80ABF019354A9D25EE8BE85EB3C0AD8F7DFC1 890E2EA65455FBF0FAAB4159FAC4412BDCB24295 C170AE5A886C5A09D6D1CF5CF284653632EEF25D D52CD431CEF28E01B11F545A84347EE45524BCA7 EE21F83AB6F76E3B3FFCBA5C2496F789CB84E7C6 A5945077E0D35729F8E2920A54BE12A0058B403E D53793315E290D250E9AFC431A4C9068A1E53C98
