@@ -27,12 +27,34 @@ group of relays by fingerprints had over all consensuses.
 Example execution (the '-' means download the latest consensus from Tor):
 
 ./compute_fractional_position_weights - 068308AD070849A71B8C1DB06C2509E82C40B908 11796EF96A84A328124B64383E768AFF90BA583F 11EAB5C9137906EF7E6A32365C4B37613698E647 1A4488A367D89D0EFDA88116059FEBCACF0F508A 1A58D4BF5B4A0AF0378F650D11A6569685C35C1D 363F42695F2DD825DA5A4E6ABF3FBDFCFD1E9AE2 3887BA09C064062B711125009404B372A90BF190 493CD90F239AE608D9C046C543C59ABB9815B4DB 87AA996EFB625724F8932EF789C761E33A66A83A A2D885A9B6F4D310372EA44FC0753F45CE44D1F7 B215FA3E0C37E71FF4330EA0A7D5F75D9BD2F2BE B6718125C43ECA2E5011B3C681BB6638617A9686 BA24CD0E76682C5AAFC09CC05476B94653699A39 C127882E54F77884F8D2764CB9744B1F2C94654B C6B3546CC6BCCB649FEC82D348D464554BC6323D CE46351D06E89C0047C34AF2CED26C441B57FDF0 DE684E6C6B7773B8BE74B4D941E4178988E15E26 F6D42724B636FDF05B0EAEBE5E830C586DCFD114 0DA9BD201766EDB19F57F49F1A013A8A5432C008 12B80ABF019354A9D25EE8BE85EB3C0AD8F7DFC1 890E2EA65455FBF0FAAB4159FAC4412BDCB24295 C170AE5A886C5A09D6D1CF5CF284653632EEF25D D52CD431CEF28E01B11F545A84347EE45524BCA7 EE21F83AB6F76E3B3FFCBA5C2496F789CB84E7C6 A5945077E0D35729F8E2920A54BE12A0058B403E D53793315E290D250E9AFC431A4C9068A1E53C98
+
+Tests:
+
+No fingerprints:
+./compute_fractional_position_weights -
+
+All fingerprints
+./compute_fractional_position_weights - -
 '''
+
+ALL_FINGERPRINTS = ['-']
 
 def main():
     print "running weights privcount version {}".format(get_privcount_version())
 
     args = get_args()
+
+    cons_desc = "consensuses '{}'".format(args.consensus)
+    if args.consensus == '-':
+        cons_desc = "latest consensus ('-')"
+
+    fp_desc = "fingerprints '{}'".format(args.fingerprints)
+    if len(args.fingerprints) == 0:
+        fp_desc = "no fingerprints (empty list)"
+    elif args.fingerprints == ALL_FINGERPRINTS:
+        fp_desc = "all fingerprints ('-')"
+
+    print "using {} and {}".format(cons_desc, fp_desc)
 
     if args.consensus == '-':
         args.consensus = fetch_consensus()
@@ -49,7 +71,11 @@ def main():
     else:
         consensus_paths.append(expanded_path)
 
-    fps = [fp_str.strip('$') for fp_str in args.fingerprints]
+    # Use all fingerprints for testing purposes
+    if args.fingerprints == ALL_FINGERPRINTS:
+        fps = None
+    else:
+        fps = [fp_str.strip('$') for fp_str in args.fingerprints]
     work_items = [[path, fps] for path in consensus_paths]
     results = []
     if args.use_process_pool:
@@ -129,6 +155,8 @@ def safe_d(dividend, divisor):
 
 def get_fractional_weights(consensus_path, my_fingerprints):
     # returns a tuple with guard, middle, intro, exit, hsdir2 and hsdir3 fractions
+    # for my_fingerprints. If my_fingerprints is None, uses all fingerprints
+    # in the consensus. (This is used for testing.)
     # the rend fraction is the same as the middle fraction
     net_status = next(parse_file(consensus_path, document_handler='DOCUMENT', validate=False))
     bw_weight_scale = net_status.params['bwweightscale'] if 'bwweightscale' in net_status.params else 1.0
@@ -146,7 +174,7 @@ def get_fractional_weights(consensus_path, my_fingerprints):
         total_exit += exit_weighted_bw
         total_hsdir2 += hsdir2_count
         total_hsdir3 += hsdir3_count
-        if fingerprint in my_fingerprints:
+        if my_fingerprints is None or fingerprint in my_fingerprints:
             my_guard += guard_weighted_bw
             my_middle += middle_weighted_bw
             my_intro += intro_weighted_bw
@@ -258,7 +286,7 @@ def get_args():
             formatter_class=CustomHelpFormatter)
 
     parser.add_argument('consensus', help="Path to a consensus file or a directory containing multiple consensus files, or '-' to download and use the latest Tor consensus", metavar="PATH")
-    parser.add_argument('fingerprints', help="Fingerprint of relay(s) to include in reported fractions", metavar="FP", nargs='+')
+    parser.add_argument('fingerprints', help="Fingerprints of 0 or more relays to include in reported fractions, or '-' to include all relays", metavar="FP", nargs='*')
     parser.add_argument('-m', action='store_true', dest="use_process_pool", help="Run with a {} process pool".format(cpu_count()))
 
     args = parser.parse_args()
