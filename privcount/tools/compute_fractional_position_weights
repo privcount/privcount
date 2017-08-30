@@ -65,6 +65,27 @@ All fingerprints
 ./compute_fractional_position_weights - -
 '''
 
+# 3 is the default number of intro points per service
+# TODO: work out the weighted mean of the number of intro points per service,
+#       including services with stealth client auth
+INTRO_ESTABLISH_PER_SERVICE = 3.0
+
+# 3 and 2 are the hard-coded (v2) or default consensus parameter (v3) values
+HSDIR_SPREAD = 3.0
+HSDIR_REPLICA = 2.0
+
+# The entire hash ring of v2 HSDirs will see each onion address stored 6 times
+# per service upload
+HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE = HSDIR_SPREAD * HSDIR_REPLICA
+
+# The entire hash ring of v3 HSDirs will see each descriptor id stored 3 times
+# per service upload
+HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE = HSDIR_SPREAD
+
+# The entire hash ring of v3 HSDirs will see each descriptor id fetched
+# 0.5 times per service access
+HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE = 1.0 / HSDIR_REPLICA
+
 ALL_FINGERPRINTS = ['-']
 
 def main():
@@ -126,13 +147,18 @@ def main():
     # the rend frac is the same as the middle frac
     rend_fracs = middle_fracs
 
-    print "{:.15f} : guard fraction mean".format(mean(guard_fracs))
-    print "{:.15f} : middle fraction mean".format(mean(middle_fracs))
-    print "{:.15f} : exit fraction mean".format(mean(exit_fracs))
-    print "{:.15f} : hsdir2 fraction mean (6 HSDirs per onion address)".format(mean(hsdir2_fracs))
-    print "{:.15f} : hsdir3 fraction mean (3 HSDirs per descriptor id, 2 descriptor ids per service)".format(mean(hsdir3_fracs))
-    print "{:.15f} : intro2,3 fraction mean (3 Intro Points per onion address by default, max 10)".format(mean(intro_fracs))
-    print "{:.15f} : rend2,3 fraction mean".format(mean(rend_fracs))
+    print "{:.15f} : guard use mean".format(mean(guard_fracs))
+    print "{:.15f} : middle use mean".format(mean(middle_fracs))
+    print "{:.15f} : exit use mean".format(mean(exit_fracs))
+    print "{:.15f} : hsdir2 relay fraction mean".format(mean(hsdir2_fracs))
+    print "{:.15f} : hsdir2 service onion address mean (6 stores per onion address)".format(mean(hsdir2_fracs)*HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE)
+    print "{:.15f} : hsdir2 client onion address mean (1 fetch per onion address)".format(mean(hsdir2_fracs))
+    print "{:.15f} : hsdir3 relay fraction mean".format(mean(hsdir3_fracs))
+    print "{:.15f} : hsdir3 service descriptor id mean (3 stores per descriptor id, per onion address)".format(mean(hsdir3_fracs)*HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE)
+    print "{:.15f} : hsdir3 client descriptor id mean (0.5 fetches per descriptor id, per onion address)".format(mean(hsdir3_fracs)*HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE)
+    print "{:.15f} : intro2,3 service establish mean (default 3 intro points per onion address, max 10)".format(mean(intro_fracs)*INTRO_ESTABLISH_PER_SERVICE)
+    print "{:.15f} : intro2,3 client introduce mean (1 introduce per onion address)".format(mean(intro_fracs))
+    print "{:.15f} : rend2,3 use mean".format(mean(rend_fracs))
 
 def fetch_consensus():
     downloader = DescriptorDownloader()
