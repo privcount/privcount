@@ -95,14 +95,16 @@ def main():
     guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir3_fracs = do_reduce(results)
     assert len(guard_fracs) > 0
 
-    print "mean guard fraction is {}".format(mean(guard_fracs))
-    print "mean middle fraction is {}".format(mean(middle_fracs))
-    print "mean exit fraction is {}".format(mean(exit_fracs))
-    print "mean hsdir2 fraction is {} (6 HSDirs per service)".format(mean(hsdir2_fracs))
-    print "mean hsdir3 fraction is {} (3 HSDirs per blinded service replica)".format(mean(hsdir3_fracs))
-    print "mean intro fraction is {} (3-10 (v3: max in consensus) Intro Points per service)".format(mean(intro_fracs))
     # the rend frac is the same as the middle frac
-    print "mean rend fraction is {}".format(mean(middle_fracs))
+    rend_fracs = middle_fracs
+
+    print "{:.15f} : guard fraction mean".format(mean(guard_fracs))
+    print "{:.15f} : middle fraction mean".format(mean(middle_fracs))
+    print "{:.15f} : exit fraction mean".format(mean(exit_fracs))
+    print "{:.15f} : hsdir2 fraction mean (6 HSDirs per onion address)".format(mean(hsdir2_fracs))
+    print "{:.15f} : hsdir3 fraction mean (3 HSDirs per descriptor id, 2 descriptor ids per service)".format(mean(hsdir3_fracs))
+    print "{:.15f} : intro2,3 fraction mean (3 Intro Points per onion address by default, max 10)".format(mean(intro_fracs))
+    print "{:.15f} : rend2,3 fraction mean".format(mean(rend_fracs))
 
 def fetch_consensus():
     # if we had stem 1.5 we could do:
