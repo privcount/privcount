@@ -182,11 +182,8 @@ def main():
             result = process_consensus(params)
             results.append(result)
 
-    guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir2_svc_fracs, hsdir3_fracs, hsdir3_svc_fracs = do_reduce(results)
+    guard_fracs, middle_fracs, exit_fracs, hsdir2_fracs, hsdir2_svc_fracs, hsdir3_fracs, hsdir3_svc_fracs, intro_fracs, rend2_fracs, rend3_fracs = do_reduce(results)
     assert len(guard_fracs) > 0
-
-    # the rend frac is the same as the middle frac
-    rend_fracs = middle_fracs
 
     print "{:.15f} : guard use mean".format(mean(guard_fracs))
     print "{:.15f} : middle use mean".format(mean(middle_fracs))
@@ -199,7 +196,8 @@ def main():
     print "{:.15f} : hsdir3 client descriptor id mean (0.5 fetches per descriptor id, per onion address)".format(mean(hsdir3_fracs)*HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE)
     print "{:.15f} : intro2,3 service establish mean (default 3 intro points per onion address, max 10)".format(mean(intro_fracs)*INTRO_ESTABLISH_PER_SERVICE)
     print "{:.15f} : intro2,3 client introduce mean (1 introduce per onion address)".format(mean(intro_fracs))
-    print "{:.15f} : rend2,3 use mean".format(mean(rend_fracs))
+    print "{:.15f} : rend2 use mean".format(mean(rend2_fracs))
+    print "{:.15f} : rend3 use mean".format(mean(rend3_fracs))
 
 def fetch_consensus():
     downloader = DescriptorDownloader()
@@ -223,23 +221,26 @@ def do_map(pool, work_items):
 # this func is run by helper processes in process pool
 def process_consensus(params):
     consensus_path, prints = params[0], params[1]
-    guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir2_svc_frac, hsdir3_frac, hsdir3_svc_frac = get_fractional_weights(consensus_path, prints)
-    return [guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir2_svc_frac, hsdir3_frac, hsdir3_svc_frac]
+    guard_frac, middle_frac, exit_frac, hsdir2_frac, hsdir2_svc_frac, hsdir3_frac, hsdir3_svc_frac, intro_frac, rend2_frac, rend3_frac = get_fractional_weights(consensus_path, prints)
+    return [guard_frac, middle_frac, exit_frac, hsdir2_frac, hsdir2_svc_frac, hsdir3_frac, hsdir3_svc_frac, intro_frac, rend2_frac, rend3_frac]
 
 def do_reduce(async_results):
-    guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir2_svc_fracs, hsdir3_fracs, hsdir3_svc_fracs = [], [], [], [], [], [], [], []
+    guard_fracs, middle_fracs, exit_fracs, hsdir2_fracs, hsdir2_svc_fracs, hsdir3_fracs, hsdir3_svc_fracs, intro_fracs, rend2_fracs, rend3_fracs = [], [], [], [], [], [], [], [], [], []
     for result in async_results:
         if result is None: continue
-        guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir2_svc_frac, hsdir3_frac, hsdir3_svc_frac = result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7]
+        guard_frac, middle_frac, exit_frac, hsdir2_frac, hsdir2_svc_frac, hsdir3_frac, hsdir3_svc_frac, intro_frac, rend2_frac, rend3_frac = result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7], result[8], result[9]
         guard_fracs.append(guard_frac)
         middle_fracs.append(middle_frac)
-        intro_fracs.append(intro_frac)
         exit_fracs.append(exit_frac)
         hsdir2_fracs.append(hsdir2_frac)
         hsdir2_svc_fracs.append(hsdir2_svc_frac)
         hsdir3_fracs.append(hsdir3_frac)
         hsdir3_svc_fracs.append(hsdir3_svc_frac)
-    return guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir2_svc_fracs, hsdir3_fracs, hsdir3_svc_fracs
+        intro_fracs.append(intro_frac)
+        rend2_fracs.append(rend2_frac)
+        rend3_fracs.append(rend3_frac)
+
+    return guard_fracs, middle_fracs, exit_fracs, hsdir2_fracs, hsdir2_svc_fracs, hsdir3_fracs, hsdir3_svc_fracs, intro_fracs, rend2_fracs, rend3_fracs
 
 def safe_d(dividend, divisor):
     dividend = float(dividend)
@@ -250,16 +251,17 @@ def safe_d(dividend, divisor):
         return dividend/divisor
 
 def get_fractional_weights(consensus_path, my_fingerprints):
-    # returns a tuple with guard, middle, intro, exit, hsdir2 and hsdir3 fractions
+    # returns a tuple with guard, middle, exit, hsdir2, hsdir3, intro, rend2, and rend3 fractions
     # for my_fingerprints. If my_fingerprints is None, uses all fingerprints
     # in the consensus. (This is used for testing.)
-    # the rend fraction is the same as the middle fraction
     net_status = next(parse_file(consensus_path, document_handler='DOCUMENT', validate=False))
     bw_weight_scale = net_status.params['bwweightscale'] if 'bwweightscale' in net_status.params else 1.0
 
-    my_guard, total_guard, my_middle, total_middle, my_intro, total_intro, my_exit, total_exit = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    my_guard, total_guard, my_middle, total_middle, my_exit, total_exit = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     # this is the integer number of HSDirs (they don't use bandwidth weights)
     my_hsdir2, total_hsdir2, my_hsdir3, total_hsdir3 = 0.0, 0.0, 0.0, 0.0
+    # these use bandwidth weights
+    my_intro, total_intro, my_rend2, total_rend2, my_rend3, total_rend3 = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 
     if my_fingerprints is not None:
         for fingerprint in sorted(my_fingerprints):
@@ -269,34 +271,40 @@ def get_fractional_weights(consensus_path, my_fingerprints):
 
     for (fingerprint, router_entry) in net_status.routers.items():
         #print fingerprint
-        (guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count) = get_weighted_bandwidths(router_entry, net_status.bandwidth_weights, bw_weight_scale)
+        (guard_weighted_bw, middle_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count, intro_weighted_bw, rend2_weighted_bw, rend3_weighted_bw) = get_weighted_bandwidths(router_entry, net_status.bandwidth_weights, bw_weight_scale)
         total_guard += guard_weighted_bw
         total_middle += middle_weighted_bw
-        total_intro += intro_weighted_bw
         total_exit += exit_weighted_bw
         total_hsdir2 += hsdir2_count
         total_hsdir3 += hsdir3_count
+        total_intro += intro_weighted_bw
+        total_rend2 += rend2_weighted_bw
+        total_rend3 += rend3_weighted_bw
         if my_fingerprints is None or fingerprint in my_fingerprints:
             my_guard += guard_weighted_bw
             my_middle += middle_weighted_bw
-            my_intro += intro_weighted_bw
             my_exit += exit_weighted_bw
             my_hsdir2 += hsdir2_count
             my_hsdir3 += hsdir3_count
+            my_intro += intro_weighted_bw
+            my_rend2 += rend2_weighted_bw
+            my_rend3 += rend3_weighted_bw
 
+    # scale HSDir service uploads to account for descriptor store overlaps
     my_hsdir2_svc = my_hsdir2*hsdir_v2_descriptor_store_overlap()
     my_hsdir3_svc = my_hsdir3*hsdir_v3_descriptor_store_overlap(
                                                        net_status.valid_after)
 
-    return safe_d(my_guard, total_guard), safe_d(my_middle, total_middle), safe_d(my_intro, total_intro), safe_d(my_exit, total_exit), safe_d(my_hsdir2, total_hsdir2), safe_d(my_hsdir2_svc, total_hsdir2), safe_d(my_hsdir3, total_hsdir3), safe_d(my_hsdir3_svc, total_hsdir3)
+    return safe_d(my_guard, total_guard), safe_d(my_middle, total_middle), safe_d(my_exit, total_exit), safe_d(my_hsdir2, total_hsdir2), safe_d(my_hsdir2_svc, total_hsdir2), safe_d(my_hsdir3, total_hsdir3), safe_d(my_hsdir3_svc, total_hsdir3), safe_d(my_intro, total_intro), safe_d(my_rend2, total_rend2), safe_d(my_rend3, total_rend3)
 
 def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
     # example bw_weights: {u'Web': 10000, u'Wdb': 10000, u'Weg': 10000, u'Wee': 10000, u'Wed': 10000, u'Wgd': 0, u'Wgb': 10000, u'Wgg': 5920, u'Wem': 10000, u'Wbg': 4080, u'Wbd': 0, u'Wbe': 0, u'Wmm': 10000, u'Wmb': 10000, u'Wgm': 5920, u'Wbm': 10000, u'Wmg': 4080, u'Wme': 0, u'Wmd': 0}
-    # returns a tuple with guard, middle, intro, and exit weighted bandwidth, and hsdir2 and hsdir3 counts
-    # the rend bandwidth is the same as the middle bandwidth
-    guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw = 0.0, 0.0, 0.0, 0.0
+    # returns a tuple with guard, middle, and exit weighted bandwidth, hsdir2 and hsdir3 counts, and intro, rend2, and rend3 weighted bandwidth
+    guard_weighted_bw, middle_weighted_bw, exit_weighted_bw = 0.0, 0.0, 0.0
     # this is the integer number of HSDirs (they don't use bandwidth weights)
     hsdir2_count, hsdir3_count = 0.0, 0.0
+    # these use bandwidth weights
+    intro_weighted_bw, rend2_weighted_bw, rend3_weighted_bw = 0.0, 0.0, 0.0
 
     bw = float(router_entry.bandwidth)
     version = router_entry.version
@@ -309,9 +317,6 @@ def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
     middle_weight = safe_d(get_bw_weight(router_entry.flags, 'm', bw_weights), bw_weight_scale)
     middle_weighted_bw = bw * middle_weight
 
-    intro_weight = safe_d(get_bw_weight(router_entry.flags, 'i', bw_weights), bw_weight_scale)
-    intro_weighted_bw = bw * intro_weight
-
     if 'BadExit' not in router_entry.flags:
         if router_entry.exit_policy.is_exiting_allowed():
             exit_weight = safe_d(get_bw_weight(router_entry.flags, 'e', bw_weights), bw_weight_scale)
@@ -321,20 +326,30 @@ def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
     hsdir3_count = float(get_bw_weight(router_entry.flags, 'h3', None,
                                        version=version, protocols=protocols))
 
-    return guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count
+    intro_weight = safe_d(get_bw_weight(router_entry.flags, 'i', bw_weights), bw_weight_scale)
+    intro_weighted_bw = bw * intro_weight
 
+    rend2_weight = safe_d(get_bw_weight(router_entry.flags, 'r2', bw_weights), bw_weight_scale)
+    rend2_weighted_bw = bw * rend2_weight
+
+    rend3_weight = safe_d(get_bw_weight(router_entry.flags, 'r3', bw_weights, protocols=protocols),
+                          bw_weight_scale)
+    rend3_weighted_bw = bw * rend3_weight
+
+    return guard_weighted_bw, middle_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count, intro_weighted_bw, rend2_weighted_bw, rend3_weighted_bw
+
+PROTOVER_HSREND_V3 = 2
 PROTOVER_HSDIR_V3 = 2
 
 # from torps
 def get_bw_weight(flags, position, bw_weights, version=None, protocols=None):
     """Returns weight to apply to relay's bandwidth for given position, or for
         HSDirs, returns 1.0 when a relay has the flag, and 0.0 when it does not
-        (version and protocols are used to check if a relay supports HSDir v3)
+        (version and protocols are used to check if a relay supports HSDir and Rend v3)
         flags: list of Flag values for relay from a consensus
         position: position for which to find selection weight,
              one of 'g' for guard, 'm' for middle, 'e' for exit,
-             'h{2,3}' for HSDir v2 and v3, and 'i' for intro
-             (the rend weight is the same as the middle weight)
+             'h{2,3}' for HSDir v2 and v3, 'i' for intro, 'r{2,3}' for Rend v2 and v3
         bw_weights: bandwidth_weights from NetworkStatusDocumentV3 consensus,
              or None for HSDirs
     """
@@ -350,9 +365,14 @@ def get_bw_weight(flags, position, bw_weights, version=None, protocols=None):
             # exit-flagged nodes without guard flag never serve in guard position
             #raise ValueError('Wge weight does not exist.')
             return 0
-    elif (position == 'm' or position == 'i'):
+    elif (position == 'm' or position == 'i' or position.startswith('r')):
         # intro points must have the Stable flag
         if (position == 'i' and not Flag.STABLE in flags):
+            return 0.0
+        # rend3 points must support the rend v3 protocol
+        elif (position == 'r3' and
+              (protocols is None or
+               PROTOVER_HSREND_V3 not in protocols.get('HSRend',[]))):
             return 0.0
         elif (Flag.GUARD in flags) and (Flag.EXIT in flags):
             return bw_weights['Wmd']
