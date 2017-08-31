@@ -108,9 +108,6 @@ def main():
     print "{:.15f} : rend2,3 fraction mean".format(mean(rend_fracs))
 
 def fetch_consensus():
-    # if we had stem 1.5 we could do:
-    # import stem.descriptor.remote
-    # stem.descriptor.remote.get_consensus()
     downloader = DescriptorDownloader()
     consensus = downloader.get_consensus(document_handler = DocumentHandler.DOCUMENT).run()[0]
 
