@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-import sys
+import datetime
 import os
+import sys
+
 from multiprocessing import Pool, cpu_count
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
@@ -44,9 +46,9 @@ This script provides simplified weights, which don't account for:
 * HSDir v2 bias due to descriptor upload times in the first and last hour
 * HSDir v3 allocation variance due to fingerprint ranges
   (this requires relay ed25519 keys, which are not in the consensus)
-* overlapping HSDir descriptor upload periods
 * overlapping HSDir descriptor replicas
 * one descriptor per client for services using stealth authentication
+* precise client consensus download delay distributions and overlap periods
 
 For more details, see:
 https://research.torproject.org/techreports/extrapolating-hidserv-stats-2015-01-31.pdf
@@ -85,6 +87,45 @@ HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE = HSDIR_SPREAD
 # The entire hash ring of v3 HSDirs will see each descriptor id fetched
 # 0.5 times per service access
 HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE = 1.0 / HSDIR_REPLICA
+
+# v2 hidden services publish two descriptors whenever they publish in the last
+# hour of each period. Periods are offset throughout each day, using the first
+# byte of the service's address
+HSDIR_V2_STORE_OVERLAP_FRACTION = 1.0 + 1.0/24.0
+
+def hsdir_v2_descriptor_store_overlap():
+    '''
+    Returns the v2 HSDir overlap proportion.
+    '''
+    # v2 overlaps are evenly distributed
+    return HSDIR_V2_STORE_OVERLAP_FRACTION
+
+# v3 hidden services publish a new descriptor every 24 hours. Periods start
+# when the service downloads a consensus with a new SRV, and finish 36 hours
+# later.
+HSDIR_V3_STORE_OVERLAP_FRACTION = 1.0 + 12.0/24.0
+
+# Average client consensus download delay, based on 1-3 hour delay
+# This is approximate: a more precise figure can be calculated from:
+# https://gitweb.torproject.org/torspec.git/tree/dir-spec.txt#n3345
+CLIENT_CONSENSUS_DELAY_TIMEDELTA = datetime.timedelta(hours=2)
+
+# v3 overlaps occur in from 00:00 to 12:00 UTC
+# https://gitweb.torproject.org/torspec.git/tree/proposals/224-rend-spec-ng.txt#n757
+HSDIR_V3_STORE_OVERLAP_START_TIME = datetime.time(hour=00)
+HSDIR_V3_STORE_OVERLAP_END_TIME   = datetime.time(hour=12)
+
+def hsdir_v3_descriptor_store_overlap(valid_after):
+    '''
+    Returns the v3 HSDir overlap proportion for valid_after.
+    '''
+    assert valid_after is not None
+    valid_after -= CLIENT_CONSENSUS_DELAY_TIMEDELTA
+    if (valid_after.time() > HSDIR_V3_STORE_OVERLAP_START_TIME and
+        valid_after.time() <= HSDIR_V3_STORE_OVERLAP_END_TIME):
+        return HSDIR_V3_STORE_OVERLAP_FRACTION
+    else:
+        return 1.0
 
 ALL_FINGERPRINTS = ['-']
 
@@ -141,7 +182,7 @@ def main():
             result = process_consensus(params)
             results.append(result)
 
-    guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir3_fracs = do_reduce(results)
+    guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir2_svc_fracs, hsdir3_fracs, hsdir3_svc_fracs = do_reduce(results)
     assert len(guard_fracs) > 0
 
     # the rend frac is the same as the middle frac
@@ -151,10 +192,10 @@ def main():
     print "{:.15f} : middle use mean".format(mean(middle_fracs))
     print "{:.15f} : exit use mean".format(mean(exit_fracs))
     print "{:.15f} : hsdir2 relay fraction mean".format(mean(hsdir2_fracs))
-    print "{:.15f} : hsdir2 service onion address mean (6 stores per onion address)".format(mean(hsdir2_fracs)*HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE)
+    print "{:.15f} : hsdir2 service onion address mean (6 stores per onion address, 1/24 overlap)".format(mean(hsdir2_svc_fracs)*HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE)
     print "{:.15f} : hsdir2 client onion address mean (1 fetch per onion address)".format(mean(hsdir2_fracs))
     print "{:.15f} : hsdir3 relay fraction mean".format(mean(hsdir3_fracs))
-    print "{:.15f} : hsdir3 service descriptor id mean (3 stores per descriptor id, per onion address)".format(mean(hsdir3_fracs)*HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE)
+    print "{:.15f} : hsdir3 service descriptor id mean (3 stores per descriptor id, per onion address, 00:00 - 12:00 overlap)".format(mean(hsdir3_svc_fracs)*HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE)
     print "{:.15f} : hsdir3 client descriptor id mean (0.5 fetches per descriptor id, per onion address)".format(mean(hsdir3_fracs)*HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE)
     print "{:.15f} : intro2,3 service establish mean (default 3 intro points per onion address, max 10)".format(mean(intro_fracs)*INTRO_ESTABLISH_PER_SERVICE)
     print "{:.15f} : intro2,3 client introduce mean (1 introduce per onion address)".format(mean(intro_fracs))
@@ -182,21 +223,23 @@ def do_map(pool, work_items):
 # this func is run by helper processes in process pool
 def process_consensus(params):
     consensus_path, prints = params[0], params[1]
-    guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir3_frac = get_fractional_weights(consensus_path, prints)
-    return [guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir3_frac]
+    guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir2_svc_frac, hsdir3_frac, hsdir3_svc_frac = get_fractional_weights(consensus_path, prints)
+    return [guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir2_svc_frac, hsdir3_frac, hsdir3_svc_frac]
 
 def do_reduce(async_results):
-    guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir3_fracs = [], [], [], [], [], []
+    guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir2_svc_fracs, hsdir3_fracs, hsdir3_svc_fracs = [], [], [], [], [], [], [], []
     for result in async_results:
         if result is None: continue
-        guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir3_frac = result[0], result[1], result[2], result[3], result[4], result[5]
+        guard_frac, middle_frac, intro_frac, exit_frac, hsdir2_frac, hsdir2_svc_frac, hsdir3_frac, hsdir3_svc_frac = result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7]
         guard_fracs.append(guard_frac)
         middle_fracs.append(middle_frac)
         intro_fracs.append(intro_frac)
         exit_fracs.append(exit_frac)
         hsdir2_fracs.append(hsdir2_frac)
+        hsdir2_svc_fracs.append(hsdir2_svc_frac)
         hsdir3_fracs.append(hsdir3_frac)
-    return guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir3_fracs
+        hsdir3_svc_fracs.append(hsdir3_svc_frac)
+    return guard_fracs, middle_fracs, intro_fracs, exit_fracs, hsdir2_fracs, hsdir2_svc_fracs, hsdir3_fracs, hsdir3_svc_fracs
 
 def safe_d(dividend, divisor):
     dividend = float(dividend)
@@ -226,7 +269,7 @@ def get_fractional_weights(consensus_path, my_fingerprints):
 
     for (fingerprint, router_entry) in net_status.routers.items():
         #print fingerprint
-        guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count = get_weighted_bandwidths(router_entry, net_status.bandwidth_weights, bw_weight_scale)
+        (guard_weighted_bw, middle_weighted_bw, intro_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count) = get_weighted_bandwidths(router_entry, net_status.bandwidth_weights, bw_weight_scale)
         total_guard += guard_weighted_bw
         total_middle += middle_weighted_bw
         total_intro += intro_weighted_bw
@@ -241,7 +284,11 @@ def get_fractional_weights(consensus_path, my_fingerprints):
             my_hsdir2 += hsdir2_count
             my_hsdir3 += hsdir3_count
 
-    return safe_d(my_guard, total_guard), safe_d(my_middle, total_middle), safe_d(my_intro, total_intro), safe_d(my_exit, total_exit), safe_d(my_hsdir2, total_hsdir2), safe_d(my_hsdir3, total_hsdir3)
+    my_hsdir2_svc = my_hsdir2*hsdir_v2_descriptor_store_overlap()
+    my_hsdir3_svc = my_hsdir3*hsdir_v3_descriptor_store_overlap(
+                                                       net_status.valid_after)
+
+    return safe_d(my_guard, total_guard), safe_d(my_middle, total_middle), safe_d(my_intro, total_intro), safe_d(my_exit, total_exit), safe_d(my_hsdir2, total_hsdir2), safe_d(my_hsdir2_svc, total_hsdir2), safe_d(my_hsdir3, total_hsdir3), safe_d(my_hsdir3_svc, total_hsdir3)
 
 def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
     # example bw_weights: {u'Web': 10000, u'Wdb': 10000, u'Weg': 10000, u'Wee': 10000, u'Wed': 10000, u'Wgd': 0, u'Wgb': 10000, u'Wgg': 5920, u'Wem': 10000, u'Wbg': 4080, u'Wbd': 0, u'Wbe': 0, u'Wmm': 10000, u'Wmb': 10000, u'Wgm': 5920, u'Wbm': 10000, u'Wmg': 4080, u'Wme': 0, u'Wmd': 0}
