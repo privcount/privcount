@@ -73,12 +73,16 @@ All fingerprints
 INTRO_ESTABLISH_PER_SERVICE = 3.0
 
 # 3 and 2 are the hard-coded (v2) or default consensus parameter (v3) values
-HSDIR_SPREAD = 3.0
-HSDIR_REPLICA = 2.0
+HSDIR_SPREAD = 3
+HSDIR_REPLICA = 2
 
 # The entire hash ring of v2 HSDirs will see each onion address stored 6 times
 # per service upload
 HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE = HSDIR_SPREAD * HSDIR_REPLICA
+
+# The entire hash ring of v2 HSDirs will see each onion address fetched once
+# per service access
+HSDIR_V2_ONION_ADDRESS_FETCH_PER_SERVICE = 1.0
 
 # The entire hash ring of v3 HSDirs will see each descriptor id stored 3 times
 # per service upload
@@ -188,9 +192,8 @@ def main():
     print "{:.15f} : guard use mean".format(mean(guard_fracs))
     print "{:.15f} : middle use mean".format(mean(middle_fracs))
     print "{:.15f} : exit use mean".format(mean(exit_fracs))
-    print "{:.15f} : hsdir2 relay fraction mean".format(mean(hsdir2_fracs))
     print "{:.15f} : hsdir2 service onion address mean (6 stores per onion address, 1/24 overlap)".format(mean(hsdir2_svc_fracs)*HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE)
-    print "{:.15f} : hsdir2 client onion address mean (1 fetch per onion address)".format(mean(hsdir2_fracs))
+    print "{:.15f} : hsdir2 client onion address mean (1 fetch per onion address)".format(mean(hsdir2_fracs)*HSDIR_V2_ONION_ADDRESS_FETCH_PER_SERVICE)
     print "{:.15f} : hsdir3 relay fraction mean".format(mean(hsdir3_fracs))
     print "{:.15f} : hsdir3 service descriptor id mean (3 stores per descriptor id, per onion address, 00:00 - 12:00 overlap)".format(mean(hsdir3_svc_fracs)*HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE)
     print "{:.15f} : hsdir3 client descriptor id mean (0.5 fetches per descriptor id, per onion address)".format(mean(hsdir3_fracs)*HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE)
@@ -269,13 +272,16 @@ def get_fractional_weights(consensus_path, my_fingerprints):
                 print "{} is not in consensus '{}'".format(fingerprint,
                                                            consensus_path)
 
+    hsdir2_list = [r.fingerprint for r in net_status.routers.values() if is_hsdir_v2(r.flags)]
+    hsdir2_ring = sorted(hsdir2_list)
+
     for (fingerprint, router_entry) in net_status.routers.items():
         #print fingerprint
-        (guard_weighted_bw, middle_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count, intro_weighted_bw, rend2_weighted_bw, rend3_weighted_bw) = get_weighted_bandwidths(router_entry, net_status.bandwidth_weights, bw_weight_scale)
+        (guard_weighted_bw, middle_weighted_bw, exit_weighted_bw, hsdir2_spread, hsdir3_count, intro_weighted_bw, rend2_weighted_bw, rend3_weighted_bw) = get_weighted_bandwidths(router_entry, net_status.bandwidth_weights, bw_weight_scale, fingerprint, hsdir2_ring)
         total_guard += guard_weighted_bw
         total_middle += middle_weighted_bw
         total_exit += exit_weighted_bw
-        total_hsdir2 += hsdir2_count
+        total_hsdir2 += hsdir2_spread
         total_hsdir3 += hsdir3_count
         total_intro += intro_weighted_bw
         total_rend2 += rend2_weighted_bw
@@ -284,7 +290,7 @@ def get_fractional_weights(consensus_path, my_fingerprints):
             my_guard += guard_weighted_bw
             my_middle += middle_weighted_bw
             my_exit += exit_weighted_bw
-            my_hsdir2 += hsdir2_count
+            my_hsdir2 += hsdir2_spread
             my_hsdir3 += hsdir3_count
             my_intro += intro_weighted_bw
             my_rend2 += rend2_weighted_bw
@@ -297,12 +303,14 @@ def get_fractional_weights(consensus_path, my_fingerprints):
 
     return safe_d(my_guard, total_guard), safe_d(my_middle, total_middle), safe_d(my_exit, total_exit), safe_d(my_hsdir2, total_hsdir2), safe_d(my_hsdir2_svc, total_hsdir2), safe_d(my_hsdir3, total_hsdir3), safe_d(my_hsdir3_svc, total_hsdir3), safe_d(my_intro, total_intro), safe_d(my_rend2, total_rend2), safe_d(my_rend3, total_rend3)
 
-def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
+def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale, hsdir2_hash, hsdir2_ring):
     # example bw_weights: {u'Web': 10000, u'Wdb': 10000, u'Weg': 10000, u'Wee': 10000, u'Wed': 10000, u'Wgd': 0, u'Wgb': 10000, u'Wgg': 5920, u'Wem': 10000, u'Wbg': 4080, u'Wbd': 0, u'Wbe': 0, u'Wmm': 10000, u'Wmb': 10000, u'Wgm': 5920, u'Wbm': 10000, u'Wmg': 4080, u'Wme': 0, u'Wmd': 0}
-    # returns a tuple with guard, middle, and exit weighted bandwidth, hsdir2 and hsdir3 counts, and intro, rend2, and rend3 weighted bandwidth
+    # returns a tuple with guard, middle, and exit weighted bandwidth, hsdir2 spread, hsdir3 count, and intro, rend2, and rend3 weighted bandwidth
     guard_weighted_bw, middle_weighted_bw, exit_weighted_bw = 0.0, 0.0, 0.0
-    # this is the integer number of HSDirs (they don't use bandwidth weights)
-    hsdir2_count, hsdir3_count = 0.0, 0.0
+    # this is the proportion of the hash ring allocated to the HSDir v2s spread
+    hsdir2_spread = 0.0
+    # this is the integer number of HSDir v3s (they don't use bandwidth weights)
+    hsdir3_count = 0.0
     # these use bandwidth weights
     intro_weighted_bw, rend2_weighted_bw, rend3_weighted_bw = 0.0, 0.0, 0.0
 
@@ -322,7 +330,9 @@ def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
             exit_weight = safe_d(get_bw_weight(router_entry.flags, 'e', bw_weights), bw_weight_scale)
             exit_weighted_bw = bw * exit_weight
 
-    hsdir2_count = float(get_bw_weight(router_entry.flags, 'h2', None))
+    hsdir2_spread = float(get_bw_weight(router_entry.flags, 'h2', None,
+                                        hsdir2_hash=hsdir2_hash,
+                                        hsdir2_ring=hsdir2_ring))
     hsdir3_count = float(get_bw_weight(router_entry.flags, 'h3', None,
                                        version=version, protocols=protocols))
 
@@ -336,15 +346,90 @@ def get_weighted_bandwidths(router_entry, bw_weights, bw_weight_scale):
                           bw_weight_scale)
     rend3_weighted_bw = bw * rend3_weight
 
-    return guard_weighted_bw, middle_weighted_bw, exit_weighted_bw, hsdir2_count, hsdir3_count, intro_weighted_bw, rend2_weighted_bw, rend3_weighted_bw
+    return guard_weighted_bw, middle_weighted_bw, exit_weighted_bw, hsdir2_spread, hsdir3_count, intro_weighted_bw, rend2_weighted_bw, rend3_weighted_bw
 
 PROTOVER_HSREND_V3 = 2
 PROTOVER_HSDIR_V3 = 2
 
+def is_hsdir_v2(flags):
+    '''
+    Is a relay with flags an HSDir v2?
+    '''
+    return Flag.HSDIR in flags
+
+def get_ring_index(index, ring):
+    '''
+    Get index from ring, treating it as a circular list
+    '''
+    # We can't loop more than once, because we won't know how many times
+    # we've looped. This means we must have at least HSDIR_SPREAD HSDirs
+    # in our hash ring
+    assert len(ring) >= HSDIR_SPREAD
+    modulus = len(ring)
+    valid_index = index % modulus
+    return ring[valid_index]
+
+def get_ring_size(arbitrary_hash):
+    '''
+    Calculate the spread amount of the entire hash ring, based on
+    arbitrary_hash, which is a hex-encoded hash with leading zeroes.
+    Returns a long.
+    '''
+    return 2L**(4*len(arbitrary_hash))
+
+def get_ring_spread(later_hash, earlier_hash):
+    '''
+    Calculate the spread amount between later and earlier, which are
+    hex-encoded hashes in a ring. Returns a long.
+    '''
+    assert len(later_hash) == len(earlier_hash)
+    assert HSDIR_SPREAD > 0
+    hash_modulus = get_ring_size(later_hash)
+    spread_amount = (long(later_hash, 16) - long(earlier_hash, 16)) % hash_modulus
+    # If we've looped the whole way around
+    if spread_amount == 0:
+        return hash_modulus
+    else:
+        return spread_amount
+
+def get_hsdir_spread(hash, ring):
+    '''
+    Return the proportion of ring occupied by the HSDir spread allocated to
+    hash, as a floating point fraction, accurate to at least the first
+    sys.float_info.mant_dig (53) bits of the hashes involved.
+    '''
+    assert hash is not None
+    assert ring is not None
+    assert hash in ring
+
+    # find the hashes in the spread
+    hash_index = ring.index(hash)
+    spread_index = hash_index - HSDIR_SPREAD
+    spread_hash = get_ring_index(spread_index, ring)
+
+    # find the integer-accurate spread amount and ring size
+    spread_amount = get_ring_spread(hash, spread_hash)
+    ring_size = get_ring_size(hash)
+
+    # make them into floating-point numbers
+    # when ring_size is less than the floating-point exponent, we don't lose
+    # any precision here, because it can be represented exactly. If it can't
+    # be represented exactly, we might end up dividing by zero.
+    assert ring_size <= 2**abs(sys.float_info.min_exp)
+    ring_size = float(ring_size)
+    # this rounds the mantissa to the nearest sys.float_info.mant_dig bits,
+    # preserving at least 53 bits of the hashes (there may be more if the
+    # spread amount has leading zeroes)
+    spread_amount = float(spread_amount)
+    return spread_amount / ring_size
+
 # from torps
-def get_bw_weight(flags, position, bw_weights, version=None, protocols=None):
-    """Returns weight to apply to relay's bandwidth for given position, or for
-        HSDirs, returns 1.0 when a relay has the flag, and 0.0 when it does not
+def get_bw_weight(flags, position, bw_weights, version=None, protocols=None,
+                  hsdir2_hash=None, hsdir2_ring=None):
+    """Returns weight to apply to relay's bandwidth for given position, for
+        HSDir v2, returns the spread proportion for hsdir2_hash in hsdir2_ring
+        hash ring, or for HSDir v3, returns 1.0 when a relay has the flag, and
+        0.0 when it does not
         (version and protocols are used to check if a relay supports HSDir and Rend v3)
         flags: list of Flag values for relay from a consensus
         position: position for which to find selection weight,
@@ -392,8 +477,8 @@ def get_bw_weight(flags, position, bw_weights, version=None, protocols=None):
         else:
             return bw_weights['Wem']
     elif (position == 'h2'):
-        if (Flag.HSDIR in flags):
-            return 1.0
+        if is_hsdir_v2(flags):
+            return get_hsdir_spread(hsdir2_hash, hsdir2_ring)
         else:
             return 0.0
     elif (position == 'h3'):
