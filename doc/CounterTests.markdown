@@ -543,7 +543,21 @@ Using the instructions under EntryClientIPCount, I see 2 counts in the
 
 ## HSDir Counter Tests
 
-### TODO: Category Name
+### HSDir Store Counts
+
+Most of these counters are used, and show the distributions that we would
+expect.
+
+TODO: go into much more detail under each counter group
+
+The following HSDir sub-categories appear to be unused or negligible:
+* RejectExpired
+* RejectFuture
+* RejectObsolete
+* RejectUnparseable
+
+If we assume that HS v2 basic auth descriptor sizes are similar to no
+auth descriptor sizes, then the use of basic auth appears to be negligible.
 
 - HSDir2StoreCount
 - HSDir3StoreCount
