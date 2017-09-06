@@ -128,6 +128,16 @@ TODO: expand documentation
           RelayCellPayloadByteCount, RelayCellStreamId, RelayCellCommandString,
           IsRecognizedFlag, WasRelayCryptSuccessfulFlag
 
+There are some differences between the Circuit and Cell position flags:
+
+CREATE and EXTEND cells are always received at the End of the circuit.
+But by the time the circuit closes, if the EXTEND is successful, the circuit
+is in the Mid position.
+
+When a Client Intro End receives an INTRODUCE cell, if the introduction is
+unsuccessful, the client may EXTEND to the next intro point (turning the
+failed Client Intro End into a Client Intro Mid).
+
 ### PRIVCOUNT_DNS_RESOLVED
 
 This event is sent when an exit receives a client request, including:
