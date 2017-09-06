@@ -288,6 +288,17 @@ TODO: expand documentation
           {Inbound,Outbound}Exit{Cell,Byte}Count,
           {Inbound,Outbound}DirByteCount
 
+Limitations:
+
+We can't know anything about the purpose of a circuit if no cells have been
+sent on it.
+
+The following purposes are not flagged:
+* self-testing (DROP cells)
+* unused circuits, including preemptive circuits
+
+There may also be other circuit uses that we don't flag.
+
 ### PRIVCOUNT_CIRCUIT_ENDED
 
 As of PrivCount 1.1.0, this is a legacy event, use PRIVCOUNT_CIRCUIT_CLOSE in
