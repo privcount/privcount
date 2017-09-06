@@ -36,6 +36,14 @@ For example, on Debian 8 (Jessie), the required SSL packages are:
 
     libssl1.0.0=1.0.2k-1~bpo8+1 libssl-dev=1.0.2k-1~bpo8+1
 
+You may also need to build a statically-linked python cryptography library,
+or build your python with OpenSSL 1.0.2 or later. Otherwise, python can pull
+in a version of OpenSSL that is too old for cryptography.
+
+See the cryptography build instructions for more details:
+
+    https://cryptography.io/en/latest/installation/#using-your-own-openssl-on-linux
+
 System libs can be install with `apt-get`, `yum`, `brew`, etc. Python libs can
 be installed with `pip`, as we explain below.
 
