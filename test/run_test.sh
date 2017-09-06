@@ -409,13 +409,13 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
       ;;
     tor)
       "$I" "Making tor binary in '$TOR_MAKE_DIR' ..."
-      make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY"
+      make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" check-spaces
       ;;
     chutney)
       # chutney needs tor-gencert as well as tor
       "$I" "Making tor binaries in '$TOR_MAKE_DIR' ..."
       make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" \
-        "$PRIVCOUNT_TOR_GENCERT_BINARY"
+        "$PRIVCOUNT_TOR_GENCERT_BINARY" check-spaces
       ;;
     *)
       "$W" "Source $PRIVCOUNT_SOURCE not supported."
