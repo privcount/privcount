@@ -138,6 +138,11 @@ When a Client Intro End receives an INTRODUCE cell, if the introduction is
 unsuccessful, the client may EXTEND to the next intro point (turning the
 failed Client Intro End into a Client Intro Mid).
 
+Limitations:
+
+This event is only sent for circuit cells. Cells at the link layer (VERSIONS,
+CERTS, etc.) do not trigger this event.
+
 ### PRIVCOUNT_DNS_RESOLVED
 
 This event is sent when an exit receives a client request, including:
