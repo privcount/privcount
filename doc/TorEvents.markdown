@@ -299,6 +299,10 @@ The following purposes are not flagged:
 
 There may also be other circuit uses that we don't flag.
 
+We only get exit and directory byte counts on circuits. Other byte counts,
+including the various hidden service byte counts, have not yet been
+implemented.
+
 ### PRIVCOUNT_CIRCUIT_ENDED
 
 As of PrivCount 1.1.0, this is a legacy event, use PRIVCOUNT_CIRCUIT_CLOSE in
@@ -381,6 +385,8 @@ It includes the following fields:
 * Current Timestamp
 * Remote IP Address
 * Remote Is Client Flag
+
+Byte counts are not implemented for connections.
 
 #### Known Issues
 
