@@ -522,15 +522,15 @@ class Aggregator(ReconnectingClientFactory):
         if self.secure_counters is None:
             return None
 
-        # return the final counts and make sure we cant be restarted
-        counts = self.secure_counters.detach_counts()
-        # TODO: secure delete?
+        # return the final counts (if available) and make sure we can't be
+        # restarted
+        counts = None
+        if counts_are_valid:
+            counts = self.secure_counters.detach_counts()
+            # TODO: secure delete?
         del self.secure_counters
         self.secure_counters = None
-        if counts_are_valid:
-            return counts
-        else:
-            return None
+        return counts
 
     def stop(self, counts_are_valid=True):
         '''
