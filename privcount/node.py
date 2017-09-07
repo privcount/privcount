@@ -194,8 +194,8 @@ class PrivCountNode(object):
         '''
         # Validity checks
         if 'delay_period' not in conf:
-            logging.warning("delay_period not specified, using default %d",
-                            PrivCountNode.DEFAULT_DELAY_PERIOD)
+            logging.info("delay_period not specified, using default %d",
+                         PrivCountNode.DEFAULT_DELAY_PERIOD)
             return PrivCountNode.DEFAULT_DELAY_PERIOD
         if conf['delay_period'] < 0:
             logging.warning("delay_period %d invalid, using default %d",

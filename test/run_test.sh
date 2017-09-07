@@ -873,7 +873,7 @@ fi
 # of the timestamps and other irrelevant details are different
 "$I" "Extracting warnings from privcount and $PRIVCOUNT_SOURCE output..."
 grep -v -e NOTICE -e INFO -e DEBUG \
-  -e "seconds of user activity" -e "delay_period not specified" \
+  -e "seconds of user activity" \
   -e notice \
   -e "Path for PidFile" -e "Your log may contain" \
   -e "no nameservers" -e "any working nameservers" \
