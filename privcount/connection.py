@@ -7,6 +7,7 @@ See LICENSE for licensing information
 '''
 
 import logging
+import ipaddress
 
 from collections import Sequence
 from exceptions import AttributeError
@@ -268,6 +269,13 @@ def validate_connection_config(config, must_have_ip=False):
           elif key == 'ip':
               if _config_missing(item, 'port', False):
                   logging.warning("IP {} must have a port".format(item['ip']))
+                  return False
+              # Check the IP address is in a valid format
+              try:
+                  ip = ipaddress.ip_address(unicode(item['ip']))
+              except ValueError as e:
+                  # not an IP address
+                  logging.warning("Invalid IP {}: {}".format(item['ip'], e))
                   return False
               # let the libraries catch other errors later
           elif key == 'unix':
