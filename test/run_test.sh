@@ -633,9 +633,12 @@ CONFIG="$TEMPLATE_CONFIG.ts"
 "$I" "Generating TS config from $TEMPLATE_CONFIG in $CONFIG..."
 template_to_config
 
-# launch the TS
+# launch the TS, excluding expected warnings and errors that are very noisy
 privcount $PRIVCOUNT_LOG ts "$CONFIG" 2>&1 \
-    | `save_to_log . ts "$LOG_TIMESTAMP"` &
+    | `save_to_log . ts "$LOG_TIMESTAMP"` \
+    | grep -v -e "seconds of user activity" \
+              -e "is zero, this provides no differential privacy" \
+              -e "calculated sigmas will be zero for all statistics" &
 
 TS_CERT_PATH="keys/ts.cert"
 TS_SECRET_PATH="keys/secret_handshake.yaml"
@@ -653,7 +656,9 @@ for SK_NUM in `seq "$PRIVCOUNT_SHARE_KEEPERS"`; do
 
   # Launch an SK with this config
   privcount $PRIVCOUNT_LOG --log-id ".$SK_NUM" sk "$CONFIG" 2>&1 \
-      | `save_to_log . "sk.$SK_NUM" "$LOG_TIMESTAMP"` &
+      | `save_to_log . "sk.$SK_NUM" "$LOG_TIMESTAMP"` \
+      | grep -v -e "seconds of user activity" &
+
 done
 
 # find the SK fingerprints
@@ -690,7 +695,11 @@ for DC_SOURCE_PORT in ${CHUTNEY_PORT_ARRAY[@]} ; do
 
   # Launch a DC with this config
   privcount $PRIVCOUNT_LOG --log-id ".$DC_SOURCE_PORT" dc "$CONFIG" 2>&1 \
-      | `save_to_log . "dc.$DC_SOURCE_PORT" "$LOG_TIMESTAMP"` &
+      | `save_to_log . "dc.$DC_SOURCE_PORT" "$LOG_TIMESTAMP"` \
+      | grep -v -e "seconds of user activity" \
+                -e "Unwanted event type" \
+                -e "Ignored HiddenServiceVersionNumber '4'" \
+                -e "Large byte transfer event" &
 done
 
 popd
