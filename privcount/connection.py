@@ -244,40 +244,49 @@ def validate_connection_config(config, must_have_ip=False):
         if item is None:
             logging.warning("Invalid config item: None")
             return False
-        if 'port' in item:
-            if _config_missing(item, 'port', False):
-                logging.warning("Invalid port: missing value")
-                return False
-            try:
-                port = int(item['port'])
-            except ValueError as e:
-                logging.warning("Invalid port {}: {}".format(item['port'], e))
-                return False
-            if port <= 0:
-                logging.warning("Port {} must be positive".format(port))
-                return False
-            if must_have_ip and _config_missing(item, 'ip'):
-                logging.warning("Port {} must have an IP address".format(port))
-                return False
-            if 'ip' in item:
-                if _config_missing(item, 'ip'):
-                    logging.warning("Invalid ip: missing value")
-                    return False
-                # let the libraries catch other errors later
-        elif 'ip' in item:
-            logging.warning("IP {} must have a port".format(ip))
-            return False
-        if 'unix' in item:
-            if _config_missing(item, 'unix'):
-                logging.warning("Invalid unix path: missing value")
-                return False
-            # let the libraries catch other errors later
-        if 'control_password' in item:
-            # An empty control password is insecure, so we don't allow it
-            if _config_missing(item, 'control_password'):
-                logging.warning("Invalid control password: missing value")
-                return False
-            # let the libraries catch other errors later
+        for key in item.keys():
+          if key == 'port':
+              if _config_missing(item, 'port', False):
+                  logging.warning("Invalid port: missing value")
+                  return False
+              try:
+                  port = int(item['port'])
+              except ValueError as e:
+                  logging.warning("Invalid port {}: {}".format(item['port'], e))
+                  return False
+              if port <= 0:
+                  logging.warning("Port {} must be positive".format(port))
+                  return False
+              if must_have_ip and _config_missing(item, 'ip'):
+                  logging.warning("Port {} must have an IP address".format(port))
+                  return False
+              if 'ip' in item:
+                  if _config_missing(item, 'ip'):
+                      logging.warning("Invalid ip: missing value")
+                      return False
+              # let the libraries catch other errors later
+          elif key == 'ip':
+              if _config_missing(item, 'port', False):
+                  logging.warning("IP {} must have a port".format(item['ip']))
+                  return False
+              # let the libraries catch other errors later
+          elif key == 'unix':
+              # Almost all strings are valid unix paths
+              if _config_missing(item, 'unix'):
+                  logging.warning("Invalid unix path: missing value")
+                  return False
+              # let the libraries catch other errors later
+          elif key == 'control_password':
+              # Almost all strings are valid control passwords
+              # An empty control password is insecure, so we don't allow it
+              if _config_missing(item, 'control_password'):
+                  logging.warning("Invalid control password: missing value")
+                  return False
+              # let the libraries catch other errors later
+          else:
+              # Allow future versions to add config keys, but warn on typos
+              logging.warning("Unrecognised connection config key {}"
+                              .format(key))
     return True
 
 def choose_a_connection(config):
