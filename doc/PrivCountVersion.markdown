@@ -161,7 +161,6 @@ git push --tags privcount-remote
 
 To force update the old privcount branch with the newly rebased code:
 ```
-git checkout -b privcount-old privcount
 git branch -D privcount
 git checkout -b privcount privcount-maint-1.0-tor-0.3.0.7
 git push --force privcount-remote privcount
