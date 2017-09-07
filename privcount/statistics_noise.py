@@ -225,11 +225,13 @@ def get_opt_privacy_allocation(epsilon, delta, stats_parameters,
     for param, (sensitivity, val) in stats_parameters.iteritems():
         opt_sigma = get_sigma(excess_noise_ratio, opt_sigma_ratio, val)
         # Check if the sigma is too small
-        if opt_sigma == 0.0:
-            pass
-        elif opt_sigma < DEFAULT_SIGMA_TOLERANCE:
-            logging.warning("sigma {} for {} is less than the sigma tolerance {}, the calculated value may be inaccurate and may vary each time it is calculated"
-                            .format(opt_sigma, param, sigma_tol))
+        if param != DEFAULT_DUMMY_COUNTER_NAME:
+            if opt_sigma == 0.0:
+                logging.warning("sigma for {} is zero, this provides no differential privacy for this statistic"
+                                .format(param))
+            elif opt_sigma < DEFAULT_SIGMA_TOLERANCE:
+                logging.warning("sigma {} for {} is less than the sigma tolerance {}, the calculated value may be inaccurate and may vary each time it is calculated"
+                                .format(opt_sigma, param, sigma_tol))
 
         opt_sigmas[param] = opt_sigma
 
@@ -302,10 +304,15 @@ def get_noise_allocation(noise_parameters,
     # rearrange the counter values, and produce the parameter-only structure
     stats_parameters = {}
     for stat in counters:
+        sensitivity = counters[stat]['sensitivity']
         estimated_value = counters[stat]['estimated_value']
         if is_circuit_sample_counter(stat):
             estimated_value *= circuit_sample_rate
-        statistics = (counters[stat]['sensitivity'],
+        if stat != DEFAULT_DUMMY_COUNTER_NAME:
+            # If you want a counter with no noise, try using 1e-6 instead
+            logging.error("sensitivity for {} is zero, calculated sigmas will be zero for all statistics"
+                          .format(stat))
+        statistics = (sensitivity,
                       estimated_value)
         stats_parameters[stat] = statistics
     # calculate the noise allocations
