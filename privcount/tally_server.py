@@ -337,8 +337,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             # Must be configured manually
             assert 'collect_period' in ts_conf
             # Set the default periods
-            ts_conf.setdefault('event_period', 60)
-            ts_conf.setdefault('checkin_period', 60)
+            ts_conf.setdefault('event_period', 600)
+            ts_conf.setdefault('checkin_period', 600)
 
             # The event period should be less than or equal to half the
             # collect period, otherwise privcount sometimes takes an extra
