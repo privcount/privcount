@@ -396,7 +396,7 @@ if [ "$PRIVCOUNT_INSTALL" -eq 1 ]; then
 
   # Install the latest privcount version
   "$I" "Installing latest version of privcount from '$PRIVCOUNT_DIRECTORY' ..."
-  pip install -I "$PRIVCOUNT_DIRECTORY"
+  pip $PRIVCOUNT_LOG install -I "$PRIVCOUNT_DIRECTORY"
 fi
 
 if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
@@ -409,13 +409,23 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
       ;;
     tor)
       "$I" "Making tor binary in '$TOR_MAKE_DIR' ..."
-      make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" check-spaces
+      if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+        make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" check-spaces \
+            > /dev/null
+      else
+        make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" check-spaces
+      fi
       ;;
     chutney)
       # chutney needs tor-gencert as well as tor
       "$I" "Making tor binaries in '$TOR_MAKE_DIR' ..."
-      make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" \
-        "$PRIVCOUNT_TOR_GENCERT_BINARY" check-spaces
+      if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+        make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" \
+          "$PRIVCOUNT_TOR_GENCERT_BINARY" check-spaces > /dev/null
+      else
+        make -C "$TOR_MAKE_DIR" "$PRIVCOUNT_TOR_BINARY" \
+          "$PRIVCOUNT_TOR_GENCERT_BINARY" check-spaces
+      fi
       ;;
     *)
       "$W" "Source $PRIVCOUNT_SOURCE not supported."
@@ -425,13 +435,21 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
 fi
 
 # Run the counter and event matching checks
-"$I" "Checking that all events have counters, increments, tests, and docs:"
-"$TEST_DIR/test_event_match.sh"
-"$I" ""
+if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+  "$TEST_DIR/test_event_match.sh" > /dev/null
+else
+  "$I" "Checking that all events have counters, increments, tests, and docs:"
+  "$TEST_DIR/test_event_match.sh"
+  "$I" ""
+fi
 
-"$I" "Checking that all counters have events, increments, tests, and docs:"
-"$TEST_DIR/test_counter_match.sh"
-"$I" ""
+if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+  "$TEST_DIR/test_counter_match.sh" > /dev/null
+else
+  "$I" "Checking that all counters have events, increments, tests, and docs:"
+  "$TEST_DIR/test_counter_match.sh"
+  "$I" ""
+fi
 
 if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
   # Run the python-based unit tests
@@ -477,7 +495,9 @@ fi
 TIMESTAMP_COMMAND="date +%s"
 DATE_COMMAND="date"
 # Record how long the tests take to run
-"$DATE_COMMAND"
+if [ "$PRIVCOUNT_LOG" != "-q" ]; then
+  "$DATE_COMMAND"
+fi
 STARTSEC="`$TIMESTAMP_COMMAND`"
 
 OLD_DIR="$TEST_DIR/old"
@@ -587,7 +607,11 @@ case "$PRIVCOUNT_SOURCE" in
 esac
 
 # the privcount test configs expect to be in the test directory
-pushd "$TEST_DIR"
+if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+  pushd "$TEST_DIR" > /dev/null
+else
+  pushd "$TEST_DIR"
+fi
 TEMPLATE_CONFIG=$CONFIG
 
 # Turn $TEMPLATE_CONFIG into $CONFIG using replacement parameters
@@ -638,7 +662,8 @@ privcount $PRIVCOUNT_LOG ts "$CONFIG" 2>&1 \
     | `save_to_log . ts "$LOG_TIMESTAMP"` \
     | grep -v -e "seconds of user activity" \
               -e "is zero, this provides no differential privacy" \
-              -e "calculated sigmas will be zero for all statistics" &
+              -e "calculated sigmas will be zero for all statistics" \
+              -e "control connection delayed" &
 
 TS_CERT_PATH="keys/ts.cert"
 TS_SECRET_PATH="keys/secret_handshake.yaml"
@@ -673,9 +698,9 @@ for SK_NUM in `seq "$PRIVCOUNT_SHARE_KEEPERS"`; do
   done
   "$I" ""
   # Some versions of openssl dgst use (stdin)= before the hash, others don't
-  "$PRIVCOUNT_OPENSSL" rsa -pubout < "$SK_KEY_PATH" \
+  "$PRIVCOUNT_OPENSSL" rsa -pubout < "$SK_KEY_PATH" 2> /dev/null \
     | "$PRIVCOUNT_OPENSSL" dgst -sha256 | cut -d" " -f2 | tr -d '\r\n' \
-    >> "$SK_LIST_FILE"
+    >> "$SK_LIST_FILE" 2> /dev/null
   echo "'" >> "$SK_LIST_FILE"
 done
 
@@ -699,29 +724,47 @@ for DC_SOURCE_PORT in ${CHUTNEY_PORT_ARRAY[@]} ; do
       | grep -v -e "seconds of user activity" \
                 -e "Unwanted event type" \
                 -e "Ignored HiddenServiceVersionNumber '4'" \
-                -e "Large byte transfer event" &
+                -e "Large byte transfer event" \
+                -e "Missing entry for relay" \
+                -e "but is not connected to the control port" \
+                -e "unexpectedly lost: Connection was closed cleanly" &
 done
 
-popd
+if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+  popd > /dev/null
+else
+  popd
+fi
 
 # Launch the data source
 case "$PRIVCOUNT_SOURCE" in
   inject|tor)
-    $FIRST_ROUND_CMD 2>&1 | \
-        `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+    $FIRST_ROUND_CMD 2>&1 \
+      | `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` \
+      | grep -v -e "is relative and will resolve" \
+                -e "no nameservers in '/dev/null'" \
+                -e "Couldn't set up any working nameservers" &
+
     # If it hasn't finished in 30 seconds, kill it
     # There is a small risk that it has exited and the pid is a new process
     # We avoid this by killing all child processes when this script exits
     SOURCE_PID="$!"
     (sleep 45; \
-        echo "Killing $PRIVCOUNT_SOURCE $SOURCE_PID"; \
-        kill "$SOURCE_PID") &
+      echo "Killing $PRIVCOUNT_SOURCE $SOURCE_PID"; \
+      kill "$SOURCE_PID") &
     ;;
   chutney)
     # The chutney output is very verbose: don't save it to the log
-    "$I" "For full chutney logs run $CHUTNEY_LOG_CMD" | \
-        `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP`
-    $FIRST_ROUND_CMD 2>&1 &
+    "$I" "For full chutney logs run $CHUTNEY_LOG_CMD" \
+      | `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP`
+    # Chutney's "quiet" mode just isn't quiet enough
+    if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+      $FIRST_ROUND_CMD 2>&1 \
+        | grep -e "Transmission: Failure" \
+               -e "to diagnose" &
+    else
+      $FIRST_ROUND_CMD 2>&1
+    fi
     ;;
   *)
     "$W" "Source $PRIVCOUNT_SOURCE not supported."
@@ -769,9 +812,16 @@ ENDDATE="`$DATE_COMMAND`"
 ENDSEC="`$TIMESTAMP_COMMAND`"
 
 # And terminate all the privcount processes
+# Some terminating process produce output, even in quiet mode
 "$I" "Terminating privcount and $PRIVCOUNT_SOURCE after $ROUNDS round(s)..."
 pkill -P $$
-wait
+if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+  # at this stage, we expect abnormal terminations, because we just killed
+  # everything
+  wait 2> /dev/null
+else
+  wait
+fi
 
 # Symlink a timestamped file to a similarly-named "latest" file
 # Usage:

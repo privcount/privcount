@@ -3,10 +3,10 @@
 # We set the DataDirectory path from mktemp on the command-line
 
 # Logging
-# the Tor default
-Log notice stderr
+# Let tor apply the tor default
+#Log notice stderr
 # an extra log for diagnostics (this relative path will cause a warning)
-Log debug file privcount.tor.debug.log
+#Log debug file privcount.tor.debug.log
 
 PidFile tor.pid
 
