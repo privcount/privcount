@@ -31,7 +31,8 @@ To do a Tor PrivCount release:
 6. If this is a major or minor release, or the tor version has changed,
    create a maint branch with the PrivCount major.minor and Tor versions,
    and push the branch
-7. Overwrite the stable privcount branch, and force-push it
+7. Overwrite the stable privcount branch, and push it
+   (If you've done any rebases, you'll need to force-push)
 
 To do a PrivCount release from master:
 1. Update ReleaseNotes.markdown with the Tor PrivCount and PrivCount changes
@@ -40,7 +41,8 @@ To do a PrivCount release from master:
 4. Tag the release with the PrivCount version, and push the tag
 5. If this is a major or minor release, create a maint branch with the
    PrivCount major.minor versions, and push the branch
-6. Overwrite the stable privcount branch, and force-push it
+6. Overwrite the stable privcount branch, and push it
+   (If you've done any rebases, you'll need to force-push)
 
 ## Updating the PrivCount version
 
