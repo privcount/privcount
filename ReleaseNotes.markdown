@@ -21,7 +21,7 @@ All PrivCount versions in a major series are compatible, as long as you are
 collecting counters known to all nodes. For example, you can collect the
 EntryActiveCircuitCount using a mix of nodes on any PrivCount 1.*.* version.
 
-Share Keepers on version 1.0.1 and later can store shares for any counters,
+Share Keepers on version 1.1.0 and later can store shares for any counters,
 even counters introduced in subsequent Data Collector and Tally Server
 versions.
 
@@ -30,9 +30,15 @@ Tally Servers on version 1.0.2 and later ignore Data Collectors on versions
 
 Data Collectors can use any PrivCount Tor Patch that supports the events for
 the counters they are collecting. For example, you can collect the
-EntryActiveCircuitCount using the PrivCount Tor Patch 1.0.0 or later. The
-PrivCount Tor Patch may be available for multiple tor versions: any tor version
-can be used.
+EntryActiveCircuitCount using the PrivCount Tor Patch 1.0.0 or later.
+
+The PrivCount Tor Patch may be available for multiple tor versions:
+ * Tor relays on 0.3.0.8 and later are used for v3 HSDir
+ * Tor relays on 0.3.0.4-alpha and later are used for v3 Intro in ed25519
+   authentication mode (earlier versions are used in legacy mode)
+ * Tor relays on 0.2.9.1-alpha and later are used for v3 Rend
+
+In general, you should use the latest Tor version.
 
 ## Who wrote PrivCount?
 
@@ -50,42 +56,53 @@ Issue numbers are from:
 
 ## PrivCount 1.1.0
 
-TODO
-PrivCount 1.1.0 adds support for Hidden Service Directory statistics
-collection, and ...
-/TODO
+PrivCount 1.1.0 adds support for Onion Service Directory Descriptor
+Store events. It extends the Circuit event to support the Onion Service HSDir,
+Intro and Rend positions, and the Mid and Dir positions. All Onion Service
+events support versions 2 and 3, and distinguish between them where possible.
 
-TODO
-The versions of the PrivCount Tor Patch released with PrivCount 1.1.0 are:
-* privcount-1.1.0-tor-0.3.0.8 (Tor stable)
+This release also allows PrivCount to sample high-volume events from Tor,
+and allows multiple Data Collectors to collect from the same Tor instance.
 
-All PrivCount relay operators should upgrade.
+It contains important fixes for all PrivCount node roles and the PrivCount
+Tor patch. All PrivCount node operators and relay operators should upgrade.
 
-These Tor versions fix:
-* multiple relay connection issues
+The version of the PrivCount Tor Patch released with PrivCount 1.1.0 is:
+* privcount-1.1.0-tor-0.3.0.10 (Tor stable)
 
-See Tor's release announcement for details:
-https://blog.torproject.org/blog/tor-0308-released-fix-hidden-services-also-are-02429-02514-02612-0278-02814-and-02911
-/TODO
+These Tor versions fix the following Tor relay issues:
+* an assertion failure OpenBSD relays in response to client input
+* process termination by the Linux sandbox with some IPv6 configs, and
+  some Data Directory configs
+
+See Tor's release announcements for details:
+https://blog.torproject.org/tor-0309-released-security-update-clients
+https://blog.torproject.org/tor-03010-released
 
 Features:
-* Add HSDir[3], Intro, and Rend to the position weights script #289
-* Allow multiple Data Collectors to use the same Tor instance #365
 * Add the PRIVCOUNT_HSDIR_CACHE_STORE event to the PrivCount Tor Patch #336
 * Add 107 HSDir{2,3}Store counters to PrivCount #336
+
+* Add the PRIVCOUNT_CIRCUIT_CELL event to the PrivCount Tor Patch #368
+* Extend the circuit termination event by adding PRIVCOUNT_CIRCUIT_CLOSE #368
+* Add 19 Circuit and Cell counters to PrivCount #375
+* Add byte counters for non-Exit circuits #192, #248
+
+* Add HSDir, Intro, and Rend to the position weights script #289, #397
+* Add version 3 Onion Services to the position weights script #404, #416
+
+* Allow PrivCount to limit cell events from Tor #405, #418
+* Allow multiple Data Collectors to use the same Tor instance #365
 * Use tagged fields for new events #256
 * Create counter variants for new counters from template strings #229
-* Increase the maximum tor event length to 2kB #336
 
-Testing:
-* Check all events are tested and documented when running tests #347
-* Add privcount/tools/add_counter.sh to generate test configs #336
+Counter Fixes:
+* Actually allow Share Keepers to process unknown counters #406
+  Bugfix on #340 in 1.0.1
+* Distinguish Exit Circuits using BEGIN cells #384
+* Allow DCs to be excluded by specifying no noise weight #415
 
-A full list of issues resolved in this release is available at:
-https://github.com/privcount/privcount/milestone/9?closed=1
-
-## PrivCount 1.0.3
-
+Stability Fixes:
 * Make Tor version parsing more reliable #363. Bugfix on #307 in 1.0.0.
   Likely triggered by #361 in 1.0.2
 * Handle tor relays that haven't bootstrapped yet #364
@@ -93,6 +110,30 @@ https://github.com/privcount/privcount/milestone/9?closed=1
 * Distinguish between a missing nickname and an unknown nickname #366
   Bugfix on 1.0.0
 * Always check if EnablePrivCount is on before starting a collection #365
+* Allow Data Collectors to recover from failed rounds #407
+* Allow Tally Servers to add keys to their config while running #399
+* Update the default check-in period to 10 minutes #378
+* Increase the maximum tor event length to 2kB #336
+* Improve dummy counter handling
+
+Logging:
+* Display the last character in the string when summarising #396
+* Make delay period warnings INFO-level when a safe default is used #379
+* Improve config validation #376, #427
+
+Testing:
+* Check all events are tested and documented when running tests #347
+* Add privcount/tools/add_counter.sh to generate test configs #336, #386
+* Make run_test.sh's quiet mode much quieter
+
+Documentation:
+* Explain how to INSTALL newer OpenSSL versions #380
+* Document cell and circuit events #370, #414
+* Improve the release instructions in PrivCountVersion.markdown
+*  Add a missing ExecStartPre line in the systemd file
+
+A full list of issues resolved in this release is available at:
+https://github.com/privcount/privcount/milestone/9?closed=1
 
 ## PrivCount 1.0.2
 
