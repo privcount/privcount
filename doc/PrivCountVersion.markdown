@@ -20,6 +20,28 @@ PrivCount versions can contain changes to the PrivCount python code, Tor patch,
 or both. Changes to upstream Tor are managed using Tor's versioning scheme,
 and tags contain both the Tor and PrivCount versions.
 
+## Doing A Release
+
+To do a Tor PrivCount release:
+1. If there is a new Tor patch release, and it impacts relays, merge it
+2. If the Tor version has changed, edit the Tor version in .bumpversion
+3. Update the PrivCount version in tor-privcount using bumpversion
+4. Push the base branch (privcount-master or privcount-maint-*-tor-*)
+5. Tag the release with the PrivCount and Tor versions, and push the tag
+6. If this is a major or minor release, or the tor version has changed,
+   create a maint branch with the PrivCount major.minor and Tor versions,
+   and push the branch
+7. Overwrite the stable privcount branch, and force-push it
+
+To do a PrivCount release from master:
+1. Update ReleaseNotes.markdown with the Tor PrivCount and PrivCount changes
+2. Update the PrivCount version in privcount using bumpversion
+3. Push the base branch (master or maint-*)
+4. Tag the release with the PrivCount version, and push the tag
+5. If this is a major or minor release, create a maint branch with the
+   PrivCount major.minor versions, and push the branch
+6. Overwrite the stable privcount branch, and force-push it
+
 ## Updating the PrivCount version
 
 You can use bumpversion to bump the PrivCount version in all the relevant
