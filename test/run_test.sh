@@ -760,7 +760,8 @@ case "$PRIVCOUNT_SOURCE" in
     # Chutney's "quiet" mode just isn't quiet enough
     if [ "$PRIVCOUNT_LOG" = "-q" ]; then
       $FIRST_ROUND_CMD 2>&1 \
-        | grep -e "Transmission: Failure" \
+        | grep -e "launch test" \
+               -e "Transmission: Failure" \
                -e "to diagnose" &
     else
       $FIRST_ROUND_CMD 2>&1
@@ -784,6 +785,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   if echo "$JOB_STATUS" | grep -q "Exit"; then
     # and kill everything
     "$W" "Error: Privcount or $PRIVCOUNT_SOURCE process exited with error..."
+    "$W" "Check the logs, or use chutney/tools/warnings.sh"
     pkill -P $$
     exit 1
   fi
