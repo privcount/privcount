@@ -1649,6 +1649,13 @@ class Aggregator(ReconnectingClientFactory):
                              is_mandatory=False):
             return False
 
+        # Only appears when IsIntroFlag and IsHSClientSideFlag are true
+        # But there's not much point in checking for that
+        if not is_flag_valid("IsClientIntroLegacyFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
         if not is_flag_valid("IsRendFlag",
                              fields, event_desc,
                              is_mandatory=False):
@@ -1766,6 +1773,7 @@ class Aggregator(ReconnectingClientFactory):
           {Previous,Next}{ChannelId,CircuitId},
           IsOriginFlag, IsEntryFlag, IsMidFlag, IsEndFlag,
           IsExitFlag, IsDirFlag, IsHSDirFlag, IsIntroFlag, IsRendFlag,
+          IsClientIntroLegacyFlag,
           IsHSClientSideFlag, HiddenServiceVersionNumber,
           IsMarkedForCloseFlag
         Cell-Specific:
@@ -2026,6 +2034,7 @@ class Aggregator(ReconnectingClientFactory):
           {Previous,Next}{ChannelId,CircuitId},
           IsOriginFlag, IsEntryFlag, IsMidFlag, IsEndFlag,
           IsExitFlag, IsDirFlag, IsHSDirFlag, IsIntroFlag, IsRendFlag,
+          IsClientIntroLegacyFlag,
           IsHSClientSideFlag, HiddenServiceVersionNumber,
           IsMarkedForCloseFlag
         Circuit-Specific:
