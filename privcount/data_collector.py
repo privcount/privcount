@@ -1698,6 +1698,15 @@ class Aggregator(ReconnectingClientFactory):
                             min_value=0, max_value=2):
             return False
 
+        # 50 is an arbitrary maximum failure reason length
+        if not is_string_valid("FailureReasonString",
+                    fields, event_desc,
+                    is_mandatory=False,
+                    min_len=1, max_len=50):
+            return False
+
+
+
         # if everything passed, this much is ok
         return True
 
@@ -1794,7 +1803,7 @@ class Aggregator(ReconnectingClientFactory):
           IsClientIntroLegacyFlag,
           IsHSClientSideFlag, HiddenServiceVersionNumber,
           IsMarkedForCloseFlag,
-          HasReceivedCreateCellFlag, OnionHandshakeType
+          HasReceivedCreateCellFlag, OnionHandshakeType, FailureReasonString
         Cell-Specific:
           IsSentFlag, IsOutboundFlag,
           CellCircuitId, CellCommandString,
@@ -2056,7 +2065,7 @@ class Aggregator(ReconnectingClientFactory):
           IsClientIntroLegacyFlag,
           IsHSClientSideFlag, HiddenServiceVersionNumber,
           IsMarkedForCloseFlag,
-          HasReceivedCreateCellFlag, OnionHandshakeType
+          HasReceivedCreateCellFlag, OnionHandshakeType, FailureReasonString
         Circuit-Specific:
           CreatedTimestamp, IsLegacyCircuitEndEventFlag,
           StateString, PurposeCode, PurposeString, HSStateString,
