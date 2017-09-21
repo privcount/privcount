@@ -1680,6 +1680,24 @@ class Aggregator(ReconnectingClientFactory):
                                               is_mandatory=False):
             return False
 
+        # This flag is only present when it is 1
+        if not is_flag_valid("HasReceivedCreateCellFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+        # This flag is only present when HasReceivedCreateCellFlag is 1
+        # (and this circuit is an OR circuit)
+        # Its values are:
+        # ONION_HANDSHAKE_TYPE_TAP  0x0000
+        # ONION_HANDSHAKE_TYPE_FAST 0x0001
+        # ONION_HANDSHAKE_TYPE_NTOR 0x0002
+        if not is_int_valid("OnionHandshakeType",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0, max_value=2):
+            return False
+
         # if everything passed, this much is ok
         return True
 
@@ -1775,7 +1793,8 @@ class Aggregator(ReconnectingClientFactory):
           IsExitFlag, IsDirFlag, IsHSDirFlag, IsIntroFlag, IsRendFlag,
           IsClientIntroLegacyFlag,
           IsHSClientSideFlag, HiddenServiceVersionNumber,
-          IsMarkedForCloseFlag
+          IsMarkedForCloseFlag,
+          HasReceivedCreateCellFlag, OnionHandshakeType
         Cell-Specific:
           IsSentFlag, IsOutboundFlag,
           CellCircuitId, CellCommandString,
@@ -2036,7 +2055,8 @@ class Aggregator(ReconnectingClientFactory):
           IsExitFlag, IsDirFlag, IsHSDirFlag, IsIntroFlag, IsRendFlag,
           IsClientIntroLegacyFlag,
           IsHSClientSideFlag, HiddenServiceVersionNumber,
-          IsMarkedForCloseFlag
+          IsMarkedForCloseFlag,
+          HasReceivedCreateCellFlag, OnionHandshakeType
         Circuit-Specific:
           CreatedTimestamp, IsLegacyCircuitEndEventFlag,
           StateString, PurposeCode, PurposeString, HSStateString,
