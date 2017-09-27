@@ -963,11 +963,15 @@ class Aggregator(ReconnectingClientFactory):
 
         elif event_code == 'PRIVCOUNT_CONNECTION_ENDED':
             if len(items) == Aggregator.CONNECTION_ENDED_ITEMS:
-                return self._handle_connection_event(items[:Aggregator.CONNECTION_ENDED_ITEMS])
+                # Since 1.2.0, this legacy event is ignored, and the
+                # fields are taken from PRIVCOUNT_CONNECTION_CLOSE
+                return True
             else:
+                # Warn, but don't quit the connection
                 logging.warning("Rejected malformed {} event"
                                 .format(event_code))
-                return False
+                return True
+
         # These events have tagged fields: fields may be optional.
         else:
             return self._handle_tagged_event(event_code, items)
@@ -985,6 +989,7 @@ class Aggregator(ReconnectingClientFactory):
 
         if (event_code == 'PRIVCOUNT_CIRCUIT_CELL' or
             event_code == 'PRIVCOUNT_CIRCUIT_CLOSE' or
+            event_code == 'PRIVCOUNT_CONNECTION_CLOSE' or
             event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE'):
             fields = parse_tagged_event(items)
         else:
@@ -1001,6 +1006,8 @@ class Aggregator(ReconnectingClientFactory):
             return self._handle_circuit_cell_event(fields)
         elif event_code == 'PRIVCOUNT_CIRCUIT_CLOSE':
             return self._handle_circuit_close_event(fields)
+        elif event_code == 'PRIVCOUNT_CONNECTION_CLOSE':
+            return self._handle_connection_close_event(fields)
         elif event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE':
             return self._handle_hsdir_stored_event(fields)
         else:
@@ -1447,23 +1454,36 @@ class Aggregator(ReconnectingClientFactory):
                     self.circ_info.pop(chanid, None)
         return True
 
+    # The legacy event is still processed by the injector, but is ignored
+    # by PrivCount 1.2.0 and later
     CONNECTION_ENDED_ITEMS = 5
 
-    # Positional event: fields is a list of Values.
-    # All fields are mandatory, order matters
-    # 'PRIVCOUNT_CONNECTION_ENDED', ChanID, TimeStart, TimeEnd, IP, isClient
-    # See doc/TorEvents.markdown for details
-    def _handle_connection_event(self, items):
-        assert(len(items) == Aggregator.CONNECTION_ENDED_ITEMS)
+    def _handle_legacy_connection_event(self, fields, event_desc):
+        '''
+        Increment connection-level counters and store circuit data for later
+        processing. This is the legacy code that used to process the
+        PRIVCOUNT_CONNECTION_ENDED event, and now processes events sent to
+        it via _handle_connection_close_event.
+        '''
+        event_desc = event_desc + " processing legacy connection end event counters"
 
-        chanid = int(items[0])
-        start, end = float(items[1]), float(items[2])
-        ip = items[3]
-        isclient = True if int(items[4]) > 0 else False
+        # Extract the field values we want
+        start = get_float_value("CreatedTimestamp",
+                                fields, event_desc,
+                                is_mandatory=False)
+        end = get_float_value("EventTimestamp",
+                              fields, event_desc,
+                              is_mandatory=False)
+        isclient = get_flag_value("RemoteIsClientFlag",
+                                  fields, event_desc,
+                                  is_mandatory=False)
 
-        # TODO: secure delete
-        #del items
+        # check they are all present
+        if (start is None or end is None or isclient is None):
+            logging.warning("Unexpected missing field {}".format(event_desc))
+            return False
 
+        # Now process using the legacy code
         if isclient:
             self.secure_counters.increment('EntryConnectionCount',
                                            bin=SINGLE_BIN,
@@ -2058,6 +2078,8 @@ class Aggregator(ReconnectingClientFactory):
         Fields available:
         Common:
           EventTimestamp
+        Lifetime Common:
+          CreatedTimestamp
         Cell and Circuit Common:
           {Previous,Next}{ChannelId,CircuitId},
           IsOriginFlag, IsEntryFlag, IsMidFlag, IsEndFlag,
@@ -2067,7 +2089,7 @@ class Aggregator(ReconnectingClientFactory):
           IsMarkedForCloseFlag,
           HasReceivedCreateCellFlag, OnionHandshakeType, FailureReasonString
         Circuit-Specific:
-          CreatedTimestamp, IsLegacyCircuitEndEventFlag,
+          IsLegacyCircuitEndEventFlag,
           StateString, PurposeCode, PurposeString, HSStateString,
           {Previous,Next}Node{IPAddress,Fingerprint,RelayFlagList},
           {IntroClientSink,RendSplice}[All Cell and Circuit Common Fields],
@@ -2290,6 +2312,206 @@ class Aggregator(ReconnectingClientFactory):
                                           'Rend2MultiHopServiceCircuitCount',
                                           bin=SINGLE_BIN,
                                           inc=1)
+
+        # we processed and handled the event
+        return True
+
+    # The number of counters defined for IP relay counts
+    MAX_IP_RELAY_COUNTER = 2
+
+    @staticmethod
+    def are_connection_close_fields_valid(fields, event_desc):
+        '''
+        Check if the PRIVCOUNT_CONNECTION_CLOSE fields are valid.
+        Returns True if they are all valid, False if one or more are not.
+        Logs a warning using event_desc for the first field that is invalid.
+        '''
+
+        # Validate the mandatory fields
+
+        if not is_float_valid("EventTimestamp",
+                              fields, event_desc,
+                              is_mandatory=True,
+                              min_value=0.0):
+            return False
+
+        if not is_float_valid("CreatedTimestamp",
+                              fields, event_desc,
+                              is_mandatory=True,
+                              min_value=0.0):
+            return False
+
+        if not is_int_valid("ChannelId",
+                            fields, event_desc,
+                            is_mandatory=True,
+                            min_value=0):
+            return False
+
+        if not is_flag_valid("RemoteIsClientFlag",
+                             fields, event_desc,
+                             is_mandatory=True):
+            return False
+
+        if not is_ip_address_valid("RemoteIPAddress",
+                                   fields, event_desc,
+                                   is_mandatory=True):
+            return False
+
+        # the number of possible OR connections from a remote IP address is
+        # limited by the number of available ports on the remote host.
+        # (There are only a few ORPorts on this host, typically one or two.)
+        # Allow for 2x as many connections as the limit. This allows for
+        # connections that are marked for close (and may have been closed by
+        # the OS already), and IPv4 and IPv6 ORPorts.
+        if not is_int_valid("RemoteIPAddressConnectionCount",
+                            fields, event_desc,
+                            is_mandatory=True,
+                            min_value=0, max_value=2**17):
+            return False
+
+        # the number of relays in the consensus on the PeerIPAddress,
+        # if present, or if not, the RemoteIPAddress. This should be limited
+        # to 2 by the directory authorities, except in test networks.
+        # So we choose 100 as a reasonable maximum, and issue a non-fatal
+        # warning when we see more than 2. (100 may be too small for shadow
+        # and other large-scale simulators, but they should be using unique
+        # addresses anyway.)
+        if not is_int_valid("PeerIPAddressConsensusRelayCount",
+                            fields, event_desc,
+                            is_mandatory=True,
+                            min_value=0, max_value=100):
+            return False
+
+        ip_relay_count = get_int_value("PeerIPAddressConsensusRelayCount",
+                                       fields, event_desc,
+                                       is_mandatory=True)
+
+        if ip_relay_count > Aggregator.MAX_IP_RELAY_COUNTER:
+            Aggregator.warn_unexpected_field_value("PeerIPAddressConsensusRelayCount",
+                                                   fields, event_desc)
+
+        # Validate the optional fields
+
+        # Only present when the remote end is an authenticated peer relay
+        if not is_ip_address_valid("PeerIPAddress",
+                                   fields, event_desc,
+                                   is_mandatory=False):
+            return False
+
+        # if everything passed, we're ok
+        return True
+
+    def _increment_connection_close_counters(self, counter_suffix,
+                                             is_client, ip_relay_count,
+                                             event_desc,
+                                             bin=SINGLE_BIN,
+                                             inc=1,
+                                             log_missing_counters=True):
+        '''
+        Increment bin by inc for the set of counters ending in
+        counter_suffix, using is_client, and ip_relay_count to create the
+        counter names.
+        If log_missing_counters, warn the operator when a requested counter
+        is not in the table in counters.py. Otherwise, unknown names are
+        ignored.
+        '''
+        # create counter names from is_client and ip_relay_count
+
+        # If the remote end is a client, this is an entry connection,
+        # otherwise, it's middle or exit or both
+        position_str = "Entry" if is_client else "NonEntry"
+        # Say how many relays the remote end has on its address
+        # If it has more than the limit, assume it's a test network, and put
+        # them in the highest-valued counter that actually exists
+        ip_relay_count = min(ip_relay_count, Aggregator.MAX_IP_RELAY_COUNTER)
+        shared_relay_str = "{}RelayOnAddress".format(ip_relay_count)
+
+        position_counter = "{}Connection{}".format(position_str,
+                                                counter_suffix)
+        shared_relay_counter = "{}{}Connection{}".format(position_str,
+                                                         shared_relay_str,
+                                                         counter_suffix)
+
+        # warn the operator if we don't know the counter name
+        if log_missing_counters:
+            position_origin = "RemoteIsClientFlag and {}".format(counter_suffix)
+            Aggregator.warn_unknown_counter(position_counter,
+                                            position_origin,
+                                            event_desc)
+            shared_relay_origin= "RemoteIsClientFlag and PeerIPAddressConsensusRelayCount and {}".format(counter_suffix)
+            Aggregator.warn_unknown_counter(shared_relay_counter,
+                                            shared_relay_origin,
+                                            event_desc)
+
+        # Increment the counters
+        self.secure_counters.increment(position_counter,
+                                       bin=bin,
+                                       inc=inc)
+        self.secure_counters.increment(shared_relay_counter,
+                                       bin=bin,
+                                       inc=inc)
+
+    def _handle_connection_close_event(self, fields):
+        '''
+        Process a PRIVCOUNT_CONNECTION_CLOSE event
+        This is a tagged event: fields is a dictionary of Key=Value pairs.
+        Fields may be optional, order is unimportant.
+
+        Fields available:
+        Common:
+          EventTimestamp
+        Lifetime Common:
+          CreatedTimestamp
+        Connection-Specific:
+          ChannelId
+          RemoteIsClientFlag, RemoteIPAddress, RemoteIPAddressConnectionCount
+          PeerIPAddress (optional, relay peers only),
+          PeerIPAddressConsensusRelayCount
+        TODO: See doc/TorEvents.markdown for all field names and definitions.
+
+        Calls _handle_legacy_connection_event to increment legacy counters
+        that were based on the legacy PRIVCOUNT_CONNECTION_ENDED event.
+
+        Returns True if an event was successfully processed (or ignored).
+        Never returns False: we prefer to warn about malformed events and
+        continue processing.
+        '''
+        event_desc = "in PRIVCOUNT_CONNECTION_CLOSE event"
+
+        if not Aggregator.are_connection_close_fields_valid(fields, event_desc):
+            # handle the event by warning (in the validator) and ignoring it
+            return True
+
+        # handle the legacy event
+        if not self._handle_legacy_connection_event(fields, event_desc):
+            logging.warning("Error while processing legacy connection event with '{}' {}"
+                            .format(" ".join(sorted(fields)), event_desc))
+
+        # Extract mandatory fields
+
+        is_client = get_flag_value("RemoteIsClientFlag",
+                                   fields, event_desc,
+                                   is_mandatory=True)
+
+        ip_connection_count = get_int_value("RemoteIPAddressConnectionCount",
+                                            fields, event_desc,
+                                            is_mandatory=True)
+
+        ip_relay_count = get_int_value("PeerIPAddressConsensusRelayCount",
+                                       fields, event_desc,
+                                       is_mandatory=True)
+
+        # Extract the optional fields, and give them defaults
+
+        # Increment counters for mandatory fields and optional fields that
+        # have defaults
+
+        self._increment_connection_close_counters("OverlapHistogram",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=ip_connection_count,
+                                                  inc=1,
+                                                  log_missing_counters=True)
 
         # we processed and handled the event
         return True

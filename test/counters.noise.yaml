@@ -668,3 +668,27 @@ counters:
     Rend2MultiHopClientCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    Entry0RelayOnAddressConnectionOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0

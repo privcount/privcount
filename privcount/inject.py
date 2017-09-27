@@ -264,6 +264,7 @@ class PrivCountDataInjector(ServerFactory):
         # Handles:
         #  - 'PRIVCOUNT_CIRCUIT_CELL'
         #  - 'PRIVCOUNT_CIRCUIT_CLOSE'
+        #  - 'PRIVCOUNT_CONNECTION_CLOSE'
         #  - 'PRIVCOUNT_HSDIR_CACHE_STORE'
         elif '=' in msg and len(parts) >= 2:
             items = parts[1:]
@@ -273,7 +274,8 @@ class PrivCountDataInjector(ServerFactory):
                 logging.warning("Malformed tagged event in: '{}' {}"
                                 .format(msg, event_desc))
             else:
-                # PRIVCOUNT_CIRCUIT_CLOSE has start and end times
+                # PRIVCOUNT_CIRCUIT_CLOSE and PRIVCOUNT_CONNECTION_CLOSE have
+                # start and end times
                 start_time = get_float_value(
                                     PrivCountDataInjector.START_TIMESTAMP_TAG,
                                     fields, event_desc,

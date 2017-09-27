@@ -465,3 +465,19 @@ counters:
         sigma: 0.0
     Rend2MultiHopClientCircuitCount:
         sigma: 0.0
+    Entry0RelayOnAddressConnectionOverlapHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionOverlapHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionOverlapHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionOverlapHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionOverlapHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionOverlapHistogram:
+        sigma: 0.0
+    EntryConnectionOverlapHistogram:
+        sigma: 0.0
+    NonEntryConnectionOverlapHistogram:
+        sigma: 0.0

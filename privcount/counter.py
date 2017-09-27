@@ -248,7 +248,7 @@ CELL_EVENT = 'PRIVCOUNT_CIRCUIT_CELL'
 BYTES_EVENT = 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED'
 STREAM_EVENT = 'PRIVCOUNT_STREAM_ENDED'
 CIRCUIT_EVENT = 'PRIVCOUNT_CIRCUIT_CLOSE'
-CONNECTION_EVENT = 'PRIVCOUNT_CONNECTION_ENDED'
+CONNECTION_EVENT = 'PRIVCOUNT_CONNECTION_CLOSE'
 HSDIR_STORE_EVENT = 'PRIVCOUNT_HSDIR_CACHE_STORE'
 
 # Unused events
@@ -257,6 +257,7 @@ DNS_EVENT = 'PRIVCOUNT_DNS_RESOLVED'
 # We don't use this event any more, but the Tor patch still produces it, for
 # compatibility with older versions
 LEGACY_CIRCUIT_EVENT = 'PRIVCOUNT_CIRCUIT_ENDED'
+LEGACY_CONNECTION_EVENT = 'PRIVCOUNT_CONNECTION_ENDED'
 
 def get_valid_events():
     '''
@@ -271,6 +272,7 @@ def get_valid_events():
                   # Unused events
                   DNS_EVENT,
                   LEGACY_CIRCUIT_EVENT,
+                  LEGACY_CONNECTION_EVENT,
                   }
     assert check_event_set_case(event_set)
     return event_set
@@ -390,9 +392,19 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitCircuitOtherPortStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitCircuitOtherPortInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
-# these counters depend on connection end
+# these counters depend on connection close
 'EntryConnectionCount' : { CONNECTION_EVENT },
 'EntryConnectionLifeTime' : { CONNECTION_EVENT },
+
+'EntryConnectionOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionOverlapHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionOverlapHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionOverlapHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionOverlapHistogram' : { CONNECTION_EVENT },
 
 # these counters depend on HSDir stored
 # Keep versions separate

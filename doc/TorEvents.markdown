@@ -357,8 +357,39 @@ It has the following known issues:
   https://github.com/privcount/privcount/issues/196
 * PrivCount's additional RAM allocations may affect Tor's circuit limits
   https://github.com/privcount/privcount/issues/349
+  
+### PRIVCOUNT_CONNECTION_CLOSE
+
+TODO: expand documentation
+
+Fields:
+  Common:
+    EventTimestamp
+  Lifetime Common:
+    CreatedTimestamp
+  Connection-Specific:
+    ChannelId
+    RemoteIsClientFlag, RemoteIPAddress, RemoteIPAddressConnectionCount
+    PeerIPAddress (optional, relay peers only),
+    PeerIPAddressConsensusRelayCount
+
+Limitations:
+
+PeerIPAddress may not always be the consensus address.
+
+RemoteIPAddress may be different to PeerIPAddress due to NAT,
+OutboundBindAddress, and OS routing tables.
+
+PeerIPAddressConsensusRelayCount should be between 0 and 2, but may not always
+be in this range for similar reasons.
+
+RemoteIPAddressConnectionCount is not a good measure of client churn, because
+it only measures simultaneous connections at a point in time.
 
 ### PRIVCOUNT_CONNECTION_ENDED
+
+As of PrivCount 1.2.0, this is a legacy event, use PRIVCOUNT_CONNECTION_CLOSE
+in new code.
 
 This event is sent when tor closes a remote OR connection.
 

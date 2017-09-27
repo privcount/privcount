@@ -56,7 +56,7 @@ Other general rules:
 #### A Pattern for PrivCount Counter Names
 
 Here is how you can construct a PrivCount counter name:
-* Entry/Exit/HSDir{2,3}/
+* Entry/NonEntry/Exit/HSDir{2,3}/
 * Active/Inactive/ (order varies: before the noun it qualifies)
 * Interactive/OtherPort/P2P/Web/ (order varies: before the noun it qualifies)
 * Connection/Circuit/Stream/ClientIP/Store/Zero

@@ -98,13 +98,16 @@ that one or more Share Keepers or Data Collectors failed to provide results.
 
 This section describes how some counters are split or filtered.
 
-### Entry/Exit/HSDir{2,3}
+### Entry/NonEntry/Exit/HSDir{2,3}
 
 This counter is only collected when the relay is in this position in the
 Connection or Circuit.
 
 For example:
 * When Tor clients connect to the Tor network, they make an Entry Connection.
+* When Tor relays connect to another relay, they make a NonEntry Connection.
+  (The ends of the connection may be in the Entry, Mid or End position on
+  different circuits.)
 * When Tor clients access a remote server, they make an Exit Stream.
 * When legacy Tor onion services upload a descriptor, they perform an HSDir2
   Store.

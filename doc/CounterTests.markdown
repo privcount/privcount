@@ -729,3 +729,18 @@ TODO: Re-test and merge previous counter
 ### TODO: Category Name
 
 - Rend2ClientSentCellCount
+
+## Connection Counter Tests
+
+### TODO: Category Name
+
+TODO: merge and integrate with existing counter tests
+
+- Entry0RelayOnAddressConnectionOverlapHistogram
+- NonEntry0RelayOnAddressConnectionOverlapHistogram
+- Entry1RelayOnAddressConnectionOverlapHistogram
+- NonEntry1RelayOnAddressConnectionOverlapHistogram
+- Entry2RelayOnAddressConnectionOverlapHistogram
+- NonEntry2RelayOnAddressConnectionOverlapHistogram
+- EntryConnectionOverlapHistogram
+- NonEntryConnectionOverlapHistogram
