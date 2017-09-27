@@ -292,20 +292,6 @@ counters:
     EntryClientIPCount:
         bins:
         - [-.inf, .inf]
-    # ENTRY - number of OR connections to clients
-    EntryConnectionCount:
-        bins:
-        - [-.inf, .inf]
-    # ENTRY - connection times in seconds for all connections
-    EntryConnectionLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, 600.0]
-        - [600.0, 720.0]
-        - [720.0, 1080.0]
-        - [1080.0, 1200.0]
-        - [1200.0, .inf]
 
     # EXIT - bytes received per completed stream
     ExitStreamByteCount:
@@ -2194,3 +2180,101 @@ counters:
         - [  256,  512]
         - [  512, 1024]
         - [ 1024, .inf]
+    Entry0RelayOnAddressConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    NonEntry0RelayOnAddressConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    Entry1RelayOnAddressConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    NonEntry1RelayOnAddressConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    Entry2RelayOnAddressConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    NonEntry2RelayOnAddressConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    # ENTRY - connection times in seconds for all connections
+    EntryConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    NonEntryConnectionLifeTime:
+        bins:
+        - [0.0, 120.0]
+        - [120.0, 480.0]
+        - [480.0, 600.0]
+        - [600.0, 720.0]
+        - [720.0, 1080.0]
+        - [1080.0, 1200.0]
+        - [1200.0, .inf]
+    Entry0RelayOnAddressConnectionCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry0RelayOnAddressConnectionCount:
+        bins:
+        - [-.inf, .inf]
+    Entry1RelayOnAddressConnectionCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry1RelayOnAddressConnectionCount:
+        bins:
+        - [-.inf, .inf]
+    Entry2RelayOnAddressConnectionCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry2RelayOnAddressConnectionCount:
+        bins:
+        - [-.inf, .inf]
+    # ENTRY - number of OR connections to clients
+    EntryConnectionCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntryConnectionCount:
+        bins:
+        - [-.inf, .inf]

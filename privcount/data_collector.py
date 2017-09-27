@@ -1458,41 +1458,6 @@ class Aggregator(ReconnectingClientFactory):
     # by PrivCount 1.2.0 and later
     CONNECTION_ENDED_ITEMS = 5
 
-    def _handle_legacy_connection_event(self, fields, event_desc):
-        '''
-        Increment connection-level counters and store circuit data for later
-        processing. This is the legacy code that used to process the
-        PRIVCOUNT_CONNECTION_ENDED event, and now processes events sent to
-        it via _handle_connection_close_event.
-        '''
-        event_desc = event_desc + " processing legacy connection end event counters"
-
-        # Extract the field values we want
-        start = get_float_value("CreatedTimestamp",
-                                fields, event_desc,
-                                is_mandatory=False)
-        end = get_float_value("EventTimestamp",
-                              fields, event_desc,
-                              is_mandatory=False)
-        isclient = get_flag_value("RemoteIsClientFlag",
-                                  fields, event_desc,
-                                  is_mandatory=False)
-
-        # check they are all present
-        if (start is None or end is None or isclient is None):
-            logging.warning("Unexpected missing field {}".format(event_desc))
-            return False
-
-        # Now process using the legacy code
-        if isclient:
-            self.secure_counters.increment('EntryConnectionCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-            self.secure_counters.increment('EntryConnectionLifeTime',
-                                           bin=(end - start),
-                                           inc=1)
-        return True
-
     @staticmethod
     def is_hs_version_valid(fields, event_desc,
                             is_mandatory=False):
@@ -2482,11 +2447,6 @@ class Aggregator(ReconnectingClientFactory):
             # handle the event by warning (in the validator) and ignoring it
             return True
 
-        # handle the legacy event
-        if not self._handle_legacy_connection_event(fields, event_desc):
-            logging.warning("Error while processing legacy connection event with '{}' {}"
-                            .format(" ".join(sorted(fields)), event_desc))
-
         # Extract mandatory fields
 
         is_client = get_flag_value("RemoteIsClientFlag",
@@ -2501,10 +2461,32 @@ class Aggregator(ReconnectingClientFactory):
                                        fields, event_desc,
                                        is_mandatory=True)
 
+        start_time = get_float_value("CreatedTimestamp",
+                                     fields, event_desc,
+                                     is_mandatory=True)
+
+        end_time = get_float_value("EventTimestamp",
+                                   fields, event_desc,
+                                   is_mandatory=True)
+
         # Extract the optional fields, and give them defaults
 
         # Increment counters for mandatory fields and optional fields that
         # have defaults
+
+        self._increment_connection_close_counters("Count",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=1,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("LifeTime",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=(end_time - start_time),
+                                                  inc=1,
+                                                  log_missing_counters=True)
 
         self._increment_connection_close_counters("OverlapHistogram",
                                                   is_client, ip_relay_count,

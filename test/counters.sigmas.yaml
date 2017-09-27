@@ -112,12 +112,6 @@ counters:
     # ENTRY - unique client IPs seen (10 min rotation)
     EntryClientIPCount:
         sigma: 0.0
-    # ENTRY - number of OR connections to clients
-    EntryConnectionCount:
-        sigma: 0.0
-    # ENTRY - connection times in seconds for all connections
-    EntryConnectionLifeTime:
-        sigma: 0.0
     # EXIT - bytes received per completed stream
     ExitStreamByteCount:
         sigma: 0.0
@@ -480,4 +474,38 @@ counters:
     EntryConnectionOverlapHistogram:
         sigma: 0.0
     NonEntryConnectionOverlapHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionLifeTime:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionLifeTime:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionLifeTime:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionLifeTime:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionLifeTime:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionLifeTime:
+        sigma: 0.0
+    # ENTRY - connection times in seconds for all connections
+    EntryConnectionLifeTime:
+        sigma: 0.0
+    NonEntryConnectionLifeTime:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCount:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCount:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCount:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCount:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCount:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCount:
+        sigma: 0.0
+    # ENTRY - number of OR connections to clients
+    EntryConnectionCount:
+        sigma: 0.0
+    NonEntryConnectionCount:
         sigma: 0.0

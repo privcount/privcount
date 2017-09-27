@@ -744,3 +744,17 @@ TODO: merge and integrate with existing counter tests
 - NonEntry2RelayOnAddressConnectionOverlapHistogram
 - EntryConnectionOverlapHistogram
 - NonEntryConnectionOverlapHistogram
+- Entry0RelayOnAddressConnectionLifeTime
+- NonEntry0RelayOnAddressConnectionLifeTime
+- Entry1RelayOnAddressConnectionLifeTime
+- NonEntry1RelayOnAddressConnectionLifeTime
+- Entry2RelayOnAddressConnectionLifeTime
+- NonEntry2RelayOnAddressConnectionLifeTime
+- NonEntryConnectionLifeTime
+- Entry0RelayOnAddressConnectionCount
+- NonEntry0RelayOnAddressConnectionCount
+- Entry1RelayOnAddressConnectionCount
+- NonEntry1RelayOnAddressConnectionCount
+- Entry2RelayOnAddressConnectionCount
+- NonEntry2RelayOnAddressConnectionCount
+- NonEntryConnectionCount

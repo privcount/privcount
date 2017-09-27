@@ -156,14 +156,6 @@ counters:
     EntryClientIPCount:
         estimated_value: 0.0
         sensitivity: 0
-    # ENTRY - number of OR connections to clients
-    EntryConnectionCount:
-        estimated_value: 0.0
-        sensitivity: 0
-    # ENTRY - connection times in seconds for all connections
-    EntryConnectionLifeTime:
-        estimated_value: 0.0
-        sensitivity: 0
     # EXIT - bytes received per completed stream
     ExitStreamByteCount:
         estimated_value: 0.0
@@ -690,5 +682,55 @@ counters:
         estimated_value: 0.0
         sensitivity: 0.0
     NonEntryConnectionOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    # ENTRY - connection times in seconds for all connections
+    EntryConnectionLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    # ENTRY - number of OR connections to clients
+    EntryConnectionCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCount:
         estimated_value: 0.0
         sensitivity: 0.0

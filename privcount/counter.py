@@ -394,7 +394,24 @@ PRIVCOUNT_COUNTER_EVENTS = {
 
 # these counters depend on connection close
 'EntryConnectionCount' : { CONNECTION_EVENT },
+'NonEntryConnectionCount' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
+
 'EntryConnectionLifeTime' : { CONNECTION_EVENT },
+'NonEntryConnectionLifeTime' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionLifeTime' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionLifeTime' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionLifeTime' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionLifeTime' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionLifeTime' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionLifeTime' : { CONNECTION_EVENT },
 
 'EntryConnectionOverlapHistogram' : { CONNECTION_EVENT },
 'NonEntryConnectionOverlapHistogram' : { CONNECTION_EVENT },

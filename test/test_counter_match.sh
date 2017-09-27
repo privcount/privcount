@@ -80,7 +80,7 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
     cat "$TEST_DIR/dummy_counter.py.names.extra" \
         >> "$OUT_PATH.names.unsorted"
     # And sort
-    cat "$OUT_PATH.names.unsorted" | sort -u > "$OUT_PATH.names"
+    cat "$OUT_PATH.names.unsorted" | sort > "$OUT_PATH.names"
 done
 
 # Process the doc files
