@@ -202,9 +202,10 @@ class TrafficModel(object):
         SQRT_2_PI = math.sqrt(2*math.pi)
         V = [{}]
         for st in self.states:
-            if st in self.start_p and self.start_p[st] > 0:
+            (direction, delay) = obs[0]
+            if st in self.start_p and self.start_p[st] > 0 and \
+                    st in self.emit_p and direction in self.emit_p[st]:
                 # updated emit_p here
-                (direction, delay) = obs[0]
                 (dp, mu, sigma) = self.emit_p[st][direction]
                 if delay <= 2: dx = 1
                 else: dx = int(math.exp(int(math.log(delay))))
@@ -372,6 +373,10 @@ class TrafficModel(object):
 
         # turn the bytes events into 'packet' events, and compute delay between packets
         observed_packet_delays = self._get_inter_packet_delays(strm_start_ts, byte_events)
+        num_packets = len(observed_packet_delays)
+
+        if num_packets <= 0:
+            return
 
         viterbi_start_time = clock()
 
@@ -381,7 +386,6 @@ class TrafficModel(object):
         counter_start_time = clock()
 
         # do some sanity checks
-        num_packets = len(observed_packet_delays)
         num_states = len(likliest_states)
         if num_states > num_packets:
             logging.warning("viterbi gave us more states than we have packets")
