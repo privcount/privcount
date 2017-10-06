@@ -375,7 +375,8 @@ class TrafficModel(object):
                                           inc=1)
 
     def _store_new_packet_bundle(self, circuit_id, stream_id, is_sent,
-            micros_since_prev_cell, bundle_ts, num_packets, payload_bytes_last_packet):
+            micros_since_prev_cell, bundle_ts, payload_bytes_last_packet):
+        num_packets = 1
         packet_bundle = [is_sent, micros_since_prev_cell, bundle_ts,
                         num_packets, payload_bytes_last_packet]
         self.packets.setdefault(circuit_id, {}).setdefault(stream_id, []).append(packet_bundle)
