@@ -44,7 +44,7 @@ class TrafficModel(object):
     # the maximum number of seconds we will take to process a stream before
     # issuing a delay warning
     MAX_STREAM_PROCESSING_TIME = 10.0
-    
+
     def __init__(self, model_config):
         '''
         Initialize the model with a set of states, probabilities for starting in each of those
@@ -221,11 +221,15 @@ class TrafficModel(object):
         '''
         SQRT_2_PI = math.sqrt(2*math.pi)
         V = [{}]
-        current_bundle = bundles.pop(0)
+        total_num_obs = 0
+        bundle_i = 0
+        current_bundle = bundles[bundle_i]
+        current_bundle_num_packets = current_bundle[3]
         for st in self.states:
             direction = '-' if current_bundle[0] else '+'
             delay = current_bundle[1]
-            current_bundle[3] -= 1 # we 'used up' this observation
+            current_bundle_num_packets -= 1 # we 'used up' this observation
+            total_num_obs += 1
             if st in self.start_p and self.start_p[st] > 0 and \
                     st in self.emit_p and direction in self.emit_p[st]:
                 # updated emit_p here
@@ -242,12 +246,15 @@ class TrafficModel(object):
         t = 0 # starts at 0 but is immediately incremented below if we have another packet
         while True:
             # get the next packet, which could be in the same 'bundled' set of packets
-            while current_bundle is not None and current_bundle[3] <= 0:
+            while current_bundle is not None and current_bundle_num_packets <= 0:
                 # current bundle was used up
                 current_bundle = None
+                bundle_i += 1
                 # ran out of packets, get the next bundle
-                if len(bundles) > 0:
-                    current_bundle = bundles.pop(0)
+                if bundle_i < len(bundles):
+                    current_bundle = bundles[bundle_i]
+                    if current_bundle:
+                        current_bundle_num_packets = current_bundle[3]
 
             # break if we have no more packets
             if current_bundle is None:
@@ -257,7 +264,8 @@ class TrafficModel(object):
             t += 1
             direction = '-' if current_bundle[0] else '+'
             delay = current_bundle[1]
-            current_bundle[3] -= 1 # we 'used up' this observation
+            current_bundle_num_packets -= 1 # we 'used up' this observation
+            total_num_obs += 1
 
             V.append({})
             for st in self.states:
@@ -293,6 +301,9 @@ class TrafficModel(object):
             opt.insert(0, V[t + 1][previous]["prev"])
             previous = V[t + 1][previous]["prev"]
 
+        if len(opt) != total_num_obs:
+            logging.warning("We saw stream with {} observations but computed {} states".format(total_num_obs, len(opt)))
+
         #print 'The steps of states are ' + ' '.join(opt) + ' with highest probability of %s' % max_prob
         return opt # list of highest probable states, in order
 
@@ -303,7 +314,7 @@ class TrafficModel(object):
         '''
         return (((amount + factor/2)/factor)*factor)
 
-    def _increment_traffic_counters(self, likliest_states, secure_counters):
+    def _increment_traffic_counters(self, bundles, likliest_states, secure_counters):
         '''
         Increment the appropriate secure counter labels for this model given the observed
         list of events specifying when bytes were transferred in Tor.
@@ -324,55 +335,65 @@ class TrafficModel(object):
             Blabbing_Blabbing, Blabbing_Blabbing, Blabbing_Thinking
         '''
 
-        for i in xrange(len(likliest_states)):
-            state = likliest_states[i]
+        num_states = len(likliest_states)
+        i = 0
 
+        for current_bundle in bundles:
+            dir_code = '-' if current_bundle[0] else '+'
             # delay is in microseconds
-            (dir_code, delay) = observed_packet_delays[i]
+            delay = current_bundle[1]
+            num_packets_in_bundle = current_bundle[3]
 
-            # delay of 0 indicates the packets were observed at the same time
-            # log(x=0) is undefined, and log(x<1) is negative
-            # we don't want to count negatives, so override delay if needed
-            ldelay = 0 if delay < 1 else int(math.log(delay))
+            while num_packets_in_bundle > 0:
+                state = likliest_states[i]
 
-            secure_counters.increment('ExitStreamTrafficModelEmissionCount',
-                                      bin=SINGLE_BIN,
-                                      inc=1)
-            label = 'ExitStreamTrafficModelEmissionCount_{}_{}'.format(state, dir_code)
-            secure_counters.increment(label,
-                                      bin=SINGLE_BIN,
-                                      inc=1)
+                # delay of 0 indicates the packets were observed at the same time
+                # log(x=0) is undefined, and log(x<1) is negative
+                # we don't want to count negatives, so override delay if needed
+                ldelay = 0 if delay < 1 else int(math.log(delay))
 
-            secure_counters.increment('ExitStreamTrafficModelLogDelayTime',
-                                      bin=SINGLE_BIN,
-                                      inc=ldelay)
-            label = 'ExitStreamTrafficModelLogDelayTime_{}_{}'.format(state, dir_code)
-            secure_counters.increment(label,
-                                      bin=SINGLE_BIN,
-                                      inc=ldelay)
-
-            secure_counters.increment('ExitStreamTrafficModelSquaredLogDelayTime',
-                                      bin=SINGLE_BIN,
-                                      inc=ldelay*ldelay)
-            label = 'ExitStreamTrafficModelSquaredLogDelayTime_{}_{}'.format(state, dir_code)
-            secure_counters.increment(label,
-                                      bin=SINGLE_BIN,
-                                      inc=ldelay*ldelay)
-
-            if i == 0: # track starting transitions
-                label = 'ExitStreamTrafficModelTransitionCount_START_{}'.format(state)
+                secure_counters.increment('ExitStreamTrafficModelEmissionCount',
+                                          bin=SINGLE_BIN,
+                                          inc=1)
+                label = 'ExitStreamTrafficModelEmissionCount_{}_{}'.format(state, dir_code)
                 secure_counters.increment(label,
                                           bin=SINGLE_BIN,
                                           inc=1)
-            if (i+1) < num_states:
-                next_state = likliest_states[i+1]
-                secure_counters.increment('ExitStreamTrafficModelTransitionCount',
+
+                secure_counters.increment('ExitStreamTrafficModelLogDelayTime',
                                           bin=SINGLE_BIN,
-                                          inc=1)
-                label = 'ExitStreamTrafficModelTransitionCount_{}_{}'.format(state, next_state)
+                                          inc=ldelay)
+                label = 'ExitStreamTrafficModelLogDelayTime_{}_{}'.format(state, dir_code)
                 secure_counters.increment(label,
                                           bin=SINGLE_BIN,
-                                          inc=1)
+                                          inc=ldelay)
+
+                secure_counters.increment('ExitStreamTrafficModelSquaredLogDelayTime',
+                                          bin=SINGLE_BIN,
+                                          inc=ldelay*ldelay)
+                label = 'ExitStreamTrafficModelSquaredLogDelayTime_{}_{}'.format(state, dir_code)
+                secure_counters.increment(label,
+                                          bin=SINGLE_BIN,
+                                          inc=ldelay*ldelay)
+
+                if i == 0: # track starting transitions
+                    label = 'ExitStreamTrafficModelTransitionCount_START_{}'.format(state)
+                    secure_counters.increment(label,
+                                              bin=SINGLE_BIN,
+                                              inc=1)
+                if (i+1) < num_states:
+                    next_state = likliest_states[i+1]
+                    secure_counters.increment('ExitStreamTrafficModelTransitionCount',
+                                              bin=SINGLE_BIN,
+                                              inc=1)
+                    label = 'ExitStreamTrafficModelTransitionCount_{}_{}'.format(state, next_state)
+                    secure_counters.increment(label,
+                                              bin=SINGLE_BIN,
+                                              inc=1)
+
+                # upkeep
+                num_packets_in_bundle -= 1
+                i += 1
 
     def _store_new_packet_bundle(self, circuit_id, stream_id, is_sent,
             micros_since_prev_cell, bundle_ts, payload_bytes_last_packet):
@@ -479,7 +500,7 @@ class TrafficModel(object):
                     # increment result counters
                     counter_start_time = clock()
                     if likliest_states is not None and len(likliest_states) > 0:
-                        self._increment_traffic_counters(likliest_states, secure_counters)
+                        self._increment_traffic_counters(bundles, likliest_states, secure_counters)
 
                     algo_end_time = clock()
                     algo_elapsed = algo_end_time - viterbi_start_time
