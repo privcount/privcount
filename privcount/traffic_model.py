@@ -226,19 +226,26 @@ class TrafficModel(object):
         V = [{}]
         total_num_obs = 0
         bundle_i = 0
+
         current_bundle = bundles[bundle_i]
         current_bundle_num_packets = current_bundle[3]
+
+        # figure out probabilities for starting state
+        # first get info from first observation
+        direction = '-' if current_bundle[0] else '+'
+        delay = current_bundle[1]
+        if delay <= 2: dx = 1
+        else: dx = int(math.exp(int(math.log(delay))))
+
+        # we 'used up' the first observation
+        total_num_obs += 1
+        current_bundle_num_packets -= 1
+
         for st in self.states:
-            direction = '-' if current_bundle[0] else '+'
-            delay = current_bundle[1]
-            current_bundle_num_packets -= 1 # we 'used up' this observation
-            total_num_obs += 1
             if st in self.start_p and self.start_p[st] > 0 and \
                     st in self.emit_p and direction in self.emit_p[st]:
                 # updated emit_p here
                 (dp, mu, sigma) = self.emit_p[st][direction]
-                if delay <= 2: dx = 1
-                else: dx = int(math.exp(int(math.log(delay))))
                 delay_logp = -math.log( dx * sigma * SQRT_2_PI ) - 0.5 * ( ( math.log( dx ) - mu ) / sigma ) ** 2
                 fitprob = math.log(dp) + delay_logp
                 V[0][st] = {"prob": math.log(self.start_p[st]) + fitprob, "prev": None}
@@ -267,7 +274,11 @@ class TrafficModel(object):
             t += 1
             direction = '-' if current_bundle[0] else '+'
             delay = current_bundle[1]
-            current_bundle_num_packets -= 1 # we 'used up' this observation
+            if delay <= 2: dx = 1
+            else: dx = int(math.exp(int(math.log(delay))))
+
+            # we 'used up' this observation
+            current_bundle_num_packets -= 1
             total_num_obs += 1
 
             V.append({})
@@ -279,8 +290,6 @@ class TrafficModel(object):
                             V[t][st] = {"prob": float("-inf"), "prev": prev_st}
                             break
                         (dp, mu, sigma) = self.emit_p[st][direction]
-                        if delay <= 2: dx = 1
-                        else: dx = int(math.exp(int(math.log(delay))))
                         delay_logp = -math.log( dx * sigma * SQRT_2_PI ) - 0.5 * ( ( math.log( dx ) - mu ) / sigma ) ** 2
                         fitprob = math.log(dp) + delay_logp
                         max_prob = max_tr_prob + fitprob
