@@ -44,6 +44,9 @@ class TrafficModel(object):
     # the maximum number of seconds we will take to process a stream before
     # issuing a delay warning
     MAX_STREAM_PROCESSING_TIME = 10.0
+    # the maximum number of seconds we are willing to store cells for a stream
+    # before considering it stale and evicting its stored cell data
+    STREAM_EVICT_TIME = 3600.0
 
     def __init__(self, model_config):
         '''
