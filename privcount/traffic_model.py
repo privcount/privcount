@@ -14,20 +14,6 @@ from heapq import heappush, heappop
 from privcount.counter import register_dynamic_counter, CELL_EVENT, STREAM_EVENT, SecureCounters
 SINGLE_BIN = SecureCounters.SINGLE_BIN
 
-# the approximate MTU of the network
-PACKET_BYTE_COUNT = 1500
-# assume a packet arrived at the same time if it arrived
-# within this many microseconds
-PACKET_ARRIVAL_TIME_TOLERENCE = long(100)
-
-# the maximum number of packets we will handle in a stream before issuing
-# a delay warning. On my relays, this takes 10 seconds of processing time
-# on a large model
-MAX_STREAM_PACKET_COUNT = 10000
-# the maximum number of seconds we will take to process a stream before
-# issuing a delay warning
-MAX_STREAM_PROCESSING_TIME = 10.0
-
 def check_traffic_model_config(model_config):
     '''
     Return True if the given model_config contains the required keys for incrementing counters
@@ -45,6 +31,20 @@ class TrafficModel(object):
     See `test/traffic.model.json` for a simple traffic model that this class can represent.
     '''
 
+    # the approximate MTU of the network
+    PACKET_BYTE_COUNT = 1500
+    # assume a packet arrived at the same time if it arrived
+    # within this many microseconds
+    PACKET_ARRIVAL_TIME_TOLERENCE = long(100)
+
+    # the maximum number of packets we will handle in a stream before issuing
+    # a delay warning. On my relays, this takes 10 seconds of processing time
+    # on a large model
+    MAX_STREAM_PACKET_COUNT = 10000
+    # the maximum number of seconds we will take to process a stream before
+    # issuing a delay warning
+    MAX_STREAM_PROCESSING_TIME = 10.0
+    
     def __init__(self, model_config):
         '''
         Initialize the model with a set of states, probabilities for starting in each of those
