@@ -261,17 +261,17 @@ class TallyServer(ServerFactory, PrivCountServer):
 
                 # we also need noise parameters for all of the traffic model counters
                 # make sure the noise file exists
-                assert 'traffic_noise' in ts_conf
-                ts_conf['traffic_noise'] = normalise_path(ts_conf['traffic_noise'])
-                assert os.path.exists(ts_conf['traffic_noise'])
+                if 'traffic_noise' in ts_conf:
+                    ts_conf['traffic_noise'] = normalise_path(ts_conf['traffic_noise'])
+                    assert os.path.exists(ts_conf['traffic_noise'])
 
-                # import and validate the noise
-                with open(ts_conf['traffic_noise'], 'r') as fin:
-                    traffic_noise_conf = yaml.load(fin)
-                assert tmodel.check_noise_config(traffic_noise_conf)
+                    # import and validate the noise
+                    with open(ts_conf['traffic_noise'], 'r') as fin:
+                        traffic_noise_conf = yaml.load(fin)
+                    assert tmodel.check_noise_config(traffic_noise_conf)
 
-                # store the configs so we can transfer them later
-                ts_conf['traffic_noise'] = traffic_noise_conf
+                    # store the configs so we can transfer them later
+                    ts_conf['traffic_noise'] = traffic_noise_conf
 
                 # supplying a traffic model implies that the tally server
                 # wants to enable all counters associated with that model
@@ -280,17 +280,22 @@ class TallyServer(ServerFactory, PrivCountServer):
 
                 # get the bins and noise that we should use for this model
                 tmodel_bins = tmodel.get_bins_init_config()
-                tmodel_noise = tmodel.get_noise_init_config(traffic_noise_conf)
+                if 'traffic_noise' in ts_conf:
+                    tmodel_noise = tmodel.get_noise_init_config(traffic_noise_conf)
 
-                # sanity check
-                if set(tmodel_bins.keys()) != set(tmodel_noise.keys()):
-                    logging.error("the set of initial bins and noise labels are not equal")
-                    assert False
+                    # sanity check
+                    if set(tmodel_bins.keys()) != set(tmodel_noise.keys()):
+                        logging.error("the set of initial bins and noise labels are not equal")
+                        assert False
 
                 # inject the traffic model counter bins and noise configs, i.e.,
                 # append the traffic model bins and noise to the other configured values
                 ts_conf['counters'].update(tmodel_bins)
-                ts_conf['noise']['counters'].update(tmodel_noise)
+                if 'traffic_noise' in ts_conf:
+                    ts_conf['noise']['counters'].update(tmodel_noise)
+                if set(ts_conf['counters'].keys()) != set(ts_conf['noise']['counters'].keys()):
+                    logging.error("the set of traffic model bins and noise labels are not equal")
+                    assert False
 
             # an optional noise allocation results file
             if 'allocation' in ts_conf:

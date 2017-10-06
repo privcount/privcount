@@ -286,13 +286,13 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'Rend2ClientSentCellCount' : { CELL_EVENT },
 
 # these counters depend on bytes transferred event
-# they are updated in _handle_bytes_event
+# they are updated in _handle_circuit_cell_event_traffic_model
 
 # model-specific counters are added in register_dynamic_counter
-'ExitStreamTrafficModelEmissionCount' : { BYTES_EVENT, STREAM_EVENT },
-'ExitStreamTrafficModelTransitionCount' : { BYTES_EVENT, STREAM_EVENT },
-'ExitStreamTrafficModelLogDelayTime' : { BYTES_EVENT, STREAM_EVENT },
-'ExitStreamTrafficModelSquaredLogDelayTime' : { BYTES_EVENT, STREAM_EVENT },
+'ExitStreamTrafficModelEmissionCount' : { CELL_EVENT, STREAM_EVENT },
+'ExitStreamTrafficModelTransitionCount' : { CELL_EVENT, STREAM_EVENT },
+'ExitStreamTrafficModelLogDelayTime' : { CELL_EVENT, STREAM_EVENT },
+'ExitStreamTrafficModelSquaredLogDelayTime' : { CELL_EVENT, STREAM_EVENT },
 
 'ExitStreamCount' : { STREAM_EVENT },
 'ExitStreamByteCount' : { STREAM_EVENT },

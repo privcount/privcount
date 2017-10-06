@@ -48,8 +48,21 @@ for label in sorted(tmod.get_all_counter_labels()):
 print ""
 
 # sample observations
-observations = [('+', 20), ('+', 10), ('+', 50), ('+', 1000)]
+#packet_bundle = [is_sent, micros_since_prev_cell, bundle_ts, num_packets, payload_bytes_last_packet]
+bundles = []
+
+# first add something like a GET request from client to server
+bundles.append([0, 0, 123456.000000, 1, 200])
+
+# then add several packets as responses
+# the exit reads these as cells and combines similar chunks into 'packet bundles'
+# if the packets arrive at the same-ish time within some tolerance, they go in the same bundle
+bundles.append([1, 0, 123456.500000, 100, 498]) # 100 packets, 99 are full 1500 bytes, the last is 498 bytes
+# more packets arrive after the tolerance so that requires a new bundle
+bundles.append([1, 0, 123456.501000, 50, 0]) # 10 packets, all are full 1500 bytes
+bundles.append([0, 0, 123456.600000, 1, 200]) # another upstream request
+bundles.append([1, 0, 123456.650000, 50, 0]) # more packets down after 50 ms delay
 
 print "The most likly path through the traffic model given the observations is:"
-print "->".join(tmod.run_viterbi(observations))
+print "->".join(tmod._run_viterbi(bundles))
 print ""
