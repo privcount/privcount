@@ -232,7 +232,11 @@ class TrafficModel(object):
 
         # figure out probabilities for starting state
         # first get info from first observation
-        direction = '-' if current_bundle[0] else '+'
+        if current_bundle[0] == None:
+            direction = 'F'
+        else:
+            direction = '-' if current_bundle[0] else '+'
+
         delay = current_bundle[1]
         if delay <= 2: dx = 1
         else: dx = int(math.exp(int(math.log(delay))))
@@ -272,7 +276,10 @@ class TrafficModel(object):
 
             # this represents the next observation
             t += 1
-            direction = '-' if current_bundle[0] else '+'
+            if current_bundle[0] == None:
+                direction = 'F'
+            else:
+                direction = '-' if current_bundle[0] else '+'
             delay = current_bundle[1]
             if delay <= 2: dx = 1
             else: dx = int(math.exp(int(math.log(delay))))
@@ -481,7 +488,7 @@ class TrafficModel(object):
                 self._store_new_packet_bundle(circuit_id, stream_id, is_sent,
                         micros_since_prev_cell, cell_ts, payload_bytes)
 
-    def handle_stream(self, circuit_id, stream_id, secure_counters):
+    def handle_stream(self, circuit_id, stream_id, stream_end_ts, secure_counters):
         # use our observations to find the most likely path through the HMM,
         # and then count some aggregate statistics about that path
 
@@ -490,6 +497,15 @@ class TrafficModel(object):
                 # get the list of packet bundles
                 bundles = self.packets[circuit_id].pop(stream_id)
                 if bundles is not None and len(bundles) > 0:
+                    # add the ending state
+                    prev_packet_bundle = bundles[-1]
+
+                    secs_since_prev_cell = stream_end_ts - prev_packet_bundle[2]
+                    micros_since_prev_cell = max(long(0), long(secs_since_prev_cell * 1000000))
+
+                    end_bundle = [None, micros_since_prev_cell, stream_end_ts, 1, 0]
+                    bundles.append(end_bundle)
+
                     # we log a warning here in case PrivCount hangs in vitterbi
                     # (it could hang processing packets, but that's very unlikely)
                     stream_packet_count = sum(bundle[3] for bundle in bundles)

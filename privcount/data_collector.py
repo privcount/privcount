@@ -1137,7 +1137,7 @@ class Aggregator(ReconnectingClientFactory):
 
         # if we have a traffic model object, pass on the appropriate data
         if self.traffic_model is not None and circid > 0 and strmid > 0:
-            self.traffic_model.handle_stream(circid, strmid, self.secure_counters)
+            self.traffic_model.handle_stream(circid, strmid, end, self.secure_counters)
 
         return True
 
