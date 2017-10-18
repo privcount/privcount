@@ -49,21 +49,26 @@ def interval_boolean_binary_search(fn, lower_bound, upper_bound, tol,
 
     # iteratively search for satisfying input x
     while True:
-#        print('Interval search lower: {}'.format(lower_bound))
-#        print('Interval search upper: {}'.format(upper_bound))
-        if ((upper_bound - lower_bound) < tol):
+        diff_before = upper_bound - lower_bound
+#        print('Interval search lower: {}, upper: {}, diff: {}, tol: {}'.format(lower_bound, upper_bound, diff_before, tol))
+        if (diff_before < tol):
             if return_true is True:
                 return upper_bound
             else:
                 return lower_bound
-        midpoint = float(upper_bound + lower_bound) / 2
+        if '{}'.format(upper_bound) == '{}'.format(lower_bound):
+            return upper_bound
+        midpoint = upper_bound - (diff_before/2.0)
         midpoint_val = fn(midpoint)
-#        print('Midpoint: {}'.format(midpoint))
-#        print('Midpoint val: {}'.format(midpoint_val))
+#        print('Midpoint: {}, val: {}'.format(midpoint, midpoint_val))
         if (midpoint_val is False):
             lower_bound = midpoint
         else:
             upper_bound = midpoint
+        diff_after = upper_bound - lower_bound
+        if diff_before == diff_after and '{}'.format(upper_bound) == '{}'.format(lower_bound):
+            return upper_bound
+
 
 def get_differentially_private_std(sensitivity, epsilon, delta,
                                    tol=DEFAULT_SIGMA_TOLERANCE):
@@ -308,7 +313,7 @@ def get_noise_allocation(noise_parameters,
         estimated_value = counters[stat]['estimated_value']
         if is_circuit_sample_counter(stat):
             estimated_value *= circuit_sample_rate
-        if stat != DEFAULT_DUMMY_COUNTER_NAME:
+        if sensitivity == 0 and stat != DEFAULT_DUMMY_COUNTER_NAME:
             # If you want a counter with no noise, try using 1e-6 instead
             logging.error("sensitivity for {} is zero, calculated sigmas will be zero for all statistics"
                           .format(stat))
