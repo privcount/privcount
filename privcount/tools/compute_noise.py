@@ -221,20 +221,20 @@ stats_parameters = {\
 #        num_interactive_circuits_per_day * epoch_days),
 # removing P2P class
 #    'ExitCircuitP2PStreamCount' : (2 * sensitivity_p2p_circuits, num_p2p_circuits_per_day * epoch_days),
-    'ExitStreamInboundByteCount' : stream_histogram_parameters,
-    'ExitOtherPortStreamInboundByteCount' : other_stream_histogram_parameters,
-    'ExitWebStreamInboundByteCount' : web_stream_histogram_parameters,
+    'ExitStreamInboundByteHistogram' : stream_histogram_parameters,
+    'ExitOtherPortStreamInboundByteHistogram' : other_stream_histogram_parameters,
+    'ExitWebStreamInboundByteHistogram' : web_stream_histogram_parameters,
 # removing interactive stats due to low volume
-#    'ExitInteractiveStreamInboundByteCount' : interactive_stream_histogram_parameters,
+#    'ExitInteractiveStreamInboundByteHistogram' : interactive_stream_histogram_parameters,
 # removing P2P class
-#    'ExitP2PStreamInboundByteCount' : p2p_stream_histogram_parameters,
-    'ExitStreamOutboundByteCount' : stream_histogram_parameters,
-    'ExitOtherPortStreamOutboundByteCount' : other_stream_histogram_parameters,
-    'ExitWebStreamOutboundByteCount' : web_stream_histogram_parameters,
+#    'ExitP2PStreamInboundByteHistogram' : p2p_stream_histogram_parameters,
+    'ExitStreamOutboundByteHistogram' : stream_histogram_parameters,
+    'ExitOtherPortStreamOutboundByteHistogram' : other_stream_histogram_parameters,
+    'ExitWebStreamOutboundByteHistogram' : web_stream_histogram_parameters,
 # removing interactive stats due to low volume
-#    'ExitInteractiveStreamOutboundByteCount' : interactive_stream_histogram_parameters,
+#    'ExitInteractiveStreamOutboundByteHistogram' : interactive_stream_histogram_parameters,
 # removing P2P class
-#    'ExitP2PStreamOutboundByteCount' : p2p_stream_histogram_parameters,
+#    'ExitP2PStreamOutboundByteHistogram' : p2p_stream_histogram_parameters,
     'ExitStreamByteRatio' : stream_histogram_parameters,
     'ExitOtherPortStreamByteRatio' : other_stream_histogram_parameters,
     'ExitWebStreamByteRatio' : web_stream_histogram_parameters

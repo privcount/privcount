@@ -1045,10 +1045,10 @@ class Aggregator(ReconnectingClientFactory):
         self.secure_counters.increment('ExitStreamByteCount',
                                        bin=SINGLE_BIN,
                                        inc=totalbw)
-        self.secure_counters.increment('ExitStreamOutboundByteCount',
+        self.secure_counters.increment('ExitStreamOutboundByteHistogram',
                                        bin=writebw,
                                        inc=1)
-        self.secure_counters.increment('ExitStreamInboundByteCount',
+        self.secure_counters.increment('ExitStreamInboundByteHistogram',
                                        bin=readbw,
                                        inc=1)
         self.secure_counters.increment('ExitStreamByteRatio',
@@ -1065,10 +1065,10 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment('ExitWebStreamByteCount',
                                            bin=SINGLE_BIN,
                                            inc=totalbw)
-            self.secure_counters.increment('ExitWebStreamOutboundByteCount',
+            self.secure_counters.increment('ExitWebStreamOutboundByteHistogram',
                                            bin=writebw,
                                            inc=1)
-            self.secure_counters.increment('ExitWebStreamInboundByteCount',
+            self.secure_counters.increment('ExitWebStreamInboundByteHistogram',
                                            bin=readbw,
                                            inc=1)
             self.secure_counters.increment('ExitWebStreamByteRatio',
@@ -1084,10 +1084,10 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment('ExitInteractiveStreamByteCount',
                                            bin=SINGLE_BIN,
                                            inc=totalbw)
-            self.secure_counters.increment('ExitInteractiveStreamOutboundByteCount',
+            self.secure_counters.increment('ExitInteractiveStreamOutboundByteHistogram',
                                            bin=writebw,
                                            inc=1)
-            self.secure_counters.increment('ExitInteractiveStreamInboundByteCount',
+            self.secure_counters.increment('ExitInteractiveStreamInboundByteHistogram',
                                            bin=readbw,
                                            inc=1)
             self.secure_counters.increment('ExitInteractiveStreamByteRatio',
@@ -1103,10 +1103,10 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment('ExitP2PStreamByteCount',
                                            bin=SINGLE_BIN,
                                            inc=totalbw)
-            self.secure_counters.increment('ExitP2PStreamOutboundByteCount',
+            self.secure_counters.increment('ExitP2PStreamOutboundByteHistogram',
                                            bin=writebw,
                                            inc=1)
-            self.secure_counters.increment('ExitP2PStreamInboundByteCount',
+            self.secure_counters.increment('ExitP2PStreamInboundByteHistogram',
                                            bin=readbw,
                                            inc=1)
             self.secure_counters.increment('ExitP2PStreamByteRatio',
@@ -1122,10 +1122,10 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment('ExitOtherPortStreamByteCount',
                                            bin=SINGLE_BIN,
                                            inc=totalbw)
-            self.secure_counters.increment('ExitOtherPortStreamOutboundByteCount',
+            self.secure_counters.increment('ExitOtherPortStreamOutboundByteHistogram',
                                            bin=writebw,
                                            inc=1)
-            self.secure_counters.increment('ExitOtherPortStreamInboundByteCount',
+            self.secure_counters.increment('ExitOtherPortStreamInboundByteHistogram',
                                            bin=readbw,
                                            inc=1)
             self.secure_counters.increment('ExitOtherPortStreamByteRatio',

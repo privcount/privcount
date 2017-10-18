@@ -116,19 +116,19 @@ counters:
     ExitStreamByteCount:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream
-    ExitStreamInboundByteCount:
+    ExitStreamInboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream for IRC/SSH
-    ExitInteractiveStreamInboundByteCount:
+    ExitInteractiveStreamInboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream for port>=10000 and no other class
-    ExitOtherPortStreamInboundByteCount:
+    ExitOtherPortStreamInboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream for P2P
-    ExitP2PStreamInboundByteCount:
+    ExitP2PStreamInboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes received from server per completed stream for HTTP/HTTPS
-    ExitWebStreamInboundByteCount:
+    ExitWebStreamInboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes received per completed stream for IRC/SSH
     ExitInteractiveStreamByteCount:
@@ -137,19 +137,19 @@ counters:
     ExitOtherPortStreamByteCount:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream
-    ExitStreamOutboundByteCount:
+    ExitStreamOutboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream for IRC/SSH
-    ExitInteractiveStreamOutboundByteCount:
+    ExitInteractiveStreamOutboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream for port>=10000 and no other class
-    ExitOtherPortStreamOutboundByteCount:
+    ExitOtherPortStreamOutboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream for P2P
-    ExitP2PStreamOutboundByteCount:
+    ExitP2PStreamOutboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes sent to server per completed stream for HTTP/HTTPS
-    ExitWebStreamOutboundByteCount:
+    ExitWebStreamOutboundByteHistogram:
         sigma: 0.0
     # EXIT - bytes received per completed stream for P2P
     ExitP2PStreamByteCount:
