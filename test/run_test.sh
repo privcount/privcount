@@ -947,6 +947,7 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e "Missing entry for relay" \
   -e "Unwanted event type PRIVCOUNT_CIRCUIT_ENDED" \
   -e "Unwanted event type PRIVCOUNT_CONNECTION_ENDED" \
+  -e "Unwanted event type PRIVCOUNT_STREAM_BYTES_TRANSFERRED" \
   -e "Unexpected PeerIPAddressConsensusRelayCount value" \
   -e "is zero, this provides no differential privacy" \
   -e "calculated sigmas will be zero for all statistics" \
