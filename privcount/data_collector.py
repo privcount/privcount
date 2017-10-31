@@ -439,7 +439,6 @@ class Aggregator(ReconnectingClientFactory):
         self.last_event_time = None
         self.num_rotations = 0
         self.circ_info = {}
-        self.strm_bytes = {}
         self.cli_ips_rotated = time()
         self.cli_ips_current = {}
         self.cli_ips_previous = {}
@@ -933,15 +932,6 @@ class Aggregator(ReconnectingClientFactory):
         if event_code == 'PRIVCOUNT_CIRCUIT_CELL':
             return self._handle_tagged_event(event_code, items)
 
-        # these events have positional fields: order matters
-        elif event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
-            if len(items) == Aggregator.STREAM_BYTES_ITEMS:
-                return self._handle_bytes_event(items[:Aggregator.STREAM_BYTES_ITEMS])
-            else:
-                logging.warning("Rejected malformed {} event"
-                                .format(event_code))
-                return False
-
         elif event_code == 'PRIVCOUNT_STREAM_ENDED':
             if len(items) == Aggregator.STREAM_ENDED_ITEMS:
                 return self._handle_stream_event(items[:Aggregator.STREAM_ENDED_ITEMS])
@@ -1016,30 +1006,6 @@ class Aggregator(ReconnectingClientFactory):
             return True
         return True
 
-    STREAM_BYTES_ITEMS = 6
-
-    # Positional event: fields is a list of Values.
-    # All fields are mandatory, order matters
-    # 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED', ChanID, CircID, StreamID, isOutbound, BW, Time
-    # See doc/TorEvents.markdown for details
-    def _handle_bytes_event(self, items):
-        assert(len(items) == Aggregator.STREAM_BYTES_ITEMS)
-
-        # if we get an unexpected byte event, warn but ignore
-        if self.traffic_model == None:
-            logging.warning("No traffic model for stream bytes event")
-            return True
-
-        chanid, circid, strmid, is_outbound, bw_bytes = [int(v) for v in items[0:5]]
-        ts = float(items[5])
-
-        # TODO: secure delete
-        #del items
-
-        self.strm_bytes.setdefault(strmid, {}).setdefault(circid, [])
-        self.strm_bytes[strmid][circid].append([bw_bytes, is_outbound, ts])
-        return True
-
     STREAM_ENDED_ITEMS = 10
 
     # Positional event: fields is a list of Values.
@@ -1076,15 +1042,27 @@ class Aggregator(ReconnectingClientFactory):
         self.secure_counters.increment('ExitStreamCount',
                                        bin=SINGLE_BIN,
                                        inc=1)
+
         self.secure_counters.increment('ExitStreamByteCount',
                                        bin=SINGLE_BIN,
                                        inc=totalbw)
         self.secure_counters.increment('ExitStreamOutboundByteCount',
+                                       bin=SINGLE_BIN,
+                                       inc=writebw)
+        self.secure_counters.increment('ExitStreamInboundByteCount',
+                                       bin=SINGLE_BIN,
+                                       inc=readbw)
+
+        self.secure_counters.increment('ExitStreamByteHistogram',
+                                       bin=totalbw,
+                                       inc=1)
+        self.secure_counters.increment('ExitStreamOutboundByteHistogram',
                                        bin=writebw,
                                        inc=1)
-        self.secure_counters.increment('ExitStreamInboundByteCount',
+        self.secure_counters.increment('ExitStreamInboundByteHistogram',
                                        bin=readbw,
                                        inc=1)
+
         self.secure_counters.increment('ExitStreamByteRatio',
                                        bin=ratio,
                                        inc=1)
@@ -1096,15 +1074,27 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment('ExitWebStreamCount',
                                            bin=SINGLE_BIN,
                                            inc=1)
+
             self.secure_counters.increment('ExitWebStreamByteCount',
                                            bin=SINGLE_BIN,
                                            inc=totalbw)
             self.secure_counters.increment('ExitWebStreamOutboundByteCount',
+                                           bin=SINGLE_BIN,
+                                           inc=writebw)
+            self.secure_counters.increment('ExitWebStreamInboundByteCount',
+                                           bin=SINGLE_BIN,
+                                           inc=readbw)
+
+            self.secure_counters.increment('ExitWebStreamByteHistogram',
+                                           bin=totalbw,
+                                           inc=1)
+            self.secure_counters.increment('ExitWebStreamOutboundByteHistogram',
                                            bin=writebw,
                                            inc=1)
-            self.secure_counters.increment('ExitWebStreamInboundByteCount',
+            self.secure_counters.increment('ExitWebStreamInboundByteHistogram',
                                            bin=readbw,
                                            inc=1)
+
             self.secure_counters.increment('ExitWebStreamByteRatio',
                                            bin=ratio,
                                            inc=1)
@@ -1115,15 +1105,27 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment('ExitInteractiveStreamCount',
                                            bin=SINGLE_BIN,
                                            inc=1)
+
             self.secure_counters.increment('ExitInteractiveStreamByteCount',
                                            bin=SINGLE_BIN,
                                            inc=totalbw)
             self.secure_counters.increment('ExitInteractiveStreamOutboundByteCount',
+                                           bin=SINGLE_BIN,
+                                           inc=writebw)
+            self.secure_counters.increment('ExitInteractiveStreamInboundByteCount',
+                                           bin=SINGLE_BIN,
+                                           inc=readbw)
+
+            self.secure_counters.increment('ExitInteractiveStreamByteHistogram',
+                                           bin=totalbw,
+                                           inc=1)
+            self.secure_counters.increment('ExitInteractiveStreamOutboundByteHistogram',
                                            bin=writebw,
                                            inc=1)
-            self.secure_counters.increment('ExitInteractiveStreamInboundByteCount',
+            self.secure_counters.increment('ExitInteractiveStreamInboundByteHistogram',
                                            bin=readbw,
                                            inc=1)
+
             self.secure_counters.increment('ExitInteractiveStreamByteRatio',
                                            bin=ratio,
                                            inc=1)
@@ -1134,15 +1136,27 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment('ExitP2PStreamCount',
                                            bin=SINGLE_BIN,
                                            inc=1)
+
             self.secure_counters.increment('ExitP2PStreamByteCount',
                                            bin=SINGLE_BIN,
                                            inc=totalbw)
             self.secure_counters.increment('ExitP2PStreamOutboundByteCount',
+                                           bin=SINGLE_BIN,
+                                           inc=writebw)
+            self.secure_counters.increment('ExitP2PStreamInboundByteCount',
+                                           bin=SINGLE_BIN,
+                                           inc=readbw)
+
+            self.secure_counters.increment('ExitP2PStreamByteHistogram',
+                                           bin=totalbw,
+                                           inc=1)
+            self.secure_counters.increment('ExitP2PStreamOutboundByteHistogram',
                                            bin=writebw,
                                            inc=1)
-            self.secure_counters.increment('ExitP2PStreamInboundByteCount',
+            self.secure_counters.increment('ExitP2PStreamInboundByteHistogram',
                                            bin=readbw,
                                            inc=1)
+
             self.secure_counters.increment('ExitP2PStreamByteRatio',
                                            bin=ratio,
                                            inc=1)
@@ -1153,15 +1167,27 @@ class Aggregator(ReconnectingClientFactory):
             self.secure_counters.increment('ExitOtherPortStreamCount',
                                            bin=SINGLE_BIN,
                                            inc=1)
+
             self.secure_counters.increment('ExitOtherPortStreamByteCount',
                                            bin=SINGLE_BIN,
                                            inc=totalbw)
             self.secure_counters.increment('ExitOtherPortStreamOutboundByteCount',
+                                           bin=SINGLE_BIN,
+                                           inc=writebw)
+            self.secure_counters.increment('ExitOtherPortStreamInboundByteCount',
+                                           bin=SINGLE_BIN,
+                                           inc=readbw)
+
+            self.secure_counters.increment('ExitOtherPortStreamByteHistogram',
+                                           bin=totalbw,
+                                           inc=1)
+            self.secure_counters.increment('ExitOtherPortStreamOutboundByteHistogram',
                                            bin=writebw,
                                            inc=1)
-            self.secure_counters.increment('ExitOtherPortStreamInboundByteCount',
+            self.secure_counters.increment('ExitOtherPortStreamInboundByteHistogram',
                                            bin=readbw,
                                            inc=1)
+
             self.secure_counters.increment('ExitOtherPortStreamByteRatio',
                                            bin=ratio,
                                            inc=1)
@@ -1169,21 +1195,10 @@ class Aggregator(ReconnectingClientFactory):
                                            bin=lifetime,
                                            inc=1)
 
-        # if we have a traffic model object, then we should use our observations to find the
-        # most likely path through the HMM, and then count some aggregate statistics
-        # about that path
-        if self.traffic_model is not None and strmid in self.strm_bytes and circid in self.strm_bytes[strmid]:
-            byte_events = self.strm_bytes[strmid][circid]
-            strm_start_ts = start
-            # let the model handle the model-specific counter increments
-            self.traffic_model.increment_traffic_counters(strm_start_ts, byte_events, self.secure_counters)
+        # if we have a traffic model object, pass on the appropriate data
+        if self.traffic_model is not None and circid > 0 and strmid > 0:
+            self.traffic_model.handle_stream(circid, strmid, end, self.secure_counters)
 
-        # clear all 'traffic' data for this stream
-        # TODO: secure delete
-        if strmid in self.strm_bytes:
-            self.strm_bytes[strmid].pop(circid, None)
-            if len(self.strm_bytes[strmid]) == 0:
-                self.strm_bytes.pop(strmid, None)
         return True
 
     @staticmethod
@@ -1839,6 +1854,48 @@ class Aggregator(ReconnectingClientFactory):
                 self.secure_counters.increment('Rend2ClientSentCellCount',
                                                bin=SINGLE_BIN,
                                                inc=1)
+
+        if self.traffic_model is not None:
+            # only exits count traffic model cells
+            is_exit = get_flag_value("IsExitFlag",
+                                     fields, event_desc,
+                                     is_mandatory=False,
+                                     default=False)
+            if is_exit:
+                # cells should only ever be on the inbound circuit-side of the exit
+                # we only want to count cells on one side so we don't double count
+                is_outbound = get_flag_value("IsOutboundFlag",
+                                         fields, event_desc,
+                                         is_mandatory=False,
+                                         default=False)
+                if not is_outbound:
+                    # we only care about external stream data, not protocol cells
+                    command = get_string_value("RelayCellCommandString",
+                                                  fields, event_desc,
+                                                  is_mandatory=False,
+                                                  default="NONE")
+                    if command == "DATA":
+                        # now the traffic model wants the cell
+                        circuit_id = get_int_value("PreviousCircuitId",
+                                                fields, event_desc,
+                                                is_mandatory=False,
+                                                default=0)
+                        stream_id = get_int_value("RelayCellStreamId",
+                                                fields, event_desc,
+                                                is_mandatory=False,
+                                                default=0)
+                        payload_bytes = get_int_value("RelayCellPayloadByteCount",
+                                                fields, event_desc,
+                                                is_mandatory=False,
+                                                default=0)
+                        cell_time = get_float_value("EventTimestamp",
+                                                fields, event_desc,
+                                                is_mandatory=False,
+                                                default=0)
+                        if circuit_id > 0 and stream_id > 0 and \
+                                payload_bytes > 0 and cell_time > 0.0:
+                            self.traffic_model.handle_cell(circuit_id, stream_id,
+                                                    is_sent, payload_bytes, cell_time)
 
         # we processed and handled the event
         return True

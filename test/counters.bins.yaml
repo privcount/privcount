@@ -298,7 +298,7 @@ counters:
         bins:
         - [-.inf, .inf]
     # EXIT - bytes received from server per completed stream
-    ExitStreamInboundByteCount:
+    ExitStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -312,7 +312,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream for IRC/SSH
-    ExitInteractiveStreamInboundByteCount:
+    ExitInteractiveStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -326,7 +326,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream for port>=10000 and no other class
-    ExitOtherPortStreamInboundByteCount:
+    ExitOtherPortStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -340,7 +340,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream for P2P
-    ExitP2PStreamInboundByteCount:
+    ExitP2PStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -354,7 +354,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes received from server per completed stream for HTTP/HTTPS
-    ExitWebStreamInboundByteCount:
+    ExitWebStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -376,7 +376,7 @@ counters:
         bins:
         - [-.inf, .inf]
     # EXIT - bytes sent to server per completed stream
-    ExitStreamOutboundByteCount:
+    ExitStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -390,7 +390,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream for IRC/SSH
-    ExitInteractiveStreamOutboundByteCount:
+    ExitInteractiveStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -404,7 +404,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream for port>=10000 and no other class
-    ExitOtherPortStreamOutboundByteCount:
+    ExitOtherPortStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -418,7 +418,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream for P2P
-    ExitP2PStreamOutboundByteCount:
+    ExitP2PStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -432,7 +432,7 @@ counters:
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
     # EXIT - bytes sent to server per completed stream for HTTP/HTTPS
-    ExitWebStreamOutboundByteCount:
+    ExitWebStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]

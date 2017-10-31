@@ -30,7 +30,7 @@ You can pass the following arguments to run_test.sh:
     -n chutney-flavour
     -o chutney-connections (streams)
     -b chutney-bytes (per stream)
-    
+
 For more advanced options, use the environmental variables in the chutney
 README.
 
@@ -39,7 +39,7 @@ README.
 To display all the bins for a counter, use:
 
     jq .Tally.CounterName.bins test/privcount.outcome.latest.json
-    
+
 Where 'CounterName' can be replaced by any PrivCount counter name.
 
 More specific jq expressions are used in some tests to retrieve particular
@@ -118,7 +118,7 @@ The ZeroCount is 0 in all valid outcome files.
     '.Tally.ExitActiveCircuitCount.bins[0][2] +
      .Tally.ExitInactiveCircuitCount.bins[0][2] ==
      .Tally.ExitCircuitCount.bins[0][2]'
-     
+
 This is the sum of ExitActiveCircuitCount and ExitInactiveCircuitCount.
 
 There are approximately 3 exit circuits per chutney tor (including
@@ -140,7 +140,7 @@ options and user/password sent to the SOCKSPort.)
 For example:
 
     run_test.sh ... -n basic -p `seq 8000 8007`
-    
+
 Produces 2 active circuits.
 (Sometimes larger chutney networks don't work with PrivCount due to
 timing issues, see bug #272 for details.)
@@ -148,7 +148,7 @@ timing issues, see bug #272 for details.)
 - ExitInactiveCircuitCount
 
     .Tally.ExitInactiveCircuitCount.bins[0][2] is ~10
-    
+
 See the note under ExitCircuitCount.
 
 - ExitInteractiveCircuitCount
@@ -166,7 +166,7 @@ TODO: test other ports.
 
     '(.Tally.ExitCircuitLifeTime.bins | map(.[2]) | add) ==
      .Tally.ExitCircuitCount.bins[0][2]'
-      
+
 The sum of all the bins is equal to ExitCircuitCount. Typically, chutney
 runs for less than 2 minutes, so all circuit lifetimes are in the [0, 120)
 bin. To extend circuit lifetimes, change the PrivCount collect_period to
@@ -191,7 +191,7 @@ There is 1 stream per chutney Tor client.
 To add more streams, use:
 
     run_test.sh ... -o 10
-        
+
 to ask clients to make multiple data source connections, or add more
 clients. (See the notes under ExitActiveCircuitCount.)
 
@@ -211,7 +211,7 @@ ExitCircuitLifeTime.
 To increase stream lifetime, send more bytes:
 
     run_test.sh ... -b 100000000
-    
+
 On my machine, sending 100MB takes about 3 seconds.
 
 - ExitInteractiveStreamLifeTime
@@ -270,7 +270,7 @@ details.
 - ExitStreamByteCount
 
     '.Tally.ExitStreamByteCount.bins[0][2] == 10240'
-    
+
 The byte count is the sum of the Inbound and Outbound byte counts, but
 there is no simple formula, because the Inbound and Outbound counts are
 binned, but the ExitStreamByteCount is a single counter.
@@ -290,39 +290,39 @@ TODO: send zero-byte requests.
 
 See the port variant notes under ExitInteractiveCircuitCount.
 
-- ExitStreamInboundByteCount
+- ExitStreamInboundByteHistogram
 
 See the note under ExitStreamByteRatio that explains why this isn't tested.
 
 TODO: test Inbound bytes.
 
-- ExitInteractiveStreamInboundByteCount
-- ExitOtherPortStreamInboundByteCount
-- ExitP2PStreamInboundByteCount
-- ExitWebStreamInboundByteCount
+- ExitInteractiveStreamInboundByteHistogram
+- ExitOtherPortStreamInboundByteHistogram
+- ExitP2PStreamInboundByteHistogram
+- ExitWebStreamInboundByteHistogram
 
 See the port variant notes under ExitInteractiveCircuitCount.
 
-- ExitStreamOutboundByteCount
+- ExitStreamOutboundByteHistogram
 
-    '.Tally.ExitStreamOutboundByteCount.bins[1][2] == 1'
-    
+    '.Tally.ExitStreamOutboundByteHistogram.bins[1][2] == 1'
+
 The total count of all bins matches the ExitStreamCount.
 Use the instructions under ExitStreamByteCount to change the byte count.
-The ExitStreamOutboundByteCount is binned, so you will need to send at
+The ExitStreamOutboundByteHistogram is binned, so you will need to send at
 least 32768 bytes to see the bin counts change.
 
-- ExitInteractiveStreamOutboundByteCount
-- ExitOtherPortStreamOutboundByteCount
-- ExitP2PStreamOutboundByteCount
-- ExitWebStreamOutboundByteCount
+- ExitInteractiveStreamOutboundByteHistogram
+- ExitOtherPortStreamOutboundByteHistogram
+- ExitP2PStreamOutboundByteHistogram
+- ExitWebStreamOutboundByteHistogram
 
 See the port variant notes under ExitInteractiveCircuitCount.
 
 - ExitStreamByteRatio
 
     '.Tally.ExitStreamByteRatio.bins[-1][2] == 1'
-    
+
 The total count of all bins also matches the ExitStreamCount.
 Chutney only sends Outbound bytes, so every stream will be in the highest
 bin.
@@ -343,7 +343,7 @@ See the port variant notes under ExitInteractiveCircuitCount.
 - ExitStreamTrafficModelEmissionCount
 
     '.Tally.ExitStreamTrafficModelEmissionCount.bins[0][2] == 1'
-    
+
 There is one Emission for every 1500 bytes (or non-zero remainder)
 transmitted. Inbound and Outbound emissions are calculated separately.
 Use the instructions under ExitStreamByteCount to change the byte count.
@@ -364,7 +364,7 @@ increase the [Squared]LogDelayTime.
 - ExitStreamTrafficModelTransitionCount
 
     '.Tally.ExitStreamTrafficModelTransitionCount.bins[0][2] == 0'
-    
+
 Transitions depend on the specific traffic model.
 In the default test model, you need at least 2 Emissions (1501 bytes) to
 have 1 Transition. See the instructions under ExitStreamByteCount for
@@ -377,7 +377,7 @@ Transitions from the START state are not counted in this total.
 - ExitStreamTrafficModelEmissionCount_<STATE>_<DIRECTION>
 
     '.Tally["ExitStreamTrafficModelEmissionCount_Thinking_+"].bins[0][2] == 1'
-    
+
 These counters sum to the ExitStreamTrafficModelEmissionCount.
 See the notes under ExitStreamTrafficModelEmissionCount.
 
@@ -415,7 +415,7 @@ See the notes under ExitStreamTrafficModelTransitionCount.
 - EntryConnectionCount
 
     '.Tally.EntryConnectionCount.bins[0][2] == 3'
-    
+
 Each client makes EntryConnections to one or more Guards. Connections from
 relays are ignored. In the smallest networks, clients use multiple guards,
 so they can build multiple distinct paths.
@@ -423,7 +423,7 @@ so they can build multiple distinct paths.
 - EntryConnectionLifeTime
 
     '.Tally.EntryConnectionLifeTime.bins[0][2] == 3'
-    
+
 Since the chutney network only runs for ~60 seconds, all
 ConnectionLifeTimes fall in the [0, 120) bin.
 Use the instructions under ExitCircuitLifeTime to increase the network
@@ -441,10 +441,10 @@ cannot know which circuits are from clients and which are from relays.
 - EntryActiveCircuitCount
 
     '.Tally.EntryActiveCircuitCount.bins[0][2] == 1'
-    
+
     '.Tally.EntryActiveCircuitCount.bins[0][2] ==
      .Tally.ExitActiveCircuitCount.bins[0][2]'
-     
+
 The EntryActiveCircuitCount is the same as the ExitActiveCircuitCount, as
 setting up a 3-hop circuit takes ~6 cells, opening a stream ~2 cells, and
 sending data takes 1 Outbound cell per 498 bytes.
@@ -483,7 +483,7 @@ and therefore the number of Outbound cells. You will need to send around
 - EntryCircuitCellRatio
 
     '.Tally.EntryCircuitCellRatio.bins | map(select(.[2] > 0)) | .[0][1] == 1'
-     
+
 When sending a small amount of Outbound data, the number of Outbound cells
 exceeds the number of Inbound cells by a small margin.
 
