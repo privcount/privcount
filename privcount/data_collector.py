@@ -932,6 +932,15 @@ class Aggregator(ReconnectingClientFactory):
         if event_code == 'PRIVCOUNT_CIRCUIT_CELL':
             return self._handle_tagged_event(event_code, items)
 
+        # these events have positional fields: order matters
+        elif event_code == 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED':
+            if len(items) == Aggregator.STREAM_BYTES_ITEMS:
+                return self._handle_bytes_event(items[:Aggregator.STREAM_BYTES_ITEMS])
+            else:
+                logging.warning("Rejected malformed {} event"
+                                .format(event_code))
+                return False
+
         elif event_code == 'PRIVCOUNT_STREAM_ENDED':
             if len(items) == Aggregator.STREAM_ENDED_ITEMS:
                 return self._handle_stream_event(items[:Aggregator.STREAM_ENDED_ITEMS])
@@ -1004,6 +1013,25 @@ class Aggregator(ReconnectingClientFactory):
             logging.warning("Unexpected {} event when handling: '{}'"
                             .format(event_code, " ".join(items)))
             return True
+        return True
+
+    STREAM_BYTES_ITEMS = 6
+
+    # Positional event: fields is a list of Values.
+    # All fields are mandatory, order matters
+    # 'PRIVCOUNT_STREAM_BYTES_TRANSFERRED', ChanID, CircID, StreamID, isOutbound, BW, Time
+    # See doc/TorEvents.markdown for details
+    def _handle_bytes_event(self, items):
+        assert(len(items) == Aggregator.STREAM_BYTES_ITEMS)
+
+        chanid, circid, strmid, is_outbound, bw_bytes = [int(v) for v in items[0:5]]
+        ts = float(items[5])
+
+        # TODO: secure delete
+        #del items
+
+        # This event was used for traffic models, but it is now ignored
+
         return True
 
     STREAM_ENDED_ITEMS = 10
