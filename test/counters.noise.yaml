@@ -776,3 +776,48 @@ counters:
     Intro2ClientCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    ExitP2PStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitWebStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInteractiveStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitOtherPortStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitP2PStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitWebStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInteractiveStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitOtherPortStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitP2PStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitWebStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInteractiveStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitOtherPortStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0

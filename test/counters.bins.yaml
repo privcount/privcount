@@ -2320,3 +2320,98 @@ counters:
     Intro2ClientCircuitCount:
         bins:
         - [-.inf, .inf]
+    ExitP2PStreamByteHistogram:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    ExitWebStreamByteHistogram:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    ExitInteractiveStreamByteHistogram:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    ExitStreamByteHistogram:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    ExitOtherPortStreamByteHistogram:
+        bins:
+        - [0.0, 1.0]
+        - [1.0, 32768.0]
+        - [32768.0, 65536.0]
+        - [65536.0, 131072.0]
+        - [131072.0, 262144.0]
+        - [262144.0, 524288.0]
+        - [524288.0, 1048576.0]
+        - [1048576.0, 2097152.0]
+        - [2097152.0, 4194304.0]
+        - [4194304.0, 8388608.0]
+        - [8388608.0, .inf]
+    ExitP2PStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitWebStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitInteractiveStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitOtherPortStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitP2PStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitWebStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitInteractiveStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitOtherPortStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]

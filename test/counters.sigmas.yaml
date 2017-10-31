@@ -537,3 +537,33 @@ counters:
         sigma: 0.0
     Intro2ClientCircuitCount:
         sigma: 0.0
+    ExitP2PStreamByteHistogram:
+        sigma: 0.0
+    ExitWebStreamByteHistogram:
+        sigma: 0.0
+    ExitInteractiveStreamByteHistogram:
+        sigma: 0.0
+    ExitStreamByteHistogram:
+        sigma: 0.0
+    ExitOtherPortStreamByteHistogram:
+        sigma: 0.0
+    ExitP2PStreamInboundByteCount:
+        sigma: 0.0
+    ExitWebStreamInboundByteCount:
+        sigma: 0.0
+    ExitInteractiveStreamInboundByteCount:
+        sigma: 0.0
+    ExitStreamInboundByteCount:
+        sigma: 0.0
+    ExitOtherPortStreamInboundByteCount:
+        sigma: 0.0
+    ExitP2PStreamOutboundByteCount:
+        sigma: 0.0
+    ExitWebStreamOutboundByteCount:
+        sigma: 0.0
+    ExitInteractiveStreamOutboundByteCount:
+        sigma: 0.0
+    ExitStreamOutboundByteCount:
+        sigma: 0.0
+    ExitOtherPortStreamOutboundByteCount:
+        sigma: 0.0
