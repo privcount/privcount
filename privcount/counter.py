@@ -832,17 +832,17 @@ def _extra_counter_keys(first, second):
     '''
     return set(first.keys()).difference(second.keys())
 
-def extra_counters(first, second, first_name, second_name):
+def extra_counters(first, second, first_name, second_name, action_name):
     '''
     Return the extra counter keys in first that are not in second.
-    Warn about any missing counters.
+    Warn about taking action_name on any missing counters.
     '''
     extra_keys = _extra_counter_keys(first, second)
     # Log missing keys
     # sort names alphabetically, so the logs are in a sensible order
     for key in sorted(extra_keys):
-            logging.warning("skipping counter '{}' because it has a {}, but no {}"
-                            .format(key, first_name, second_name))
+        logging.info("{} counter '{}' because it has a {}, but no {}"
+                     .format(action_name, key, first_name, second_name))
 
     return extra_keys
 
@@ -852,14 +852,14 @@ def _common_counter_keys(first, second):
     '''
     return set(first.keys()).intersection(second.keys())
 
-def common_counters(first, second, first_name, second_name):
+def common_counters(first, second, first_name, second_name, action_name):
     '''
     Return the counter keys shared by first and second.
-    Warn about any missing counters.
+    Warn about taking action_name on any missing counters.
     '''
     # ignore the extra counters return values, we just want the logging
-    extra_counters(first, second, first_name, second_name)
-    extra_counters(second, first, second_name, first_name)
+    extra_counters(first, second, first_name, second_name, action_name)
+    extra_counters(second, first, second_name, first_name, action_name)
 
     # return common keys
     return _common_counter_keys(first, second)
@@ -881,7 +881,7 @@ def _skip_missing(counters, expected_subkey, detailed_source=None):
         if expected_subkey in counters[key]:
             valid_counters[key] = counters[key]
         else:
-            logging.warning("skipping counter '{}' because it is configured as a {} counter, but it does not have any {} value"
+            logging.warning("ignoring counter '{}' because it is configured as a {} counter, but it does not have any {} value"
                             .format(key, detailed_source, expected_subkey))
     return valid_counters
 
@@ -916,7 +916,8 @@ def combine_counters(bins, sigmas):
 
     # we allow the tally server to update the set of counters
     # (we can't count keys for which we don't have both bins and sigmas)
-    common_keys = common_counters(bins, sigmas, 'bins', 'sigmas')
+    common_keys = common_counters(bins, sigmas, 'bins', 'sigma',
+                                  'ignoring')
 
     counters_combined = {}
     for key in common_keys:
@@ -1106,16 +1107,11 @@ class CollectionDelay(object):
 
         # Check that we have the same set of counters
         common_sigmas = common_counters(previous_sigmas, proposed_sigmas,
-                                        'previous sigma', 'proposed sigma')
+                                        'previous sigma', 'proposed sigma',
+                                        'can''t compare sigmas on')
         if len(common_sigmas) != len(previous_sigmas):
-            # ignore the extra counters return values, we just want the logging
-            extra_counters(previous_sigmas, proposed_sigmas,
-                           'previous sigmas', 'proposed sigmas')
             return True
         if len(common_sigmas) != len(proposed_sigmas):
-            # ignore the extra counters return values, we just want the logging
-            extra_counters(proposed_sigmas, previous_sigmas,
-                           'proposed sigmas', 'previous sigmas')
             return True
 
         # check the sigma values are the same
