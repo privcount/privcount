@@ -2278,3 +2278,45 @@ counters:
     NonEntryConnectionCount:
         bins:
         - [-.inf, .inf]
+    Intro2ServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Rend2FailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Intro2FailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Rend2SuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Intro2SuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientCircuitCount:
+        bins:
+        - [-.inf, .inf]

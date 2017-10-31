@@ -758,3 +758,17 @@ TODO: merge and integrate with existing counter tests
 - Entry2RelayOnAddressConnectionCount
 - NonEntry2RelayOnAddressConnectionCount
 - NonEntryConnectionCount
+- Intro2ServiceCircuitCount
+- Rend2FailureCircuitCount
+- Intro2FailureCircuitCount
+- Rend2ServiceFailureCircuitCount
+- Intro2ServiceFailureCircuitCount
+- Rend2ClientFailureCircuitCount
+- Intro2ClientFailureCircuitCount
+- Rend2SuccessCircuitCount
+- Intro2SuccessCircuitCount
+- Rend2ServiceSuccessCircuitCount
+- Intro2ServiceSuccessCircuitCount
+- Rend2ClientSuccessCircuitCount
+- Intro2ClientSuccessCircuitCount
+- Intro2ClientCircuitCount

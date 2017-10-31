@@ -734,3 +734,45 @@ counters:
     NonEntryConnectionCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    Intro2ServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2FailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2FailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0

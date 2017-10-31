@@ -509,3 +509,31 @@ counters:
         sigma: 0.0
     NonEntryConnectionCount:
         sigma: 0.0
+    Intro2ServiceCircuitCount:
+        sigma: 0.0
+    Rend2FailureCircuitCount:
+        sigma: 0.0
+    Intro2FailureCircuitCount:
+        sigma: 0.0
+    Rend2ServiceFailureCircuitCount:
+        sigma: 0.0
+    Intro2ServiceFailureCircuitCount:
+        sigma: 0.0
+    Rend2ClientFailureCircuitCount:
+        sigma: 0.0
+    Intro2ClientFailureCircuitCount:
+        sigma: 0.0
+    Rend2SuccessCircuitCount:
+        sigma: 0.0
+    Intro2SuccessCircuitCount:
+        sigma: 0.0
+    Rend2ServiceSuccessCircuitCount:
+        sigma: 0.0
+    Intro2ServiceSuccessCircuitCount:
+        sigma: 0.0
+    Rend2ClientSuccessCircuitCount:
+        sigma: 0.0
+    Intro2ClientSuccessCircuitCount:
+        sigma: 0.0
+    Intro2ClientCircuitCount:
+        sigma: 0.0
