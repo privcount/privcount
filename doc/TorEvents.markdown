@@ -201,9 +201,10 @@ small counters that include IPv4 ports 80 or 9030.
 Some tor-side filtering of this event may be necessary for performance
 reasons: this event is the most frequent event that tor sends to PrivCount.
 
-The bytes event is used by the PrivCount traffic model counters. (Other
-counters that report bytes use the same data as this event, but aggregate it,
-and send the totals with the END event.)
+The bytes event was originally used to implement the PrivCount traffic model
+counters, but it is no longer used for that purpose. (Other counters that
+report bytes use the same data as this event, but aggregate it, and send the
+totals with the END event.)
 
 #### Event Format
 
@@ -307,6 +308,16 @@ There may also be other circuit uses that we don't flag.
 We only get exit and directory byte counts on circuits. Other byte counts,
 including the various hidden service byte counts, have not yet been
 implemented.
+
+To calculate onion service data byte counts, filter events on these flags:
+* IsRendFlag=1
+* IsHSClientSideFlag=1
+  (otherwise byte counts are doubled, because a rend splice consists of two
+  circuits, one from the client and one from the service)
+Then multiply the OutboundSentCellCount (client to service) and
+InboundSentCellCount (service to client)  by 509 (for payload bytes) or
+514 (for cell bytes including cell headers). See the tor specification at:
+https://gitweb.torproject.org/torspec.git/tree/tor-spec.txt#n64
 
 ### PRIVCOUNT_CIRCUIT_ENDED
 
