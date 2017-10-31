@@ -335,18 +335,40 @@ PRIVCOUNT_COUNTER_EVENTS = {
 
 'ExitCircuitCount' : { CIRCUIT_EVENT },
 'DirCircuitCount' : { CIRCUIT_EVENT },
+
+# We only count HSDir v2 circuits at this point in time
+# You probably want the HSDir*Store* events instead
 'HSDir2CircuitCount' : { CIRCUIT_EVENT },
+
+# We only count Intro v2 circuits at this point in time
 'Intro2CircuitCount' : { CIRCUIT_EVENT },
-# We can't tell if rend circuits are version 2 or 3
+'Intro2FailureCircuitCount' : { CIRCUIT_EVENT },
+'Intro2SuccessCircuitCount' : { CIRCUIT_EVENT },
+
+'Intro2ClientCircuitCount' : { CIRCUIT_EVENT },
+'Intro2ClientFailureCircuitCount' : { CIRCUIT_EVENT },
+'Intro2ClientSuccessCircuitCount' : { CIRCUIT_EVENT },
+
+'Intro2ServiceCircuitCount' : { CIRCUIT_EVENT },
+'Intro2ServiceFailureCircuitCount' : { CIRCUIT_EVENT },
+'Intro2ServiceSuccessCircuitCount' : { CIRCUIT_EVENT },
+
+# We only count Rend v2 circuits at this point in time
 'Rend2CircuitCount' : { CIRCUIT_EVENT },
+'Rend2FailureCircuitCount' : { CIRCUIT_EVENT },
+'Rend2SuccessCircuitCount' : { CIRCUIT_EVENT },
 
 'Rend2ClientCircuitCount' : { CIRCUIT_EVENT },
 'Rend2Tor2WebClientCircuitCount' : { CIRCUIT_EVENT },
 'Rend2MultiHopClientCircuitCount' : { CIRCUIT_EVENT },
+'Rend2ClientFailureCircuitCount' : { CIRCUIT_EVENT },
+'Rend2ClientSuccessCircuitCount' : { CIRCUIT_EVENT },
 
 'Rend2ServiceCircuitCount' : { CIRCUIT_EVENT },
 'Rend2MultiHopServiceCircuitCount' : { CIRCUIT_EVENT },
 'Rend2SingleOnionServiceCircuitCount' : { CIRCUIT_EVENT },
+'Rend2ServiceFailureCircuitCount' : { CIRCUIT_EVENT },
+'Rend2ServiceSuccessCircuitCount' : { CIRCUIT_EVENT },
 
 # We collect these combined counters so there is only one lot of noise added
 'ExitAndRend2ClientCircuitCount' : { CIRCUIT_EVENT },

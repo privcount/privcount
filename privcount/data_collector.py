@@ -1690,8 +1690,6 @@ class Aggregator(ReconnectingClientFactory):
                     min_len=1, max_len=50):
             return False
 
-
-
         # if everything passed, this much is ok
         return True
 
@@ -2145,6 +2143,13 @@ class Aggregator(ReconnectingClientFactory):
                                  is_mandatory=False,
                                  default=False)
 
+        failure_string = get_string_value("FailureReasonString",
+                                          fields, event_desc,
+                                          is_mandatory=False,
+                                          default=None)
+
+        is_failure = failure_string is not None
+
         # Extract the optional fields that don't have defaults
 
         # If this flag is absent, we don't know if it's client or server
@@ -2221,20 +2226,61 @@ class Aggregator(ReconnectingClientFactory):
                                            bin=SINGLE_BIN,
                                            inc=1)
 
-        # Unused, included for completeness
         if is_intro and hs_version is not None and hs_version == 2:
             self.secure_counters.increment('Intro2CircuitCount',
                                            bin=SINGLE_BIN,
                                            inc=1)
+            if is_failure:
+                self.secure_counters.increment('Intro2FailureCircuitCount',
+                                               bin=SINGLE_BIN,
+                                               inc=1)
+            else:
+                self.secure_counters.increment('Intro2SuccessCircuitCount',
+                                               bin=SINGLE_BIN,
+                                               inc=1)
+            # ignore circuits where we don't know the client/server flag
+            if is_client is not None:
+                if is_client:
+                    self.secure_counters.increment('Intro2ClientCircuitCount',
+                                                 bin=SINGLE_BIN,
+                                                 inc=1)
+                    if is_failure:
+                        self.secure_counters.increment('Intro2ClientFailureCircuitCount',
+                                                       bin=SINGLE_BIN,
+                                                       inc=1)
+                    else:
+                        self.secure_counters.increment('Intro2ClientSuccessCircuitCount',
+                                                       bin=SINGLE_BIN,
+                                                       inc=1)
+                else:
+                    self.secure_counters.increment('Intro2ServiceCircuitCount',
+                                                   bin=SINGLE_BIN,
+                                                   inc=1)
+                    if is_failure:
+                        self.secure_counters.increment('Intro2ServiceFailureCircuitCount',
+                                                       bin=SINGLE_BIN,
+                                                       inc=1)
+                    else:
+                        self.secure_counters.increment('Intro2ServiceSuccessCircuitCount',
+                                                       bin=SINGLE_BIN,
+                                                       inc=1)
 
         if is_rend and hs_version is not None and hs_version == 2:
             self.secure_counters.increment('Rend2CircuitCount',
                                            bin=SINGLE_BIN,
                                            inc=1)
+            if is_failure:
+                self.secure_counters.increment('Rend2FailureCircuitCount',
+                                               bin=SINGLE_BIN,
+                                               inc=1)
+            else:
+                self.secure_counters.increment('Rend2SuccessCircuitCount',
+                                               bin=SINGLE_BIN,
+                                               inc=1)
+
             # ignore circuits where we don't know the client/server flag
             if is_client is not None:
                 if is_client:
-                    # Unused, included for completeness
                     self.secure_counters.increment('Rend2ClientCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
@@ -2244,6 +2290,15 @@ class Aggregator(ReconnectingClientFactory):
                     self.secure_counters.increment("ExitAndRend2ClientCircuitCount",
                                                    bin=SINGLE_BIN,
                                                    inc=1)
+
+                    if is_failure:
+                        self.secure_counters.increment('Rend2ClientFailureCircuitCount',
+                                                       bin=SINGLE_BIN,
+                                                       inc=1)
+                    else:
+                        self.secure_counters.increment('Rend2ClientSuccessCircuitCount',
+                                                       bin=SINGLE_BIN,
+                                                       inc=1)
 
                     if is_single_hop:
                         # Unused, included for completeness
@@ -2266,6 +2321,16 @@ class Aggregator(ReconnectingClientFactory):
                     self.secure_counters.increment("ExitAndRend2ServiceCircuitCount",
                                                    bin=SINGLE_BIN,
                                                    inc=1)
+
+                    if is_failure:
+                        self.secure_counters.increment('Rend2ServiceFailureCircuitCount',
+                                                       bin=SINGLE_BIN,
+                                                       inc=1)
+                    else:
+                        self.secure_counters.increment('Rend2ServiceSuccessCircuitCount',
+                                                       bin=SINGLE_BIN,
+                                                       inc=1)
+
                     if is_single_hop:
                         self.secure_counters.increment(
                                           'Rend2SingleOnionServiceCircuitCount',
