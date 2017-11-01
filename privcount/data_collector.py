@@ -1239,8 +1239,8 @@ class Aggregator(ReconnectingClientFactory):
         for p in xrange(6346, 6429+1): p2p_ports.append(p)
         p2p_ports.append(6699)
         for p in xrange(6881, 6999+1): p2p_ports.append(p)
-        p.append(45682) # utorrent
-        p.append(51413) # transmission
+        p2p_ports.append(45682) # utorrent
+        p2p_ports.append(51413) # transmission
 
         if port in [80, 443]:
             return 'web'
