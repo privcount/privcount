@@ -31,8 +31,8 @@ class TrafficModel(object):
     See `test/traffic.model.json` for a simple traffic model that this class can represent.
     '''
 
-    # the approximate MTU of the network
-    PACKET_BYTE_COUNT = 1500
+    # the approximate number of payload bytes for a packet
+    PACKET_BYTE_COUNT = 1434
     # assume a packet arrived at the same time if it arrived
     # within this many microseconds
     PACKET_ARRIVAL_TIME_TOLERENCE = long(100)
