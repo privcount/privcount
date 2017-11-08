@@ -60,7 +60,7 @@ grep -i "### $NAME_REGEX" "$doc" \
     | sort > "$OUT_PATH.event_names"
 
 echo "Number of events:"
-wc -l "$TEST_DIR"/*.{c,h,py,txt,markdown}.event_names \
+wc -l "$TEST_DIR"/*.event_names \
     | grep -v total
 
 echo "Differences between events in code, test, docs, and Tor Patch, and counter.py:"
@@ -68,3 +68,7 @@ echo "Differences between events in code, test, docs, and Tor Patch, and counter
 diff -u "$TEST_DIR"/*.event_names \
     -I "PRIVCOUNT_DNS_RESOLVED" \
     --to-file="$TEST_DIR/counter.py.event_names"
+
+if [ ! -d "$TOR_DIR" ]; then
+    echo "To check Tor event consistency, checkout a privcount branch in '$TOR_DIR'"
+fi
