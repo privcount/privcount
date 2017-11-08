@@ -727,7 +727,9 @@ for DC_SOURCE_PORT in ${CHUTNEY_PORT_ARRAY[@]} ; do
                 -e "Large byte transfer event" \
                 -e "Missing entry for relay" \
                 -e "but is not connected to the control port" \
-                -e "unexpectedly lost: Connection was closed cleanly" &
+                -e "unexpectedly lost: Connection was closed cleanly" \
+                -e "Unexpected PeerIPAddressConsensusRelayCount value" \
+                &
 done
 
 if [ "$PRIVCOUNT_LOG" = "-q" ]; then
