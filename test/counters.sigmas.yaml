@@ -567,3 +567,255 @@ counters:
         sigma: 0.0
     ExitOtherPortStreamOutboundByteCount:
         sigma: 0.0
+    ExitIPv4StreamLifeTime:
+        sigma: 0.0
+    ExitIPv6StreamLifeTime:
+        sigma: 0.0
+    ExitIPv4InitialStreamLifeTime:
+        sigma: 0.0
+    ExitIPv6InitialStreamLifeTime:
+        sigma: 0.0
+    ExitIPv4LiteralInitialStreamLifeTime:
+        sigma: 0.0
+    ExitIPv6LiteralInitialStreamLifeTime:
+        sigma: 0.0
+    ExitInitialStreamLifeTime:
+        sigma: 0.0
+    ExitIPv4LiteralStreamLifeTime:
+        sigma: 0.0
+    ExitIPv6LiteralStreamLifeTime:
+        sigma: 0.0
+    ExitIPv4SubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitIPv6SubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitIPv4LiteralSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitIPv6LiteralSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitIPv4StreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6StreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4InitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6InitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4LiteralInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6LiteralInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4LiteralStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6LiteralStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4SubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6SubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4LiteralSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6LiteralSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4StreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6StreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4InitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6InitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4LiteralInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6LiteralInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4LiteralStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6LiteralStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4SubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6SubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4LiteralSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv6LiteralSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitIPv4StreamByteHistogram:
+        sigma: 0.0
+    ExitIPv6StreamByteHistogram:
+        sigma: 0.0
+    ExitIPv4InitialStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv6InitialStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv4LiteralInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv6LiteralInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv4LiteralStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv6LiteralStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv4SubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv6SubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv4LiteralSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv6LiteralSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitIPv4StreamByteRatio:
+        sigma: 0.0
+    ExitIPv6StreamByteRatio:
+        sigma: 0.0
+    ExitIPv4InitialStreamByteRatio:
+        sigma: 0.0
+    ExitIPv6InitialStreamByteRatio:
+        sigma: 0.0
+    ExitIPv4LiteralInitialStreamByteRatio:
+        sigma: 0.0
+    ExitIPv6LiteralInitialStreamByteRatio:
+        sigma: 0.0
+    ExitInitialStreamByteRatio:
+        sigma: 0.0
+    ExitIPv4LiteralStreamByteRatio:
+        sigma: 0.0
+    ExitIPv6LiteralStreamByteRatio:
+        sigma: 0.0
+    ExitIPv4SubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitIPv6SubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitIPv4LiteralSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitIPv6LiteralSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitIPv4StreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv6StreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv4InitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv6InitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv4LiteralInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv6LiteralInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv4LiteralStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv6LiteralStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv4SubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv6SubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv4LiteralSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv6LiteralSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitIPv4StreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv6StreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv4InitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv6InitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv4LiteralInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv6LiteralInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv4LiteralStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv6LiteralStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv4SubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv6SubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv4LiteralSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv6LiteralSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitIPv4StreamByteCount:
+        sigma: 0.0
+    ExitIPv6StreamByteCount:
+        sigma: 0.0
+    ExitIPv4InitialStreamByteCount:
+        sigma: 0.0
+    ExitIPv6InitialStreamByteCount:
+        sigma: 0.0
+    ExitIPv4LiteralInitialStreamByteCount:
+        sigma: 0.0
+    ExitIPv6LiteralInitialStreamByteCount:
+        sigma: 0.0
+    ExitInitialStreamByteCount:
+        sigma: 0.0
+    ExitIPv4LiteralStreamByteCount:
+        sigma: 0.0
+    ExitIPv6LiteralStreamByteCount:
+        sigma: 0.0
+    ExitIPv4SubsequentStreamByteCount:
+        sigma: 0.0
+    ExitIPv6SubsequentStreamByteCount:
+        sigma: 0.0
+    ExitIPv4LiteralSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitIPv6LiteralSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitIPv4StreamCount:
+        sigma: 0.0
+    ExitIPv6StreamCount:
+        sigma: 0.0
+    ExitIPv4InitialStreamCount:
+        sigma: 0.0
+    ExitIPv6InitialStreamCount:
+        sigma: 0.0
+    ExitIPv4LiteralInitialStreamCount:
+        sigma: 0.0
+    ExitIPv6LiteralInitialStreamCount:
+        sigma: 0.0
+    ExitInitialStreamCount:
+        sigma: 0.0
+    ExitIPv4LiteralStreamCount:
+        sigma: 0.0
+    ExitIPv6LiteralStreamCount:
+        sigma: 0.0
+    ExitIPv4SubsequentStreamCount:
+        sigma: 0.0
+    ExitIPv6SubsequentStreamCount:
+        sigma: 0.0
+    ExitIPv4LiteralSubsequentStreamCount:
+        sigma: 0.0
+    ExitIPv6LiteralSubsequentStreamCount:
+        sigma: 0.0
+    ExitSubsequentStreamCount:
+        sigma: 0.0

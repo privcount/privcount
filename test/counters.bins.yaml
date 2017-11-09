@@ -2415,3 +2415,381 @@ counters:
     ExitOtherPortStreamOutboundByteCount:
         bins:
         - [-.inf, .inf]
+    ExitIPv4StreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6StreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4InitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6InitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralInitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralInitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitInitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4SubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6SubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralSubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralSubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitSubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4StreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6StreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4InitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6InitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralInitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralInitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitInitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4SubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6SubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralSubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralSubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitSubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4StreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6StreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4InitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6InitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralInitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralInitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitInitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4SubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6SubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralSubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralSubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitSubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4StreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6StreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4InitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6InitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralInitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralInitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitInitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4SubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6SubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralSubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralSubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitSubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4StreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6StreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4InitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6InitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralInitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralInitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitInitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4SubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6SubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralSubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralSubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitSubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4StreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6StreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4InitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6InitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralInitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralInitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitInitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4SubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6SubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralSubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralSubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitSubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4StreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6StreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4InitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6InitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralInitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralInitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitInitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4SubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6SubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralSubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralSubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitSubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4StreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6StreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4InitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6InitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralInitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralInitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitInitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4SubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6SubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralSubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralSubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitSubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4StreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6StreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4InitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6InitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralInitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralInitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitInitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4SubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6SubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv4LiteralSubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitIPv6LiteralSubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitSubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]

@@ -821,3 +821,381 @@ counters:
     ExitOtherPortStreamOutboundByteCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    ExitIPv4StreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6StreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4InitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6InitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralInitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralInitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4SubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6SubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralSubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralSubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4StreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6StreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4InitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6InitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralInitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralInitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4SubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6SubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralSubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralSubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4StreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6StreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4InitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6InitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralInitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralInitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4SubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6SubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralSubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralSubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4StreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6StreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4InitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6InitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralInitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralInitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4SubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6SubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralSubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralSubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4StreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6StreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4InitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6InitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralInitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralInitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4SubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6SubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralSubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralSubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4StreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6StreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4InitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6InitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralInitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralInitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4SubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6SubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralSubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralSubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4StreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6StreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4InitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6InitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralInitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralInitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4SubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6SubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralSubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralSubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4StreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6StreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4InitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6InitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralInitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralInitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4SubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6SubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralSubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralSubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4StreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6StreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4InitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6InitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralInitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralInitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitInitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4SubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6SubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv4LiteralSubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitIPv6LiteralSubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
