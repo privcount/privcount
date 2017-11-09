@@ -228,6 +228,16 @@ def disconnect(connector):
     for item in connector:
         item.disconnect()
 
+def validate_ip_address(address):
+    '''
+    If address is a valid IP address, return it as an ipaddress object.
+    Otherwise, return None.
+    '''
+    try:
+        return ipaddress.ip_address(unicode(address))
+    except ValueError:
+        return None
+
 def validate_connection_config(config, must_have_ip=False):
     '''
     Check that config is valid.
@@ -271,11 +281,10 @@ def validate_connection_config(config, must_have_ip=False):
                   logging.warning("IP {} must have a port".format(item['ip']))
                   return False
               # Check the IP address is in a valid format
-              try:
-                  ip = ipaddress.ip_address(unicode(item['ip']))
-              except ValueError as e:
+              ip = validate_ip_address(item['ip'])
+              if ip is None:
                   # not an IP address
-                  logging.warning("Invalid IP {}: {}".format(item['ip'], e))
+                  logging.warning("Invalid IP '{}'".format(item['ip']))
                   return False
               # let the libraries catch other errors later
           elif key == 'unix':

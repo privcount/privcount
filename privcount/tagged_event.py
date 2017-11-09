@@ -7,9 +7,9 @@
 '''
 
 import logging
-import ipaddress
 
 from privcount.log import summarise_string
+from privcount.connection import validate_ip_address
 
 def parse_tagged_event(event_field_list):
     '''
@@ -278,13 +278,11 @@ def is_ip_address_valid(field_name, fields, event_desc,
     if field_name not in fields:
         # valid optional field, keep on processing
         return True
-    try:
-        field_value = ipaddress.ip_address(unicode(fields[field_name]))
-    except ValueError as e:
+    field_value = validate_ip_address(fields[field_name])
+    if field_value is None:
         # not an IP address
-        logging.warning("Ignored {} '{}', must be an IP address: '{}' {}"
-                        .format(field_name, fields[field_name], e,
-                                event_desc))
+        logging.warning("Ignored {} '{}', must be an IP address {}"
+                        .format(field_name, fields[field_name], event_desc))
         return False
     # it is valid and we want to keep on processing
     return True
@@ -426,4 +424,4 @@ def get_ip_address_value(field_name, fields, event_desc,
 
     # Canonicalise the IP address and return it as a string
     # This provides maximum compatibility with existing code
-    return str(ipaddress.ip_address(unicode(fields[field_name])))
+    return str(validate_ip_address(fields[field_name]))
