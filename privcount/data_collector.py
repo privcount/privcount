@@ -1034,6 +1034,63 @@ class Aggregator(ReconnectingClientFactory):
 
         return True
 
+    def is_circ_known(self, chanid=None, circid=None):
+        '''
+        Have we seen circid on chanid before?
+        Must be called before setting circ_info in _handle_stream_event().
+        When circid on chanid closes, it is marked as unknown again.
+        '''
+        assert chanid is not None
+        assert circid is not None
+        return chanid in self.circ_info and circid in self.circ_info[chanid]
+
+    def _increment_stream_end_counters(self, subcategory,
+                                       totalbw, writebw, readbw,
+                                       ratio, lifetime):
+        '''
+        Increment the Stream counters for subcategory using the fields
+        provided.
+        '''
+        self.secure_counters.increment('Exit{}StreamCount'
+                                       .format(subcategory),
+                                       bin=SINGLE_BIN,
+                                       inc=1)
+
+        self.secure_counters.increment('Exit{}StreamByteCount'
+                                       .format(subcategory),
+                                       bin=SINGLE_BIN,
+                                       inc=totalbw)
+        self.secure_counters.increment('Exit{}StreamOutboundByteCount'
+                                       .format(subcategory),
+                                       bin=SINGLE_BIN,
+                                       inc=writebw)
+        self.secure_counters.increment('Exit{}StreamInboundByteCount'
+                                       .format(subcategory),
+                                       bin=SINGLE_BIN,
+                                       inc=readbw)
+
+        self.secure_counters.increment('Exit{}StreamByteHistogram'
+                                       .format(subcategory),
+                                       bin=totalbw,
+                                       inc=1)
+        self.secure_counters.increment('Exit{}StreamOutboundByteHistogram'
+                                       .format(subcategory),
+                                       bin=writebw,
+                                       inc=1)
+        self.secure_counters.increment('Exit{}StreamInboundByteHistogram'
+                                       .format(subcategory),
+                                       bin=readbw,
+                                       inc=1)
+
+        self.secure_counters.increment('Exit{}StreamByteRatio'
+                                       .format(subcategory),
+                                       bin=ratio,
+                                       inc=1)
+        self.secure_counters.increment('Exit{}StreamLifeTime'
+                                       .format(subcategory),
+                                       bin=lifetime,
+                                       inc=1)
+
     STREAM_ENDED_ITEMS = 10
 
     # Positional event: fields is a list of Values.
@@ -1056,7 +1113,8 @@ class Aggregator(ReconnectingClientFactory):
         if readbw < 0 or writebw < 0 or totalbw <= 0:
             return True
 
-        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'interactive':0, 'web':0, 'p2p':0, 'other':0}, 'stream_starttimes': {'interactive':[], 'web':[], 'p2p':[], 'other':[]}})
+
+        self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'Interactive':0, 'Web':0, 'P2P':0, 'OtherPort':0}, 'stream_starttimes': {'Interactive':[], 'Web':[], 'P2P':[], 'OtherPort':[]}})
 
         stream_class = Aggregator._classify_port(port)
         self.circ_info[chanid][circid]['num_streams'][stream_class] += 1
@@ -1067,161 +1125,13 @@ class Aggregator(ReconnectingClientFactory):
         ratio = Aggregator._encode_ratio(readbw, writebw)
         lifetime = end-start
 
-        self.secure_counters.increment('ExitStreamCount',
-                                       bin=SINGLE_BIN,
-                                       inc=1)
-
-        self.secure_counters.increment('ExitStreamByteCount',
-                                       bin=SINGLE_BIN,
-                                       inc=totalbw)
-        self.secure_counters.increment('ExitStreamOutboundByteCount',
-                                       bin=SINGLE_BIN,
-                                       inc=writebw)
-        self.secure_counters.increment('ExitStreamInboundByteCount',
-                                       bin=SINGLE_BIN,
-                                       inc=readbw)
-
-        self.secure_counters.increment('ExitStreamByteHistogram',
-                                       bin=totalbw,
-                                       inc=1)
-        self.secure_counters.increment('ExitStreamOutboundByteHistogram',
-                                       bin=writebw,
-                                       inc=1)
-        self.secure_counters.increment('ExitStreamInboundByteHistogram',
-                                       bin=readbw,
-                                       inc=1)
-
-        self.secure_counters.increment('ExitStreamByteRatio',
-                                       bin=ratio,
-                                       inc=1)
-        self.secure_counters.increment('ExitStreamLifeTime',
-                                       bin=lifetime,
-                                       inc=1)
-
-        if stream_class == 'web':
-            self.secure_counters.increment('ExitWebStreamCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-            self.secure_counters.increment('ExitWebStreamByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=totalbw)
-            self.secure_counters.increment('ExitWebStreamOutboundByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=writebw)
-            self.secure_counters.increment('ExitWebStreamInboundByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=readbw)
-
-            self.secure_counters.increment('ExitWebStreamByteHistogram',
-                                           bin=totalbw,
-                                           inc=1)
-            self.secure_counters.increment('ExitWebStreamOutboundByteHistogram',
-                                           bin=writebw,
-                                           inc=1)
-            self.secure_counters.increment('ExitWebStreamInboundByteHistogram',
-                                           bin=readbw,
-                                           inc=1)
-
-            self.secure_counters.increment('ExitWebStreamByteRatio',
-                                           bin=ratio,
-                                           inc=1)
-            self.secure_counters.increment('ExitWebStreamLifeTime',
-                                           bin=lifetime,
-                                           inc=1)
-        elif stream_class == 'interactive':
-            self.secure_counters.increment('ExitInteractiveStreamCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-            self.secure_counters.increment('ExitInteractiveStreamByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=totalbw)
-            self.secure_counters.increment('ExitInteractiveStreamOutboundByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=writebw)
-            self.secure_counters.increment('ExitInteractiveStreamInboundByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=readbw)
-
-            self.secure_counters.increment('ExitInteractiveStreamByteHistogram',
-                                           bin=totalbw,
-                                           inc=1)
-            self.secure_counters.increment('ExitInteractiveStreamOutboundByteHistogram',
-                                           bin=writebw,
-                                           inc=1)
-            self.secure_counters.increment('ExitInteractiveStreamInboundByteHistogram',
-                                           bin=readbw,
-                                           inc=1)
-
-            self.secure_counters.increment('ExitInteractiveStreamByteRatio',
-                                           bin=ratio,
-                                           inc=1)
-            self.secure_counters.increment('ExitInteractiveStreamLifeTime',
-                                           bin=lifetime,
-                                           inc=1)
-        elif stream_class == 'p2p':
-            self.secure_counters.increment('ExitP2PStreamCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-            self.secure_counters.increment('ExitP2PStreamByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=totalbw)
-            self.secure_counters.increment('ExitP2PStreamOutboundByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=writebw)
-            self.secure_counters.increment('ExitP2PStreamInboundByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=readbw)
-
-            self.secure_counters.increment('ExitP2PStreamByteHistogram',
-                                           bin=totalbw,
-                                           inc=1)
-            self.secure_counters.increment('ExitP2PStreamOutboundByteHistogram',
-                                           bin=writebw,
-                                           inc=1)
-            self.secure_counters.increment('ExitP2PStreamInboundByteHistogram',
-                                           bin=readbw,
-                                           inc=1)
-
-            self.secure_counters.increment('ExitP2PStreamByteRatio',
-                                           bin=ratio,
-                                           inc=1)
-            self.secure_counters.increment('ExitP2PStreamLifeTime',
-                                           bin=lifetime,
-                                           inc=1)
-        elif stream_class == 'other':
-            self.secure_counters.increment('ExitOtherPortStreamCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-            self.secure_counters.increment('ExitOtherPortStreamByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=totalbw)
-            self.secure_counters.increment('ExitOtherPortStreamOutboundByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=writebw)
-            self.secure_counters.increment('ExitOtherPortStreamInboundByteCount',
-                                           bin=SINGLE_BIN,
-                                           inc=readbw)
-
-            self.secure_counters.increment('ExitOtherPortStreamByteHistogram',
-                                           bin=totalbw,
-                                           inc=1)
-            self.secure_counters.increment('ExitOtherPortStreamOutboundByteHistogram',
-                                           bin=writebw,
-                                           inc=1)
-            self.secure_counters.increment('ExitOtherPortStreamInboundByteHistogram',
-                                           bin=readbw,
-                                           inc=1)
-
-            self.secure_counters.increment('ExitOtherPortStreamByteRatio',
-                                           bin=ratio,
-                                           inc=1)
-            self.secure_counters.increment('ExitOtherPortStreamLifeTime',
-                                           bin=lifetime,
-                                           inc=1)
+        # Increment the base and per-class counters
+        self._increment_stream_end_counters("",
+                                            totalbw, writebw, readbw,
+                                            ratio, lifetime)
+        self._increment_stream_end_counters(stream_class,
+                                            totalbw, writebw, readbw,
+                                            ratio, lifetime)
 
         # if we have a traffic model object, pass on the appropriate data
         if self.traffic_model is not None and circid > 0 and strmid > 0:
@@ -1232,7 +1142,7 @@ class Aggregator(ReconnectingClientFactory):
     @staticmethod
     def _classify_port(port):
         '''
-        Classify port into web, interactive, p2p, or other.
+        Classify port into Web, Interactive, P2P, or OtherPort.
         '''
         p2p_ports = [1214]
         for p in xrange(4661, 4666+1): p2p_ports.append(p)
@@ -1243,13 +1153,13 @@ class Aggregator(ReconnectingClientFactory):
         p2p_ports.append(51413) # transmission
 
         if port in [80, 443]:
-            return 'web'
+            return 'Web'
         elif port in [22, 194, 994, 6660, 6661, 6662, 6663, 6664, 6665, 6666, 6667, 6668, 6669, 6670, 6679, 6697, 7000]:
-            return 'interactive'
+            return 'Interactive'
         elif port in p2p_ports:
-            return 'p2p'
+            return 'P2P'
         else:
-            return 'other'
+            return 'OtherPort'
 
     @staticmethod
     def _encode_ratio(inval, outval):
@@ -1406,9 +1316,9 @@ class Aggregator(ReconnectingClientFactory):
                                            inc=1)
 
             # check if we have any stream info in this circuit
-            circ_is_known, has_completed_stream = False, False
-            if chanid in self.circ_info and circid in self.circ_info[chanid]:
-                circ_is_known = True
+            circ_is_known = self.is_circ_known(chanid=chanid, circid=circid)
+            has_completed_stream = False
+            if circ_is_known:
                 if sum(self.circ_info[chanid][circid]['num_streams'].values()) > 0:
                     has_completed_stream = True
 
@@ -1429,53 +1339,53 @@ class Aggregator(ReconnectingClientFactory):
                 self.secure_counters.increment('ExitCircuitStreamCount',
                                                bin=sum(counts.values()),
                                                inc=1)
-                for isct in Aggregator._compute_interstream_creation_times(times['web'] + times['interactive'] + times['p2p'] + times['other']):
+                for isct in Aggregator._compute_interstream_creation_times(times['Web'] + times['Interactive'] + times['P2P'] + times['OtherPort']):
                     self.secure_counters.increment('ExitCircuitInterStreamCreationTime',
                                                    bin=isct,
                                                    inc=1)
 
                 # now only increment the classes that have positive counts
-                if counts['web'] > 0:
+                if counts['Web'] > 0:
                     self.secure_counters.increment('ExitWebCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
                     self.secure_counters.increment('ExitCircuitWebStreamCount',
-                                                   bin=counts['web'],
+                                                   bin=counts['Web'],
                                                    inc=1)
-                    for isct in Aggregator._compute_interstream_creation_times(times['web']):
+                    for isct in Aggregator._compute_interstream_creation_times(times['Web']):
                         self.secure_counters.increment('ExitCircuitWebInterStreamCreationTime',
                                                        bin=isct,
                                                        inc=1)
-                if counts['interactive'] > 0:
+                if counts['Interactive'] > 0:
                     self.secure_counters.increment('ExitInteractiveCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
                     self.secure_counters.increment('ExitCircuitInteractiveStreamCount',
-                                                   bin=counts['interactive'],
+                                                   bin=counts['Interactive'],
                                                    inc=1)
-                    for isct in Aggregator._compute_interstream_creation_times(times['interactive']):
+                    for isct in Aggregator._compute_interstream_creation_times(times['Interactive']):
                         self.secure_counters.increment('ExitCircuitInteractiveInterStreamCreationTime',
                                                        bin=isct,
                                                        inc=1)
-                if counts['p2p'] > 0:
+                if counts['P2P'] > 0:
                     self.secure_counters.increment('ExitP2PCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
                     self.secure_counters.increment('ExitCircuitP2PStreamCount',
-                                                   bin=counts['p2p'],
+                                                   bin=counts['P2P'],
                                                    inc=1)
-                    for isct in Aggregator._compute_interstream_creation_times(times['p2p']):
+                    for isct in Aggregator._compute_interstream_creation_times(times['P2P']):
                         self.secure_counters.increment('ExitCircuitP2PInterStreamCreationTime',
                                                        bin=isct,
                                                        inc=1)
-                if counts['other'] > 0:
+                if counts['OtherPort'] > 0:
                     self.secure_counters.increment('ExitOtherPortCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
                     self.secure_counters.increment('ExitCircuitOtherPortStreamCount',
-                                                   bin=counts['other'],
+                                                   bin=counts['OtherPort'],
                                                    inc=1)
-                    for isct in Aggregator._compute_interstream_creation_times(times['other']):
+                    for isct in Aggregator._compute_interstream_creation_times(times['OtherPort']):
                         self.secure_counters.increment('ExitCircuitOtherPortInterStreamCreationTime',
                                                        bin=isct,
                                                        inc=1)
