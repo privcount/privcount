@@ -66,14 +66,19 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
         cat "$TEST_DIR/traffic_model.py.names.extra" \
             >> "$OUT_PATH.names.unsorted"
     fi
-    # Add the non-Circuit HSDir and Connection bins to the data_collector file,
-    # but not any other files
+    # Add the non-Circuit HSDir, Connection, and
+    # non-Circuit, non-Traffic Model Exit Stream counters
+    # to the data_collector file
     # These counters are code-driven, so they don't appear as literals in the
     # data_collector source code
     if [ `basename "$code"` = 'data_collector.py' ]; then
         cat "$TEST_DIR/counters.bins.yaml.names" \
-            | grep -e "^HSDir[2-3]" -e "Entry.*Connection" \
-            | grep -v "^HSDir[2-3]Circuit" \
+            | grep -e "^HSDir[2-3]" \
+                -e "Entry.*Connection" \
+                -e "Exit.*Stream" \
+            | grep -v -e "^HSDir[2-3]Circuit" \
+                -e "^ExitStreamTrafficModel" \
+                -e "^ExitCircuit" \
             >> "$OUT_PATH.names.unsorted" || true
     fi
     # Add the ZeroCount counter (it has no events and no increments)

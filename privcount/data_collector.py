@@ -1,11 +1,12 @@
 # See LICENSE for licensing information
 
-import os
+import ipaddress
 import logging
 import math
+import os
+import cPickle as pickle
 import string
 import sys
-import cPickle as pickle
 import yaml
 
 from time import time
@@ -16,7 +17,7 @@ from twisted.internet import task, reactor, ssl
 from twisted.internet.protocol import ReconnectingClientFactory
 
 from privcount.config import normalise_path, choose_secret_handshake_path
-from privcount.connection import connect, disconnect, validate_connection_config, choose_a_connection, get_a_control_password
+from privcount.connection import connect, disconnect, validate_connection_config, choose_a_connection, get_a_control_password, validate_ip_address
 from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, has_noise_weight, get_noise_weight, count_bins, are_events_expected, get_valid_counters
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since, format_elapsed_time_since, errorCallback, summarise_string
@@ -1113,6 +1114,8 @@ class Aggregator(ReconnectingClientFactory):
         if readbw < 0 or writebw < 0 or totalbw <= 0:
             return True
 
+        is_stream_first_on_circ = not self.is_circ_known(chanid=chanid,
+                                                         circid=circid)
 
         self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'Interactive':0, 'Web':0, 'P2P':0, 'OtherPort':0}, 'stream_starttimes': {'Interactive':[], 'Web':[], 'P2P':[], 'OtherPort':[]}})
 
@@ -1136,6 +1139,57 @@ class Aggregator(ReconnectingClientFactory):
         # if we have a traffic model object, pass on the appropriate data
         if self.traffic_model is not None and circid > 0 and strmid > 0:
             self.traffic_model.handle_stream(circid, strmid, end, self.secure_counters)
+
+        # collect IP version and hostname statistics
+        remote_ip_value = validate_ip_address(remote_ip)
+        remote_host_ip_value = validate_ip_address(remote_host)
+
+        ip_version = None
+        if remote_ip_value is not None and remote_ip_value.version in [4,6]:
+            ip_version = "IPv{}".format(remote_ip_value.version)
+
+        if remote_host_ip_value is not None and remote_host_ip_value.version in [4,6]:
+            host_ip_version = "IPv{}Literal".format(remote_host_ip_value.version)
+        else:
+            host_ip_version = "Hostname"
+
+        stream_circ = "Initial" if is_stream_first_on_circ else "Subsequent"
+
+        # collect IP version after DNS resolution
+        # IPv4 / IPv6
+        if ip_version is not None:
+            self._increment_stream_end_counters(ip_version,
+                                                totalbw, writebw, readbw,
+                                                ratio, lifetime)
+            # and combined ip / stream
+            # IPv4 / IPv6 + Initial / Subsequent
+            self._increment_stream_end_counters(ip_version + stream_circ,
+                                                totalbw, writebw, readbw,
+                                                ratio, lifetime)
+
+        # collect IP version and hostname before DNS resolution
+        # IPv4 / IPv6 / Hostname
+        self._increment_stream_end_counters(host_ip_version,
+                                            totalbw, writebw, readbw,
+                                            ratio, lifetime)
+
+        # collect stream position on circuit
+        # Initial / Subsequent
+        self._increment_stream_end_counters(stream_circ,
+                                            totalbw, writebw, readbw,
+                                            ratio, lifetime)
+        # and combined host / stream
+        # IPv4 / IPv6 / Hostname + Initial / Subsequent
+        self._increment_stream_end_counters(host_ip_version + stream_circ,
+                                            totalbw, writebw, readbw,
+                                            ratio, lifetime)
+
+        # now collect statistics on list matches for each hostname
+        if host_ip_version == "Hostname":
+            # exact match: == d
+            # domain and any subdomains: == d or endswith("." + d)
+            # first domain on circuit: "" / stream_circ
+            pass
 
         return True
 
