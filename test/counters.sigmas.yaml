@@ -819,3 +819,219 @@ counters:
         sigma: 0.0
     ExitSubsequentStreamCount:
         sigma: 0.0
+    ExitDomainExactMatchStreamLifeTime:
+        sigma: 0.0
+    ExitDomainNoExactMatchStreamLifeTime:
+        sigma: 0.0
+    ExitDomainSuffixMatchStreamLifeTime:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchStreamLifeTime:
+        sigma: 0.0
+    ExitDomainExactMatchInitialStreamLifeTime:
+        sigma: 0.0
+    ExitDomainNoExactMatchInitialStreamLifeTime:
+        sigma: 0.0
+    ExitDomainSuffixMatchInitialStreamLifeTime:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchInitialStreamLifeTime:
+        sigma: 0.0
+    ExitDomainExactMatchSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitDomainNoExactMatchSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitDomainSuffixMatchSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitDomainExactMatchStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoExactMatchStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainSuffixMatchStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainExactMatchInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoExactMatchInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainSuffixMatchInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainExactMatchSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoExactMatchSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainSuffixMatchSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitDomainExactMatchStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoExactMatchStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainSuffixMatchStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainExactMatchInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoExactMatchInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainSuffixMatchInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainExactMatchSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoExactMatchSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainSuffixMatchSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitDomainExactMatchStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainNoExactMatchStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainSuffixMatchStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainExactMatchInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainNoExactMatchInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainSuffixMatchInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainExactMatchSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainNoExactMatchSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainSuffixMatchSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitDomainExactMatchStreamByteRatio:
+        sigma: 0.0
+    ExitDomainNoExactMatchStreamByteRatio:
+        sigma: 0.0
+    ExitDomainSuffixMatchStreamByteRatio:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchStreamByteRatio:
+        sigma: 0.0
+    ExitDomainExactMatchInitialStreamByteRatio:
+        sigma: 0.0
+    ExitDomainNoExactMatchInitialStreamByteRatio:
+        sigma: 0.0
+    ExitDomainSuffixMatchInitialStreamByteRatio:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchInitialStreamByteRatio:
+        sigma: 0.0
+    ExitDomainExactMatchSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitDomainNoExactMatchSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitDomainSuffixMatchSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitDomainExactMatchStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainExactMatchInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainExactMatchSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitDomainExactMatchStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainExactMatchInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainExactMatchSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitDomainExactMatchStreamByteCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchStreamByteCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchStreamByteCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchStreamByteCount:
+        sigma: 0.0
+    ExitDomainExactMatchInitialStreamByteCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchInitialStreamByteCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchInitialStreamByteCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchInitialStreamByteCount:
+        sigma: 0.0
+    ExitDomainExactMatchSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitDomainExactMatchStreamCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchStreamCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchStreamCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchStreamCount:
+        sigma: 0.0
+    ExitDomainExactMatchInitialStreamCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchInitialStreamCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchInitialStreamCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchInitialStreamCount:
+        sigma: 0.0
+    ExitDomainExactMatchSubsequentStreamCount:
+        sigma: 0.0
+    ExitDomainNoExactMatchSubsequentStreamCount:
+        sigma: 0.0
+    ExitDomainSuffixMatchSubsequentStreamCount:
+        sigma: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamCount:
+        sigma: 0.0

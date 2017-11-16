@@ -3983,3 +3983,327 @@ counters:
     ExitSubsequentStreamCount:
         bins:
         - [-.inf, .inf]
+    ExitDomainExactMatchStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchInitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchInitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchInitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchInitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchSubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchSubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchSubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchSubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchInitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchInitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchInitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchInitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchSubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchSubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchSubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchSubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchInitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchInitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchInitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchInitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchSubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchSubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchSubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchInitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchInitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchInitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchInitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchSubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchSubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchSubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchSubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchInitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchInitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchInitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchInitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchSubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchSubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchSubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchSubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchInitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchInitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchInitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchInitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchSubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchSubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchSubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchSubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchInitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchInitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchInitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchInitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchSubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchSubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchSubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchInitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchInitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchInitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchInitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchSubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchSubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchSubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchSubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchInitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchInitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchInitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchInitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainExactMatchSubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoExactMatchSubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainSuffixMatchSubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitDomainNoSuffixMatchSubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]

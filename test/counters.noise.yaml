@@ -1199,3 +1199,327 @@ counters:
     ExitSubsequentStreamCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    ExitDomainExactMatchStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchInitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchInitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchInitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchInitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchSubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchSubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchSubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchInitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchInitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchInitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchInitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchSubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchSubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchSubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchInitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchInitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchInitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchInitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchSubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchSubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchSubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchInitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchInitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchInitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchInitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchSubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchSubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchSubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchInitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchInitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchInitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchInitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchSubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchSubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchSubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchInitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchInitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchInitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchInitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchSubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchSubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchSubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchInitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchInitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchInitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchInitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchSubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchSubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchSubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchInitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchInitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchInitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchInitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchSubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchSubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchSubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchInitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchInitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchInitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchInitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainExactMatchSubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoExactMatchSubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainSuffixMatchSubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitDomainNoSuffixMatchSubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
