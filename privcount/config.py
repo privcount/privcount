@@ -34,3 +34,18 @@ def choose_secret_handshake_path(local_conf, global_conf):
     # if the path is not specified, use the default path
     else:
         return normalise_path('privcount.secret_handshake.yaml')
+
+def check_domain_name(domain_str):
+    '''
+    Check if domain_str is a potentially valid domain name.
+    Allows underscores, even though they are technically not permitted,
+    because they are used in some popular domain names.
+
+    Returns True if it is valid, and False if it is not.
+    '''
+    # We just care about character sets, because they help us ensure the
+    # config is set to the right domain file.
+    # Any malformed domains will never match a real domain anyway.
+    domain_str = domain_str.lower()
+    bad_chars = domain_str.strip(".-_abcdefghijklmnopqrstuvwxyz0123456789")
+    return len(bad_chars) == 0 and len(domain_str) > 0

@@ -21,6 +21,7 @@ from privcount.connection import connect, disconnect, validate_connection_config
 from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, has_noise_weight, get_noise_weight, count_bins, are_events_expected, get_valid_counters
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since, format_elapsed_time_since, errorCallback, summarise_string
+from privcount.match import exact_match_prepare_collection, exact_match, suffix_match_prepare_collection, suffix_match
 from privcount.node import PrivCountClient, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, get_privcount_version
 from privcount.tagged_event import parse_tagged_event, is_string_valid, is_list_valid, is_int_valid, is_flag_valid, is_float_valid, is_ip_address_valid, get_string_value, get_list_value, get_int_value, get_flag_value, get_float_value, get_ip_address_value
@@ -256,7 +257,8 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                                      self.config['rotate_period'],
                                      self.config['use_setconf'],
                                      config.get('max_cell_events_per_circuit', -1),
-                                     config.get('circuit_sample_rate', 1.0))
+                                     config.get('circuit_sample_rate', 1.0),
+                                     config.get('domain_list', []))
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -410,7 +412,8 @@ class Aggregator(ReconnectingClientFactory):
 
     def __init__(self, counters, traffic_model_config, sk_uids,
                  noise_weight, modulus, tor_control_port, rotate_period,
-                 use_setconf, max_cell_events_per_circuit, circuit_sample_rate):
+                 use_setconf, max_cell_events_per_circuit, circuit_sample_rate,
+                 domain_list):
         self.secure_counters = SecureCounters(counters, modulus,
                                               require_generate_noise=True)
         self.collection_counters = counters
@@ -427,6 +430,10 @@ class Aggregator(ReconnectingClientFactory):
         self.noise_weight_value = None
         self.max_cell_events_per_circuit = int(max_cell_events_per_circuit)
         self.circuit_sample_rate = float(circuit_sample_rate)
+        # Prepare the lists for exact and suffix matching
+        self.domain_exact_obj = exact_match_prepare_collection(domain_list)
+        self.domain_suffix_obj = suffix_match_prepare_collection(domain_list,
+                                                                 separator=".")
 
         self.connector = None
         self.connector_list = None
@@ -1186,10 +1193,46 @@ class Aggregator(ReconnectingClientFactory):
 
         # now collect statistics on list matches for each hostname
         if host_ip_version == "Hostname":
-            # exact match: == d
-            # domain and any subdomains: == d or endswith("." + d)
-            # first domain on circuit: "" / stream_circ
-            pass
+
+            # check for an exact match
+            # this is O(N), but obviously correct
+            # assert exact_match(self.domain_exact_obj, remote_host) == any([remote_host == domain for domain in self.domain_exact_obj])
+            # this is O(N), but obviously correct
+            # assert suffix_match(self.domain_suffix_obj, remote_host) == any([remote_host.endswith("." + domain) for domain in self.domain_exact_obj])
+            # this is O(1), because set uses a hash table internally
+            if exact_match(self.domain_exact_obj, remote_host):
+                exact_match_str = "DomainExactMatch"
+                # an exact match implies a suffix match
+                suffix_match_str = "DomainSuffixMatch"
+            else:
+                exact_match_str = "DomainNoExactMatch"
+                # check for a suffix match
+                # A generalised suffix tree might be faster here
+                # this is O(log(N)) because it's a binary search followed by a string prefix match
+                if suffix_match(self.domain_suffix_obj, remote_host,
+                                separator="."):
+                    suffix_match_str = "DomainSuffixMatch"
+                else:
+                    suffix_match_str = "DomainNoSuffixMatch"
+
+            # collect exact match & first / subsequent domain on circuit
+            self._increment_stream_end_counters(exact_match_str,
+                                                totalbw, writebw, readbw,
+                                                ratio, lifetime)
+
+            self._increment_stream_end_counters(exact_match_str + stream_circ,
+                                                totalbw, writebw, readbw,
+                                                ratio, lifetime)
+
+            # collect suffix match & first / subsequent domain on circuit
+            self._increment_stream_end_counters(suffix_match_str,
+                                                totalbw, writebw, readbw,
+                                                ratio, lifetime)
+
+            self._increment_stream_end_counters(suffix_match_str + stream_circ,
+                                                totalbw, writebw, readbw,
+                                                ratio, lifetime)
+
 
         return True
 

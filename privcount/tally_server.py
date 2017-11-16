@@ -18,11 +18,12 @@ from base64 import b64encode
 from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
-from privcount.config import normalise_path, choose_secret_handshake_path
+from privcount.config import normalise_path, choose_secret_handshake_path, check_domain_name
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
-from privcount.node import PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
+from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection
+from privcount.node import PrivCountNode, PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
 from privcount.statistics_noise import get_noise_allocation, get_sanity_check_counter, DEFAULT_DUMMY_COUNTER_NAME
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
@@ -296,6 +297,33 @@ class TallyServer(ServerFactory, PrivCountServer):
                 if set(ts_conf['counters'].keys()) != set(ts_conf['noise']['counters'].keys()):
                     logging.error("the set of traffic model bins and noise labels are not equal")
                     assert False
+
+            # an optional list of domain names
+            ts_conf['domain_list'] = []
+            if 'domain_file' in ts_conf:
+                ts_conf['domain_file'] = normalise_path(ts_conf['domain_file'])
+                assert os.path.exists(ts_conf['domain_file'])
+
+                # import and validate the list of domain names
+                # This can take a few seconds
+                with open(ts_conf['domain_file'], 'r') as fin:
+                    for line in fin:
+                        line = line.strip()
+                        assert check_domain_name(line)
+                        ts_conf['domain_list'].append(line)
+
+                # only re-process the list when it changes, because it takes
+                # about 5 seconds on the Alexa Top 1 million
+                if (self.config is None or
+                    ts_conf['domain_file'] != self.config.get('domain_file') or
+                    ts_conf['domain_list'] != self.config.get('domain_list')):
+                    # make sure the DCs will be able to process the lists
+                    logging.info("Preparing exact match domains")
+                    exact_match_prepare_collection(ts_conf['domain_list'])
+                    logging.info("Preparing suffix match domains")
+                    suffix_match_prepare_collection(ts_conf['domain_list'],
+                                                    separator=".")
+                    logging.info("Finished preparing domains")
 
             # an optional noise allocation results file
             if 'allocation' in ts_conf:
@@ -935,6 +963,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                 clock_padding,
                                                 self.config['max_cell_events_per_circuit'],
                                                 self.config['circuit_sample_rate'],
+                                                self.config['domain_list'],
                                                 self.config)
         self.collection_phase.start()
 
@@ -1030,6 +1059,7 @@ class CollectionPhase(object):
                  noise_weight_config, dc_threshold_config, sk_uids,
                  sk_public_keys, dc_uids, modulus, clock_padding,
                  max_cell_events_per_circuit, circuit_sample_rate,
+                 domain_list,
                  tally_server_config):
         # store configs
         self.period = period
@@ -1046,6 +1076,7 @@ class CollectionPhase(object):
         self.clock_padding = clock_padding
         self.max_cell_events_per_circuit = max_cell_events_per_circuit
         self.circuit_sample_rate = circuit_sample_rate
+        self.domain_list = domain_list
         # make a deep copy, so we can delete unnecesary keys
         self.tally_server_config = deepcopy(tally_server_config)
         self.tally_server_status = None
@@ -1244,6 +1275,7 @@ class CollectionPhase(object):
             config['collect_period'] = self.period
             config['max_cell_events_per_circuit'] = self.max_cell_events_per_circuit
             config['circuit_sample_rate'] = self.circuit_sample_rate
+            config['domain_list'] = self.domain_list
             logging.info("sending start comand with {} counters ({} bins) and requesting {} shares to data collector {}"
                          .format(len(config['counters']),
                                  count_bins(config['counters']),
@@ -1425,6 +1457,12 @@ class CollectionPhase(object):
         if 'counters' in result_context['TallyServer']['Config']:
             result_context['TallyServer']['Config']['counters'] = "(counter bins, no counts)"
         # but we want the noise, because it's not in Tally
+
+        # we don't want the full list of domains
+        # (the DCs summarise their domains before sending back their
+        # start configs, to save bandwidth)
+        # The config has already been deepcopied
+        PrivCountNode.summarise_domain_lists(result_context['TallyServer']['Config'])
 
         return result_context
 

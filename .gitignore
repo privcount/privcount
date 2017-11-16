@@ -30,3 +30,6 @@ test/keys/*
 test/config.chutney.yaml.*
 test/config.tor.yaml.*
 test/config.yaml.*
+
+# downloaded test data
+top-1m.csv.zip

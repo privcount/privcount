@@ -8,11 +8,12 @@ See LICENSE for licensing information
 
 import logging
 
+from copy import deepcopy
 from time import time
 
 from privcount.config import normalise_path
 from privcount.counter import check_counters_config, check_noise_weight_config, combine_counters, CollectionDelay, float_accuracy, add_counter_limits_to_config, count_bins
-from privcount.log import format_delay_time_until, format_elapsed_time_since
+from privcount.log import format_delay_time_until, format_elapsed_time_since, summarise_string
 from privcount.statistics_noise import DEFAULT_SIGMA_TOLERANCE
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
@@ -211,6 +212,31 @@ class PrivCountNode(object):
         # If it passes all the checks
         return conf['delay_period']
 
+    MAX_DOMAIN_NAME_LEN = 253
+
+    @staticmethod
+    def summarise_domain_lists(deepcopied_start_config):
+        '''
+        If start_config contains any domain lists, summarise them.
+        You must deep-copy start_config before calling this function.
+        '''
+        # don't report the full domain list, just send a summary that
+        # contains the first and last domains
+        # (253 chars for domain + 1 for LF) * 2 + 4 for ellipsis
+        if 'domain_list' in deepcopied_start_config:
+            max_len = PrivCountNode.MAX_DOMAIN_NAME_LEN + 1
+            first_last_list = deepcopied_start_config['domain_list'][0:1]
+            if len(deepcopied_start_config) > 1:
+                # always have an ellipsis, even if the list is short
+                ellipsis = "...."
+                first_last_list.append(ellipsis)
+                max_len += len(ellipsis) + 1
+                first_last_list.append(deepcopied_start_config['domain_list'][-1])
+                max_len += PrivCountNode.MAX_DOMAIN_NAME_LEN + 1
+            short_string = summarise_string("\n".join(first_last_list),
+                                            max_len)
+            deepcopied_start_config['domain_list'] = short_string
+
 class PrivCountServer(PrivCountNode):
     '''
     A mixin class that hosts common functionality for PrivCount server
@@ -389,7 +415,8 @@ class PrivCountClient(PrivCountNode):
 
         # and include the config sent by the tally server in do_start
         if self.start_config is not None:
-            response['Config']['Start'] = self.start_config
+            response['Config']['Start'] = deepcopy(self.start_config)
+            PrivCountNode.summarise_domain_lists(response['Config']['Start'])
 
         # and include the config sent by the tally server to stop
         if stop_config is not None:

@@ -7,6 +7,7 @@ __all__ = [
    'data_collector',
    'inject',
    'log',
+   'match',
    'plot',
    'protocol',
    'share_keeper',
