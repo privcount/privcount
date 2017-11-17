@@ -524,6 +524,11 @@ $MOVE_PDF_COMMAND 2> /dev/null || true
 $MOVE_LOG_COMMAND || true
 $MOVE_KEYS_COMMAND || true
 
+# Remove the old unix socket, in case the injector crashed
+rm -f /tmp/privcount-inject 2> /dev/null || true
+# Remove the old auth cookie, in case tor crashed
+rm -f /tmp/privcount-control-auth-cookie 2> /dev/null || true
+
 # Generate a log file name
 # Usage:
 # > `log_file_name privcount_command timestamp` 2>&1
