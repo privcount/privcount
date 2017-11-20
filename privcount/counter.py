@@ -1334,9 +1334,9 @@ class CollectionDelay(object):
     DC: checks round_start_permitted() before sending blinding shares
     SK: checks round_start_permitted() before accepting blinding shares
     (round runs)
-    DC: set_stop_result() when round stops and counters are sent
-    SK: set_stop_result() when round stops and blinding shares are sent
-    TS: set_stop_result() when round ends successfully
+    DC: set_delay_for_stop() when round stops and counters are sent
+    SK: set_delay_for_stop() when round stops and blinding shares are sent
+    TS: set_delay_for_stop() when round ends successfully
     (repeat for next round, if TS has continue set in its config)
     '''
 
@@ -1425,8 +1425,8 @@ class CollectionDelay(object):
         for key in sorted(common_sigmas):
             if CollectionDelay.sigma_change_needs_delay(previous_sigmas[key],
                                                         proposed_sigmas[key],
-                                                        tolerance,
-                                                        key):
+                                                        tolerance=tolerance,
+                                                        logging_label=key):
                 return True
         return False
 
@@ -1450,7 +1450,7 @@ class CollectionDelay(object):
         noise_change_delay = self.noise_change_needs_delay(
                                       self.starting_noise_allocation,
                                       noise_allocation,
-                                      tolerance)
+                                      tolerance=tolerance)
         needs_delay = always_delay or noise_change_delay
 
         if noise_change_delay:
@@ -1490,8 +1490,8 @@ class CollectionDelay(object):
         # all the other assertions are in this function
         next_start_time = self.get_next_round_start_time(noise_allocation,
                                                          delay_period,
-                                                         always_delay,
-                                                         tolerance)
+                                                         always_delay=always_delay,
+                                                         tolerance=tolerance)
         if start_time >= next_start_time:
             return True
         else:
@@ -1505,9 +1505,10 @@ class CollectionDelay(object):
                              delay_reason)
             return False
 
-    def set_stop_result(
+    def set_delay_for_stop(
             self, round_successful, noise_allocation, start_time, end_time,
-            delay_period, always_delay=False,
+            delay_period,
+            always_delay=False,
             tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE):
         '''
         Called when a round ends.
@@ -1534,12 +1535,12 @@ class CollectionDelay(object):
         if not self.round_start_permitted(noise_allocation,
                                           start_time,
                                           delay_period,
-                                          always_delay,
-                                          tolerance):
+                                          always_delay=always_delay,
+                                          tolerance=tolerance):
             expected_start = self.get_next_round_start_time(noise_allocation,
                                                             delay_period,
-                                                            always_delay,
-                                                            tolerance)
+                                                            always_delay=always_delay,
+                                                            tolerance=tolerance)
             status = "successfully" if round_successful else "failed and"
             logging.warning("Round that just {} stopped was started {} before enforced delay elapsed. Round started {}, expected start {}."
                             .format(status,
@@ -1558,7 +1559,7 @@ class CollectionDelay(object):
             elif not self.noise_change_needs_delay(
                               self.starting_noise_allocation,
                               noise_allocation,
-                              tolerance):
+                              tolerance=tolerance):
                 # The latest noise allocation could have been used immediately
                 # after the starting noise allocation.
                 # Keep the starting noise allocation, so that a TS can't

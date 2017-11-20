@@ -128,8 +128,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                             self.config['noise'],
                             time(),
                             self.config['delay_period'],
-                            self.config['always_delay'],
-                            self.config['sigma_decrease_tolerance']):
+                            always_delay=self.config['always_delay'],
+                            tolerance=self.config['sigma_decrease_tolerance']):
                         # we've passed all the checks, start the collection
                         num_phases = self.num_completed_collection_phases
                         logging.info("starting collection phase {} with {} DataCollectors and {} ShareKeepers".format((num_phases+1), len(dcs), len(sks)))
@@ -686,8 +686,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             'delay_until' : self.collection_delay.get_next_round_start_time(
                 self.config['noise'],
                 self.config['delay_period'],
-                self.config['always_delay'],
-                self.config['sigma_decrease_tolerance']),
+                always_delay=self.config['always_delay'],
+                tolerance=self.config['sigma_decrease_tolerance']),
             'privcount_version' : get_privcount_version(),
         }
 
@@ -1004,7 +1004,7 @@ class TallyServer(ServerFactory, PrivCountServer):
             self.num_completed_collection_phases += 1
             self.collection_phase.write_results(self.config['results'],
                                                 end_time)
-            self.collection_delay.set_stop_result(
+            self.collection_delay.set_delay_for_stop(
                 not self.collection_phase.is_error(),
                 # we can't use config['noise'], because it might have changed
                 # since the start of the round
@@ -1014,8 +1014,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # if config['delay_period'] has changed, we use it, and warn
                 # if it would have made a difference
                 self.config['delay_period'],
-                self.config['always_delay'],
-                self.config['sigma_decrease_tolerance'])
+                always_delay=self.config['always_delay'],
+                tolerance=self.config['sigma_decrease_tolerance'])
             self.collection_phase = None
             self.idle_time = time()
 
