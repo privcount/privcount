@@ -1047,7 +1047,8 @@ class TallyServer(ServerFactory, PrivCountServer):
         called by protocol
         '''
         if self.collection_phase is not None:
-            self.collection_phase.store_data(client_uid, result_data)
+            self.collection_phase.store_data(client_uid, result_data,
+                                             is_start=True)
 
     def get_stop_config(self, client_uid):
         '''
@@ -1064,7 +1065,8 @@ class TallyServer(ServerFactory, PrivCountServer):
 
     def set_stop_result(self, client_uid, result_data): # called by protocol
         if self.collection_phase is not None:
-            self.collection_phase.store_data(client_uid, result_data)
+            self.collection_phase.store_data(client_uid, result_data,
+                                             is_start=False)
 
 class CollectionPhase(object):
 
@@ -1171,17 +1173,24 @@ class CollectionPhase(object):
         '''
         pass
 
-    def store_data(self, client_uid, data):
+    def store_data(self, client_uid, data, is_start=None):
+        '''
+        Store the data that client_uid returned in response to a start or
+        stop command. If is_start is True, it was a start command.
+        '''
         cname = TallyServer.get_client_display_name(client_uid)
 
-        if data == None:
+        assert is_start is not None
+        is_start_string = "start" if is_start else "stop"
+
+        if data is None:
             # this can happen if the SK (or DC) is enforcing a delay because
             # the noise allocation has changed
-            logging.warning("received error response from {} while in state {}"
-                            .format(cname, self.state))
+            logging.warning("received error response in {} event from {} while in state {}"
+                            .format(is_start_string, cname, self.state))
             return
 
-        if self.state == 'starting_dcs':
+        if self.state == 'starting_dcs' and is_start:
             # we expect these to be the encrpyted and blinded counts
             # from the DCs that we should forward to the SKs during SK startup
             assert client_uid in self.dc_uids
@@ -1204,7 +1213,7 @@ class CollectionPhase(object):
                         self.need_shares.add(sk_uid)
                     self._change_state('starting_sks')
 
-        elif self.state == 'starting_sks':
+        elif self.state == 'starting_sks' and is_start:
             # the sk got our encrypted share successfully
             logging.info("share keeper {} started and received its shares"
                          .format(cname))
@@ -1212,7 +1221,7 @@ class CollectionPhase(object):
             if len(self.need_shares) == 0:
                 self._change_state('started')
 
-        elif self.state == 'stopping':
+        elif self.state == 'stopping' and not is_start:
             # record the configuration for the client context
             response_config = data.get('Config', None)
             if response_config is not None:
@@ -1240,6 +1249,9 @@ class CollectionPhase(object):
                     logging.warning("received counts: error from stopped client {}"
                                     .format(cname))
                 self.need_counts.remove(client_uid)
+        else:
+            logging.warning("Ignoring {} response from client {} while in state {}"
+                            .format(is_start_string, cname, self.state))
 
     def is_participating(self, client_uid):
         return True if client_uid in self.sk_uids or client_uid in self.dc_uids else False
