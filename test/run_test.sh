@@ -26,8 +26,8 @@ PRIVCOUNT_PLOT=${PRIVCOUNT_PLOT:-1}
 PRIVCOUNT_CLEAN_KEYS=${PRIVCOUNT_CLEAN_KEYS:-0}
 PRIVCOUNT_LOG=${PRIVCOUNT_LOG:-""}
 # The default is to echo info and warning messages
-I="echo"
-W="echo"
+export I="echo"
+export W="echo"
 
 # Inject source
 PRIVCOUNT_ROUNDS=${PRIVCOUNT_ROUNDS:-2}
@@ -223,7 +223,7 @@ TOOLS_DIR="$PRIVCOUNT_DIRECTORY/privcount/tools"
 # The logging option for this script itself
 case "$PRIVCOUNT_LOG" in
   -q)
-    I="true"
+    export I="true"
     ;;
   "")
     # do nothing by default
@@ -757,7 +757,7 @@ case "$PRIVCOUNT_SOURCE" in
     # We avoid this by killing all child processes when this script exits
     SOURCE_PID="$!"
     (sleep 45; \
-      echo "Killing $PRIVCOUNT_SOURCE $SOURCE_PID"; \
+      "$I" "Killing $PRIVCOUNT_SOURCE $SOURCE_PID"; \
       kill "$SOURCE_PID") &
     ;;
   chutney)
