@@ -128,6 +128,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                             self.config['noise'],
                             time(),
                             self.config['delay_period'],
+                            max_client_rtt=self.get_max_all_client_rtt(),
                             always_delay=self.config['always_delay'],
                             tolerance=self.config['sigma_decrease_tolerance']):
                         # we've passed all the checks, start the collection
@@ -467,6 +468,9 @@ class TallyServer(ServerFactory, PrivCountServer):
             logging.warning("problem reading config file: missing required keys")
             log_error()
 
+    MIN_SAFE_RTT = 15.0
+    TYPICAL_RTT_JITTER = 5.0
+
     def get_max_client_rtt(self, uid):
         '''
         Get the maximum reasonable rtt for uid
@@ -475,7 +479,16 @@ class TallyServer(ServerFactory, PrivCountServer):
         # https://www3.cs.stonybrook.edu/~phillipa/papers/SPECTS.pdf
         # There's no guarantee the last rtt will be the same as this one,
         # so add a few seconds unconditionally
-        return self.clients[uid].get('rtt', 15.0) + 5.0
+        return self.clients[uid].get('rtt', TallyServer.MIN_SAFE_RTT) + TallyServer.TYPICAL_RTT_JITTER
+
+    def get_max_all_client_rtt(self):
+        '''
+        Get the maximum reasonable rtt for all clients
+        '''
+        max_rtts = [TallyServer.TYPICAL_RTT_JITTER]
+        for uid in self.clients:
+            max_rtts.append(self.get_max_client_rtt(uid))
+        return max(max_rtts)
 
     def is_client_control_ok(self, uid):
         '''

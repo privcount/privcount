@@ -1431,13 +1431,17 @@ class CollectionDelay(object):
         return False
 
     def get_next_round_start_time(
-            self, noise_allocation, delay_period, always_delay=False,
+            self, noise_allocation, delay_period,
+            max_client_rtt=0.0,
+            always_delay=False,
             tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE):
         '''
         Return the earliest time at which a round with noise allocation could
         start, where delay_period is the configurable delay.
         If always_delay is True, always delay the round by delay_period.
         (This is intended for use while testing.)
+        max_client_rtt is the maximum client RTT of all clients (only used by
+        the Tally Server).
         tolerance is the acceptable sigma decrease.
         '''
         # there must be a configured delay_period (or a default must be used)
@@ -1465,7 +1469,7 @@ class CollectionDelay(object):
         elif needs_delay:
             # if there was a previous round, and we need to delay after it,
             # there must have been an end time for that round
-            next_start_time = self.last_round_end_time + delay_period
+            next_start_time = self.last_round_end_time + delay_period + max_client_rtt
             return next_start_time
         else:
             # we can start any time after the last round ended
@@ -1473,14 +1477,17 @@ class CollectionDelay(object):
 
     def round_start_permitted(
             self, noise_allocation, start_time, delay_period,
+            max_client_rtt=0.0,
             always_delay=False,
             tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE,
             logging_function=logging.debug):
         '''
         Check if we are permitted to start a round with noise allocation
-        at start time, with the configured delay_period.
+        at start time, with the configured delay_period and max_client_rtt.
         If always_delay is True, always delay the round by delay_period.
         (This is intended for use while testing.)
+        max_client_rtt is the maximum client RTT of all clients (only used by
+        the Tally Server).
         tolerance is the acceptable sigma decrease.
         Return True if starting the round is permitted.
         If it is not, return False, and log a message using logging_function.
@@ -1490,6 +1497,7 @@ class CollectionDelay(object):
         # all the other assertions are in this function
         next_start_time = self.get_next_round_start_time(noise_allocation,
                                                          delay_period,
+                                                         max_client_rtt=max_client_rtt,
                                                          always_delay=always_delay,
                                                          tolerance=tolerance)
         if start_time >= next_start_time:
@@ -1508,6 +1516,7 @@ class CollectionDelay(object):
     def set_delay_for_stop(
             self, round_successful, noise_allocation, start_time, end_time,
             delay_period,
+            max_client_rtt=0.0,
             always_delay=False,
             tolerance=DEFAULT_SIGMA_DECREASE_TOLERANCE):
         '''
@@ -1519,6 +1528,8 @@ class CollectionDelay(object):
         (This can also occur if the config is changed mid-round.)
         If always_delay is True, assume the round was delayed, regardless of
         the noise allocation. (This is intended for use while testing.)
+        max_client_rtt is the maximum client RTT of all clients (only used by
+        the Tally Server).
         tolerance is the acceptable sigma decrease.
         '''
         # make sure we haven't violated our own preconditions
@@ -1535,10 +1546,12 @@ class CollectionDelay(object):
         if not self.round_start_permitted(noise_allocation,
                                           start_time,
                                           delay_period,
+                                          max_client_rtt=max_client_rtt,
                                           always_delay=always_delay,
                                           tolerance=tolerance):
             expected_start = self.get_next_round_start_time(noise_allocation,
                                                             delay_period,
+                                                            max_client_rtt=max_client_rtt,
                                                             always_delay=always_delay,
                                                             tolerance=tolerance)
             status = "successfully" if round_successful else "failed and"
