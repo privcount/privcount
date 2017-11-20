@@ -6,6 +6,9 @@ venv
 # counter renames
 *.bak
 
+# counter adds
+missing_counters
+
 # test outputs
 test/*.event_names
 test/*.names
