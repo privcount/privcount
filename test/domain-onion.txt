@@ -1,0 +1,3 @@
+# Tor onion services - should never be seen in DNS over Tor
+# https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Special-Use_Domains
+onion

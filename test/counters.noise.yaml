@@ -1379,147 +1379,75 @@ counters:
     ExitDomainNoSuffixMatchSubsequentStreamByteRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchStreamInboundByteCount:
+    ExitDomainExactMatchStreamInboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoExactMatchStreamInboundByteCount:
+    ExitDomainSuffixMatchStreamInboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainSuffixMatchStreamInboundByteCount:
+    ExitDomainExactMatchInitialStreamInboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoSuffixMatchStreamInboundByteCount:
+    ExitDomainSuffixMatchInitialStreamInboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchInitialStreamInboundByteCount:
+    ExitDomainExactMatchSubsequentStreamInboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoExactMatchInitialStreamInboundByteCount:
+    ExitDomainSuffixMatchSubsequentStreamInboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainSuffixMatchInitialStreamInboundByteCount:
+    ExitDomainExactMatchStreamOutboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoSuffixMatchInitialStreamInboundByteCount:
+    ExitDomainSuffixMatchStreamOutboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchSubsequentStreamInboundByteCount:
+    ExitDomainExactMatchInitialStreamOutboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoExactMatchSubsequentStreamInboundByteCount:
+    ExitDomainSuffixMatchInitialStreamOutboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainSuffixMatchSubsequentStreamInboundByteCount:
+    ExitDomainExactMatchSubsequentStreamOutboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoSuffixMatchSubsequentStreamInboundByteCount:
+    ExitDomainSuffixMatchSubsequentStreamOutboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchStreamOutboundByteCount:
+    ExitDomainExactMatchStreamByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoExactMatchStreamOutboundByteCount:
+    ExitDomainSuffixMatchStreamByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainSuffixMatchStreamOutboundByteCount:
+    ExitDomainExactMatchInitialStreamByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoSuffixMatchStreamOutboundByteCount:
+    ExitDomainSuffixMatchInitialStreamByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchInitialStreamOutboundByteCount:
+    ExitDomainExactMatchSubsequentStreamByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoExactMatchInitialStreamOutboundByteCount:
+    ExitDomainSuffixMatchSubsequentStreamByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainSuffixMatchInitialStreamOutboundByteCount:
+    ExitDomainExactMatchStreamCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoSuffixMatchInitialStreamOutboundByteCount:
+    ExitDomainSuffixMatchStreamCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchSubsequentStreamOutboundByteCount:
+    ExitDomainExactMatchInitialStreamCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoExactMatchSubsequentStreamOutboundByteCount:
+    ExitDomainSuffixMatchInitialStreamCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainSuffixMatchSubsequentStreamOutboundByteCount:
+    ExitDomainExactMatchSubsequentStreamCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchInitialStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchInitialStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchInitialStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchInitialStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchSubsequentStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchSubsequentStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchSubsequentStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchSubsequentStreamByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchInitialStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchInitialStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchInitialStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchInitialStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchSubsequentStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchSubsequentStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchSubsequentStreamCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchSubsequentStreamCount:
+    ExitDomainSuffixMatchSubsequentStreamCountList:
         estimated_value: 0.0
         sensitivity: 0.0

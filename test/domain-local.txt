@@ -1,0 +1,11 @@
+# the reserved domains from https://www.ietf.org/rfc/rfc2606.txt
+test
+example
+invalid
+localhost
+# Defaults used by popular software
+# Microsoft, /etc/hosts
+localdomain
+# mDNS
+# https://en.wikipedia.org/wiki/.local
+local

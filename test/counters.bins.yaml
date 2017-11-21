@@ -3983,6 +3983,8 @@ counters:
     ExitSubsequentStreamCount:
         bins:
         - [-.inf, .inf]
+    # The first domain list is used for the ExitDomain*MatchStream Ratio, LifeTime, and Histogram counters
+    # Their ExitDomainNo*MatchStream* equivalents are used when there is no match in the first list
     ExitDomainExactMatchStreamLifeTime:
         bins:
         - [0.0, 1.0]
@@ -5183,147 +5185,107 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainExactMatchStreamInboundByteCount:
+    # The number of bins in the ExitDomain*MatchStream*CountList counters is
+    # determined at runtime, based on the number of configured domain lists
+    # Each domain list gets a bin in each counter, and there is a final bin
+    # for "no match in any list" (multiple lists may match: all matching bins
+    # will be incremented). Since there is an unmatched bin, there are no
+    # ExitDomainNo*MatchStream*CountList counters.
+    # These example configs are for a single domain list, with each counter
+    # having a matched and unmatched bin.
+    ExitDomainExactMatchStreamInboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchStreamInboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchInitialStreamInboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchInitialStreamInboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchInitialStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchSubsequentStreamInboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchInitialStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchSubsequentStreamInboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchInitialStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchStreamOutboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchInitialStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchStreamOutboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchSubsequentStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchInitialStreamOutboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchSubsequentStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchInitialStreamOutboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchSubsequentStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchSubsequentStreamOutboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchSubsequentStreamInboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchSubsequentStreamOutboundByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchStreamByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchStreamByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchInitialStreamByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchInitialStreamByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchInitialStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchSubsequentStreamByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchInitialStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchSubsequentStreamByteCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchInitialStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchStreamCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchInitialStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchStreamCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchSubsequentStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchInitialStreamCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchSubsequentStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchInitialStreamCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchSubsequentStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainExactMatchSubsequentStreamCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteCount:
+        - [0, 1]
+        - [1, .inf]
+    ExitDomainSuffixMatchSubsequentStreamCountList:
         bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchInitialStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchInitialStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchInitialStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchInitialStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchSubsequentStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchSubsequentStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchSubsequentStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchSubsequentStreamByteCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchInitialStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchInitialStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchInitialStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchInitialStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainExactMatchSubsequentStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoExactMatchSubsequentStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainSuffixMatchSubsequentStreamCount:
-        bins:
-        - [-.inf, .inf]
-    ExitDomainNoSuffixMatchSubsequentStreamCount:
-        bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]

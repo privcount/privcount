@@ -5,7 +5,15 @@ tally_server:
     noise: 'counters.noise.yaml'
     traffic_model: 'traffic.model.json'
     traffic_noise: 'traffic.noise.yaml'
-    domain_file: 'domains.txt'
+    domain_files:
+        - 'domain-top-1k.txt'
+        - 'domain-tld.txt'
+        - 'domain-cc.txt'
+        - 'domain-local.txt'
+        - 'domain-example.txt'
+        - 'domain-arpa.txt'
+        - 'domain-onion.txt'
+        - 'domain-i2p.txt'
     allocation: 'counters.allocation.yaml'
     noise_weight:
         # We can't know our test tor relays' fingerprints in advance

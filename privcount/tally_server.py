@@ -151,6 +151,68 @@ class TallyServer(ServerFactory, PrivCountServer):
         if self.collection_phase is not None:
             self.collection_phase.log_status()
 
+    def load_domain_file(self, file_path, new_domain_lists,
+                         old_domain_files, old_domain_lists):
+        '''
+        Load a domain file from file_path into new_domain_lists.
+        If the file is not in old_domain_files, or the contents do not match
+        old_domain_lists, then chech that the list prepares for matching.
+        Returns the normalised file_path.
+        '''
+        file_path = normalise_path(file_path)
+        assert os.path.exists(file_path)
+
+        # import and validate this list of domain names
+        # This can take a few seconds
+        assert file_path not in new_domain_lists
+        domain_list = []
+        with open(file_path, 'r') as fin:
+            for line in fin:
+                # Ignore leading or trailing whitespace
+                line = line.strip()
+                # Ignore comments
+                if len(line) == 0 or line.startswith('#') or line.startswith('//'):
+                    continue
+                assert check_domain_name(line)
+                # Always lowercase domains, IANA likes them uppercase
+                domain_list.append(line.lower())
+
+        # lists must have at least one entry
+        assert len(domain_list) > 0
+
+        # only re-process the list when it changes, because it takes
+        # about 5 seconds to process the Alexa Top 1 million
+        if (self.config is None or
+            file_path not in old_domain_files or
+            domain_list != old_domain_lists[old_domain_files.index(file_path)]):
+            # make sure the DCs will be able to process the lists
+            logging.info("Checking domains '{}'".format(file_path))
+            exact_match_prepare_collection(domain_list)
+            suffix_match_prepare_collection(domain_list, separator=".")
+
+        # Now, add the list to the list of domain lists
+        new_domain_lists.append(domain_list)
+        return file_path
+
+    def modify_domain_bins(self, new_domain_list_count, new_counters):
+        '''
+        Put new_domain_list_count bins in each domain counter in new_counters,
+        then add an unmatched bin to each counter.
+        '''
+        assert new_domain_list_count > 0
+        assert new_counters is not None
+        # Find all the counters we want to modify
+        for counter_name in new_counters:
+            if counter_name.startswith("ExitDomain") and counter_name.endswith("CountList"):
+                # Don't assume there are any existing bins
+                new_counters[counter_name]['bins'] = []
+                counter_bins = new_counters[counter_name]['bins']
+                # Add a bin for each domain list
+                for bin in xrange(new_domain_list_count):
+                    counter_bins.append([bin, bin+1])
+                # And add a bin for domains that don't match any list
+                counter_bins.append([new_domain_list_count, float('inf')])
+
     def refresh_config(self):
         '''
         re-read config and process any changes
@@ -300,31 +362,17 @@ class TallyServer(ServerFactory, PrivCountServer):
                     assert False
 
             # an optional list of domain names
-            ts_conf['domain_list'] = []
-            if 'domain_file' in ts_conf:
-                ts_conf['domain_file'] = normalise_path(ts_conf['domain_file'])
-                assert os.path.exists(ts_conf['domain_file'])
-
-                # import and validate the list of domain names
-                # This can take a few seconds
-                with open(ts_conf['domain_file'], 'r') as fin:
-                    for line in fin:
-                        line = line.strip()
-                        assert check_domain_name(line)
-                        ts_conf['domain_list'].append(line)
-
-                # only re-process the list when it changes, because it takes
-                # about 5 seconds on the Alexa Top 1 million
-                if (self.config is None or
-                    ts_conf['domain_file'] != self.config.get('domain_file') or
-                    ts_conf['domain_list'] != self.config.get('domain_list')):
-                    # make sure the DCs will be able to process the lists
-                    logging.info("Preparing exact match domains")
-                    exact_match_prepare_collection(ts_conf['domain_list'])
-                    logging.info("Preparing suffix match domains")
-                    suffix_match_prepare_collection(ts_conf['domain_list'],
-                                                    separator=".")
-                    logging.info("Finished preparing domains")
+            ts_conf['domain_lists'] = []
+            if 'domain_files' in ts_conf and len(ts_conf['domain_files']) > 0:
+                for i in xrange(len(ts_conf['domain_files'])):
+                    file_path = self.load_domain_file(ts_conf['domain_files'][i],
+                                                      ts_conf['domain_lists'],
+                                                      self.config.get('domain_files', []) if self.config is not None else [],
+                                                      self.config.get('domain_lists', {}) if self.config is not None else {})
+                    ts_conf['domain_files'][i] = file_path
+                # now, adjust the bins so we can count every list
+                self.modify_domain_bins(len(ts_conf['domain_files']),
+                                        ts_conf['counters'])
 
             # an optional noise allocation results file
             if 'allocation' in ts_conf:
@@ -976,7 +1024,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                 clock_padding,
                                                 self.config['max_cell_events_per_circuit'],
                                                 self.config['circuit_sample_rate'],
-                                                self.config['domain_list'],
+                                                self.config['domain_lists'],
                                                 self.config)
         self.collection_phase.start()
 
@@ -1074,7 +1122,7 @@ class CollectionPhase(object):
                  noise_weight_config, dc_threshold_config, sk_uids,
                  sk_public_keys, dc_uids, modulus, clock_padding,
                  max_cell_events_per_circuit, circuit_sample_rate,
-                 domain_list,
+                 domain_lists,
                  tally_server_config):
         # store configs
         self.period = period
@@ -1091,7 +1139,7 @@ class CollectionPhase(object):
         self.clock_padding = clock_padding
         self.max_cell_events_per_circuit = max_cell_events_per_circuit
         self.circuit_sample_rate = circuit_sample_rate
-        self.domain_list = domain_list
+        self.domain_lists = domain_lists
         # make a deep copy, so we can delete unnecesary keys
         self.tally_server_config = deepcopy(tally_server_config)
         self.tally_server_status = None
@@ -1300,7 +1348,7 @@ class CollectionPhase(object):
             config['collect_period'] = self.period
             config['max_cell_events_per_circuit'] = self.max_cell_events_per_circuit
             config['circuit_sample_rate'] = self.circuit_sample_rate
-            config['domain_list'] = self.domain_list
+            config['domain_lists'] = self.domain_lists
             logging.info("sending start comand with {} counters ({} bins) and requesting {} shares to data collector {}"
                          .format(len(config['counters']),
                                  count_bins(config['counters']),

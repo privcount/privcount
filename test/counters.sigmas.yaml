@@ -939,99 +939,51 @@ counters:
         sigma: 0.0
     ExitDomainNoSuffixMatchSubsequentStreamByteRatio:
         sigma: 0.0
-    ExitDomainExactMatchStreamInboundByteCount:
+    ExitDomainExactMatchStreamInboundByteCountList:
         sigma: 0.0
-    ExitDomainNoExactMatchStreamInboundByteCount:
+    ExitDomainSuffixMatchStreamInboundByteCountList:
         sigma: 0.0
-    ExitDomainSuffixMatchStreamInboundByteCount:
+    ExitDomainExactMatchInitialStreamInboundByteCountList:
         sigma: 0.0
-    ExitDomainNoSuffixMatchStreamInboundByteCount:
+    ExitDomainSuffixMatchInitialStreamInboundByteCountList:
         sigma: 0.0
-    ExitDomainExactMatchInitialStreamInboundByteCount:
+    ExitDomainExactMatchSubsequentStreamInboundByteCountList:
         sigma: 0.0
-    ExitDomainNoExactMatchInitialStreamInboundByteCount:
+    ExitDomainSuffixMatchSubsequentStreamInboundByteCountList:
         sigma: 0.0
-    ExitDomainSuffixMatchInitialStreamInboundByteCount:
+    ExitDomainExactMatchStreamOutboundByteCountList:
         sigma: 0.0
-    ExitDomainNoSuffixMatchInitialStreamInboundByteCount:
+    ExitDomainSuffixMatchStreamOutboundByteCountList:
         sigma: 0.0
-    ExitDomainExactMatchSubsequentStreamInboundByteCount:
+    ExitDomainExactMatchInitialStreamOutboundByteCountList:
         sigma: 0.0
-    ExitDomainNoExactMatchSubsequentStreamInboundByteCount:
+    ExitDomainSuffixMatchInitialStreamOutboundByteCountList:
         sigma: 0.0
-    ExitDomainSuffixMatchSubsequentStreamInboundByteCount:
+    ExitDomainExactMatchSubsequentStreamOutboundByteCountList:
         sigma: 0.0
-    ExitDomainNoSuffixMatchSubsequentStreamInboundByteCount:
+    ExitDomainSuffixMatchSubsequentStreamOutboundByteCountList:
         sigma: 0.0
-    ExitDomainExactMatchStreamOutboundByteCount:
+    ExitDomainExactMatchStreamByteCountList:
         sigma: 0.0
-    ExitDomainNoExactMatchStreamOutboundByteCount:
+    ExitDomainSuffixMatchStreamByteCountList:
         sigma: 0.0
-    ExitDomainSuffixMatchStreamOutboundByteCount:
+    ExitDomainExactMatchInitialStreamByteCountList:
         sigma: 0.0
-    ExitDomainNoSuffixMatchStreamOutboundByteCount:
+    ExitDomainSuffixMatchInitialStreamByteCountList:
         sigma: 0.0
-    ExitDomainExactMatchInitialStreamOutboundByteCount:
+    ExitDomainExactMatchSubsequentStreamByteCountList:
         sigma: 0.0
-    ExitDomainNoExactMatchInitialStreamOutboundByteCount:
+    ExitDomainSuffixMatchSubsequentStreamByteCountList:
         sigma: 0.0
-    ExitDomainSuffixMatchInitialStreamOutboundByteCount:
+    ExitDomainExactMatchStreamCountList:
         sigma: 0.0
-    ExitDomainNoSuffixMatchInitialStreamOutboundByteCount:
+    ExitDomainSuffixMatchStreamCountList:
         sigma: 0.0
-    ExitDomainExactMatchSubsequentStreamOutboundByteCount:
+    ExitDomainExactMatchInitialStreamCountList:
         sigma: 0.0
-    ExitDomainNoExactMatchSubsequentStreamOutboundByteCount:
+    ExitDomainSuffixMatchInitialStreamCountList:
         sigma: 0.0
-    ExitDomainSuffixMatchSubsequentStreamOutboundByteCount:
+    ExitDomainExactMatchSubsequentStreamCountList:
         sigma: 0.0
-    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteCount:
-        sigma: 0.0
-    ExitDomainExactMatchStreamByteCount:
-        sigma: 0.0
-    ExitDomainNoExactMatchStreamByteCount:
-        sigma: 0.0
-    ExitDomainSuffixMatchStreamByteCount:
-        sigma: 0.0
-    ExitDomainNoSuffixMatchStreamByteCount:
-        sigma: 0.0
-    ExitDomainExactMatchInitialStreamByteCount:
-        sigma: 0.0
-    ExitDomainNoExactMatchInitialStreamByteCount:
-        sigma: 0.0
-    ExitDomainSuffixMatchInitialStreamByteCount:
-        sigma: 0.0
-    ExitDomainNoSuffixMatchInitialStreamByteCount:
-        sigma: 0.0
-    ExitDomainExactMatchSubsequentStreamByteCount:
-        sigma: 0.0
-    ExitDomainNoExactMatchSubsequentStreamByteCount:
-        sigma: 0.0
-    ExitDomainSuffixMatchSubsequentStreamByteCount:
-        sigma: 0.0
-    ExitDomainNoSuffixMatchSubsequentStreamByteCount:
-        sigma: 0.0
-    ExitDomainExactMatchStreamCount:
-        sigma: 0.0
-    ExitDomainNoExactMatchStreamCount:
-        sigma: 0.0
-    ExitDomainSuffixMatchStreamCount:
-        sigma: 0.0
-    ExitDomainNoSuffixMatchStreamCount:
-        sigma: 0.0
-    ExitDomainExactMatchInitialStreamCount:
-        sigma: 0.0
-    ExitDomainNoExactMatchInitialStreamCount:
-        sigma: 0.0
-    ExitDomainSuffixMatchInitialStreamCount:
-        sigma: 0.0
-    ExitDomainNoSuffixMatchInitialStreamCount:
-        sigma: 0.0
-    ExitDomainExactMatchSubsequentStreamCount:
-        sigma: 0.0
-    ExitDomainNoExactMatchSubsequentStreamCount:
-        sigma: 0.0
-    ExitDomainSuffixMatchSubsequentStreamCount:
-        sigma: 0.0
-    ExitDomainNoSuffixMatchSubsequentStreamCount:
+    ExitDomainSuffixMatchSubsequentStreamCountList:
         sigma: 0.0

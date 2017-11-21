@@ -1,0 +1,3 @@
+# The .arpa infrastructure domain
+# https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Original_top-level_domains
+arpa

@@ -1,0 +1,4 @@
+# the example domains from https://www.ietf.org/rfc/rfc2606.txt
+example.com
+example.net
+example.org
