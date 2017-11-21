@@ -392,11 +392,13 @@ if [ "$PRIVCOUNT_INSTALL" -eq 1 ]; then
   # Install the latest requirements
   # Unfortunately, this doesn't work on my OS X install without sudo
   #"$I" "Installing requirements from '$PRIVCOUNT_DIRECTORY' ..."
-  #pip install -r "$PRIVCOUNT_DIRECTORY/requirements.txt"
+  #pip --disable-pip-version-check \
+  #    install -r "$PRIVCOUNT_DIRECTORY/requirements.txt"
 
   # Install the latest privcount version
   "$I" "Installing latest version of privcount from '$PRIVCOUNT_DIRECTORY' ..."
-  pip $PRIVCOUNT_LOG install -I "$PRIVCOUNT_DIRECTORY"
+  pip $PRIVCOUNT_LOG --disable-pip-version-check \
+      install -I "$PRIVCOUNT_DIRECTORY"
 fi
 
 if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
