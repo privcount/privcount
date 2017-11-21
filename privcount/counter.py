@@ -1953,6 +1953,10 @@ class SecureCounters(object):
         bin_min is always inclusive. bin_max is exclusive, except when it is
         inf, it includes inf.
         '''
+        # make everything float for consistent comparisons
+        bin_min = float(bin_min)
+        bin_max = float(bin_max)
+        bin_value = float(bin_value)
         if bin_value >= bin_min:
             # any value is <= inf, so we don't need to check if bin_value is inf
             if bin_value < bin_max or bin_max == float('inf'):
