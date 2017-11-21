@@ -1077,6 +1077,17 @@ class Aggregator(ReconnectingClientFactory):
                                        bin=SINGLE_BIN,
                                        inc=readbw)
 
+        self._increment_stream_end_histograms(subcategory,
+                                              totalbw, writebw, readbw,
+                                              ratio, lifetime)
+
+    def _increment_stream_end_histograms(self, subcategory,
+                                         totalbw, writebw, readbw,
+                                         ratio, lifetime):
+        '''
+        Increment the Stream histogram counters for subcategory using the
+        fields provided.
+        '''
         self.secure_counters.increment('Exit{}StreamByteHistogram'
                                        .format(subcategory),
                                        bin=totalbw,
