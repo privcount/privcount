@@ -1179,3 +1179,371 @@ counters:
         sigma: 0.0
     NonEntryConnectionCircuitCount:
         sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 0.0
+    EntryConnectionCountryNoMatchLifeTime:
+        sigma: 0.0
+    NonEntryConnectionCountryNoMatchLifeTime:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 0.0
+    EntryConnectionCountryMatchLifeTime:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchLifeTime:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 0.0
+    EntryConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 0.0
+    EntryConnectionCountryMatchInboundByteHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchInboundByteHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 0.0
+    EntryConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 0.0
+    EntryConnectionCountryMatchOutboundByteHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchOutboundByteHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 0.0
+    EntryConnectionCountryNoMatchByteHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryNoMatchByteHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 0.0
+    EntryConnectionCountryMatchByteHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchByteHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 0.0
+    EntryConnectionCountryNoMatchOverlapHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryNoMatchOverlapHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 0.0
+    EntryConnectionCountryMatchOverlapHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchOverlapHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 0.0
+    EntryConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 0.0
+    EntryConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    EntryConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    EntryConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 0.0
+    EntryConnectionCountryNoMatchCircuitHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryNoMatchCircuitHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 0.0
+    EntryConnectionCountryMatchCircuitHistogram:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchCircuitHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 0.0
+    EntryConnectionCountryMatchInboundByteCountList:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchInboundByteCountList:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 0.0
+    EntryConnectionCountryMatchOutboundByteCountList:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchOutboundByteCountList:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 0.0
+    EntryConnectionCountryMatchByteCountList:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchByteCountList:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 0.0
+    EntryConnectionCountryMatchCountList:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchCountList:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 0.0
+    EntryConnectionCountryMatchInboundCircuitCountList:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchInboundCircuitCountList:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 0.0
+    EntryConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 0.0
+    EntryConnectionCountryMatchCircuitCountList:
+        sigma: 0.0
+    NonEntryConnectionCountryMatchCircuitCountList:
+        sigma: 0.0

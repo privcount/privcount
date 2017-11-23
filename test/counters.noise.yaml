@@ -1739,3 +1739,555 @@ counters:
     NonEntryConnectionCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryNoMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryNoMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryNoMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryNoMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryNoMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryNoMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryNoMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryNoMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryNoMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryNoMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchOverlapHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryNoMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryNoMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryNoMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryNoMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryNoMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryNoMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchInboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchInboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchOutboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchOutboundByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchByteCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchInboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchInboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchOutboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchOutboundCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCountryMatchCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCountryMatchCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCountryMatchCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCountryMatchCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCountryMatchCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCountryMatchCircuitCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
