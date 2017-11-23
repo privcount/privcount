@@ -805,6 +805,66 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'NonEntry1RelayOnAddressConnectionOutboundByteHistogram' : { CONNECTION_EVENT },
 'NonEntry2RelayOnAddressConnectionOutboundByteHistogram' : { CONNECTION_EVENT },
 
+'EntryConnectionCircuitCount' : { CONNECTION_EVENT },
+'NonEntryConnectionCircuitCount' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionCircuitCount' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionCircuitCount' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionCircuitCount' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionCircuitCount' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionCircuitCount' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionCircuitCount' : { CONNECTION_EVENT },
+
+'EntryConnectionInboundCircuitCount' : { CONNECTION_EVENT },
+'NonEntryConnectionInboundCircuitCount' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionInboundCircuitCount' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionInboundCircuitCount' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionInboundCircuitCount' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionInboundCircuitCount' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionInboundCircuitCount' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionInboundCircuitCount' : { CONNECTION_EVENT },
+
+'EntryConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
+'NonEntryConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
+
+'EntryConnectionCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionCircuitHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionCircuitHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionCircuitHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionCircuitHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionInboundCircuitHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionInboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionInboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionInboundCircuitHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
+
 'EntryConnectionLifeTime' : { CONNECTION_EVENT },
 'NonEntryConnectionLifeTime' : { CONNECTION_EVENT },
 

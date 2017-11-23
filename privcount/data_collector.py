@@ -2612,6 +2612,18 @@ class Aggregator(ReconnectingClientFactory):
                             min_value=0, max_value=None):
             return False
 
+        if not is_int_valid("InboundCircuitCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0, max_value=None):
+            return False
+
+        if not is_int_valid("OutboundCircuitCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0, max_value=None):
+            return False
+
         # if everything passed, we're ok
         return True
 
@@ -2679,6 +2691,7 @@ class Aggregator(ReconnectingClientFactory):
         Connection-Specific:
           ChannelId
           InboundByteCount, OutboundByteCount
+          InboundCircuitCount, OutboundCircuitCount
           RemoteIsClientFlag, RemoteIPAddress, RemoteIPAddressConnectionCount
           PeerIPAddress (optional, relay peers only),
           PeerIPAddressConsensusRelayCount
@@ -2733,6 +2746,18 @@ class Aggregator(ReconnectingClientFactory):
 
         total_bytes = inbound_bytes + outbound_bytes
 
+        inbound_circuits = get_int_value("InboundCircuitCount",
+                                      fields, event_desc,
+                                      is_mandatory=False,
+                                      default=0)
+
+        outbound_circuits = get_int_value("OutboundCircuitCount",
+                                       fields, event_desc,
+                                       is_mandatory=False,
+                                       default=0)
+
+        total_circuits = inbound_circuits + outbound_circuits
+
         # Increment counters for mandatory fields and optional fields that
         # have defaults
 
@@ -2782,6 +2807,48 @@ class Aggregator(ReconnectingClientFactory):
                                                   is_client, ip_relay_count,
                                                   event_desc,
                                                   bin=outbound_bytes,
+                                                  inc=1,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("CircuitCount",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=total_circuits,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("InboundCircuitCount",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=inbound_circuits,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("OutboundCircuitCount",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=outbound_circuits,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("CircuitHistogram",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=total_circuits,
+                                                  inc=1,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("InboundCircuitHistogram",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=inbound_circuits,
+                                                  inc=1,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("OutboundCircuitHistogram",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=outbound_circuits,
                                                   inc=1,
                                                   log_missing_counters=True)
 

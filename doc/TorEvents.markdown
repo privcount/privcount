@@ -381,6 +381,7 @@ Fields:
   Connection-Specific:
     ChannelId
     InboundByteCount, OutboundByteCount
+    InboundCircuitCount, OutboundCircuitCount
     RemoteIsClientFlag, RemoteIPAddress, RemoteIPAddressConnectionCount
     PeerIPAddress (optional, relay peers only),
     PeerIPAddressConsensusRelayCount
