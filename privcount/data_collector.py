@@ -1295,7 +1295,8 @@ class Aggregator(ReconnectingClientFactory):
         if host_ip_version == "Hostname":
             domain_exact_match_bin_list = []
             domain_suffix_match_bin_list = []
-            # assume the exact and suffix objs have the same length
+            # we assume the exact and suffix objs have the same length
+            assert len(self.domain_exact_objs) == len(self.domain_suffix_objs)
             for i in xrange(len(self.domain_exact_objs)):
                 domain_exact_obj = self.domain_exact_objs[i]
                 domain_suffix_obj = self.domain_suffix_objs[i]
