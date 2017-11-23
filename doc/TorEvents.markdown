@@ -380,6 +380,7 @@ Fields:
     CreatedTimestamp
   Connection-Specific:
     ChannelId
+    InboundByteCount, OutboundByteCount
     RemoteIsClientFlag, RemoteIPAddress, RemoteIPAddressConnectionCount
     PeerIPAddress (optional, relay peers only),
     PeerIPAddressConsensusRelayCount

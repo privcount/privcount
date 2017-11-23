@@ -2598,6 +2598,20 @@ class Aggregator(ReconnectingClientFactory):
                                    is_mandatory=False):
             return False
 
+        # Only present in newer PrivCount Tor Patch versions
+
+        if not is_int_valid("InboundByteCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0, max_value=None):
+            return False
+
+        if not is_int_valid("OutboundByteCount",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0, max_value=None):
+            return False
+
         # if everything passed, we're ok
         return True
 
@@ -2664,6 +2678,7 @@ class Aggregator(ReconnectingClientFactory):
           CreatedTimestamp
         Connection-Specific:
           ChannelId
+          InboundByteCount, OutboundByteCount
           RemoteIsClientFlag, RemoteIPAddress, RemoteIPAddressConnectionCount
           PeerIPAddress (optional, relay peers only),
           PeerIPAddressConsensusRelayCount
@@ -2706,6 +2721,18 @@ class Aggregator(ReconnectingClientFactory):
 
         # Extract the optional fields, and give them defaults
 
+        inbound_bytes = get_int_value("InboundByteCount",
+                                      fields, event_desc,
+                                      is_mandatory=False,
+                                      default=0)
+
+        outbound_bytes = get_int_value("OutboundByteCount",
+                                       fields, event_desc,
+                                       is_mandatory=False,
+                                       default=0)
+
+        total_bytes = inbound_bytes + outbound_bytes
+
         # Increment counters for mandatory fields and optional fields that
         # have defaults
 
@@ -2713,6 +2740,48 @@ class Aggregator(ReconnectingClientFactory):
                                                   is_client, ip_relay_count,
                                                   event_desc,
                                                   bin=SINGLE_BIN,
+                                                  inc=1,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("ByteCount",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=total_bytes,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("InboundByteCount",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=inbound_bytes,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("OutboundByteCount",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=outbound_bytes,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("ByteHistogram",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=total_bytes,
+                                                  inc=1,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("InboundByteHistogram",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=inbound_bytes,
+                                                  inc=1,
+                                                  log_missing_counters=True)
+
+        self._increment_connection_close_counters("OutboundByteHistogram",
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=outbound_bytes,
                                                   inc=1,
                                                   log_missing_counters=True)
 
