@@ -18,7 +18,7 @@ from base64 import b64encode
 from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
-from privcount.config import normalise_path, choose_secret_handshake_path, check_domain_name
+from privcount.config import normalise_path, choose_secret_handshake_path, check_domain_name, check_country_code
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
@@ -151,21 +151,28 @@ class TallyServer(ServerFactory, PrivCountServer):
         if self.collection_phase is not None:
             self.collection_phase.log_status()
 
-    def load_domain_file(self, file_path, new_domain_lists,
-                         old_domain_files, old_domain_lists):
+    def load_match_file(self, file_path, new_match_lists,
+                        old_match_files, old_match_lists,
+                        check_domain=False, check_country=False,
+                        prepare_exact=True, prepare_suffix=True):
         '''
-        Load a domain file from file_path into new_domain_lists.
-        If the file is not in old_domain_files, or the contents do not match
-        old_domain_lists, then chech that the list prepares for matching.
+        Load a match file from file_path into new_match_lists.
+        If check_domain, then check that each line in the file is a valid
+        domain name.
+        If check_country, then check that each line in the file is a valid
+        MaxMind Country Code.
+        If the file is not in old_match_files, or the contents do not match
+        old_match_lists, then check that the list can be prepared for
+        matching.
         Returns the normalised file_path.
         '''
         file_path = normalise_path(file_path)
         assert os.path.exists(file_path)
 
-        # import and validate this list of domain names
+        # import and validate this list of match names
         # This can take a few seconds
-        assert file_path not in new_domain_lists
-        domain_list = []
+        assert file_path not in new_match_lists
+        match_list = []
         with open(file_path, 'r') as fin:
             for line in fin:
                 # Ignore leading or trailing whitespace
@@ -173,28 +180,70 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # Ignore comments
                 if len(line) == 0 or line.startswith('#') or line.startswith('//'):
                     continue
-                assert check_domain_name(line)
-                # Always lowercase domains, IANA likes them uppercase
-                domain_list.append(line.lower())
+                if check_domain:
+                    assert check_domain_name(line)
+                if check_country:
+                    assert check_country_code(line)
+                # Always lowercase matches, IANA amd MaxMind like them uppercase
+                match_list.append(line.lower())
 
         # lists must have at least one entry
-        assert len(domain_list) > 0
+        assert len(match_list) > 0
 
         # only re-process the list when it changes, because it takes
         # about 5 seconds to process the Alexa Top 1 million
         if (self.config is None or
-            file_path not in old_domain_files or
-            domain_list != old_domain_lists[old_domain_files.index(file_path)]):
+            file_path not in old_match_files or
+            match_list != old_match_lists[old_match_files.index(file_path)]):
             # make sure the DCs will be able to process the lists
-            logging.info("Checking domains '{}'".format(file_path))
-            exact_match_prepare_collection(domain_list)
-            suffix_match_prepare_collection(domain_list, separator=".")
+            logging.info("Checking matches for '{}'".format(file_path))
+            if prepare_exact:
+                exact_match_prepare_collection(match_list)
+            if prepare_suffix:
+                suffix_match_prepare_collection(match_list, separator=".")
 
-        # Now, add the list to the list of domain lists
-        new_domain_lists.append(domain_list)
+        # Now, add the list to the list of match lists
+        new_match_lists.append(match_list)
         return file_path
 
-    def modify_domain_bins(self, new_domain_list_count, new_counters):
+    def load_domain_file(self, file_path, new_domain_lists,
+                         old_domain_files, old_domain_lists):
+        '''
+        Load a domain file using load_match_file.
+        '''
+        return self.load_match_file(file_path, new_domain_lists,
+                            old_domain_files, old_domain_lists,
+                            check_domain=True, check_country=False,
+                            prepare_exact=True, prepare_suffix=True)
+
+    def load_country_file(self, file_path, new_country_lists,
+                          old_country_files, old_country_lists):
+        '''
+        Load a country file using load_match_file.
+        '''
+        # country files only do exact matching
+        return self.load_match_file(file_path, new_country_lists,
+                            old_country_files, old_country_lists,
+                            check_domain=False, check_country=True,
+                            prepare_exact=True, prepare_suffix=False)
+
+    @staticmethod
+    def modify_bins(new_bin_count, counter, add_inf_bin=True):
+        '''
+        Put new_bin_count bins in counter,
+        then add a bin up to float('inf') if add_inf_bin is True.
+        '''
+        # Don't assume there are any existing bins
+        counter['bins'] = []
+        counter_bins = counter['bins']
+        # Add bins up to new_bin_count
+        for bin in xrange(new_bin_count):
+            counter_bins.append([bin, bin+1])
+        if add_inf_bin:
+            counter_bins.append([new_bin_count, float('inf')])
+
+    @staticmethod
+    def modify_domain_bins(new_domain_list_count, new_counters):
         '''
         Put new_domain_list_count bins in each domain counter in new_counters,
         then add an unmatched bin to each counter.
@@ -204,14 +253,22 @@ class TallyServer(ServerFactory, PrivCountServer):
         # Find all the counters we want to modify
         for counter_name in new_counters:
             if counter_name.startswith("ExitDomain") and counter_name.endswith("CountList"):
-                # Don't assume there are any existing bins
-                new_counters[counter_name]['bins'] = []
-                counter_bins = new_counters[counter_name]['bins']
-                # Add a bin for each domain list
-                for bin in xrange(new_domain_list_count):
-                    counter_bins.append([bin, bin+1])
-                # And add a bin for domains that don't match any list
-                counter_bins.append([new_domain_list_count, float('inf')])
+                TallyServer.modify_bins(new_domain_list_count,
+                                        new_counters[counter_name])
+
+    @staticmethod
+    def modify_country_bins(new_country_list_count, new_counters):
+        '''
+        Put new_country_list_count bins in each country counter in new_counters,
+        then add an unmatched bin to each counter.
+        '''
+        assert new_country_list_count > 0
+        assert new_counters is not None
+        # Find all the counters we want to modify
+        for counter_name in new_counters:
+            if "CountryMatchConnection" in counter_name and counter_name.endswith("CountList"):
+                TallyServer.modify_bins(new_country_list_count,
+                                        new_counters[counter_name])
 
     def refresh_config(self):
         '''
@@ -371,8 +428,21 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                       self.config.get('domain_lists', {}) if self.config is not None else {})
                     ts_conf['domain_files'][i] = file_path
                 # now, adjust the bins so we can count every list
-                self.modify_domain_bins(len(ts_conf['domain_files']),
-                                        ts_conf['counters'])
+                TallyServer.modify_domain_bins(len(ts_conf['domain_files']),
+                                               ts_conf['counters'])
+
+            # an optional list of country codes from the MaxMind GeoIP database
+            ts_conf['country_lists'] = []
+            if 'country_files' in ts_conf and len(ts_conf['country_files']) > 0:
+                for i in xrange(len(ts_conf['country_files'])):
+                    file_path = self.load_country_file(ts_conf['country_files'][i],
+                                                       ts_conf['country_lists'],
+                                                       self.config.get('country_files', []) if self.config is not None else [],
+                                                       self.config.get('country_lists', {}) if self.config is not None else {})
+                    ts_conf['country_files'][i] = file_path
+                # now, adjust the bins so we can count every list
+                TallyServer.modify_country_bins(len(ts_conf['country_files']),
+                                                ts_conf['counters'])
 
             # an optional noise allocation results file
             if 'allocation' in ts_conf:
@@ -1025,6 +1095,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                 self.config['max_cell_events_per_circuit'],
                                                 self.config['circuit_sample_rate'],
                                                 self.config['domain_lists'],
+                                                self.config['country_lists'],
                                                 self.config)
         self.collection_phase.start()
 
@@ -1122,7 +1193,7 @@ class CollectionPhase(object):
                  noise_weight_config, dc_threshold_config, sk_uids,
                  sk_public_keys, dc_uids, modulus, clock_padding,
                  max_cell_events_per_circuit, circuit_sample_rate,
-                 domain_lists,
+                 domain_lists, country_lists,
                  tally_server_config):
         # store configs
         self.period = period
@@ -1140,6 +1211,7 @@ class CollectionPhase(object):
         self.max_cell_events_per_circuit = max_cell_events_per_circuit
         self.circuit_sample_rate = circuit_sample_rate
         self.domain_lists = domain_lists
+        self.country_lists = country_lists
         # make a deep copy, so we can delete unnecesary keys
         self.tally_server_config = deepcopy(tally_server_config)
         self.tally_server_status = None
@@ -1349,6 +1421,7 @@ class CollectionPhase(object):
             config['max_cell_events_per_circuit'] = self.max_cell_events_per_circuit
             config['circuit_sample_rate'] = self.circuit_sample_rate
             config['domain_lists'] = self.domain_lists
+            config['country_lists'] = self.country_lists
             logging.info("sending start comand with {} counters ({} bins) and requesting {} shares to data collector {}"
                          .format(len(config['counters']),
                                  count_bins(config['counters']),
@@ -1531,11 +1604,14 @@ class CollectionPhase(object):
             result_context['TallyServer']['Config']['counters'] = "(counter bins, no counts)"
         # but we want the noise, because it's not in Tally
 
-        # we don't want the full list of domains
+        # we don't want the full list of domains or countries
         # (the DCs summarise their domains before sending back their
         # start configs, to save bandwidth)
         # The config has already been deepcopied
-        PrivCountNode.summarise_domain_lists(result_context['TallyServer']['Config'])
+        PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
+                                            'domain_lists')
+        PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
+                                            'country_lists')
 
         return result_context
 

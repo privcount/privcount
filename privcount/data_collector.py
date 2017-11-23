@@ -258,7 +258,8 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                                      self.config['use_setconf'],
                                      config.get('max_cell_events_per_circuit', -1),
                                      config.get('circuit_sample_rate', 1.0),
-                                     config.get('domain_lists', []))
+                                     config.get('domain_lists', []),
+                                     config.get('country_lists', []))
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -413,7 +414,7 @@ class Aggregator(ReconnectingClientFactory):
     def __init__(self, counters, traffic_model_config, sk_uids,
                  noise_weight, modulus, tor_control_port, rotate_period,
                  use_setconf, max_cell_events_per_circuit, circuit_sample_rate,
-                 domain_lists):
+                 domain_lists, country_lists):
         self.secure_counters = SecureCounters(counters, modulus,
                                               require_generate_noise=True)
         self.collection_counters = counters
@@ -430,14 +431,16 @@ class Aggregator(ReconnectingClientFactory):
         self.noise_weight_value = None
         self.max_cell_events_per_circuit = int(max_cell_events_per_circuit)
         self.circuit_sample_rate = float(circuit_sample_rate)
-        # Prepare the lists for exact and suffix matching
+        # Prepare the lists for exact and suffix matching, as appropriate
         self.domain_exact_objs = []
         self.domain_suffix_objs =[]
         for i in xrange(len(domain_lists)):
             self.domain_exact_objs.append(exact_match_prepare_collection(domain_lists[i]))
             self.domain_suffix_objs.append(suffix_match_prepare_collection(domain_lists[i],
                                                                            separator="."))
-
+        self.country_exact_objs = []
+        for i in xrange(len(country_lists)):
+            self.country_exact_objs.append(exact_match_prepare_collection(country_lists[i]))
         self.connector = None
         self.connector_list = None
         self.protocol = None
@@ -2624,17 +2627,23 @@ class Aggregator(ReconnectingClientFactory):
                             min_value=0, max_value=None):
             return False
 
+        if not is_string_valid("RemoteCountryCode",
+                               fields, event_desc,
+                               is_mandatory=False,
+                               min_len=2, max_len=2):
+            return False
+
         # if everything passed, we're ok
         return True
 
-    def _increment_connection_close_counters(self, counter_suffix,
+    def _increment_connection_close_variants(self, counter_suffix,
                                              is_client, ip_relay_count,
                                              event_desc,
                                              bin=SINGLE_BIN,
                                              inc=1,
                                              log_missing_counters=True):
         '''
-        Increment bin by inc for the set of counters ending in
+        Increment bin by inc for the counter variants ending in
         counter_suffix, using is_client, and ip_relay_count to create the
         counter names.
         If log_missing_counters, warn the operator when a requested counter
@@ -2677,6 +2686,259 @@ class Aggregator(ReconnectingClientFactory):
                                        bin=bin,
                                        inc=inc)
 
+    def _increment_connection_close_histograms(self, subcategory,
+                                               inbound_bytes, outbound_bytes,
+                                               inbound_circuits, outbound_circuits,
+                                               elapsed_time, ip_connection_count,
+                                               is_client, ip_relay_count,
+                                               event_desc,
+                                               log_missing_counters=True):
+        '''
+        Call _increment_connection_close_variants() with the standard
+        connection counter histogram variants.
+        '''
+
+        total_bytes = inbound_bytes + outbound_bytes
+        total_circuits = inbound_circuits + outbound_circuits
+
+        self._increment_connection_close_variants("{}ByteHistogram"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=total_bytes,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}InboundByteHistogram"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=inbound_bytes,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}OutboundByteHistogram"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=outbound_bytes,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}CircuitHistogram"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=total_circuits,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}InboundCircuitHistogram"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=inbound_circuits,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}OutboundCircuitHistogram"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=outbound_circuits,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}LifeTime"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=elapsed_time,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}OverlapHistogram"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=ip_connection_count,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
+
+    def _increment_connection_close_counts(self, subcategory,
+                                           inbound_bytes, outbound_bytes,
+                                           inbound_circuits, outbound_circuits,
+                                           is_client, ip_relay_count,
+                                           event_desc,
+                                           log_missing_counters=True):
+        '''
+        Call _increment_connection_close_variants() with the standard
+        connection counter count variants.
+        '''
+
+        total_bytes = inbound_bytes + outbound_bytes
+        total_circuits = inbound_circuits + outbound_circuits
+
+        self._increment_connection_close_variants("{}Count"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}ByteCount"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=total_bytes,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}InboundByteCount"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=inbound_bytes,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}OutboundByteCount"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=outbound_bytes,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}CircuitCount"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=total_circuits,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}InboundCircuitCount"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=inbound_circuits,
+                                                  log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_variants("{}OutboundCircuitCount"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=SINGLE_BIN,
+                                                  inc=outbound_circuits,
+                                                  log_missing_counters=log_missing_counters)
+
+    def _increment_connection_close_count_lists(self, subcategory,
+                                                matching_bin_list,
+                                                inbound_bytes, outbound_bytes,
+                                                inbound_circuits, outbound_circuits,
+                                                is_client, ip_relay_count,
+                                                event_desc,
+                                                log_missing_counters=True):
+        '''
+        Call _increment_connection_close_variants() with the standard
+        connection counter count list variants, using the fields provided.
+        If matching_bin_list is empty, increment the final bin in each counter.
+        '''
+        total_bytes = inbound_bytes + outbound_bytes
+        total_circuits = inbound_circuits + outbound_circuits
+
+        if len(matching_bin_list) == 0:
+            # the final bin always goes to inf
+            matching_bin_list = [float('inf')]
+
+        for bin in matching_bin_list:
+            # there will always be at least two bins in each counter:
+            # the matching bin for the first list, and the unmatched bin
+            self._increment_connection_close_variants("{}CountList"
+                                                      .format(subcategory),
+                                                      is_client, ip_relay_count,
+                                                      event_desc,
+                                                      bin=bin,
+                                                      inc=1,
+                                                      log_missing_counters=log_missing_counters)
+
+            self._increment_connection_close_variants("{}ByteCountList"
+                                                      .format(subcategory),
+                                                      is_client, ip_relay_count,
+                                                      event_desc,
+                                                      bin=bin,
+                                                      inc=total_bytes,
+                                                      log_missing_counters=log_missing_counters)
+
+            self._increment_connection_close_variants("{}InboundByteCountList"
+                                                      .format(subcategory),
+                                                      is_client, ip_relay_count,
+                                                      event_desc,
+                                                      bin=bin,
+                                                      inc=inbound_bytes,
+                                                      log_missing_counters=log_missing_counters)
+
+            self._increment_connection_close_variants("{}OutboundByteCountList"
+                                                      .format(subcategory),
+                                                      is_client, ip_relay_count,
+                                                      event_desc,
+                                                      bin=bin,
+                                                      inc=outbound_bytes,
+                                                      log_missing_counters=log_missing_counters)
+
+            self._increment_connection_close_variants("{}CircuitCountList"
+                                                      .format(subcategory),
+                                                      is_client, ip_relay_count,
+                                                      event_desc,
+                                                      bin=bin,
+                                                      inc=total_circuits,
+                                                      log_missing_counters=log_missing_counters)
+
+            self._increment_connection_close_variants("{}InboundCircuitCountList"
+                                                      .format(subcategory),
+                                                      is_client, ip_relay_count,
+                                                      event_desc,
+                                                      bin=bin,
+                                                      inc=inbound_circuits,
+                                                      log_missing_counters=log_missing_counters)
+
+            self._increment_connection_close_variants("{}OutboundCircuitCountList"
+                                                      .format(subcategory),
+                                                      is_client, ip_relay_count,
+                                                      event_desc,
+                                                      bin=bin,
+                                                      inc=outbound_circuits,
+                                                      log_missing_counters=log_missing_counters)
+
+    def _increment_connection_close_counters(self, subcategory,
+                                             inbound_bytes, outbound_bytes,
+                                             inbound_circuits, outbound_circuits,
+                                             elapsed_time, ip_connection_count,
+                                             is_client, ip_relay_count,
+                                             event_desc,
+                                             log_missing_counters=True):
+        '''
+        Call _increment_connection_close_variants() with the standard
+        connection counter count and histogram variants.
+        '''
+        self._increment_connection_close_counts(subcategory,
+                                                inbound_bytes, outbound_bytes,
+                                                inbound_circuits, outbound_circuits,
+                                                is_client, ip_relay_count,
+                                                event_desc,
+                                                log_missing_counters=log_missing_counters)
+
+        self._increment_connection_close_histograms(subcategory,
+                                                    inbound_bytes, outbound_bytes,
+                                                    inbound_circuits, outbound_circuits,
+                                                    elapsed_time, ip_connection_count,
+                                                    is_client, ip_relay_count,
+                                                    event_desc,
+                                                    log_missing_counters=log_missing_counters)
+
     def _handle_connection_close_event(self, fields):
         '''
         Process a PRIVCOUNT_CONNECTION_CLOSE event
@@ -2692,7 +2954,8 @@ class Aggregator(ReconnectingClientFactory):
           ChannelId
           InboundByteCount, OutboundByteCount
           InboundCircuitCount, OutboundCircuitCount
-          RemoteIsClientFlag, RemoteIPAddress, RemoteIPAddressConnectionCount
+          RemoteIsClientFlag, RemoteIPAddress, RemoteCountryCode,
+          RemoteIPAddressConnectionCount
           PeerIPAddress (optional, relay peers only),
           PeerIPAddressConsensusRelayCount
         TODO: See doc/TorEvents.markdown for all field names and definitions.
@@ -2732,6 +2995,8 @@ class Aggregator(ReconnectingClientFactory):
                                    fields, event_desc,
                                    is_mandatory=True)
 
+        elapsed_time = end_time - start_time
+
         # Extract the optional fields, and give them defaults
 
         inbound_bytes = get_int_value("InboundByteCount",
@@ -2744,8 +3009,6 @@ class Aggregator(ReconnectingClientFactory):
                                        is_mandatory=False,
                                        default=0)
 
-        total_bytes = inbound_bytes + outbound_bytes
-
         inbound_circuits = get_int_value("InboundCircuitCount",
                                       fields, event_desc,
                                       is_mandatory=False,
@@ -2756,115 +3019,57 @@ class Aggregator(ReconnectingClientFactory):
                                        is_mandatory=False,
                                        default=0)
 
-        total_circuits = inbound_circuits + outbound_circuits
+        country_code = get_string_value("RemoteCountryCode",
+                                        fields, event_desc,
+                                        is_mandatory=False,
+                                        default="!!")
 
         # Increment counters for mandatory fields and optional fields that
         # have defaults
 
-        self._increment_connection_close_counters("Count",
+        self._increment_connection_close_counters("",
+                                                  inbound_bytes, outbound_bytes,
+                                                  inbound_circuits, outbound_circuits,
+                                                  elapsed_time,
+                                                  ip_connection_count,
                                                   is_client, ip_relay_count,
                                                   event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=1,
                                                   log_missing_counters=True)
 
-        self._increment_connection_close_counters("ByteCount",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=total_bytes,
-                                                  log_missing_counters=True)
+        # Increment counters for country code matches
+        country_exact_match_bin_list = []
+        for i in xrange(len(self.country_exact_objs)):
+            country_exact_obj = self.country_exact_objs[i]
 
-        self._increment_connection_close_counters("InboundByteCount",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=inbound_bytes,
-                                                  log_missing_counters=True)
+            # this is O(1), because set uses a hash table internally
+            if exact_match(country_exact_obj, country_code):
+                exact_match_str = "CountryMatch"
+                country_exact_match_bin_list.append(i)
+            else:
+                exact_match_str = "CountryNoMatch"
 
-        self._increment_connection_close_counters("OutboundByteCount",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=outbound_bytes,
-                                                  log_missing_counters=True)
+            # The first country list is used for the *CountryMatchConnection, LifeTime and *Histogram counters
+            # Their *CountryNoMatchConnection equivalents are used when there is no match in the first list
+            if i == 0:
+                self._increment_connection_close_histograms(exact_match_str,
+                                                            inbound_bytes, outbound_bytes,
+                                                            inbound_circuits, outbound_circuits,
+                                                            elapsed_time,
+                                                            ip_connection_count,
+                                                            is_client, ip_relay_count,
+                                                            event_desc,
+                                                            log_missing_counters=True)
 
-        self._increment_connection_close_counters("ByteHistogram",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=total_bytes,
-                                                  inc=1,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("InboundByteHistogram",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=inbound_bytes,
-                                                  inc=1,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("OutboundByteHistogram",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=outbound_bytes,
-                                                  inc=1,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("CircuitCount",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=total_circuits,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("InboundCircuitCount",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=inbound_circuits,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("OutboundCircuitCount",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=outbound_circuits,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("CircuitHistogram",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=total_circuits,
-                                                  inc=1,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("InboundCircuitHistogram",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=inbound_circuits,
-                                                  inc=1,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("OutboundCircuitHistogram",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=outbound_circuits,
-                                                  inc=1,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("LifeTime",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=(end_time - start_time),
-                                                  inc=1,
-                                                  log_missing_counters=True)
-
-        self._increment_connection_close_counters("OverlapHistogram",
-                                                  is_client, ip_relay_count,
-                                                  event_desc,
-                                                  bin=ip_connection_count,
-                                                  inc=1,
-                                                  log_missing_counters=True)
+        # Now that we know which lists matched, increment their CountList
+        # counters. Instead of using NoMatch counters, we increment the
+        # final bin if none of the lists match
+        self._increment_connection_close_count_lists("CountryMatch",
+                                                     country_exact_match_bin_list,
+                                                     inbound_bytes, outbound_bytes,
+                                                     inbound_circuits, outbound_circuits,
+                                                     is_client, ip_relay_count,
+                                                     event_desc,
+                                                     log_missing_counters=True)
 
         # we processed and handled the event
         return True

@@ -14,6 +14,12 @@ tally_server:
         - 'domain-arpa.txt'
         - 'domain-onion.txt'
         - 'domain-i2p.txt'
+    country_files:
+        - 'country-all.txt'
+        - 'country-known.txt'
+        - 'country-top-10.txt'
+        - 'country-unknown.txt'
+        - 'country-no-geoip.txt'
     allocation: 'counters.allocation.yaml'
     noise_weight:
         # We can't know our test tor relay's fingerprint in advance

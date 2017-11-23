@@ -212,40 +212,44 @@ class PrivCountNode(object):
         # If it passes all the checks
         return conf['delay_period']
 
-    MAX_DOMAIN_NAME_LEN = 253
+    # Based on the maximum length of a domain name
+    # Country codes and AS numbers are shorter
+    MAX_MATCH_LEN = 253
 
     @staticmethod
-    def summarise_domain_list(domain_list):
+    def summarise_match_list(match_list):
         '''
-        Summarise domain_list into a string containing the first domain, and,
-        if there is more than one domain in the list, the last domain
+        Summarise match_list into a string containing the first match string,
+        and, if there is more than one match string in the list, the last
+        match string
         '''
-        assert len(domain_list) > 0
+        assert len(match_list) > 0
 
-        # don't report overlong domains
-        # Allow (253 chars for domain + 1 for LF) * 2 + 4 for ellipsis
-        max_len = PrivCountNode.MAX_DOMAIN_NAME_LEN + 1
-        first_last_list = domain_list[0:1]
-        if len(domain_list) > 1:
+        # summarise overlong match strings, even if they are the first or last
+        # Allow (MAX_MATCH_LEN + 1 for LF) * 2 + 4 for ellipsis
+        max_len = PrivCountNode.MAX_MATCH_LEN + 1
+        first_last_list = match_list[0:1]
+        if len(match_list) > 1:
             # always have an ellipsis, even if the list is short
             ellipsis = "...."
             first_last_list.append(ellipsis)
             max_len += len(ellipsis) + 1
-            first_last_list.append(domain_list[-1])
-            max_len += PrivCountNode.MAX_DOMAIN_NAME_LEN + 1
+            first_last_list.append(match_list[-1])
+            max_len += PrivCountNode.MAX_MATCH_LEN + 1
         return summarise_string("\n".join(first_last_list),
                                 max_len)
 
     @staticmethod
-    def summarise_domain_lists(deepcopied_start_config):
+    def summarise_match_lists(deepcopied_start_config, match_list_key):
         '''
-        If start_config contains any domain lists, summarise them.
+        If deepcopied_start_config contains match_list_key, and it contains
+        any match lists, summarise them.
         You must deep-copy start_config before calling this function.
         '''
-        for i in xrange(len(deepcopied_start_config.get('domain_lists', []))):
-            domain_list = deepcopied_start_config['domain_lists'][i]
-            short_string = PrivCountNode.summarise_domain_list(domain_list)
-            deepcopied_start_config['domain_lists'][i] = short_string
+        for i in xrange(len(deepcopied_start_config.get(match_list_key, []))):
+            match_list = deepcopied_start_config[match_list_key][i]
+            short_string = PrivCountNode.summarise_match_list(match_list)
+            deepcopied_start_config[match_list_key][i] = short_string
 
 class PrivCountServer(PrivCountNode):
     '''
@@ -426,7 +430,10 @@ class PrivCountClient(PrivCountNode):
         # and include the config sent by the tally server in do_start
         if self.start_config is not None:
             response['Config']['Start'] = deepcopy(self.start_config)
-            PrivCountNode.summarise_domain_lists(response['Config']['Start'])
+            PrivCountNode.summarise_match_lists(response['Config']['Start'],
+                                                'domain_lists')
+            PrivCountNode.summarise_match_lists(response['Config']['Start'],
+                                                'country_lists')
 
         # and include the config sent by the tally server to stop
         if stop_config is not None:

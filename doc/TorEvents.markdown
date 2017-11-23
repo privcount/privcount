@@ -382,11 +382,15 @@ Fields:
     ChannelId
     InboundByteCount, OutboundByteCount
     InboundCircuitCount, OutboundCircuitCount
-    RemoteIsClientFlag, RemoteIPAddress, RemoteIPAddressConnectionCount
+    RemoteIsClientFlag, RemoteIPAddress, RemoteCountryCode,
+    RemoteIPAddressConnectionCount
     PeerIPAddress (optional, relay peers only),
     PeerIPAddressConsensusRelayCount
 
 Limitations:
+
+RemoteCountryCode will always be "!!" if there is no configured GeoIP[v6]File.
+It can also be "??" for addresses with unknown countries.
 
 PeerIPAddress may not always be the consensus address.
 

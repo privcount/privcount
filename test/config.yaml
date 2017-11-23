@@ -16,9 +16,8 @@ tally_server:
     # are required to count the model.
     traffic_noise: 'traffic.noise.yaml' # path to file specifying counter key templates and noise parameters
     # a list of paths to files of newline-separated DNS domain name strings
-    # The Alexa Top 1 million can be downloaded and processed using:
-    # curl http://s3.amazonaws.com/alexa-static/top-1m.csv.zip > top-1m.csv.zip
-    # unzip -c -q top-1m.csv.zip | cut -f2 -d, | head -1000 > top-1k.txt
+    # BEWARE: these do not match the MaxMind Country Codes
+    # domain-top-1k.txt contains instructions for creating Alexa domain lists
     domain_files:
         # The first domain list is used for the ExitDomain*MatchStream Ratio, LifeTime, and Histogram counters
         # Their ExitDomainNo*MatchStream* equivalents are used when there is no match in the first list
@@ -32,6 +31,19 @@ tally_server:
         - 'domain-arpa.txt'
         - 'domain-onion.txt'
         - 'domain-i2p.txt'
+    # a list of paths to files of newline-separated MaxMind Country Codes
+    # BEWARE: these do not match the IANA Country Codes
+    # country-all.txt contains instructions for creating country lists
+    country_files:
+        # The first country list is used for the *CountryMatchConnection, LifeTime and *Histogram counters
+        # Their *CountryNoMatchConnection equivalents are used when there is no match in the first list
+        # Each country list corresponds to a bin in the *CountryMatchConnection*CountList counters
+        # (Multiple matches are possible, the final bin is used for unmatched countries)
+        - 'country-all.txt'
+        - 'country-known.txt'
+        - 'country-top-10.txt'
+        - 'country-unknown.txt'
+        - 'country-no-geoip.txt'
     # path to a yaml file where the noise allocation is written immediately after calculation. The noise allocation also forms part of the results context.
     allocation: 'counters.allocation.yaml'
     noise_weight: # distribute noise among all machines / data collectors

@@ -49,3 +49,18 @@ def check_domain_name(domain_str):
     domain_str = domain_str.lower()
     bad_chars = domain_str.strip(".-_abcdefghijklmnopqrstuvwxyz0123456789")
     return len(bad_chars) == 0 and len(domain_str) > 0
+
+def check_country_code(country_str):
+    '''
+    Check if country_str is a potentially valid Tor/MaxMind Country Code.
+
+    Returns True if it is valid, and False if it is not.
+    '''
+    # We check character sets and length, but don't check against a list of
+    # valid codes
+    if country_str == "??" or country_str == "!!":
+        # Unknown country or missing geoip database
+        return True
+    country_str = country_str.lower()
+    bad_chars = country_str.strip("abcdefghijklmnopqrstuvwxyz")
+    return len(bad_chars) == 0 and len(country_str) == 2
