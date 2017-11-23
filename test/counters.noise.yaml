@@ -1595,3 +1595,147 @@ counters:
     NonEntryConnectionByteCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    Entry0RelayOnAddressConnectionInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionInboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionOutboundCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCircuitHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionInboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionInboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionInboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionInboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionInboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionInboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionInboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionInboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionOutboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionOutboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionOutboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionOutboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionOutboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionOutboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionOutboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionOutboundCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0

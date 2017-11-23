@@ -1083,3 +1083,99 @@ counters:
         sigma: 0.0
     NonEntryConnectionByteCount:
         sigma: 0.0
+    Entry0RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 0.0
+    EntryConnectionInboundCircuitHistogram:
+        sigma: 0.0
+    NonEntryConnectionInboundCircuitHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 0.0
+    EntryConnectionOutboundCircuitHistogram:
+        sigma: 0.0
+    NonEntryConnectionOutboundCircuitHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCircuitHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCircuitHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCircuitHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCircuitHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCircuitHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCircuitHistogram:
+        sigma: 0.0
+    EntryConnectionCircuitHistogram:
+        sigma: 0.0
+    NonEntryConnectionCircuitHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 0.0
+    EntryConnectionInboundCircuitCount:
+        sigma: 0.0
+    NonEntryConnectionInboundCircuitCount:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 0.0
+    EntryConnectionOutboundCircuitCount:
+        sigma: 0.0
+    NonEntryConnectionOutboundCircuitCount:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionCircuitCount:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionCircuitCount:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionCircuitCount:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionCircuitCount:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionCircuitCount:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionCircuitCount:
+        sigma: 0.0
+    EntryConnectionCircuitCount:
+        sigma: 0.0
+    NonEntryConnectionCircuitCount:
+        sigma: 0.0

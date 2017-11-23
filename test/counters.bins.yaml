@@ -5673,3 +5673,147 @@ counters:
     NonEntryConnectionByteCount:
         bins:
         - [-.inf, .inf]
+    Entry0RelayOnAddressConnectionInboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntry0RelayOnAddressConnectionInboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    Entry1RelayOnAddressConnectionInboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntry1RelayOnAddressConnectionInboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    Entry2RelayOnAddressConnectionInboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntry2RelayOnAddressConnectionInboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    EntryConnectionInboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntryConnectionInboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    Entry0RelayOnAddressConnectionOutboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntry0RelayOnAddressConnectionOutboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    Entry1RelayOnAddressConnectionOutboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntry1RelayOnAddressConnectionOutboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    Entry2RelayOnAddressConnectionOutboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntry2RelayOnAddressConnectionOutboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    EntryConnectionOutboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntryConnectionOutboundCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    Entry0RelayOnAddressConnectionCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntry0RelayOnAddressConnectionCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    Entry1RelayOnAddressConnectionCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntry1RelayOnAddressConnectionCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    Entry2RelayOnAddressConnectionCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntry2RelayOnAddressConnectionCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    EntryConnectionCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    NonEntryConnectionCircuitHistogram:
+        bins:
+        - [-.inf, .inf]
+    Entry0RelayOnAddressConnectionInboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry0RelayOnAddressConnectionInboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Entry1RelayOnAddressConnectionInboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry1RelayOnAddressConnectionInboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Entry2RelayOnAddressConnectionInboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry2RelayOnAddressConnectionInboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    EntryConnectionInboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntryConnectionInboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Entry0RelayOnAddressConnectionOutboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry0RelayOnAddressConnectionOutboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Entry1RelayOnAddressConnectionOutboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry1RelayOnAddressConnectionOutboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Entry2RelayOnAddressConnectionOutboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry2RelayOnAddressConnectionOutboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    EntryConnectionOutboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntryConnectionOutboundCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Entry0RelayOnAddressConnectionCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry0RelayOnAddressConnectionCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Entry1RelayOnAddressConnectionCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry1RelayOnAddressConnectionCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    Entry2RelayOnAddressConnectionCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntry2RelayOnAddressConnectionCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    EntryConnectionCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    NonEntryConnectionCircuitCount:
+        bins:
+        - [-.inf, .inf]
