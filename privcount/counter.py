@@ -735,9 +735,12 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitCircuitOtherPortInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # these counters depend on connection close
+
+# simple connection counts
 'EntryConnectionCount' : { CONNECTION_EVENT },
 'NonEntryConnectionCount' : { CONNECTION_EVENT },
 
+# connection counts based on the number of relays sharing the remote address
 'Entry0RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
 'Entry1RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
 'Entry2RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
@@ -745,6 +748,7 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'NonEntry1RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
 'NonEntry2RelayOnAddressConnectionCount' : { CONNECTION_EVENT },
 
+# byte counts
 'EntryConnectionByteCount' : { CONNECTION_EVENT },
 'NonEntryConnectionByteCount' : { CONNECTION_EVENT },
 
@@ -775,6 +779,7 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'NonEntry1RelayOnAddressConnectionOutboundByteCount' : { CONNECTION_EVENT },
 'NonEntry2RelayOnAddressConnectionOutboundByteCount' : { CONNECTION_EVENT },
 
+# byte histograms per connection
 'EntryConnectionByteHistogram' : { CONNECTION_EVENT },
 'NonEntryConnectionByteHistogram' : { CONNECTION_EVENT },
 
@@ -805,6 +810,7 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'NonEntry1RelayOnAddressConnectionOutboundByteHistogram' : { CONNECTION_EVENT },
 'NonEntry2RelayOnAddressConnectionOutboundByteHistogram' : { CONNECTION_EVENT },
 
+# circuit counts
 'EntryConnectionCircuitCount' : { CONNECTION_EVENT },
 'NonEntryConnectionCircuitCount' : { CONNECTION_EVENT },
 
@@ -835,6 +841,7 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'NonEntry1RelayOnAddressConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
 'NonEntry2RelayOnAddressConnectionOutboundCircuitCount' : { CONNECTION_EVENT },
 
+# circuit count histograms by connection
 'EntryConnectionCircuitHistogram' : { CONNECTION_EVENT },
 'NonEntryConnectionCircuitHistogram' : { CONNECTION_EVENT },
 
@@ -865,6 +872,7 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'NonEntry1RelayOnAddressConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
 'NonEntry2RelayOnAddressConnectionOutboundCircuitHistogram' : { CONNECTION_EVENT },
 
+# connection lifetime histograms
 'EntryConnectionLifeTime' : { CONNECTION_EVENT },
 'NonEntryConnectionLifeTime' : { CONNECTION_EVENT },
 
@@ -875,6 +883,7 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'NonEntry1RelayOnAddressConnectionLifeTime' : { CONNECTION_EVENT },
 'NonEntry2RelayOnAddressConnectionLifeTime' : { CONNECTION_EVENT },
 
+# the number of simultaneous connections from the same IP address as a histogram
 'EntryConnectionOverlapHistogram' : { CONNECTION_EVENT },
 'NonEntryConnectionOverlapHistogram' : { CONNECTION_EVENT },
 

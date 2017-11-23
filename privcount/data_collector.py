@@ -883,7 +883,7 @@ class Aggregator(ReconnectingClientFactory):
     def set_flag_list(self, flag_string):
         '''
         Set our stored flag list to the list of space-separated flags in
-        fingerprint. Ignores flag_string if it is None.
+        flag_string. Ignores flag_string if it is None.
         Always returns True.
         Called by TorControlClientProtocol.
         '''

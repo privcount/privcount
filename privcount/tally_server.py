@@ -418,7 +418,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                     logging.error("the set of traffic model bins and noise labels are not equal")
                     assert False
 
-            # an optional list of domain names
+            # an optional list of DNS domain names
             ts_conf['domain_lists'] = []
             if 'domain_files' in ts_conf and len(ts_conf['domain_files']) > 0:
                 for i in xrange(len(ts_conf['domain_files'])):
