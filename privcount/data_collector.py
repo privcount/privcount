@@ -465,6 +465,8 @@ class Aggregator(ReconnectingClientFactory):
         self.address = None
         self.fingerprint = None
         self.flag_list = []
+        self.geoip_file = None
+        self.geoipv6_file = None
 
     def buildProtocol(self, addr):
         if self.protocol is not None:
@@ -900,6 +902,50 @@ class Aggregator(ReconnectingClientFactory):
         '''
         return self.flag_list
 
+    def set_geoip_file(self, geoip_file):
+        '''
+        Set our stored GeoIPFile to geoip_file.
+        Ignores geoip_file if it is None.
+        Always returns True.
+        Called by TorControlClientProtocol.
+        '''
+        if geoip_file is None:
+            logging.warning("geoip_file was None in set_geoip_file()")
+            return True
+
+        self.geoip_file = geoip_file
+        logging.info("Updated GeoIPFile to '{}'".format(self.geoip_file))
+
+        return True
+
+    def get_geoip_file(self):
+        '''
+        Return the stored GeoIPFile for this relay.
+        '''
+        return self.geoip_file
+
+    def set_geoipv6_file(self, geoipv6_file):
+        '''
+        Set our stored GeoIPv6File to geoipv6_file.
+        Ignores geoipv6_file if it is None.
+        Always returns True.
+        Called by TorControlClientProtocol.
+        '''
+        if geoipv6_file is None:
+            logging.warning("geoipv6_file was None in set_geoipv6_file()")
+            return True
+
+        self.geoipv6_file = geoipv6_file
+        logging.info("Updated GeoIPv6File to '{}'".format(self.geoipv6_file))
+
+        return True
+
+    def get_geoipv6_file(self):
+        '''
+        Return the stored GeoIPv6File for this relay.
+        '''
+        return self.geoipv6_file
+
     def get_context(self):
         '''
         return a dictionary containing each available context item
@@ -925,6 +971,10 @@ class Aggregator(ReconnectingClientFactory):
             context['last_event_time'] = self.last_event_time
         if self.noise_weight_value is not None:
             context['noise_weight_value'] = self.noise_weight_value
+        if self.geoip_file is not None:
+            context['geoip_file'] = self.geoip_file
+        if self.geoipv6_file is not None:
+            context['geoipv6_file'] = self.geoipv6_file
         return context
 
     def handle_event(self, event):
