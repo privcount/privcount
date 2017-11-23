@@ -987,3 +987,99 @@ counters:
         sigma: 0.0
     ExitDomainSuffixMatchSubsequentStreamCountList:
         sigma: 0.0
+    Entry0RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 0.0
+    EntryConnectionInboundByteHistogram:
+        sigma: 0.0
+    NonEntryConnectionInboundByteHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 0.0
+    EntryConnectionOutboundByteHistogram:
+        sigma: 0.0
+    NonEntryConnectionOutboundByteHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionByteHistogram:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionByteHistogram:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionByteHistogram:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionByteHistogram:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionByteHistogram:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionByteHistogram:
+        sigma: 0.0
+    EntryConnectionByteHistogram:
+        sigma: 0.0
+    NonEntryConnectionByteHistogram:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionInboundByteCount:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionInboundByteCount:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionInboundByteCount:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionInboundByteCount:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionInboundByteCount:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionInboundByteCount:
+        sigma: 0.0
+    EntryConnectionInboundByteCount:
+        sigma: 0.0
+    NonEntryConnectionInboundByteCount:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionOutboundByteCount:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionOutboundByteCount:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionOutboundByteCount:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionOutboundByteCount:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionOutboundByteCount:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionOutboundByteCount:
+        sigma: 0.0
+    EntryConnectionOutboundByteCount:
+        sigma: 0.0
+    NonEntryConnectionOutboundByteCount:
+        sigma: 0.0
+    Entry0RelayOnAddressConnectionByteCount:
+        sigma: 0.0
+    NonEntry0RelayOnAddressConnectionByteCount:
+        sigma: 0.0
+    Entry1RelayOnAddressConnectionByteCount:
+        sigma: 0.0
+    NonEntry1RelayOnAddressConnectionByteCount:
+        sigma: 0.0
+    Entry2RelayOnAddressConnectionByteCount:
+        sigma: 0.0
+    NonEntry2RelayOnAddressConnectionByteCount:
+        sigma: 0.0
+    EntryConnectionByteCount:
+        sigma: 0.0
+    NonEntryConnectionByteCount:
+        sigma: 0.0

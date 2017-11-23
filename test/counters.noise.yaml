@@ -1451,3 +1451,147 @@ counters:
     ExitDomainSuffixMatchSubsequentStreamCountList:
         estimated_value: 0.0
         sensitivity: 0.0
+    Entry0RelayOnAddressConnectionInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry0RelayOnAddressConnectionByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry0RelayOnAddressConnectionByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry1RelayOnAddressConnectionByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry1RelayOnAddressConnectionByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Entry2RelayOnAddressConnectionByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntry2RelayOnAddressConnectionByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryConnectionByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    NonEntryConnectionByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
