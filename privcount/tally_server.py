@@ -817,6 +817,7 @@ class TallyServer(ServerFactory, PrivCountServer):
             'delay_until' : self.collection_delay.get_next_round_start_time(
                 self.config['noise'],
                 self.config['delay_period'],
+                max_client_rtt=self.get_max_all_client_rtt(),
                 always_delay=self.config['always_delay'],
                 tolerance=self.config['sigma_decrease_tolerance']),
             'privcount_version' : get_privcount_version(),
@@ -1146,6 +1147,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # if config['delay_period'] has changed, we use it, and warn
                 # if it would have made a difference
                 self.config['delay_period'],
+                max_client_rtt=self.get_max_all_client_rtt(),
                 always_delay=self.config['always_delay'],
                 tolerance=self.config['sigma_decrease_tolerance'])
             self.collection_phase = None
