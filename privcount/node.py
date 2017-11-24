@@ -236,7 +236,7 @@ class PrivCountNode(object):
             max_len += len(ellipsis) + 1
             first_last_list.append(match_list[-1])
             max_len += PrivCountNode.MAX_MATCH_LEN + 1
-        return summarise_string("\n".join(first_last_list),
+        return summarise_string("".join(first_last_list),
                                 max_len)
 
     @staticmethod
