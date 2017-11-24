@@ -63,16 +63,18 @@ tally_server:
     sk_threshold: PRIVCOUNT_SHARE_KEEPERS
     #sk_threshold: 1
     dc_threshold: 1 # number of data collector nodes required before starting
+    # If you add a significant number of new counters, you may need to increase
+    # the collect, event, and checkin periods
     # The elapsed test time is approximately:
     #     (collect_period + 2*event_period + delay_period) * rounds
-    collect_period: 10 # (no default, 1 week = 604800 seconds) the safe time frame of stats collection for all stats
-    # There must be at least two event periods in each collect period
-    event_period: 5 # (default: 60 seconds) how often the TS event loop runs
-    # There must be at least two checkin periods in each collect period
-    # The checking period should also be less than or equal to the event
+    collect_period: 14 # (no default, 1 week = 604800 seconds) the safe time frame of stats collection for all stats
+    # There should be at least two event periods in each collect period
+    event_period: 7 # (default: 60 seconds) how often the TS event loop runs
+    # There should be at least two checkin periods in each collect period
+    # The checkin period should also be less than or equal to the event
     # period, unless you are willing to wait a while for client status updates
-    checkin_period: 5 # (default: 60 seconds) number of seconds clients should wait before checking with TS for updates
-    delay_period: 0 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
+    checkin_period: 7 # (default: 60 seconds) number of seconds clients should wait before checking with TS for updates
+    delay_period: 1 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
     always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
     #sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
     continue: 2 # start another collection phase after finishing a previous collection phase. If this value is an integer, run that many rounds before stopping. (The TS always runs at least 1 round.)
@@ -98,7 +100,7 @@ share_keeper:
         ip: '127.0.0.1'
         port: 20001
     # optional overrides:
-    delay_period: 2 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
+    delay_period: 1 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
     always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
     sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
     # all nodes must agree on this key to handshake correctly
@@ -134,8 +136,8 @@ data_collector:
         # - ...
     # optional overrides:
     #use_setconf: True (default: True) whether to use SETCONF to set EnablePrivCount, or rely on the torrc or some other PrivCount instance to do it. This biases results towards long-running connections. Intended for use when testing.
-    #delay_period: 4 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
-    #always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
+    delay_period: 1 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
+    always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
     rotate_period: 1 # (default: 600) sensitive data (like client IP addresses) remains in memory for up to 2*rotate_period
     #sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
     # all nodes must agree on this key to handshake correctly

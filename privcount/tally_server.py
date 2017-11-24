@@ -586,8 +586,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             logging.warning("problem reading config file: missing required keys")
             log_error()
 
-    MIN_SAFE_RTT = 15.0
-    TYPICAL_RTT_JITTER = 5.0
+    MIN_SAFE_RTT = 2.0
+    TYPICAL_RTT_JITTER = 1.0
 
     def get_max_client_rtt(self, uid):
         '''
