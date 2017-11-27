@@ -1,0 +1,13 @@
+# Top 10 Relay User Countries from Tor Metrics, November 2017
+# https://metrics.torproject.org/userstats-relay-table.html
+# BEWARE: these do not match the IANA TLD Country Codes
+US
+AE
+DE
+RU
+UA
+FR
+GB
+NL
+CA
+ID
