@@ -1308,7 +1308,7 @@ class CollectionPhase(object):
         if data is None:
             # this can happen if the SK (or DC) is enforcing a delay because
             # the noise allocation has changed
-            logging.warning("received error response in {} event from {} while in state {}"
+            logging.warning("ignoring error response in {} event from {} while in state {}"
                             .format(is_start_string, cname, self.state))
             return
 

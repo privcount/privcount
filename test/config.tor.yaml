@@ -34,11 +34,11 @@ tally_server:
     #     collect_period + 2*event_period
     collect_period: 60
     # There must be at least two event periods in each collect period
-    event_period: 5
+    event_period: 10
     # There must be at least two checkin periods in each collect period
     # The checking period should also be less than or equal to the event
     # period, unless you are willing to wait a while for client status updates
-    checkin_period: 5
+    checkin_period: 10
     # We only run one round, so this is unused
     delay_period: 86400
     key: 'keys/ts.pem'
