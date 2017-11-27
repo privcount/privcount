@@ -1820,7 +1820,8 @@ class CollectionDelay(object):
         '''
         # there must be a configured delay_period (or a default must be used)
         assert delay_period >= 0
-        assert always_delay is not None
+        # that is, it must be boolean-coercible
+        assert always_delay or not always_delay
         # there must be a noise allocation for the next round
         assert noise_allocation is not None
         assert tolerance >= 0
@@ -1867,7 +1868,7 @@ class CollectionDelay(object):
         If it is not, return False, and log a message using logging_function.
         '''
         # there must be a start time
-        assert start_time is not None
+        assert start_time >= 0
         # all the other assertions are in this function
         next_start_time = self.get_next_round_start_time(noise_allocation,
                                                          delay_period,
@@ -1907,11 +1908,14 @@ class CollectionDelay(object):
         tolerance is the acceptable sigma decrease.
         '''
         # make sure we haven't violated our own preconditions
-        assert round_successful is not None
+        # that is, it must be boolean-coercible
+        assert round_successful or not round_successful
         assert noise_allocation is not None
+        assert start_time >= 0
+        assert end_time >= 0
         assert start_time < end_time
         assert delay_period >= 0
-        assert always_delay is not None
+        assert always_delay or not always_delay
         assert tolerance >= 0
         # did we forget to check if we needed to delay this round?
         # warn, because this can happen if the delay is reconfigured,
