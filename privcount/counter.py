@@ -1739,13 +1739,13 @@ class CollectionDelay(object):
         - The proposed value is greater than the previous value.
         Returns True if the sigma values need a delay, False if they do not.
         '''
-        assert previous_sigma is not None
-        assert proposed_sigma is not None
-        assert tolerance is not None
+        assert previous_sigma >= 0
+        assert proposed_sigma >= 0
+        assert tolerance >= 0
         if proposed_sigma >= previous_sigma:
-            # the sigma has increased: no delay requires
+            # the sigma has increased: no delay required
             return False
-        elif proposed_sigma - previous_sigma <= tolerance:
+        elif previous_sigma - proposed_sigma <= tolerance:
             # the sigma has decreased, but not by enough to matter
             return False
         # the sigma has decreased too much - enforce a delay
@@ -1772,7 +1772,7 @@ class CollectionDelay(object):
         '''
         # There must be an allocation for a valid round
         assert proposed_allocation is not None
-        assert tolerance is not None
+        assert tolerance >= 0
         # No delay for the first round
         if previous_allocation is None:
             return False
@@ -1796,10 +1796,11 @@ class CollectionDelay(object):
 
         # check the sigma values are the same
         for key in sorted(common_sigmas):
-            if CollectionDelay.sigma_change_needs_delay(previous_sigmas[key],
-                                                        proposed_sigmas[key],
-                                                        tolerance=tolerance,
-                                                        logging_label=key):
+            if CollectionDelay.sigma_change_needs_delay(
+                previous_sigmas[key]['sigma'],
+                proposed_sigmas[key]['sigma'],
+                tolerance=tolerance,
+                logging_label=key):
                 return True
         return False
 
@@ -1822,7 +1823,7 @@ class CollectionDelay(object):
         assert always_delay is not None
         # there must be a noise allocation for the next round
         assert noise_allocation is not None
-        assert tolerance is not None
+        assert tolerance >= 0
 
         noise_change_delay = self.noise_change_needs_delay(
                                       self.starting_noise_allocation,
@@ -1911,7 +1912,7 @@ class CollectionDelay(object):
         assert start_time < end_time
         assert delay_period >= 0
         assert always_delay is not None
-        assert tolerance is not None
+        assert tolerance >= 0
         # did we forget to check if we needed to delay this round?
         # warn, because this can happen if the delay is reconfigured,
         # or if another node fails a round because it starts sooner than its
