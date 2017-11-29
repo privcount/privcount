@@ -1367,10 +1367,24 @@ class Aggregator(ReconnectingClientFactory):
         return True
 
     @staticmethod
-    def _classify_port(port):
+    def _is_port_web(port):
         '''
-        Classify port into Web, Interactive, P2P, or OtherPort.
+        Return True if port is Web.
         '''
+        return port == 80 or port == 443
+
+    INTERACTIVE_PORTS = set([22, 194, 994, 6660, 6661, 6662, 6663, 6664, 6665, 6666, 6667, 6668, 6669, 6670, 6679, 6697, 7000])
+
+    P2P_PORT_CACHE = None
+
+    @staticmethod
+    def _p2p_port_set():
+        '''
+        Return a set containing the P2P ports.
+        '''
+        if Aggregator.P2P_PORT_CACHE is not None:
+            return Aggregator.P2P_PORT_CACHE
+
         p2p_ports = [1214]
         for p in xrange(4661, 4666+1): p2p_ports.append(p)
         for p in xrange(6346, 6429+1): p2p_ports.append(p)
@@ -1379,14 +1393,29 @@ class Aggregator(ReconnectingClientFactory):
         p2p_ports.append(45682) # utorrent
         p2p_ports.append(51413) # transmission
 
-        if port in [80, 443]:
+        Aggregator.P2P_PORT_CACHE = set(p2p_ports)
+        return Aggregator.P2P_PORT_CACHE
+
+    @staticmethod
+    def _classify_port(port):
+        '''
+        Classify port into Web, Interactive, P2P, or OtherPort.
+        '''
+        if Aggregator._is_port_web(port):
             return 'Web'
-        elif port in [22, 194, 994, 6660, 6661, 6662, 6663, 6664, 6665, 6666, 6667, 6668, 6669, 6670, 6679, 6697, 7000]:
+        elif port in Aggregator.INTERACTIVE_PORTS:
             return 'Interactive'
-        elif port in p2p_ports:
+        elif port in Aggregator._p2p_port_set():
             return 'P2P'
         else:
             return 'OtherPort'
+
+    @staticmethod
+    def _classify_port_web(port):
+        '''
+        Classify port into Web or NonWeb.
+        '''
+        return 'Web' if Aggregator._is_port_web(port) else 'NonWeb'
 
     @staticmethod
     def _encode_ratio(inval, outval):
