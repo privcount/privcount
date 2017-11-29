@@ -1276,7 +1276,7 @@ class Aggregator(ReconnectingClientFactory):
                                                 ratio, lifetime)
 
         # collect IP version and hostname before DNS resolution
-        # IPv4 / IPv6 / Hostname
+        # IPv4Literal / IPv6Literal / Hostname
         self._increment_stream_end_counters(host_ip_version,
                                             totalbw, writebw, readbw,
                                             ratio, lifetime)
@@ -1287,7 +1287,7 @@ class Aggregator(ReconnectingClientFactory):
                                             totalbw, writebw, readbw,
                                             ratio, lifetime)
         # and combined host / stream
-        # IPv4 / IPv6 / Hostname + Initial / Subsequent
+        # IPv4Literal / IPv6Literal / Hostname + Initial / Subsequent
         self._increment_stream_end_counters(host_ip_version + stream_circ,
                                             totalbw, writebw, readbw,
                                             ratio, lifetime)
