@@ -57,9 +57,10 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
     #echo "Processing $code:"
     OUT_PATH="$TEST_DIR"/`basename "$code"`
     grep -i "'$NAME_REGEX'[, ]" "$code" | cut -d"'" -f 2 \
-        | grep -v -e 'bins' -e 'DOCUMENT' -e 'type' -e 'name' -e 'state' \
-                  -e 'version' -e 'Example' -e 'BadExit' -e 'Exit$' \
-                  -e 'Guard' -e 'sigma' -e 'sharekeepers' -e 'traffic' \
+        | grep -v -e '^bins$' -e '^DOCUMENT$' -e '^type$' -e '^name$' \
+                  -e '^state$' -e '^version$' -e '^Example' -e '^BadExit$' \
+                  -e '^Exit$' -e '^Guard$' -e '^sigma$' -e '^sharekeepers$' \
+                  -e '^traffic$' -e "^Web$" \
         > "$OUT_PATH.names.unsorted"
     # Add the traffic model bins to the data_collector file only
     if [ `basename "$code"` = 'data_collector.py' ]; then
