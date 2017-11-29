@@ -2291,3 +2291,165 @@ counters:
     NonEntryConnectionCountryMatchCircuitCountList:
         estimated_value: 0.0
         sensitivity: 0.0
+    ExitNonWebStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitNonWebStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitNonWebStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitNonWebStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitNonWebStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitNonWebStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitNonWebStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitNonWebStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitNonWebStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameWebStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameInitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameSubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameWebStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameInitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameSubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameWebStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameInitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameSubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameWebStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameInitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameSubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameWebStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameInitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameSubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameWebStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameInitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameSubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameWebStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameInitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameSubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameWebStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameInitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameSubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameWebStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameInitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameSubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0

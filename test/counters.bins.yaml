@@ -7953,3 +7953,165 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
+    ExitNonWebStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitNonWebStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitNonWebStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitNonWebStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitNonWebStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitNonWebStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitNonWebStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitNonWebStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitNonWebStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameWebStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameNonWebStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameInitialStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameSubsequentStreamLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameWebStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameNonWebStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameInitialStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameSubsequentStreamInboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameWebStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameNonWebStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameInitialStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameSubsequentStreamOutboundByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameWebStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameNonWebStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameInitialStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameSubsequentStreamByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameWebStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameNonWebStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameInitialStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameSubsequentStreamByteRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameWebStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameNonWebStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameInitialStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameSubsequentStreamInboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameWebStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameNonWebStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameInitialStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameSubsequentStreamOutboundByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameWebStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameNonWebStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameInitialStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameSubsequentStreamByteCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameWebStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameNonWebStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameInitialStreamCount:
+        bins:
+        - [-.inf, .inf]
+    ExitHostnameSubsequentStreamCount:
+        bins:
+        - [-.inf, .inf]

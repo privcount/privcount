@@ -1547,3 +1547,111 @@ counters:
         sigma: 0.0
     NonEntryConnectionCountryMatchCircuitCountList:
         sigma: 0.0
+    ExitNonWebStreamLifeTime:
+        sigma: 0.0
+    ExitNonWebStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitNonWebStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitNonWebStreamByteHistogram:
+        sigma: 0.0
+    ExitNonWebStreamByteRatio:
+        sigma: 0.0
+    ExitNonWebStreamInboundByteCount:
+        sigma: 0.0
+    ExitNonWebStreamOutboundByteCount:
+        sigma: 0.0
+    ExitNonWebStreamByteCount:
+        sigma: 0.0
+    ExitNonWebStreamCount:
+        sigma: 0.0
+    ExitHostnameWebStreamLifeTime:
+        sigma: 0.0
+    ExitHostnameNonWebStreamLifeTime:
+        sigma: 0.0
+    ExitHostnameStreamLifeTime:
+        sigma: 0.0
+    ExitHostnameInitialStreamLifeTime:
+        sigma: 0.0
+    ExitHostnameSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitHostnameWebStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameNonWebStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameWebStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameNonWebStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameWebStreamByteHistogram:
+        sigma: 0.0
+    ExitHostnameNonWebStreamByteHistogram:
+        sigma: 0.0
+    ExitHostnameStreamByteHistogram:
+        sigma: 0.0
+    ExitHostnameInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitHostnameSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitHostnameWebStreamByteRatio:
+        sigma: 0.0
+    ExitHostnameNonWebStreamByteRatio:
+        sigma: 0.0
+    ExitHostnameStreamByteRatio:
+        sigma: 0.0
+    ExitHostnameInitialStreamByteRatio:
+        sigma: 0.0
+    ExitHostnameSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitHostnameWebStreamInboundByteCount:
+        sigma: 0.0
+    ExitHostnameNonWebStreamInboundByteCount:
+        sigma: 0.0
+    ExitHostnameStreamInboundByteCount:
+        sigma: 0.0
+    ExitHostnameInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitHostnameSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitHostnameWebStreamOutboundByteCount:
+        sigma: 0.0
+    ExitHostnameNonWebStreamOutboundByteCount:
+        sigma: 0.0
+    ExitHostnameStreamOutboundByteCount:
+        sigma: 0.0
+    ExitHostnameInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitHostnameSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitHostnameWebStreamByteCount:
+        sigma: 0.0
+    ExitHostnameNonWebStreamByteCount:
+        sigma: 0.0
+    ExitHostnameStreamByteCount:
+        sigma: 0.0
+    ExitHostnameInitialStreamByteCount:
+        sigma: 0.0
+    ExitHostnameSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitHostnameWebStreamCount:
+        sigma: 0.0
+    ExitHostnameNonWebStreamCount:
+        sigma: 0.0
+    ExitHostnameStreamCount:
+        sigma: 0.0
+    ExitHostnameInitialStreamCount:
+        sigma: 0.0
+    ExitHostnameSubsequentStreamCount:
+        sigma: 0.0
