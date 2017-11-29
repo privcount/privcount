@@ -19,9 +19,9 @@ tally_server:
     # BEWARE: these do not match the MaxMind Country Codes
     # domain-top-1k.txt contains instructions for creating Alexa domain lists
     domain_files:
-        # The first domain list is used for the ExitDomain*MatchStream Ratio, LifeTime, and Histogram counters
-        # Their ExitDomainNo*MatchStream* equivalents are used when there is no match in the first list
-        # Each domain list corresponds to a bin in the ExitDomain*MatchStream*CountList counters
+        # The first domain list is used for the ExitDomain*MatchWebStream Ratio, LifeTime, and Histogram counters
+        # Their ExitDomainNo*MatchWebStream* equivalents are used when there is no match in the first list
+        # Each domain list corresponds to a bin in the ExitDomain*MatchWebStream*CountList counters
         # (Multiple matches are possible, the final bin is used for unmatched domains)
         - 'domain-top-1k.txt'
         - 'domain-tld.txt'

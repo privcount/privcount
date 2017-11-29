@@ -394,34 +394,34 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitHostnameStreamByteRatio' : { STREAM_EVENT },
 'ExitHostnameStreamLifeTime' : { STREAM_EVENT },
 
-# The first domain list is used for the ExitDomain*MatchStream Ratio, LifeTime, and Histogram counters
-# Their ExitDomainNo*MatchStream* equivalents are used when there is no match in the first list
+# The first domain list is used for the ExitDomain*MatchWebStream Ratio, LifeTime, and Histogram counters
+# Their ExitDomainNo*MatchWebStream* equivalents are used when there is no match in the first list
 
 # Does the domain match any domain in the first list?
-'ExitDomainExactMatchStreamByteHistogram' : { STREAM_EVENT },
-'ExitDomainExactMatchStreamOutboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainExactMatchStreamInboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainExactMatchStreamByteRatio' : { STREAM_EVENT },
-'ExitDomainExactMatchStreamLifeTime' : { STREAM_EVENT },
+'ExitDomainExactMatchWebStreamByteHistogram' : { STREAM_EVENT },
+'ExitDomainExactMatchWebStreamOutboundByteHistogram' : { STREAM_EVENT },
+'ExitDomainExactMatchWebStreamInboundByteHistogram' : { STREAM_EVENT },
+'ExitDomainExactMatchWebStreamByteRatio' : { STREAM_EVENT },
+'ExitDomainExactMatchWebStreamLifeTime' : { STREAM_EVENT },
 
-'ExitDomainNoExactMatchStreamByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoExactMatchStreamOutboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoExactMatchStreamInboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoExactMatchStreamByteRatio' : { STREAM_EVENT },
-'ExitDomainNoExactMatchStreamLifeTime' : { STREAM_EVENT },
+'ExitDomainNoExactMatchWebStreamByteHistogram' : { STREAM_EVENT },
+'ExitDomainNoExactMatchWebStreamOutboundByteHistogram' : { STREAM_EVENT },
+'ExitDomainNoExactMatchWebStreamInboundByteHistogram' : { STREAM_EVENT },
+'ExitDomainNoExactMatchWebStreamByteRatio' : { STREAM_EVENT },
+'ExitDomainNoExactMatchWebStreamLifeTime' : { STREAM_EVENT },
 
 # Does the domain have any domain in the first list as a suffix?
-'ExitDomainSuffixMatchStreamByteHistogram' : { STREAM_EVENT },
-'ExitDomainSuffixMatchStreamOutboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainSuffixMatchStreamInboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainSuffixMatchStreamByteRatio' : { STREAM_EVENT },
-'ExitDomainSuffixMatchStreamLifeTime' : { STREAM_EVENT },
+'ExitDomainSuffixMatchWebStreamByteHistogram' : { STREAM_EVENT },
+'ExitDomainSuffixMatchWebStreamOutboundByteHistogram' : { STREAM_EVENT },
+'ExitDomainSuffixMatchWebStreamInboundByteHistogram' : { STREAM_EVENT },
+'ExitDomainSuffixMatchWebStreamByteRatio' : { STREAM_EVENT },
+'ExitDomainSuffixMatchWebStreamLifeTime' : { STREAM_EVENT },
 
-'ExitDomainNoSuffixMatchStreamByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoSuffixMatchStreamOutboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoSuffixMatchStreamInboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoSuffixMatchStreamByteRatio' : { STREAM_EVENT },
-'ExitDomainNoSuffixMatchStreamLifeTime' : { STREAM_EVENT },
+'ExitDomainNoSuffixMatchWebStreamByteHistogram' : { STREAM_EVENT },
+'ExitDomainNoSuffixMatchWebStreamOutboundByteHistogram' : { STREAM_EVENT },
+'ExitDomainNoSuffixMatchWebStreamInboundByteHistogram' : { STREAM_EVENT },
+'ExitDomainNoSuffixMatchWebStreamByteRatio' : { STREAM_EVENT },
+'ExitDomainNoSuffixMatchWebStreamLifeTime' : { STREAM_EVENT },
 
 # Position of stream on circuit
 # These also use CIRCUIT_EVENT, because that avoids collisions between old and
@@ -551,99 +551,99 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitHostnameSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # Does the initial domain on the circuit match any domain in the first list?
-'ExitDomainExactMatchInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
-'ExitDomainNoExactMatchInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoExactMatchInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoExactMatchInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoExactMatchInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoExactMatchInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # Does the initial domain on the circuit have any domain in the first list as a suffix?
-'ExitDomainSuffixMatchInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
-'ExitDomainNoSuffixMatchInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoSuffixMatchInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoSuffixMatchInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoSuffixMatchInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoSuffixMatchInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # Do subsequent domains on the circuit match any domain in the first list?
-'ExitDomainExactMatchSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
-'ExitDomainNoExactMatchSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoExactMatchSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoExactMatchSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoExactMatchSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoExactMatchSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoExactMatchWebSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # Do subsequent domains on the circuit have any domain in the first list as a suffix?
-'ExitDomainSuffixMatchSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
-'ExitDomainNoSuffixMatchSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoSuffixMatchSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoSuffixMatchSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoSuffixMatchSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainNoSuffixMatchSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainNoSuffixMatchWebSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
-# The number of bins in the ExitDomain*MatchStream*CountList counters is
+# The number of bins in the ExitDomain*MatchWebStream*CountList counters is
 # determined at runtime, based on the number of configured domain lists
 # Each domain list gets a bin in each counter, and there is a final bin
 # for "no match in any list" (multiple lists may match: all matching bins
 # will be incremented). Since there is an unmatched bin, there are no
-# ExitDomainNo*MatchStream*CountList counters.
+# ExitDomainNo*MatchWebStream*CountList counters.
 
 # Does the domain match any domain in the list for each bin? Or is it unmatched by all the lists?
-'ExitDomainExactMatchStreamCountList' : { STREAM_EVENT },
-'ExitDomainExactMatchStreamByteCountList' : { STREAM_EVENT },
-'ExitDomainExactMatchStreamOutboundByteCountList' : { STREAM_EVENT },
-'ExitDomainExactMatchStreamInboundByteCountList' : { STREAM_EVENT },
+'ExitDomainExactMatchWebStreamCountList' : { STREAM_EVENT },
+'ExitDomainExactMatchWebStreamByteCountList' : { STREAM_EVENT },
+'ExitDomainExactMatchWebStreamOutboundByteCountList' : { STREAM_EVENT },
+'ExitDomainExactMatchWebStreamInboundByteCountList' : { STREAM_EVENT },
 
 # Does the domain have any domain in the list for each bin as a suffix? Or is it unmatched by all the lists?
-'ExitDomainSuffixMatchStreamCountList' : { STREAM_EVENT },
-'ExitDomainSuffixMatchStreamByteCountList' : { STREAM_EVENT },
-'ExitDomainSuffixMatchStreamOutboundByteCountList' : { STREAM_EVENT },
-'ExitDomainSuffixMatchStreamInboundByteCountList' : { STREAM_EVENT },
+'ExitDomainSuffixMatchWebStreamCountList' : { STREAM_EVENT },
+'ExitDomainSuffixMatchWebStreamByteCountList' : { STREAM_EVENT },
+'ExitDomainSuffixMatchWebStreamOutboundByteCountList' : { STREAM_EVENT },
+'ExitDomainSuffixMatchWebStreamInboundByteCountList' : { STREAM_EVENT },
 
 # Does the initial domain on the circuit match any domain in the list for each bin? Or is it unmatched by all the lists?
-'ExitDomainExactMatchInitialStreamCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchInitialStreamByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchInitialStreamOutboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchInitialStreamInboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebInitialStreamCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebInitialStreamByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebInitialStreamOutboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebInitialStreamInboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # Does the initial domain on the circuit have any domain in the list for each bin as a suffix? Or is it unmatched by all the lists?
-'ExitDomainSuffixMatchInitialStreamCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchInitialStreamByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchInitialStreamOutboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchInitialStreamInboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebInitialStreamCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebInitialStreamByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebInitialStreamOutboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebInitialStreamInboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # Do subsequent domains on the circuit match any domain in the list for each bin? Or is it unmatched by all the lists?
-'ExitDomainExactMatchSubsequentStreamCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchSubsequentStreamByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchSubsequentStreamOutboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainExactMatchSubsequentStreamInboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebSubsequentStreamCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebSubsequentStreamByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebSubsequentStreamOutboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainExactMatchWebSubsequentStreamInboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # Do subsequent domains on the circuit have any domain in the list for each bin as a suffix? Or is it unmatched by all the lists?
-'ExitDomainSuffixMatchSubsequentStreamCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchSubsequentStreamByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchSubsequentStreamOutboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitDomainSuffixMatchSubsequentStreamInboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebSubsequentStreamCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebSubsequentStreamByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebSubsequentStreamOutboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitDomainSuffixMatchWebSubsequentStreamInboundByteCountList' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # these counters depend on circuit end
 # they are updated in _handle_circuit_close_event

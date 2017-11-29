@@ -3983,9 +3983,9 @@ counters:
     ExitSubsequentStreamCount:
         bins:
         - [-.inf, .inf]
-    # The first domain list is used for the ExitDomain*MatchStream Ratio, LifeTime, and Histogram counters
-    # Their ExitDomainNo*MatchStream* equivalents are used when there is no match in the first list
-    ExitDomainExactMatchStreamLifeTime:
+    # The first domain list is used for the ExitDomain*MatchWebStream Ratio, LifeTime, and Histogram counters
+    # Their ExitDomainNo*MatchWebStream* equivalents are used when there is no match in the first list
+    ExitDomainExactMatchWebStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4001,7 +4001,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainNoExactMatchStreamLifeTime:
+    ExitDomainNoExactMatchWebStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4017,7 +4017,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainSuffixMatchStreamLifeTime:
+    ExitDomainSuffixMatchWebStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4033,7 +4033,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainNoSuffixMatchStreamLifeTime:
+    ExitDomainNoSuffixMatchWebStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4049,7 +4049,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainExactMatchInitialStreamLifeTime:
+    ExitDomainExactMatchWebInitialStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4065,7 +4065,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainNoExactMatchInitialStreamLifeTime:
+    ExitDomainNoExactMatchWebInitialStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4081,7 +4081,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainSuffixMatchInitialStreamLifeTime:
+    ExitDomainSuffixMatchWebInitialStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4097,7 +4097,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainNoSuffixMatchInitialStreamLifeTime:
+    ExitDomainNoSuffixMatchWebInitialStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4113,7 +4113,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainExactMatchSubsequentStreamLifeTime:
+    ExitDomainExactMatchWebSubsequentStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4129,7 +4129,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainNoExactMatchSubsequentStreamLifeTime:
+    ExitDomainNoExactMatchWebSubsequentStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4145,7 +4145,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainSuffixMatchSubsequentStreamLifeTime:
+    ExitDomainSuffixMatchWebSubsequentStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4161,7 +4161,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainNoSuffixMatchSubsequentStreamLifeTime:
+    ExitDomainNoSuffixMatchWebSubsequentStreamLifeTime:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -4177,7 +4177,7 @@ counters:
         - [300.0, 600.0]
         - [600.0, 660.0]
         - [660.0, .inf]
-    ExitDomainExactMatchStreamInboundByteHistogram:
+    ExitDomainExactMatchWebStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4190,7 +4190,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoExactMatchStreamInboundByteHistogram:
+    ExitDomainNoExactMatchWebStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4203,7 +4203,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainSuffixMatchStreamInboundByteHistogram:
+    ExitDomainSuffixMatchWebStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4216,7 +4216,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoSuffixMatchStreamInboundByteHistogram:
+    ExitDomainNoSuffixMatchWebStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4229,7 +4229,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainExactMatchInitialStreamInboundByteHistogram:
+    ExitDomainExactMatchWebInitialStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4242,7 +4242,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoExactMatchInitialStreamInboundByteHistogram:
+    ExitDomainNoExactMatchWebInitialStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4255,7 +4255,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainSuffixMatchInitialStreamInboundByteHistogram:
+    ExitDomainSuffixMatchWebInitialStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4268,7 +4268,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoSuffixMatchInitialStreamInboundByteHistogram:
+    ExitDomainNoSuffixMatchWebInitialStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4281,7 +4281,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainExactMatchSubsequentStreamInboundByteHistogram:
+    ExitDomainExactMatchWebSubsequentStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4294,7 +4294,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoExactMatchSubsequentStreamInboundByteHistogram:
+    ExitDomainNoExactMatchWebSubsequentStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4307,7 +4307,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainSuffixMatchSubsequentStreamInboundByteHistogram:
+    ExitDomainSuffixMatchWebSubsequentStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4320,7 +4320,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoSuffixMatchSubsequentStreamInboundByteHistogram:
+    ExitDomainNoSuffixMatchWebSubsequentStreamInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4333,7 +4333,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainExactMatchStreamOutboundByteHistogram:
+    ExitDomainExactMatchWebStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4346,7 +4346,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoExactMatchStreamOutboundByteHistogram:
+    ExitDomainNoExactMatchWebStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4359,7 +4359,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainSuffixMatchStreamOutboundByteHistogram:
+    ExitDomainSuffixMatchWebStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4372,7 +4372,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoSuffixMatchStreamOutboundByteHistogram:
+    ExitDomainNoSuffixMatchWebStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4385,7 +4385,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainExactMatchInitialStreamOutboundByteHistogram:
+    ExitDomainExactMatchWebInitialStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4398,7 +4398,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoExactMatchInitialStreamOutboundByteHistogram:
+    ExitDomainNoExactMatchWebInitialStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4411,7 +4411,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainSuffixMatchInitialStreamOutboundByteHistogram:
+    ExitDomainSuffixMatchWebInitialStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4424,7 +4424,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoSuffixMatchInitialStreamOutboundByteHistogram:
+    ExitDomainNoSuffixMatchWebInitialStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4437,7 +4437,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainExactMatchSubsequentStreamOutboundByteHistogram:
+    ExitDomainExactMatchWebSubsequentStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4450,7 +4450,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoExactMatchSubsequentStreamOutboundByteHistogram:
+    ExitDomainNoExactMatchWebSubsequentStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4463,7 +4463,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainSuffixMatchSubsequentStreamOutboundByteHistogram:
+    ExitDomainSuffixMatchWebSubsequentStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4476,7 +4476,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoSuffixMatchSubsequentStreamOutboundByteHistogram:
+    ExitDomainNoSuffixMatchWebSubsequentStreamOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4489,7 +4489,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainExactMatchStreamByteHistogram:
+    ExitDomainExactMatchWebStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4502,7 +4502,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoExactMatchStreamByteHistogram:
+    ExitDomainNoExactMatchWebStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4515,7 +4515,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainSuffixMatchStreamByteHistogram:
+    ExitDomainSuffixMatchWebStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4528,7 +4528,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoSuffixMatchStreamByteHistogram:
+    ExitDomainNoSuffixMatchWebStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4541,7 +4541,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainExactMatchInitialStreamByteHistogram:
+    ExitDomainExactMatchWebInitialStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4554,7 +4554,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoExactMatchInitialStreamByteHistogram:
+    ExitDomainNoExactMatchWebInitialStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4567,7 +4567,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainSuffixMatchInitialStreamByteHistogram:
+    ExitDomainSuffixMatchWebInitialStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4580,7 +4580,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoSuffixMatchInitialStreamByteHistogram:
+    ExitDomainNoSuffixMatchWebInitialStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4593,7 +4593,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainExactMatchSubsequentStreamByteHistogram:
+    ExitDomainExactMatchWebSubsequentStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4606,7 +4606,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoExactMatchSubsequentStreamByteHistogram:
+    ExitDomainNoExactMatchWebSubsequentStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4619,7 +4619,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainSuffixMatchSubsequentStreamByteHistogram:
+    ExitDomainSuffixMatchWebSubsequentStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4632,7 +4632,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainNoSuffixMatchSubsequentStreamByteHistogram:
+    ExitDomainNoSuffixMatchWebSubsequentStreamByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -4645,7 +4645,7 @@ counters:
         - [2097152.0, 4194304.0]
         - [4194304.0, 8388608.0]
         - [8388608.0, .inf]
-    ExitDomainExactMatchStreamByteRatio:
+    ExitDomainExactMatchWebStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -4690,7 +4690,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainNoExactMatchStreamByteRatio:
+    ExitDomainNoExactMatchWebStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -4735,7 +4735,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainSuffixMatchStreamByteRatio:
+    ExitDomainSuffixMatchWebStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -4780,7 +4780,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainNoSuffixMatchStreamByteRatio:
+    ExitDomainNoSuffixMatchWebStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -4825,7 +4825,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainExactMatchInitialStreamByteRatio:
+    ExitDomainExactMatchWebInitialStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -4870,7 +4870,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainNoExactMatchInitialStreamByteRatio:
+    ExitDomainNoExactMatchWebInitialStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -4915,7 +4915,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainSuffixMatchInitialStreamByteRatio:
+    ExitDomainSuffixMatchWebInitialStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -4960,7 +4960,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainNoSuffixMatchInitialStreamByteRatio:
+    ExitDomainNoSuffixMatchWebInitialStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -5005,7 +5005,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainExactMatchSubsequentStreamByteRatio:
+    ExitDomainExactMatchWebSubsequentStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -5050,7 +5050,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainNoExactMatchSubsequentStreamByteRatio:
+    ExitDomainNoExactMatchWebSubsequentStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -5095,7 +5095,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainSuffixMatchSubsequentStreamByteRatio:
+    ExitDomainSuffixMatchWebSubsequentStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -5140,7 +5140,7 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    ExitDomainNoSuffixMatchSubsequentStreamByteRatio:
+    ExitDomainNoSuffixMatchWebSubsequentStreamByteRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -5185,107 +5185,107 @@ counters:
         - [18.0, 19.0]
         - [19.0, 20.0]
         - [20.0, .inf]
-    # The number of bins in the ExitDomain*MatchStream*CountList counters is
+    # The number of bins in the ExitDomain*MatchWebStream*CountList counters is
     # determined at runtime, based on the number of configured domain lists
     # Each domain list gets a bin in each counter, and there is a final bin
     # for "no match in any list" (multiple lists may match: all matching bins
     # will be incremented). Since there is an unmatched bin, there are no
-    # ExitDomainNo*MatchStream*CountList counters.
+    # ExitDomainNo*MatchWebStream*CountList counters.
     # These example configs are for a single domain list, with each counter
     # having a matched and unmatched bin.
-    ExitDomainExactMatchStreamInboundByteCountList:
+    ExitDomainExactMatchWebStreamInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchStreamInboundByteCountList:
+    ExitDomainSuffixMatchWebStreamInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchInitialStreamInboundByteCountList:
+    ExitDomainExactMatchWebInitialStreamInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchInitialStreamInboundByteCountList:
+    ExitDomainSuffixMatchWebInitialStreamInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchSubsequentStreamInboundByteCountList:
+    ExitDomainExactMatchWebSubsequentStreamInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchSubsequentStreamInboundByteCountList:
+    ExitDomainSuffixMatchWebSubsequentStreamInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchStreamOutboundByteCountList:
+    ExitDomainExactMatchWebStreamOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchStreamOutboundByteCountList:
+    ExitDomainSuffixMatchWebStreamOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchInitialStreamOutboundByteCountList:
+    ExitDomainExactMatchWebInitialStreamOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchInitialStreamOutboundByteCountList:
+    ExitDomainSuffixMatchWebInitialStreamOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchSubsequentStreamOutboundByteCountList:
+    ExitDomainExactMatchWebSubsequentStreamOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchSubsequentStreamOutboundByteCountList:
+    ExitDomainSuffixMatchWebSubsequentStreamOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchStreamByteCountList:
+    ExitDomainExactMatchWebStreamByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchStreamByteCountList:
+    ExitDomainSuffixMatchWebStreamByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchInitialStreamByteCountList:
+    ExitDomainExactMatchWebInitialStreamByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchInitialStreamByteCountList:
+    ExitDomainSuffixMatchWebInitialStreamByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchSubsequentStreamByteCountList:
+    ExitDomainExactMatchWebSubsequentStreamByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchSubsequentStreamByteCountList:
+    ExitDomainSuffixMatchWebSubsequentStreamByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchStreamCountList:
+    ExitDomainExactMatchWebStreamCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchStreamCountList:
+    ExitDomainSuffixMatchWebStreamCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchInitialStreamCountList:
+    ExitDomainExactMatchWebInitialStreamCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchInitialStreamCountList:
+    ExitDomainSuffixMatchWebInitialStreamCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainExactMatchSubsequentStreamCountList:
+    ExitDomainExactMatchWebSubsequentStreamCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    ExitDomainSuffixMatchSubsequentStreamCountList:
+    ExitDomainSuffixMatchWebSubsequentStreamCountList:
         bins:
         - [0, 1]
         - [1, .inf]

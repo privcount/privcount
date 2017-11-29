@@ -1227,6 +1227,7 @@ class Aggregator(ReconnectingClientFactory):
         self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'Interactive':0, 'Web':0, 'P2P':0, 'OtherPort':0}, 'stream_starttimes': {'Interactive':[], 'Web':[], 'P2P':[], 'OtherPort':[]}})
 
         stream_class = Aggregator._classify_port(port)
+        stream_web = Aggregator._classify_port_web(port)
         self.circ_info[chanid][circid]['num_streams'][stream_class] += 1
         self.circ_info[chanid][circid]['stream_starttimes'][stream_class].append(start)
 
@@ -1292,7 +1293,8 @@ class Aggregator(ReconnectingClientFactory):
                                             ratio, lifetime)
 
         # now collect statistics on list matches for each hostname
-        if host_ip_version == "Hostname":
+        # now collect statistics on list matches for each web hostname
+        if host_ip_version == "Hostname" and stream_web == "Web":
             domain_exact_match_bin_list = []
             domain_suffix_match_bin_list = []
             # we assume the exact and suffix objs have the same length
@@ -1325,42 +1327,42 @@ class Aggregator(ReconnectingClientFactory):
                     else:
                         suffix_match_str = "DomainNoSuffixMatch"
 
-                # The first domain list is used for the ExitDomain*MatchStream
+                # The first domain list is used for the ExitDomain*MatchWebStream
                 # Ratio, LifeTime, and Histogram counters
-                # Their ExitDomainNo*MatchStream* equivalents are used when
+                # Their ExitDomainNo*MatchWebStream* equivalents are used when
                 # there is no match in the first list
                 if i == 0:
                     # collect exact match & first / subsequent domain on circuit
-                    self._increment_stream_end_histograms(exact_match_str,
+                    self._increment_stream_end_histograms(exact_match_str + stream_web,
                                                           totalbw, writebw, readbw,
                                                           ratio, lifetime)
 
-                    self._increment_stream_end_histograms(exact_match_str + stream_circ,
+                    self._increment_stream_end_histograms(exact_match_str + stream_web + stream_circ,
                                                           totalbw, writebw, readbw,
                                                           ratio, lifetime)
 
                     # collect suffix match & first / subsequent domain on circuit
-                    self._increment_stream_end_histograms(suffix_match_str,
+                    self._increment_stream_end_histograms(suffix_match_str + stream_web,
                                                           totalbw, writebw, readbw,
                                                           ratio, lifetime)
 
-                    self._increment_stream_end_histograms(suffix_match_str + stream_circ,
+                    self._increment_stream_end_histograms(suffix_match_str + stream_web + stream_circ,
                                                           totalbw, writebw, readbw,
                                                           ratio, lifetime)
 
             # Now that we know which lists matched, increment their CountList
             # counters. Instead of using No*Match counters, we increment the
             # final bin if none of the lists match
-            self._increment_stream_end_count_lists("DomainExactMatch",
+            self._increment_stream_end_count_lists("DomainExactMatch" + stream_web,
                                                    domain_exact_match_bin_list,
                                                    totalbw, writebw, readbw)
-            self._increment_stream_end_count_lists("DomainExactMatch" + stream_circ,
+            self._increment_stream_end_count_lists("DomainExactMatch" + stream_web + stream_circ,
                                                    domain_exact_match_bin_list,
                                                    totalbw, writebw, readbw)
-            self._increment_stream_end_count_lists("DomainSuffixMatch",
+            self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web,
                                                    domain_suffix_match_bin_list,
                                                    totalbw, writebw, readbw)
-            self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_circ,
+            self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web + stream_circ,
                                                    domain_suffix_match_bin_list,
                                                    totalbw, writebw, readbw)
 
