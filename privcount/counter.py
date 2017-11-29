@@ -342,6 +342,18 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitOtherPortStreamByteRatio' : { STREAM_EVENT },
 'ExitOtherPortStreamLifeTime' : { STREAM_EVENT },
 
+# Is this stream *not* on port 80 or 443?
+# Includes Interactive, P2P, and Other
+'ExitNonWebStreamCount' : { STREAM_EVENT },
+'ExitNonWebStreamByteCount' : { STREAM_EVENT },
+'ExitNonWebStreamOutboundByteCount' : { STREAM_EVENT },
+'ExitNonWebStreamInboundByteCount' : { STREAM_EVENT },
+'ExitNonWebStreamByteHistogram' : { STREAM_EVENT },
+'ExitNonWebStreamOutboundByteHistogram' : { STREAM_EVENT },
+'ExitNonWebStreamInboundByteHistogram' : { STREAM_EVENT },
+'ExitNonWebStreamByteRatio' : { STREAM_EVENT },
+'ExitNonWebStreamLifeTime' : { STREAM_EVENT },
+
 # IP version after DNS resolution
 'ExitIPv4StreamCount' : { STREAM_EVENT },
 'ExitIPv4StreamByteCount' : { STREAM_EVENT },
@@ -393,6 +405,27 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitHostnameStreamInboundByteHistogram' : { STREAM_EVENT },
 'ExitHostnameStreamByteRatio' : { STREAM_EVENT },
 'ExitHostnameStreamLifeTime' : { STREAM_EVENT },
+
+# Hostnames on Web and Non-Web streams
+'ExitHostnameWebStreamCount' : { STREAM_EVENT },
+'ExitHostnameWebStreamByteCount' : { STREAM_EVENT },
+'ExitHostnameWebStreamOutboundByteCount' : { STREAM_EVENT },
+'ExitHostnameWebStreamInboundByteCount' : { STREAM_EVENT },
+'ExitHostnameWebStreamByteHistogram' : { STREAM_EVENT },
+'ExitHostnameWebStreamOutboundByteHistogram' : { STREAM_EVENT },
+'ExitHostnameWebStreamInboundByteHistogram' : { STREAM_EVENT },
+'ExitHostnameWebStreamByteRatio' : { STREAM_EVENT },
+'ExitHostnameWebStreamLifeTime' : { STREAM_EVENT },
+
+'ExitHostnameNonWebStreamCount' : { STREAM_EVENT },
+'ExitHostnameNonWebStreamByteCount' : { STREAM_EVENT },
+'ExitHostnameNonWebStreamOutboundByteCount' : { STREAM_EVENT },
+'ExitHostnameNonWebStreamInboundByteCount' : { STREAM_EVENT },
+'ExitHostnameNonWebStreamByteHistogram' : { STREAM_EVENT },
+'ExitHostnameNonWebStreamOutboundByteHistogram' : { STREAM_EVENT },
+'ExitHostnameNonWebStreamInboundByteHistogram' : { STREAM_EVENT },
+'ExitHostnameNonWebStreamByteRatio' : { STREAM_EVENT },
+'ExitHostnameNonWebStreamLifeTime' : { STREAM_EVENT },
 
 # The first domain list is used for the ExitDomain*MatchWebStream Ratio, LifeTime, and Histogram counters
 # Their ExitDomainNo*MatchWebStream* equivalents are used when there is no match in the first list

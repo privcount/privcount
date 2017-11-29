@@ -1292,7 +1292,20 @@ class Aggregator(ReconnectingClientFactory):
                                             totalbw, writebw, readbw,
                                             ratio, lifetime)
 
-        # now collect statistics on list matches for each hostname
+        # collect web class
+        # NonWeb only: Web is collected above
+        if stream_web != "Web":
+            self._increment_stream_end_counters(stream_web,
+                                                totalbw, writebw, readbw,
+                                                ratio, lifetime)
+
+        if host_ip_version == "Hostname":
+            # and combined host / web class
+            # Hostname + Web / NonWeb
+            self._increment_stream_end_counters(host_ip_version + stream_web,
+                                                totalbw, writebw, readbw,
+                                                ratio, lifetime)
+
         # now collect statistics on list matches for each web hostname
         if host_ip_version == "Hostname" and stream_web == "Web":
             domain_exact_match_bin_list = []
