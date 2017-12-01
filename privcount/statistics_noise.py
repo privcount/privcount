@@ -194,6 +194,9 @@ def get_expected_noise_ratio(excess_noise_ratio, sigma, estimated_value):
         # let negative excess_noise_ratio raise an exception
         return math.sqrt(excess_noise_ratio) * sigma / estimated_value
 
+# Have we logged a zero sensitivity error or zero sigma error?
+logged_zero_noise = False
+
 def get_opt_privacy_allocation(epsilon, delta, stats_parameters,
                                excess_noise_ratio,
                                sigma_tol=DEFAULT_SIGMA_TOLERANCE,
@@ -232,8 +235,11 @@ def get_opt_privacy_allocation(epsilon, delta, stats_parameters,
         # Check if the sigma is too small
         if param != DEFAULT_DUMMY_COUNTER_NAME:
             if opt_sigma == 0.0:
-                logging.warning("sigma for {} is zero, this provides no differential privacy for this statistic"
-                                .format(param))
+                global logged_zero_noise
+                if not logged_zero_noise:
+                    logging.warning("sigma for {} is zero, this provides no differential privacy for this statistic"
+                                    .format(param))
+                    logged_zero_noise = True
             elif opt_sigma < DEFAULT_SIGMA_TOLERANCE:
                 logging.warning("sigma {} for {} is less than the sigma tolerance {}, the calculated value may be inaccurate and may vary each time it is calculated"
                                 .format(opt_sigma, param, sigma_tol))
@@ -313,10 +319,12 @@ def get_noise_allocation(noise_parameters,
         estimated_value = counters[stat]['estimated_value']
         if is_circuit_sample_counter(stat):
             estimated_value *= circuit_sample_rate
-        if sensitivity == 0 and stat != DEFAULT_DUMMY_COUNTER_NAME:
+        global logged_zero_noise
+        if sensitivity == 0 and stat != DEFAULT_DUMMY_COUNTER_NAME and not logged_zero_noise:
             # If you want a counter with no noise, try using 1e-6 instead
             logging.error("sensitivity for {} is zero, calculated sigmas will be zero for all statistics"
                           .format(stat))
+            logged_zero_noise = True
         statistics = (sensitivity,
                       estimated_value)
         stats_parameters[stat] = statistics
