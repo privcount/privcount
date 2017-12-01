@@ -1965,8 +1965,8 @@ class CollectionDelay(object):
                                                             max_client_rtt=max_client_rtt,
                                                             always_delay=always_delay,
                                                             tolerance=tolerance)
-            status = "successfully" if round_successful else "failed and"
-            logging.warning("Round that just {} stopped was started {} before enforced delay elapsed. Round started {}, expected start {}."
+            status = "successfully stopped" if round_successful else "stopped unexpectedly (failure or duplicate event)"
+            logging.warning("Round that just {} was started {} before enforced delay elapsed. Round started {}, expected start {}."
                             .format(status,
                                     format_period(expected_start - start_time),
                                     format_elapsed_time_since(start_time,

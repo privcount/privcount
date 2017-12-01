@@ -1257,7 +1257,7 @@ class CollectionPhase(object):
         if self.state == 'new':
             self._change_state('stopped')
 
-        elif self.state == 'starting_dcs' or self.state == 'starting_sks':
+        elif self.state == 'starting_dcs':
             self.need_shares.clear()
             self.encrypted_shares.clear()
 
@@ -1267,13 +1267,15 @@ class CollectionPhase(object):
                 self.need_counts.add(uid)
             self.error_flag = True # when sending STOP, indicate error so we dont get tallies
 
-        elif self.state == 'started':
+        elif self.state == 'started' or self.state == 'starting_sks':
+            if self.state == 'starting_sks':
+                logging.warning("waiting for late responses from some SKs")
             # our noise covers activity independent of the length of the period
             # so we can keep results even if we are ending early
             if self.stopping_ts - self.starting_ts >= self.period:
                 logging.info("graceful end to collection phase")
             else:
-                logging.info("premature end to collection phase, results may be less accurate than expected due to the noise that was added (if a client is missing, results may be nonsense)")
+                logging.warning("premature end to collection phase, results may be less accurate than expected due to the noise that was added (if a client is missing, results may be nonsense)")
 
             for uid in self.dc_uids+self.sk_uids:
                 self.need_counts.add(uid)
@@ -1305,19 +1307,26 @@ class CollectionPhase(object):
         assert is_start is not None
         is_start_string = "start" if is_start else "stop"
 
+        logging.info("recevied {} event from {} while in state {}"
+                     .format(is_start_string, cname, self.state))
+        logging.debug("recevied {} event from {} while in state {}, data: {}"
+                      .format(is_start_string, cname, self.state, data))
+
         if data is None:
             # this can happen if the SK (or DC) is enforcing a delay because
             # the noise allocation has changed
-            logging.warning("ignoring error response in {} event from {} while in state {}"
-                            .format(is_start_string, cname, self.state))
+            logging.info("ignoring missing response in {} event from {} while in state {}"
+                         .format(is_start_string, cname, self.state))
             return
 
-        if self.state == 'starting_dcs' and is_start:
+        if is_start and client_uid in self.dc_uids:
             # we expect these to be the encrpyted and blinded counts
             # from the DCs that we should forward to the SKs during SK startup
-            assert client_uid in self.dc_uids
+            if self.state != 'starting_dcs':
+                logging.warning("processing late response in {} event from {} while in state {}, leaving state unchanged"
+                                .format(is_start_string, cname, self.state))
 
-            # dont add a share from the same DC twice
+            # don't add a share from the same DC twice
             if client_uid in self.need_shares:
                 # collect all shares for each SK together
                 shares = data # dict of {sk_uid : share}
@@ -1333,17 +1342,29 @@ class CollectionPhase(object):
                     # ok, we got all of the shares for all SKs, now start the SKs
                     for sk_uid in self.sk_uids:
                         self.need_shares.add(sk_uid)
-                    self._change_state('starting_sks')
+                    if self.state == 'starting_dcs':
+                        self._change_state('starting_sks')
 
-        elif self.state == 'starting_sks' and is_start:
+        elif is_start and client_uid in self.sk_uids:
+            # we expect confirmation from the SKs that they started successfully
+            if self.state != 'starting_sks':
+                logging.warning("processing late response in {} event from {} while in state {}, leaving state unchanged"
+                                .format(is_start_string, cname, self.state))
+
             # the sk got our encrypted share successfully
             logging.info("share keeper {} started and received its shares"
                          .format(cname))
             self.need_shares.remove(client_uid)
             if len(self.need_shares) == 0:
-                self._change_state('started')
+                if self.state == 'starting_sks':
+                    self._change_state('started')
 
-        elif self.state == 'stopping' and not is_start:
+        elif not is_start:
+            # we expect this to be a SK or DC share
+            if self.state != 'stopping':
+                logging.warning("processing late response in {} event from {} while in state {}"
+                                .format(is_start_string, cname, self.state))
+
             # record the configuration for the client context
             response_config = data.get('Config', None)
             if response_config is not None:
@@ -1371,8 +1392,11 @@ class CollectionPhase(object):
                     logging.warning("received counts: error from stopped client {}"
                                     .format(cname))
                 self.need_counts.remove(client_uid)
+            else:
+                logging.info("ignoring duplicate {} response from client {} while in state {}"
+                             .format(is_start_string, cname, self.state))
         else:
-            logging.warning("Ignoring {} response from client {} while in state {}"
+            logging.warning("ignoring {} response from client {} while in state {}"
                             .format(is_start_string, cname, self.state))
 
     def is_participating(self, client_uid):
@@ -1403,10 +1427,14 @@ class CollectionPhase(object):
         if not self.is_participating(client_uid) or client_uid not in self.need_shares:
             return None
 
-        assert self.state == 'starting_dcs' or self.state == 'starting_sks'
-        config = {}
-
         cname = TallyServer.get_client_display_name(client_uid)
+
+        if not (self.state == 'starting_dcs' or self.state == 'starting_sks'):
+            logging.warning('ignoring protocol request for {} start config in state {}'
+                            .format(cname, self.state))
+            return None
+
+        config = {}
 
         if self.state == 'starting_dcs' and client_uid in self.dc_uids:
             config['sharekeepers'] = {}
