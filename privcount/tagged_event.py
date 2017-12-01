@@ -8,8 +8,8 @@
 
 import logging
 
+from privcount.config import validate_ip_address
 from privcount.log import summarise_string
-from privcount.connection import validate_ip_address
 
 def parse_tagged_event(event_field_list):
     '''

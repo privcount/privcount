@@ -8,6 +8,8 @@ Based on previous code
 See LICENSE for licensing information
 '''
 
+import ipaddress
+
 from os import path
 
 def normalise_path(path_str):
@@ -68,3 +70,41 @@ def check_country_code(country_str):
     country_str = country_str.lower()
     bad_chars = country_str.strip("abcdefghijklmnopqrstuvwxyz")
     return len(bad_chars) == 0 and len(country_str) == 2
+
+def validate_ip_address(address):
+    '''
+    If address is a valid IP address, return it as an ipaddress object.
+    Otherwise, return None.
+    '''
+    try:
+        return ipaddress.ip_address(unicode(address))
+    except ValueError:
+        return None
+
+def validate_ip_network(network, strict=True):
+    '''
+    If network is a valid IP network when parsed according to strict,
+    return it as an ipnetwork object.
+    Otherwise, return None.
+    '''
+    try:
+        return ipaddress.ip_network(unicode(address), strict=strict)
+    except ValueError:
+        return None
+
+def validate_ip_network_address_prefix(address, prefix, strict=True):
+    '''
+    If address/prefix is a valid IP network when parsed according to strict,
+    return it as an ipnetwork object.
+    Otherwise, return None.
+    '''
+    ip_address = validate_ip_address(address)
+    if ip_address is None or ip_address.version not in [4,6]:
+        return None
+    try:
+        if ip_address.version == 4:
+            return ipaddress.IPv4Network((ip_address, prefix), strict=strict)
+        else:
+            return ipaddress.IPv6Network((ip_address, prefix), strict=strict)
+    except ValueError:
+        return None

@@ -7,12 +7,13 @@ See LICENSE for licensing information
 '''
 
 import logging
-import ipaddress
 
 from collections import Sequence
 from exceptions import AttributeError
 
 from twisted.internet import reactor
+
+from privcount.config import validate_ip_address
 
 # Function abstractions for building connections
 # Like connectionFromString, but using the reactor model (to avoid a complete
@@ -227,16 +228,6 @@ def disconnect(connector):
     # now process the list
     for item in connector:
         item.disconnect()
-
-def validate_ip_address(address):
-    '''
-    If address is a valid IP address, return it as an ipaddress object.
-    Otherwise, return None.
-    '''
-    try:
-        return ipaddress.ip_address(unicode(address))
-    except ValueError:
-        return None
 
 def validate_connection_config(config, must_have_ip=False):
     '''
