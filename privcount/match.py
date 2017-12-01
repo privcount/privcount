@@ -9,33 +9,45 @@
 import bisect
 import logging
 
+from privcount.log import summarise_string
+
+def lower_if_hasattr(obj):
+    '''
+    If obj has a lower attribute, return obj.lower().
+    Otherwise, return obj.
+    '''
+    return obj.lower() if hasattr(obj, 'lower') else obj
+
 def exact_match_prepare_collection(exact_collection):
     '''
-    Prepare a string collection for efficient exact matching.
+    Prepare a hashable object collection for efficient exact matching.
+    If the objects in the collection are strings, lowercases them.
     Returns an object that can be passed to exact_match().
     This object must be treated as opaque and read-only.
     '''
     # Set matching uses a hash table, so it's more efficient
-    exact_collection = [s.lower() for s in exact_collection]
+    exact_collection = [lower_if_hasattr(obj) for obj in exact_collection]
     exact_set = frozenset(exact_collection)
     # Log a message if there were any duplicates
     # Finding each duplicate takes a lot longer
     if len(exact_collection) != len(exact_set):
-      logging.warning("Removing {} duplicates from the collection"
-                      .format(len(exact_collection) - len(exact_set)))
+      dups = [obj for obj in exact_set if exact_collection.count(obj) > 1]
+      logging.warning("Removing {} duplicates from the collection: '{}'"
+                      .format(len(exact_collection) - len(exact_set),
+                              summarise_string(str(dups), 100)))
     return exact_set
 
 
-def exact_match(exact_obj, search_str):
+def exact_match(exact_obj, search_obj):
     '''
-    Performs an efficient O(1) case-insensitive exact match for search_str in
-    exact_obj.
+    Performs an efficient O(1) exact match for search_obj in exact_obj.
+    If search_obj is a string, performs a case-insensitive match.
     exact_obj must have been created by exact_match_prepare_collection().
     '''
     # This code works efficiently on set, frozenset, and dict
     assert hasattr(exact_obj, 'issubset') or hasattr(exact_obj, 'has_key')
     # This is a single hash table lookup
-    return search_str.lower() in exact_obj
+    return lower_if_hasattr(search_obj) in exact_obj
 
 def reverse_string(s):
     '''
