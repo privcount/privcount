@@ -18,11 +18,11 @@ from base64 import b64encode
 from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
-from privcount.config import normalise_path, choose_secret_handshake_path, check_domain_name, check_country_code
+from privcount.config import normalise_path, choose_secret_handshake_path, check_domain_name, check_country_code, check_as_number, validate_ip_address, validate_ip_network_address_prefix
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
-from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection
+from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_collection
 from privcount.node import PrivCountNode, PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
 from privcount.statistics_noise import get_noise_allocation, get_sanity_check_counter, DEFAULT_DUMMY_COUNTER_NAME
@@ -151,19 +151,33 @@ class TallyServer(ServerFactory, PrivCountServer):
         if self.collection_phase is not None:
             self.collection_phase.log_status()
 
+    @staticmethod
+    def line_is_comment(line):
+        '''
+        Is line a comment line?
+        Comment lines are empty, or start with #, //, or ;
+        Line should be stripped before calling this function.
+        '''
+        return (len(line) == 0 or line.startswith('#') or line.startswith('//')
+                or line.startswith(';'))
+
     def load_match_file(self, file_path, new_match_lists,
                         old_match_files, old_match_lists,
                         check_domain=False, check_country=False,
+                        check_as=False,
                         prepare_exact=True, prepare_suffix=True):
         '''
         Load a match file from file_path into new_match_lists.
         If check_domain, then check that each line in the file is a valid
-        domain name.
+        domain name, and lowecase the string.
         If check_country, then check that each line in the file is a valid
-        MaxMind Country Code.
+        MaxMind Country Code, and lowercase the string.
+        If check_as, then check that each line in the file is a valid
+        CAIDA AS Number, and load the first AS number in each AS set or
+        multi-origin AS.
         If the file is not in old_match_files, or the contents do not match
         old_match_lists, then check that the list can be prepared for
-        matching.
+        matching, based on prepare_exact and prepare_suffix.
         Returns the normalised file_path.
         '''
         file_path = normalise_path(file_path)
@@ -171,21 +185,27 @@ class TallyServer(ServerFactory, PrivCountServer):
 
         # import and validate this list of match names
         # This can take a few seconds
-        assert file_path not in new_match_lists
         match_list = []
         with open(file_path, 'r') as fin:
             for line in fin:
                 # Ignore leading or trailing whitespace
                 line = line.strip()
                 # Ignore comments
-                if len(line) == 0 or line.startswith('#') or line.startswith('//'):
+                if TallyServer.line_is_comment(line):
                     continue
                 if check_domain:
                     assert check_domain_name(line)
+                    # Always lowercase matches, IANA likes them uppercase
+                    line = line.lower()
                 if check_country:
                     assert check_country_code(line)
-                # Always lowercase matches, IANA amd MaxMind like them uppercase
-                match_list.append(line.lower())
+                    # Always lowercase matches, MaxMind likes them uppercase
+                    line = line.lower()
+                if check_as:
+                    # Now convert the AS number to an integer
+                    line = int(line)
+                    assert check_as_number(line)
+                match_list.append(line)
 
         # lists must have at least one entry
         assert len(match_list) > 0
@@ -209,23 +229,82 @@ class TallyServer(ServerFactory, PrivCountServer):
     def load_domain_file(self, file_path, new_domain_lists,
                          old_domain_files, old_domain_lists):
         '''
-        Load a domain file using load_match_file.
+        Load a domain file using load_match_file().
         '''
         return self.load_match_file(file_path, new_domain_lists,
-                            old_domain_files, old_domain_lists,
-                            check_domain=True, check_country=False,
-                            prepare_exact=True, prepare_suffix=True)
+                                    old_domain_files, old_domain_lists,
+                                    check_domain=True, check_country=False,
+                                    check_as=False,
+                                    prepare_exact=True, prepare_suffix=True)
 
     def load_country_file(self, file_path, new_country_lists,
                           old_country_files, old_country_lists):
         '''
-        Load a country file using load_match_file.
+        Load a country file using load_match_file().
         '''
         # country files only do exact matching
         return self.load_match_file(file_path, new_country_lists,
-                            old_country_files, old_country_lists,
-                            check_domain=False, check_country=True,
-                            prepare_exact=True, prepare_suffix=False)
+                                    old_country_files, old_country_lists,
+                                    check_domain=False, check_country=True,
+                                    check_as=False,
+                                    prepare_exact=True, prepare_suffix=False)
+
+    def load_as_file(self, file_path, new_as_lists,
+                     old_as_files, old_as_lists):
+        '''
+        Load an AS file using load_match_file().
+        '''
+        # AS files do exact matching of AS numbers, after a prefix lookup on
+        # an IP address using a separate data file
+        return self.load_match_file(file_path, new_as_lists,
+                                    old_as_files, old_as_lists,
+                                    check_domain=False, check_country=False,
+                                    check_as=True,
+                                    prepare_exact=True, prepare_suffix=False)
+
+    def load_as_prefix_file(self, ip_version, file_path, new_as_prefix_maps,
+                            old_as_prefix_files, old_as_prefix_maps,
+                            prepare_prefix=True):
+        '''
+        Load an AS prefix file containing tab-separated IPv4 or IPv6 network
+        prefixes and CAIDA AS numbers. Each network mapping is separated by a
+        newline. Loads data from from file_path into
+        new_as_prefix_maps[ip_version].
+        If file_path is not equal to old_as_prefix_files[ip_version], or the
+        contents do not match old_as_prefix_maps[ip_version], then check that
+        the list can be prepared for matching, based on prepare_prefix.
+        Returns the normalised file_path.
+        '''
+        file_path = normalise_path(file_path)
+        assert os.path.exists(file_path)
+        assert ip_version == 4 or ip_version == 6
+
+        # import and validate this list of address / prefix / AS number lines
+        # This takes under a second for the coalesced IPv4 prefixes
+        assert ip_version not in new_as_prefix_maps
+
+        with open(file_path, 'r') as fin:
+            # just send the file to the DCs as a string
+            prefix_map = fin.read()
+
+        # maps must not be empty
+        assert len(prefix_map) > 0
+
+        # only re-process the map when it changes
+        if (self.config is None or
+            file_path != old_as_prefix_files.get(ip_version) or
+            prefix_map != old_as_prefix_maps.get(ip_version)):
+            # make sure the DCs will be able to process the lists
+            logging.info("Checking IPv{} prefixes in '{}'"
+                         .format(ip_version, file_path))
+            if prepare_prefix:
+                # check that the format is parseable before sending to DCs
+                prefix_map_obj = ipasn_prefix_match_prepare_collection(
+                                     ipasn_file_path=file_path)
+
+        # Now, add the map to the dict of prefix maps
+        new_as_prefix_maps[ip_version] = prefix_map
+        return file_path
 
     @staticmethod
     def modify_bins(new_bin_count, counter, add_inf_bin=True):
@@ -246,7 +325,7 @@ class TallyServer(ServerFactory, PrivCountServer):
     def modify_domain_bins(new_domain_list_count, new_counters):
         '''
         Put new_domain_list_count bins in each domain counter in new_counters,
-        then add an unmatched bin to each counter.
+        then add an unmatched bin to each counter. Uses modify_bins().
         '''
         assert new_domain_list_count > 0
         assert new_counters is not None
@@ -260,7 +339,7 @@ class TallyServer(ServerFactory, PrivCountServer):
     def modify_country_bins(new_country_list_count, new_counters):
         '''
         Put new_country_list_count bins in each country counter in new_counters,
-        then add an unmatched bin to each counter.
+        then add an unmatched bin to each counter. Uses modify_bins().
         '''
         assert new_country_list_count > 0
         assert new_counters is not None
@@ -268,6 +347,21 @@ class TallyServer(ServerFactory, PrivCountServer):
         for counter_name in new_counters:
             if "CountryMatchConnection" in counter_name and counter_name.endswith("CountList"):
                 TallyServer.modify_bins(new_country_list_count,
+                                        new_counters[counter_name])
+
+    @staticmethod
+    def modify_as_bins(new_as_list_count, new_counters):
+        '''
+        Put new_as_list_count bins in each AS counter in new_counters,
+        then add an unmatched bin to each counter. Uses modify_bins().
+        '''
+        assert new_as_list_count > 0
+        assert new_counters is not None
+        # Find all the counters we want to modify
+        for counter_name in new_counters:
+            # ASs have both Entry Connection and Exit Stream counters
+            if "ASMatch" in counter_name and counter_name.endswith("CountList"):
+                TallyServer.modify_bins(new_as_list_count,
                                         new_counters[counter_name])
 
     def refresh_config(self):
@@ -418,31 +512,66 @@ class TallyServer(ServerFactory, PrivCountServer):
                     logging.error("the set of traffic model bins and noise labels are not equal")
                     assert False
 
-            # an optional list of DNS domain names
+            # optional lists of DNS domain names
             ts_conf['domain_lists'] = []
             if 'domain_files' in ts_conf and len(ts_conf['domain_files']) > 0:
                 for i in xrange(len(ts_conf['domain_files'])):
                     file_path = self.load_domain_file(ts_conf['domain_files'][i],
                                                       ts_conf['domain_lists'],
                                                       self.config.get('domain_files', []) if self.config is not None else [],
-                                                      self.config.get('domain_lists', {}) if self.config is not None else {})
+                                                      self.config.get('domain_lists', []) if self.config is not None else [])
                     ts_conf['domain_files'][i] = file_path
                 # now, adjust the bins so we can count every list
                 TallyServer.modify_domain_bins(len(ts_conf['domain_files']),
                                                ts_conf['counters'])
 
-            # an optional list of country codes from the MaxMind GeoIP database
+            # optional lists of country codes from the MaxMind GeoIP database
             ts_conf['country_lists'] = []
             if 'country_files' in ts_conf and len(ts_conf['country_files']) > 0:
                 for i in xrange(len(ts_conf['country_files'])):
                     file_path = self.load_country_file(ts_conf['country_files'][i],
                                                        ts_conf['country_lists'],
                                                        self.config.get('country_files', []) if self.config is not None else [],
-                                                       self.config.get('country_lists', {}) if self.config is not None else {})
+                                                       self.config.get('country_lists', []) if self.config is not None else [])
                     ts_conf['country_files'][i] = file_path
                 # now, adjust the bins so we can count every list
                 TallyServer.modify_country_bins(len(ts_conf['country_files']),
                                                 ts_conf['counters'])
+
+            # optional mappings of IPv4 and IPv6 prefixes to CAIDA AS numbers
+            ts_conf['as_data'] = {}
+            ts_conf['as_data']['prefix_maps'] = {}
+            # you must have both IPv4 and IPv6 prefix mappings, or neither
+            # we keep IPv4 and IPv6 prefixes separate because it makes matching faster
+            if ('as_prefix_files' in ts_conf and len(ts_conf['as_prefix_files']) == 2):
+                for ipv in ts_conf['as_prefix_files']:
+                    assert ipv == 4 or ipv == 6
+                    file_path = self.load_as_prefix_file(ipv,
+                                                         ts_conf['as_prefix_files'][ipv],
+                                                         ts_conf['as_data']['prefix_maps'],
+                                                         self.config.get('as_prefix_files', {}) if self.config is not None else {},
+                                                         self.config.get('as_data', {}).get('prefix_maps', {}) if self.config is not None else {},
+                                                         prepare_prefix=True)
+                    ts_conf['as_prefix_files'][ipv] = file_path
+
+            # optional lists of AS numbers from the CAIDA AS prefix files or AS rankings
+            ts_conf['as_data']['lists'] = []
+            if 'as_files' in ts_conf and len(ts_conf['as_files']) > 0:
+                for i in xrange(len(ts_conf['as_files'])):
+                    file_path = self.load_as_file(ts_conf['as_files'][i],
+                                                  ts_conf['as_data']['lists'],
+                                                  self.config.get('as_files', []) if self.config is not None else [],
+                                                  self.config.get('as_data', {}).get('lists', []) if self.config is not None else [])
+                    assert file_path not in ts_conf['as_files']
+                    ts_conf['as_files'][i] = file_path
+                # now, adjust the bins so we can count every list
+                TallyServer.modify_as_bins(len(ts_conf['as_files']),
+                                           ts_conf['counters'])
+
+            # you must have both IPv4 and IPv6 prefix mappings, or neither
+            assert (4 in ts_conf['as_data']['prefix_maps']) == (6 in ts_conf['as_data']['prefix_maps'])
+            # you must have both prefix mappings and AS lists, or neither
+            assert (len(ts_conf['as_data']['prefix_maps']) > 0) == (len(ts_conf['as_data']['lists']) > 0)
 
             # an optional noise allocation results file
             if 'allocation' in ts_conf:
@@ -1097,6 +1226,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                 self.config['circuit_sample_rate'],
                                                 self.config['domain_lists'],
                                                 self.config['country_lists'],
+                                                self.config['as_data'],
                                                 self.config)
         self.collection_phase.start()
 
@@ -1195,7 +1325,7 @@ class CollectionPhase(object):
                  noise_weight_config, dc_threshold_config, sk_uids,
                  sk_public_keys, dc_uids, modulus, clock_padding,
                  max_cell_events_per_circuit, circuit_sample_rate,
-                 domain_lists, country_lists,
+                 domain_lists, country_lists, as_data,
                  tally_server_config):
         # store configs
         self.period = period
@@ -1214,6 +1344,7 @@ class CollectionPhase(object):
         self.circuit_sample_rate = circuit_sample_rate
         self.domain_lists = domain_lists
         self.country_lists = country_lists
+        self.as_data = as_data
         # make a deep copy, so we can delete unnecesary keys
         self.tally_server_config = deepcopy(tally_server_config)
         self.tally_server_status = None
@@ -1452,6 +1583,7 @@ class CollectionPhase(object):
             config['circuit_sample_rate'] = self.circuit_sample_rate
             config['domain_lists'] = self.domain_lists
             config['country_lists'] = self.country_lists
+            config['as_data'] = self.as_data
             logging.info("sending start comand with {} counters ({} bins) and requesting {} shares to data collector {}"
                          .format(len(config['counters']),
                                  count_bins(config['counters']),
@@ -1634,7 +1766,7 @@ class CollectionPhase(object):
             result_context['TallyServer']['Config']['counters'] = "(counter bins, no counts)"
         # but we want the noise, because it's not in Tally
 
-        # we don't want the full list of domains or countries
+        # we don't want the full list of domains or countries or ASs
         # (the DCs summarise their domains before sending back their
         # start configs, to save bandwidth)
         # The config has already been deepcopied
@@ -1642,6 +1774,10 @@ class CollectionPhase(object):
                                             'domain_lists')
         PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
                                             'country_lists')
+        PrivCountNode.summarise_match_maps(result_context['TallyServer']['Config'].get('as_data', {}),
+                                           'prefix_maps')
+        PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'].get('as_data', {}),
+                                            'lists')
 
         return result_context
 

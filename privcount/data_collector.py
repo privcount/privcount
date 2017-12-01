@@ -21,10 +21,10 @@ from privcount.connection import connect, disconnect, validate_connection_config
 from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, has_noise_weight, get_noise_weight, count_bins, are_events_expected, get_valid_counters
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since, format_elapsed_time_since, errorCallback, summarise_string
-from privcount.match import exact_match_prepare_collection, exact_match, suffix_match_prepare_collection, suffix_match
+from privcount.match import exact_match_prepare_collection, exact_match, suffix_match_prepare_collection, suffix_match, ipasn_prefix_match_prepare_collection, ipasn_prefix_match
 from privcount.node import PrivCountClient, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, get_privcount_version
-from privcount.tagged_event import parse_tagged_event, is_string_valid, is_list_valid, is_int_valid, is_flag_valid, is_float_valid, is_ip_address_valid, get_string_value, get_list_value, get_int_value, get_flag_value, get_float_value, get_ip_address_value
+from privcount.tagged_event import parse_tagged_event, is_string_valid, is_list_valid, is_int_valid, is_flag_valid, is_float_valid, is_ip_address_valid, get_string_value, get_list_value, get_int_value, get_flag_value, get_float_value, get_ip_address_value, get_ip_address_object
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
 SINGLE_BIN = SecureCounters.SINGLE_BIN
@@ -259,7 +259,8 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                                      config.get('max_cell_events_per_circuit', -1),
                                      config.get('circuit_sample_rate', 1.0),
                                      config.get('domain_lists', []),
-                                     config.get('country_lists', []))
+                                     config.get('country_lists', []),
+                                     config.get('as_data', {}))
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -414,7 +415,7 @@ class Aggregator(ReconnectingClientFactory):
     def __init__(self, counters, traffic_model_config, sk_uids,
                  noise_weight, modulus, tor_control_port, rotate_period,
                  use_setconf, max_cell_events_per_circuit, circuit_sample_rate,
-                 domain_lists, country_lists):
+                 domain_lists, country_lists, as_data):
         self.secure_counters = SecureCounters(counters, modulus,
                                               require_generate_noise=True)
         self.collection_counters = counters
@@ -433,14 +434,30 @@ class Aggregator(ReconnectingClientFactory):
         self.circuit_sample_rate = float(circuit_sample_rate)
         # Prepare the lists for exact and suffix matching, as appropriate
         self.domain_exact_objs = []
-        self.domain_suffix_objs =[]
+        self.domain_suffix_objs = []
         for i in xrange(len(domain_lists)):
+            logging.info('Preparing domain list {}'.format(i))
             self.domain_exact_objs.append(exact_match_prepare_collection(domain_lists[i]))
             self.domain_suffix_objs.append(suffix_match_prepare_collection(domain_lists[i],
                                                                            separator="."))
         self.country_exact_objs = []
         for i in xrange(len(country_lists)):
+            logging.info('Preparing country list {}'.format(i))
             self.country_exact_objs.append(exact_match_prepare_collection(country_lists[i]))
+        # IP addresses are prefix-matched against IP to AS maps,
+        # then the ASs are exact-matched against AS lists
+        self.as_prefix_map_objs = {}
+        for k in as_data.get('prefix_maps', {}):
+            # json turns int(4) into unicode(4) in dictionary keys
+            ipv = int(k)
+            assert ipv == 4 or ipv == 6
+            logging.info('Preparing AS prefix map for IPv{}'.format(ipv))
+            self.as_prefix_map_objs[ipv] = ipasn_prefix_match_prepare_collection(
+                                               ipasn_string=as_data['prefix_maps'][k])
+        self.as_exact_objs = []
+        for i in xrange(len(as_data.get('lists', []))):
+            logging.info('Preparing AS list {}'.format(i))
+            self.as_exact_objs.append(exact_match_prepare_collection(as_data['lists'][i]))
         self.connector = None
         self.connector_list = None
         self.protocol = None
@@ -3092,6 +3109,13 @@ class Aggregator(ReconnectingClientFactory):
 
         elapsed_time = end_time - start_time
 
+        remote_ip_obj = get_ip_address_object("RemoteIPAddress",
+                                              fields, event_desc,
+                                              is_mandatory=True)
+
+        remote_as = ipasn_prefix_match(self.as_prefix_map_objs[remote_ip_obj.version],
+                                       remote_ip_obj)
+
         # Extract the optional fields, and give them defaults
 
         inbound_bytes = get_int_value("InboundByteCount",
@@ -3165,6 +3189,42 @@ class Aggregator(ReconnectingClientFactory):
                                                      is_client, ip_relay_count,
                                                      event_desc,
                                                      log_missing_counters=True)
+
+        # Increment counters for AS number matches
+        as_exact_match_bin_list = []
+        for i in xrange(len(self.as_exact_objs)):
+            as_exact_obj = self.as_exact_objs[i]
+
+            # this is O(1), because set uses a hash table internally
+            if exact_match(as_exact_obj, remote_as):
+                exact_match_str = "ASMatch"
+                as_exact_match_bin_list.append(i)
+            else:
+                exact_match_str = "ASNoMatch"
+
+            # The first AS list is used for the *ASMatchConnection, LifeTime and *Histogram counters
+            # Their *ASNoMatchConnection equivalents are used when there is no match in the first list
+            if i == 0:
+                self._increment_connection_close_histograms(exact_match_str,
+                                                            inbound_bytes, outbound_bytes,
+                                                            inbound_circuits, outbound_circuits,
+                                                            elapsed_time,
+                                                            ip_connection_count,
+                                                            is_client, ip_relay_count,
+                                                            event_desc,
+                                                            log_missing_counters=True)
+
+        # Now that we know which lists matched, increment their CountList
+        # counters. Instead of using NoMatch counters, we increment the
+        # final bin if none of the lists match
+        self._increment_connection_close_count_lists("ASMatch",
+                                                     as_exact_match_bin_list,
+                                                     inbound_bytes, outbound_bytes,
+                                                     inbound_circuits, outbound_circuits,
+                                                     is_client, ip_relay_count,
+                                                     event_desc,
+                                                     log_missing_counters=True)
+
 
         # we processed and handled the event
         return True

@@ -214,6 +214,7 @@ class PrivCountNode(object):
 
     # Based on the maximum length of a domain name
     # Country codes and AS numbers are shorter
+    # Prefix data files might have their first lines truncated
     MAX_MATCH_LEN = 253
 
     @staticmethod
@@ -448,6 +449,10 @@ class PrivCountClient(PrivCountNode):
                                                 'domain_lists')
             PrivCountNode.summarise_match_lists(response['Config']['Start'],
                                                 'country_lists')
+            PrivCountNode.summarise_match_maps(response['Config']['Start'].get('as_data', {}),
+                                               'prefix_maps')
+            PrivCountNode.summarise_match_lists(response['Config']['Start'].get('as_data', {}),
+                                                'lists')
 
         # and include the config sent by the tally server to stop
         if stop_config is not None:
