@@ -20,6 +20,14 @@ tally_server:
         - 'country-top-10.txt'
         - 'country-unknown.txt'
         - 'country-no-geoip.txt'
+    as_prefix_files:
+        4: 'as-ipv4-test.ipasn'
+        6: 'as-ipv6-test.ipasn'
+    as_files:
+        - 'as-rank.txt'
+        - 'as-top-100.txt'
+        - 'as-ipv4-extra.txt'
+        - 'as-ipv6-extra.txt'
     allocation: 'counters.allocation.yaml'
     noise_weight:
         # We can't know our test tor relay's fingerprint in advance

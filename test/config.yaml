@@ -44,6 +44,29 @@ tally_server:
         - 'country-top-10.txt'
         - 'country-unknown.txt'
         - 'country-no-geoip.txt'
+    # paths to files of newline/tab-separated AS Number to IPv4/IPv6 prefix mappings
+    # we replace AS sets and multi-origin ASs with their first member as part
+    # of our preprocessing
+    #
+    # These are just test lists
+    # Each file contains instructions for creating the full list
+    as_prefix_files:
+        # IPv4 and IPv6 files, separated for efficiency
+        4: 'as-ipv4-test.ipasn'
+        6: 'as-ipv6-test.ipasn'
+    # a list of paths to files of newline-separated AS Numbers
+    # each file contains instructions for creating the list
+    as_files:
+        # The first AS list is used for the *ASMatchConnection, LifeTime and *Histogram counters
+        # Their *ASNoMatchConnection equivalents are used when there is no match in the first list
+        # Each AS list corresponds to a bin in the *ASMatchConnection*CountList counters
+        # (Multiple matches are possible, the final bin is used for unmatched ASs)
+        - 'as-rank.txt'
+        - 'as-top-100.txt'
+        - 'as-ipv4-extra.txt'
+        - 'as-ipv6-extra.txt'
+        # You can create this file by concatenating rank, ipv4-extra, and ipv6-extra, and using sort -u to remove duplicates
+        #- 'as-all.txt'
     # path to a yaml file where the noise allocation is written immediately after calculation. The noise allocation also forms part of the results context.
     allocation: 'counters.allocation.yaml'
     noise_weight: # distribute noise among all machines / data collectors
