@@ -40,6 +40,8 @@ def check_domain_name(domain_str):
     Check if domain_str is a potentially valid domain name.
     Allows underscores, even though they are technically not permitted,
     because they are used in some popular domain names.
+    Assumes that the string has already been stripped of leading and trailing
+    whitespace.
 
     Returns True if it is valid, and False if it is not.
     '''
@@ -53,6 +55,8 @@ def check_domain_name(domain_str):
 def check_country_code(country_str):
     '''
     Check if country_str is a potentially valid Tor/MaxMind Country Code.
+    Assumes that the string has already been stripped of leading and trailing
+    whitespace.
 
     Returns True if it is valid, and False if it is not.
     '''
