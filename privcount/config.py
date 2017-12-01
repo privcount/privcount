@@ -71,6 +71,26 @@ def check_country_code(country_str):
     bad_chars = country_str.strip("abcdefghijklmnopqrstuvwxyz")
     return len(bad_chars) == 0 and len(country_str) == 2
 
+def check_as_number(as_number):
+    '''
+    Check if as_number is a potentially valid CAIDA AS Number.
+    as_number can be an integer or string.
+
+    CAIDA AS Numbers can also be AS Sets (",") and multi-origin ASs ("_"),
+    but these must be stripped out of the files before they are loaded.
+    Assumes that any strings have already been stripped of leading and
+    trailing whitespace.
+
+    Returns True if it is valid, and False if it is not.
+    '''
+    # We check if it's an integer
+    try:
+        as_number = int(as_number)
+        return as_number > 0
+    except ValueError as e:
+        # not an integer
+        return False
+
 def validate_ip_address(address):
     '''
     If address is a valid IP address, return it as an ipaddress object.
