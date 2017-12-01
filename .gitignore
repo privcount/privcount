@@ -36,3 +36,6 @@ test/config.yaml.*
 
 # downloaded test data
 top-1m.csv.zip
+top-1m.csv
+test/top-1m.csv
+test/domain-top-1m.txt
