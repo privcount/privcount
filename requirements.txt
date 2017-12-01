@@ -13,6 +13,11 @@ enum34>=1.1.2
 idna>=2.0
 ipaddress>=1.0.16
 pyOpenSSL>=0.15.1
+# Autonomous System Number
+# We need to be able to load from strings, and this feature isn't in master
+#pyasn>=1.6.0b1
+-e git+https://github.com/privcount/pyasn.git@init-string#egg=pyasn
+# Abstract Syntax Notation One
 pyasn1>=0.1.9
 pyasn1-modules>=0.0.8
 pycparser>=2.14

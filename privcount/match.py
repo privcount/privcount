@@ -8,6 +8,7 @@
 
 import bisect
 import logging
+import pyasn
 
 from privcount.log import summarise_string
 
@@ -165,3 +166,30 @@ def suffix_match(suffix_obj, search_str, separator=""):
     #logging.warning("{} -> {} candidate {} -> {} in {}".format(search_str, reversed_search_str, candidate_idx, candidate_reversed_suffix, suffix_obj))
     return reversed_search_str.startswith(candidate_reversed_suffix)
 
+def ipasn_prefix_match_prepare_collection(ipasn_file_path=None,
+                                          ipasn_string=None):
+    '''
+    Prepare ipasn data for efficient IP prefix matching.
+    If ipasn_file_path is not None, the data is loaded from that file.
+    Otherwise, the data is loaded from ipasn_string.
+    (Exactly one must be None.)
+
+    Returns an object that can be passed to ipasn_prefix_match().
+    This object must be treated as opaque and read-only.
+    '''
+    # either the file path must be None, or the string must be None,
+    # but not both (and not neither)
+    assert (ipasn_file_path is None) != (ipasn_string is None)
+    return pyasn.pyasn(ipasn_file_path, ipasn_string=ipasn_string)
+
+def ipasn_prefix_match(ipasn_prefix_obj, search_ip):
+    '''
+    Performs an efficient radix prefix match on search_ip in ipasn_prefix_obj.
+
+    prefix_obj must have been created by
+    ipasn_prefix_match_prepare_collection().
+
+    Returns the corresponding AS number, or None on no match.
+    '''
+    (as_number, ip_prefix) = ipasn_prefix_obj.lookup(str(search_ip))
+    return as_number
