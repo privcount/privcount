@@ -219,25 +219,27 @@ class PrivCountNode(object):
     @staticmethod
     def summarise_match_list(match_list):
         '''
-        Summarise match_list into a string containing the first match string,
-        and, if there is more than one match string in the list, the last
-        match string
+        Summarise match_list into a string containing a str() of the first
+        match object, and, if there is more than one match object in the list,
+        a str() of the last match object. (There must be at least one entry in
+        the list.)
+
+        Returns a string.
         '''
         assert len(match_list) > 0
 
         # summarise overlong match strings, even if they are the first or last
         # Allow (MAX_MATCH_LEN + 1 for LF) * 2 + 4 for ellipsis
+        first_last_list = [str(match_list[0])]
         max_len = PrivCountNode.MAX_MATCH_LEN + 1
-        first_last_list = match_list[0:1]
         if len(match_list) > 1:
             # always have an ellipsis, even if the list is short
             ellipsis = "...."
             first_last_list.append(ellipsis)
             max_len += len(ellipsis) + 1
-            first_last_list.append(match_list[-1])
+            first_last_list.append(str(match_list[-1]))
             max_len += PrivCountNode.MAX_MATCH_LEN + 1
-        return summarise_string("".join(first_last_list),
-                                max_len)
+        return summarise_string("".join(first_last_list), max_len)
 
     @staticmethod
     def summarise_match_lists(deepcopied_start_config, match_list_key):
@@ -250,6 +252,18 @@ class PrivCountNode(object):
             match_list = deepcopied_start_config[match_list_key][i]
             short_string = PrivCountNode.summarise_match_list(match_list)
             deepcopied_start_config[match_list_key][i] = short_string
+
+    @staticmethod
+    def summarise_match_maps(deepcopied_start_config, match_map_key):
+        '''
+        If deepcopied_start_config contains match_map_key, and it contains
+        any match maps, summarise them.
+        You must deep-copy start_config before calling this function.
+        '''
+        for k in deepcopied_start_config.get(match_map_key, {}):
+            match_map = deepcopied_start_config[match_map_key][k]
+            short_string = PrivCountNode.summarise_match_list(match_map.splitlines())
+            deepcopied_start_config[match_map_key][k] = short_string
 
 class PrivCountServer(PrivCountNode):
     '''
