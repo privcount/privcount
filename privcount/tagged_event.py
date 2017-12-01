@@ -403,15 +403,15 @@ def get_float_value(field_name, fields, event_desc,
 
     return float(fields[field_name])
 
-def get_ip_address_value(field_name, fields, event_desc,
-                         is_mandatory=False,
-                         default=None):
+def get_ip_address_object(field_name, fields, event_desc,
+                          is_mandatory=False,
+                          default=None):
     '''
     Check that fields[field_name] exists and is a valid IP address.
     Asserts if is_mandatory is True and it does not exist.
     If it is an invalid IP address, assert.
 
-    If it exists and is valid, return it as a string in canonical form.
+    If it exists and is valid, return it as an ipaddress object.
     If it is missing, return default.
     '''
     if field_name not in fields:
@@ -422,6 +422,20 @@ def get_ip_address_value(field_name, fields, event_desc,
     # We're just using this for its IP address format check
     assert is_ip_address_valid(field_name, fields, event_desc)
 
+    # Convert the IP address to an object, returning None on failure
+    return validate_ip_address(fields[field_name])
+
+def get_ip_address_value(field_name, fields, event_desc,
+                         is_mandatory=False,
+                         default=None):
+    '''
+    Convert the output of get_ip_address_object() to a string.
+
+    Returns fields[field_name] as a string in canonical IP address form.
+    If it is missing, return default.
+    '''
     # Canonicalise the IP address and return it as a string
     # This provides maximum compatibility with existing code
-    return str(validate_ip_address(fields[field_name]))
+    return str(get_ip_address_object(field_name, fields, event_desc,
+                                     is_mandatory=is_mandatory,
+                                     default=default))
