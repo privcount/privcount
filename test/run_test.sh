@@ -813,7 +813,7 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       break
     fi
   fi
-  sleep 3
+  sleep 5
   JOB_STATUS=`jobs`
   "$I" "$JOB_STATUS"
 done
