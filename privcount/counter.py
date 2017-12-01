@@ -1173,6 +1173,252 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
 'NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
 
+# histograms for AS numbers that match the first list specified
+# byte histograms per connection
+'EntryConnectionASMatchByteHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchByteHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchByteHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchByteHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchByteHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchByteHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchByteHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchByteHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionASMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchInboundByteHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchInboundByteHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionASMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+
+# circuit count histograms by connection
+'EntryConnectionASMatchCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchCircuitHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchCircuitHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchCircuitHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchCircuitHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionASMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionASMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+
+# connection lifetime histograms
+'EntryConnectionASMatchLifeTime' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchLifeTime' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchLifeTime' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchLifeTime' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchLifeTime' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchLifeTime' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchLifeTime' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchLifeTime' : { CONNECTION_EVENT },
+
+# the number of simultaneous connections from the same IP address as a histogram
+'EntryConnectionASMatchOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchOverlapHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchOverlapHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchOverlapHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchOverlapHistogram' : { CONNECTION_EVENT },
+
+# histograms for AS numbers that don't match the first list specified
+# byte histograms per connection
+'EntryConnectionASNoMatchByteHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASNoMatchByteHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASNoMatchByteHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASNoMatchByteHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASNoMatchByteHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASNoMatchByteHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASNoMatchByteHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASNoMatchByteHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionASNoMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASNoMatchInboundByteHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASNoMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASNoMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASNoMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASNoMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASNoMatchInboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASNoMatchInboundByteHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionASNoMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASNoMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASNoMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASNoMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASNoMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASNoMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASNoMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASNoMatchOutboundByteHistogram' : { CONNECTION_EVENT },
+
+# circuit count histograms by connection
+'EntryConnectionASNoMatchCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASNoMatchCircuitHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASNoMatchCircuitHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASNoMatchCircuitHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASNoMatchCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASNoMatchCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASNoMatchCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASNoMatchCircuitHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionASNoMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASNoMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASNoMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASNoMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASNoMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASNoMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASNoMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASNoMatchInboundCircuitHistogram' : { CONNECTION_EVENT },
+
+'EntryConnectionASNoMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASNoMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram' : { CONNECTION_EVENT },
+
+# connection lifetime histograms
+'EntryConnectionASNoMatchLifeTime' : { CONNECTION_EVENT },
+'NonEntryConnectionASNoMatchLifeTime' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASNoMatchLifeTime' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASNoMatchLifeTime' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASNoMatchLifeTime' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASNoMatchLifeTime' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASNoMatchLifeTime' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASNoMatchLifeTime' : { CONNECTION_EVENT },
+
+# the number of simultaneous connections from the same IP address as a histogram
+'EntryConnectionASNoMatchOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntryConnectionASNoMatchOverlapHistogram' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASNoMatchOverlapHistogram' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASNoMatchOverlapHistogram' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASNoMatchOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASNoMatchOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASNoMatchOverlapHistogram' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASNoMatchOverlapHistogram' : { CONNECTION_EVENT },
+
+# count lists for AS numbers that match each list
+# the final bin is used for AS numbers that don't match any list
+# simple connection counts
+'EntryConnectionASMatchCountList' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchCountList' : { CONNECTION_EVENT },
+
+# connection counts based on the number of relays sharing the remote address
+'Entry0RelayOnAddressConnectionASMatchCountList' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchCountList' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchCountList' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchCountList' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchCountList' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchCountList' : { CONNECTION_EVENT },
+
+# byte counts
+'EntryConnectionASMatchByteCountList' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchByteCountList' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchByteCountList' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchByteCountList' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchByteCountList' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchByteCountList' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchByteCountList' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchByteCountList' : { CONNECTION_EVENT },
+
+'EntryConnectionASMatchInboundByteCountList' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchInboundByteCountList' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchInboundByteCountList' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchInboundByteCountList' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchInboundByteCountList' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchInboundByteCountList' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchInboundByteCountList' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchInboundByteCountList' : { CONNECTION_EVENT },
+
+'EntryConnectionASMatchOutboundByteCountList' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchOutboundByteCountList' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchOutboundByteCountList' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchOutboundByteCountList' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchOutboundByteCountList' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchOutboundByteCountList' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchOutboundByteCountList' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchOutboundByteCountList' : { CONNECTION_EVENT },
+
+# circuit counts
+'EntryConnectionASMatchCircuitCountList' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchCircuitCountList' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchCircuitCountList' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchCircuitCountList' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchCircuitCountList' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchCircuitCountList' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchCircuitCountList' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchCircuitCountList' : { CONNECTION_EVENT },
+
+'EntryConnectionASMatchInboundCircuitCountList' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchInboundCircuitCountList' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchInboundCircuitCountList' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchInboundCircuitCountList' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchInboundCircuitCountList' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchInboundCircuitCountList' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchInboundCircuitCountList' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchInboundCircuitCountList' : { CONNECTION_EVENT },
+
+'EntryConnectionASMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
+'NonEntryConnectionASMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
+
+'Entry0RelayOnAddressConnectionASMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
+'Entry1RelayOnAddressConnectionASMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
+'Entry2RelayOnAddressConnectionASMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
+'NonEntry0RelayOnAddressConnectionASMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
+'NonEntry1RelayOnAddressConnectionASMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
+'NonEntry2RelayOnAddressConnectionASMatchOutboundCircuitCountList' : { CONNECTION_EVENT },
+
 # these counters depend on HSDir stored
 # Keep versions separate
 'HSDir2StoreCount' : { HSDIR_STORE_EVENT },
