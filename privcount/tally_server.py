@@ -300,7 +300,7 @@ class TallyServer(ServerFactory, PrivCountServer):
             if prepare_prefix:
                 # check that the format is parseable before sending to DCs
                 prefix_map_obj = ipasn_prefix_match_prepare_collection(
-                                     ipasn_file_path=file_path)
+                                     prefix_map)
 
         # Now, add the map to the dict of prefix maps
         new_as_prefix_maps[ip_version] = prefix_map

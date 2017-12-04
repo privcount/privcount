@@ -453,7 +453,7 @@ class Aggregator(ReconnectingClientFactory):
             assert ipv == 4 or ipv == 6
             logging.info('Preparing AS prefix map for IPv{}'.format(ipv))
             self.as_prefix_map_objs[ipv] = ipasn_prefix_match_prepare_collection(
-                                               ipasn_string=as_data['prefix_maps'][k])
+                                               as_data['prefix_maps'][k])
         self.as_exact_objs = []
         for i in xrange(len(as_data.get('lists', []))):
             logging.info('Preparing AS list {}'.format(i))

@@ -166,21 +166,17 @@ def suffix_match(suffix_obj, search_str, separator=""):
     #logging.warning("{} -> {} candidate {} -> {} in {}".format(search_str, reversed_search_str, candidate_idx, candidate_reversed_suffix, suffix_obj))
     return reversed_search_str.startswith(candidate_reversed_suffix)
 
-def ipasn_prefix_match_prepare_collection(ipasn_file_path=None,
-                                          ipasn_string=None):
+def ipasn_prefix_match_prepare_collection(ipasn_string):
     '''
     Prepare ipasn data for efficient IP prefix matching.
-    If ipasn_file_path is not None, the data is loaded from that file.
-    Otherwise, the data is loaded from ipasn_string.
-    (Exactly one must be None.)
+    ipasn_string is a string containing a newline-separated list of IP prefix
+    to AS mappings.
 
     Returns an object that can be passed to ipasn_prefix_match().
     This object must be treated as opaque and read-only.
     '''
-    # either the file path must be None, or the string must be None,
-    # but not both (and not neither)
-    assert (ipasn_file_path is None) != (ipasn_string is None)
-    return pyasn.pyasn(ipasn_file_path, ipasn_string=ipasn_string)
+    assert ipasn_string is not None
+    return pyasn.pyasn(None, ipasn_string=ipasn_string)
 
 def ipasn_prefix_match(ipasn_prefix_obj, search_ip):
     '''
