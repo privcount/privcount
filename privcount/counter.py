@@ -1716,6 +1716,29 @@ def count_bins(counters):
     return sum([len(counter_config['bins'])
                 for counter_config in counters.values()])
 
+def check_bin_count_matches_name(bins):
+    '''
+    Check that counter names that end in "Count" have a single bin, and
+    counter names that end in anything else have multiple bins.
+    '''
+    # sort names alphabetically, so the logs are in a sensible order
+    for key in sorted(bins.keys()):
+        bin_count = len(bins[key]['bins'])
+        # handle template counters by stripping the non-template part
+        key_template, _, _ = key.partition("_")
+        # the TrafficModel LogDelayTime counters are single bin
+        if key_template.endswith("Count") or key_template.endswith("LogDelayTime"):
+            if bin_count != 1:
+                logging.warning("counter {} ends in Count, but has {} bins: {}"
+                                .format(key, bin_count, bins[key]))
+                return False
+        else: # Histogram, Ratio, LifeTime, DelayTime, CountList, ...
+            if bin_count <= 1:
+                logging.warning("counter {} does not end in Count, but has {} bins: {}"
+                                .format(key, bin_count, bins[key]))
+                return False
+    return True
+
 def check_bins_config(bins, allow_unknown_counters=False):
     '''
     Check that bins are non-overlapping.
@@ -1728,6 +1751,9 @@ def check_bins_config(bins, allow_unknown_counters=False):
     '''
     if not allow_unknown_counters:
         if not check_counter_names(bins):
+            return False
+        # unknown counters may have different rules for bin counts
+        if not check_bin_count_matches_name(bins):
             return False
     # sort names alphabetically, so the logs are in a sensible order
     for key in sorted(bins.keys()):
