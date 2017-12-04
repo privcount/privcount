@@ -32,11 +32,11 @@ privacy:
 # Values for each counter
 counters:
   # ENTRY - cells sent 'in' to client per active circuit on client OR connections
-    EntryCircuitInboundCellCount:
+    EntryCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - cells sent 'out' from client per active circuit on client OR connections
-    EntryCircuitOutboundCellCount:
+    EntryCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
@@ -77,23 +77,23 @@ counters:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit
-    ExitCircuitStreamCount:
+    ExitCircuitStreamHistogram:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit for IRC/SSH
-    ExitCircuitInteractiveStreamCount:
+    ExitCircuitInteractiveStreamHistogram:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit for port>=10000 and no other class
-    ExitCircuitOtherPortStreamCount:
+    ExitCircuitOtherPortStreamHistogram:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit for P2P
-    ExitCircuitP2PStreamCount:
+    ExitCircuitP2PStreamHistogram:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit for HTTP/HTTPS
-    ExitCircuitWebStreamCount:
+    ExitCircuitWebStreamHistogram:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - number of circuits
@@ -137,11 +137,11 @@ counters:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - circuits per client IP with at least 8 cells transferred (10 min rotation)
-    EntryClientIPActiveCircuitCount:
+    EntryClientIPActiveCircuitHistogram:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - circuits per client IP with less than 8 cells transferred (10 min rotation)
-    EntryClientIPInactiveCircuitCount:
+    EntryClientIPInactiveCircuitHistogram:
         estimated_value: 0.0
         sensitivity: 0
     # ENTRY - unique client IPs seen with at least 8 cells transferred (10 min rotation)

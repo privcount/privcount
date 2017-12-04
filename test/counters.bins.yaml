@@ -14,7 +14,7 @@
 
 counters:
     # ENTRY - cells sent 'in' to client per active circuit on client OR connections
-    EntryCircuitInboundCellCount:
+    EntryCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -27,7 +27,7 @@ counters:
         - [8192.0, 16384.0]
         - [16384.0, .inf]
     # ENTRY - cells sent 'out' from client per active circuit on client OR connections
-    EntryCircuitOutboundCellCount:
+    EntryCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -152,7 +152,7 @@ counters:
         - [1080.0, 1200.0]
         - [1200.0, .inf]
     # EXIT - completed streams per active circuit
-    ExitCircuitStreamCount:
+    ExitCircuitStreamHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 5.0]
@@ -167,7 +167,7 @@ counters:
         - [200.0, 400.0]
         - [400.0, .inf]
     # EXIT - completed streams per active circuit for IRC/SSH
-    ExitCircuitInteractiveStreamCount:
+    ExitCircuitInteractiveStreamHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -177,7 +177,7 @@ counters:
         - [8.0, 10.0]
         - [10.0, .inf]
     # EXIT - completed streams per active circuit for port>=10000 and no other class
-    ExitCircuitOtherPortStreamCount:
+    ExitCircuitOtherPortStreamHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 4.0]
@@ -187,7 +187,7 @@ counters:
         - [32.0, 64.0]
         - [64.0, .inf]
     # EXIT - completed streams per active circuit for P2P
-    ExitCircuitP2PStreamCount:
+    ExitCircuitP2PStreamHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 5.0]
@@ -202,7 +202,7 @@ counters:
         - [200.0, 400.0]
         - [400.0, .inf]
     # EXIT - completed streams per active circuit for HTTP/HTTPS
-    ExitCircuitWebStreamCount:
+    ExitCircuitWebStreamHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 5.0]
@@ -257,7 +257,7 @@ counters:
         bins:
         - [-.inf, .inf]
     # ENTRY - circuits per client IP with at least 8 cells transferred (10 min rotation)
-    EntryClientIPActiveCircuitCount:
+    EntryClientIPActiveCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 4.0]
@@ -269,7 +269,7 @@ counters:
         - [30.0, 50.0]
         - [50.0, .inf]
     # ENTRY - circuits per client IP with less than 8 cells transferred (10 min rotation)
-    EntryClientIPInactiveCircuitCount:
+    EntryClientIPInactiveCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 4.0]

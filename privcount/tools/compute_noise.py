@@ -172,8 +172,8 @@ stats_parameters = {\
     ####
     ## histograms ##
 # removed due to low utility and complication of counting circuits at both guards and exits
-#    'EntryCircuitInboundCellCount' : circuit_histogram_parameters,
-#    'EntryCircuitOutboundCellCount' : circuit_histogram_parameters,
+#    'EntryCircuitInboundCellHistogram' : circuit_histogram_parameters,
+#    'EntryCircuitOutboundCellHistogram' : circuit_histogram_parameters,
 #    'EntryCircuitCellRatio' : circuit_histogram_parameters,
     ####
     ######
@@ -212,15 +212,15 @@ stats_parameters = {\
     'ExitCircuitLifeTime' : circuit_histogram_parameters,
     'ExitActiveCircuitLifeTime' : (2*sensitivity_circuits, num_active_circuits_per_day * epoch_days),
     'ExitInactiveCircuitLifeTime' : (2*sensitivity_circuits, num_inactive_circuits_per_day * epoch_days),
-    'ExitCircuitStreamCount' : circuit_histogram_parameters,
-    'ExitCircuitOtherPortStreamCount' : (2 * sensitivity_other_circuits,
+    'ExitCircuitStreamHistogram' : circuit_histogram_parameters,
+    'ExitCircuitOtherPortStreamHistogram' : (2 * sensitivity_other_circuits,
         num_other_circuits_per_day * epoch_days),
-    'ExitCircuitWebStreamCount' : (2 * sensitivity_web_circuits, num_web_circuits_per_day * epoch_days),
+    'ExitCircuitWebStreamHistogram' : (2 * sensitivity_web_circuits, num_web_circuits_per_day * epoch_days),
 # removing interactive stats due to low volume
-#    'ExitCircuitInteractiveStreamCount' : (2 * sensitivity_interactive_circuits,
+#    'ExitCircuitInteractiveStreamHistogram' : (2 * sensitivity_interactive_circuits,
 #        num_interactive_circuits_per_day * epoch_days),
 # removing P2P class
-#    'ExitCircuitP2PStreamCount' : (2 * sensitivity_p2p_circuits, num_p2p_circuits_per_day * epoch_days),
+#    'ExitCircuitP2PStreamHistogram' : (2 * sensitivity_p2p_circuits, num_p2p_circuits_per_day * epoch_days),
     'ExitStreamInboundByteHistogram' : stream_histogram_parameters,
     'ExitOtherPortStreamInboundByteHistogram' : other_stream_histogram_parameters,
     'ExitWebStreamInboundByteHistogram' : web_stream_histogram_parameters,

@@ -19,10 +19,10 @@
 
 counters:
     # ENTRY - cells sent 'in' to client per active circuit on client OR connections
-    EntryCircuitInboundCellCount:
+    EntryCircuitInboundCellHistogram:
         sigma: 0.0
     # ENTRY - cells sent 'out' from client per active circuit on client OR connections
-    EntryCircuitOutboundCellCount:
+    EntryCircuitOutboundCellHistogram:
         sigma: 0.0
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
     # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
@@ -53,19 +53,19 @@ counters:
     ExitInactiveCircuitLifeTime:
         sigma: 0.0
     # EXIT - completed streams per active circuit
-    ExitCircuitStreamCount:
+    ExitCircuitStreamHistogram:
         sigma: 0.0
     # EXIT - completed streams per active circuit for IRC/SSH
-    ExitCircuitInteractiveStreamCount:
+    ExitCircuitInteractiveStreamHistogram:
         sigma: 0.0
     # EXIT - completed streams per active circuit for port>=10000 and no other class
-    ExitCircuitOtherPortStreamCount:
+    ExitCircuitOtherPortStreamHistogram:
         sigma: 0.0
     # EXIT - completed streams per active circuit for P2P
-    ExitCircuitP2PStreamCount:
+    ExitCircuitP2PStreamHistogram:
         sigma: 0.0
     # EXIT - completed streams per active circuit for HTTP/HTTPS
-    ExitCircuitWebStreamCount:
+    ExitCircuitWebStreamHistogram:
         sigma: 0.0
     # ENTRY - number of circuits
     EntryCircuitCount:
@@ -98,10 +98,10 @@ counters:
     ExitWebCircuitCount:
         sigma: 0.0
     # ENTRY - circuits per client IP with at least 8 cells transferred (10 min rotation)
-    EntryClientIPActiveCircuitCount:
+    EntryClientIPActiveCircuitHistogram:
         sigma: 0.0
     # ENTRY - circuits per client IP with less than 8 cells transferred (10 min rotation)
-    EntryClientIPInactiveCircuitCount:
+    EntryClientIPInactiveCircuitHistogram:
         sigma: 0.0
     # ENTRY - unique client IPs seen with at least 8 cells transferred (10 min rotation)
     EntryActiveClientIPCount:

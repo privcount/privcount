@@ -221,17 +221,17 @@ On my machine, sending 100MB takes about 3 seconds.
 
 See the port variant notes under ExitInteractiveCircuitCount.
 
-- ExitCircuitStreamCount
+- ExitCircuitStreamHistogram
 
-The counts for ExitCircuitStreamCount match ExitStreamCount, but since
-ExitCircuitStreamCount is a per-circuit stream count histogram, there may
+The counts for ExitCircuitStreamHistogram match ExitStreamCount, but since
+ExitCircuitStreamHistogram is a per-circuit stream count histogram, there may
 be some inaccuracy due to bucket sizes.
-Increasing ExitStreamCount also increases ExitCircuitStreamCount.
+Increasing ExitStreamCount also increases ExitCircuitStreamHistogram.
 
-- ExitCircuitInteractiveStreamCount
-- ExitCircuitOtherPortStreamCount
-- ExitCircuitP2PStreamCount
-- ExitCircuitWebStreamCount
+- ExitCircuitInteractiveStreamHistogram
+- ExitCircuitOtherPortStreamHistogram
+- ExitCircuitP2PStreamHistogram
+- ExitCircuitWebStreamHistogram
 
 See the port variant notes under ExitInteractiveCircuitCount.
 
@@ -453,9 +453,9 @@ sending data takes 1 Outbound cell per 498 bytes.
 
 See the notes under EntryCircuitCount and ExitInactiveCircuitCount.
 
-- EntryCircuitInboundCellCount
+- EntryCircuitInboundCellHistogram
 
-    '.Tally.EntryCircuitInboundCellCount.bins[1][2] == 1'
+    '.Tally.EntryCircuitInboundCellHistogram.bins[1][2] == 1'
 
 
 Even though we don't receive any data, we still receive cells in response
@@ -472,9 +472,9 @@ This is less critical, because Inbound cells increase when Outbound cells
 increase due to acknowledgements. See the note under ExitStreamByteRatio
 that explains why we only send data (and don't receive data) via chutney.
 
-- EntryCircuitOutboundCellCount
+- EntryCircuitOutboundCellHistogram
 
-    '.Tally.EntryCircuitOutboundCellCount.bins[1][2] == 1'
+    '.Tally.EntryCircuitOutboundCellHistogram.bins[1][2] == 1'
 
 Use the instructions under ExitStreamByteCount to change the byte count,
 and therefore the number of Outbound cells. You will need to send around
@@ -525,7 +525,7 @@ therefore appear in both counters.
 Using the instructions under EntryClientIPCount, I see ~30 counts in the
 [0,100) unique IP addresses bin for both Active and Inactive ClientIPs.
 
-- EntryClientIPActiveCircuitCount
+- EntryClientIPActiveCircuitHistogram
 
 The bins are a histogram based on EntryActiveCircuitCounts per client
 over the rotation period.
@@ -533,7 +533,7 @@ over the rotation period.
 Using the instructions under EntryClientIPCount, I see 1 count in the
 [0,4) circuits per unique IP address bin.
 
-- EntryClientIPInactiveCircuitCount
+- EntryClientIPInactiveCircuitHistogram
 
 The bins are a histogram based on EntryInactiveCircuitCounts per client
 over the rotation period.

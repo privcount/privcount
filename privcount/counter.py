@@ -733,14 +733,14 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'EntryClientIPCount' : { CIRCUIT_EVENT },
 'EntryActiveClientIPCount' : { CIRCUIT_EVENT },
 'EntryInactiveClientIPCount' : { CIRCUIT_EVENT },
-'EntryClientIPActiveCircuitCount' : { CIRCUIT_EVENT },
-'EntryClientIPInactiveCircuitCount' : { CIRCUIT_EVENT },
+'EntryClientIPActiveCircuitHistogram' : { CIRCUIT_EVENT },
+'EntryClientIPInactiveCircuitHistogram' : { CIRCUIT_EVENT },
 
 # these counters depend on circuit end
 # they are updated in _handle_legacy_exit_circuit_event
 'EntryActiveCircuitCount' : { CIRCUIT_EVENT },
-'EntryCircuitInboundCellCount' : { CIRCUIT_EVENT },
-'EntryCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'EntryCircuitInboundCellHistogram' : { CIRCUIT_EVENT },
+'EntryCircuitOutboundCellHistogram' : { CIRCUIT_EVENT },
 'EntryCircuitCellRatio' : { CIRCUIT_EVENT },
 'EntryInactiveCircuitCount' : { CIRCUIT_EVENT },
 'ExitCircuitLifeTime' : { CIRCUIT_EVENT },
@@ -752,19 +752,19 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitInactiveCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitActiveCircuitLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitInactiveCircuitLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitCircuitStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitStreamHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitCircuitInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitWebCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitCircuitWebStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitWebStreamHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitCircuitWebInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitInteractiveCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitCircuitInteractiveStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitInteractiveStreamHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitCircuitInteractiveInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitP2PCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitCircuitP2PStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitP2PStreamHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitCircuitP2PInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitOtherPortCircuitCount' : { STREAM_EVENT, CIRCUIT_EVENT },
-'ExitCircuitOtherPortStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitCircuitOtherPortStreamHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitCircuitOtherPortInterStreamCreationTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
 # these counters depend on connection close
@@ -2414,7 +2414,7 @@ class SecureCounters(object):
         ],
         'sigma': 2090007.68996
       },
-      'EntryCircuitInboundCellCount': {
+      'EntryCircuitInboundCellHistogram': {
         'bins':
         [
           [0.0, 512.0],

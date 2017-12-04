@@ -1563,10 +1563,10 @@ class Aggregator(ReconnectingClientFactory):
                 self.secure_counters.increment('EntryActiveCircuitCount',
                                                bin=SINGLE_BIN,
                                                inc=1)
-                self.secure_counters.increment('EntryCircuitInboundCellCount',
+                self.secure_counters.increment('EntryCircuitInboundCellHistogram',
                                                bin=ncellsin,
                                                inc=1)
-                self.secure_counters.increment('EntryCircuitOutboundCellCount',
+                self.secure_counters.increment('EntryCircuitOutboundCellHistogram',
                                                bin=ncellsout,
                                                inc=1)
                 self.secure_counters.increment('EntryCircuitCellRatio', bin=Aggregator._encode_ratio(ncellsin, ncellsout), inc=1)
@@ -1624,7 +1624,7 @@ class Aggregator(ReconnectingClientFactory):
                 times = self.circ_info[chanid][circid]['stream_starttimes']
 
                 # first increment general counters
-                self.secure_counters.increment('ExitCircuitStreamCount',
+                self.secure_counters.increment('ExitCircuitStreamHistogram',
                                                bin=sum(counts.values()),
                                                inc=1)
                 for isct in Aggregator._compute_interstream_creation_times(times['Web'] + times['Interactive'] + times['P2P'] + times['OtherPort']):
@@ -1637,7 +1637,7 @@ class Aggregator(ReconnectingClientFactory):
                     self.secure_counters.increment('ExitWebCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
-                    self.secure_counters.increment('ExitCircuitWebStreamCount',
+                    self.secure_counters.increment('ExitCircuitWebStreamHistogram',
                                                    bin=counts['Web'],
                                                    inc=1)
                     for isct in Aggregator._compute_interstream_creation_times(times['Web']):
@@ -1648,7 +1648,7 @@ class Aggregator(ReconnectingClientFactory):
                     self.secure_counters.increment('ExitInteractiveCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
-                    self.secure_counters.increment('ExitCircuitInteractiveStreamCount',
+                    self.secure_counters.increment('ExitCircuitInteractiveStreamHistogram',
                                                    bin=counts['Interactive'],
                                                    inc=1)
                     for isct in Aggregator._compute_interstream_creation_times(times['Interactive']):
@@ -1659,7 +1659,7 @@ class Aggregator(ReconnectingClientFactory):
                     self.secure_counters.increment('ExitP2PCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
-                    self.secure_counters.increment('ExitCircuitP2PStreamCount',
+                    self.secure_counters.increment('ExitCircuitP2PStreamHistogram',
                                                    bin=counts['P2P'],
                                                    inc=1)
                     for isct in Aggregator._compute_interstream_creation_times(times['P2P']):
@@ -1670,7 +1670,7 @@ class Aggregator(ReconnectingClientFactory):
                     self.secure_counters.increment('ExitOtherPortCircuitCount',
                                                    bin=SINGLE_BIN,
                                                    inc=1)
-                    self.secure_counters.increment('ExitCircuitOtherPortStreamCount',
+                    self.secure_counters.increment('ExitCircuitOtherPortStreamHistogram',
                                                    bin=counts['OtherPort'],
                                                    inc=1)
                     for isct in Aggregator._compute_interstream_creation_times(times['OtherPort']):
@@ -3852,11 +3852,11 @@ class Aggregator(ReconnectingClientFactory):
                 client_ips_inactive += 1
 
             num_active_completed = client.get('num_active_completed', 0)
-            self.secure_counters.increment('EntryClientIPActiveCircuitCount',
+            self.secure_counters.increment('EntryClientIPActiveCircuitHistogram',
                                            bin=num_active_completed,
                                            inc=1)
             num_inactive_completed = client.get('num_inactive_completed', 0)
-            self.secure_counters.increment('EntryClientIPInactiveCircuitCount',
+            self.secure_counters.increment('EntryClientIPInactiveCircuitHistogram',
                                            bin=num_inactive_completed,
                                            inc=1)
 
