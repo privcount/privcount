@@ -33,7 +33,9 @@ for file in `find "$PRIVCOUNT_DIR" | \
     grep -e '.py$' -e '.sh$' -e '.markdown$' -e '.yaml$' | \
     grep -v -e old -e venv -e .git`; do
 
-    MATCH_COUNT=`grep -c "$OLD_NAME[^$NAME_CHAR]" "$file"` || true
+    MATCH_COUNT_C=`grep -c "$OLD_NAME[^$NAME_CHAR]" "$file"` || true
+    MATCH_COUNT_N=`grep -c "$OLD_NAME$" "$file"` || true
+    MATCH_COUNT=$[$MATCH_COUNT_C+$MATCH_COUNT_N]
     # skip files with no characters in them, outputting a match count
     if [ "0$MATCH_COUNT" -gt 0 ]; then
         echo "Replacing $MATCH_COUNT names in $file:"
@@ -42,6 +44,7 @@ for file in `find "$PRIVCOUNT_DIR" | \
         # Since the traffic model templates use extra characters, they *will*
         # be renamed along with their non-template counterparts
         sed -i .bak "s/$OLD_NAME\([^$NAME_CHAR]\)/$NEW_NAME\1/g" "$file"
+        sed -i .bak "s/$OLD_NAME$/$NEW_NAME/g" "$file"
     fi
 done
 
