@@ -14,6 +14,7 @@ set -b
 
 if [ $# -ne 2 ]; then
     echo "usage: $0: OldCounterName NewCounterName"
+    exit 1
 fi
 
 OLD_NAME="$1"
