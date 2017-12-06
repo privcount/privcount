@@ -21,6 +21,12 @@ Some overheads are excluded:
 * Streams with zero (total read and write) or negative byte counts are ignored.
 * Cell counts are not collected on Inactive Circuits.
 
+### CountList
+
+The Count of Connections, Circuits, Streams, Cells, Bytes, or descriptor
+Stores seen by the relay, that match one of the lists configured on the
+Tally Server.
+
 ### ClientIPCount
 
 The number of unique Client IP addresses seen by the relay in each 10 minute
@@ -137,6 +143,7 @@ The sub-categories are:
 * P2P: ports typically used for bulk data transfer
 * Web: ports typically used for web browsing
 * OtherPort: any ports not listed in any other category
+* NonWeb: all ports except Web ports
 
 ### Inbound/Outbound
 
@@ -149,6 +156,35 @@ as Outbound bytes to the Exit's edge connection.
 Inbound data is sent to the client, typically from an Exit.
 Inbound Bytes are read from the Exit's edge connection, and written to Inbound
 cells.
+
+### Initial/Subsequent
+
+Initial streams are the first stream on the circuit.
+
+Subsequent streams are every other stream on the circuit.
+
+### IPv4Literal/IPv6Literal/Hostname
+
+The address sent by the client can be an IPv4 address, IPv6 address, or DNS
+hostname.
+
+### IPv4/IPv6
+
+The IP address resolved by the Exit can be an IPv4 address or IPv6 address.
+
+### Match/ExactMatch/SuffixMatch
+
+When collecting a CountList:
+* Country, AS, and Domain lists can be matched exactly (Match or ExactMatch)
+* Domain lists can be matched by any suffix of the domain (SuffixMatch)
+
+Country uses the remote IP address to look up countries in Tor's geoip files.
+
+AS uses the remote IP address to look up AS numbers in the CAIDA IPv4 and IPv6
+AS prefix databases.
+
+Domain uses the DNS domain and does a case-insensitive (ExactMatch) or domain
+component suffix match (SuffixMatch).
 
 ### Upload Delay Time
 
