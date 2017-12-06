@@ -778,12 +778,12 @@ class Aggregator(ReconnectingClientFactory):
         # Do some basic validation of the version
         # This is hard, because versions can be almost anything
         if not len(version) > 0:
-            logging.warning("Bad %s version length %d: %s",
+            logging.warning("Bad %s length %d: %s",
                             description, len(version), version)
             return None
         # This means unicode printables, there's no ASCII equivalent
         if not all(c in string.printable for c in version):
-            logging.warning("Bad %s version characters: %s",
+            logging.warning("Bad %s characters: %s",
                             description, version)
             return None
 
@@ -795,13 +795,17 @@ class Aggregator(ReconnectingClientFactory):
                     # this happens because GETINFO version has the tag, but
                     # PROTOCOLINFO does not
                     logging_level = logging.debug
+                elif version.lower() in old_version.lower():
+                    # did someone just restart tor?
+                    # this should fix itself during the protocol exchange
+                    logging_level = logging.info
                 else:
                     # did someone just restart tor with a new version?
                     logging_level = logging.warning
-                logging_level("Replacing %s version %s with %s",
+                logging_level("Replacing %s %s with %s",
                               description, old_version, version)
             else:
-                logging.debug("Duplicate %s version received %s",
+                logging.debug("Duplicate %s received %s",
                               description, version)
         return version
 
