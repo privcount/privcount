@@ -2639,6 +2639,7 @@ class Aggregator(ReconnectingClientFactory):
         return True
 
     # The number of counters defined for IP relay counts
+    # We actually see up to 3 on the live network, but it's pretty rare
     MAX_IP_RELAY_COUNTER = 2
 
     @staticmethod
@@ -2708,7 +2709,8 @@ class Aggregator(ReconnectingClientFactory):
                                        fields, event_desc,
                                        is_mandatory=True)
 
-        if ip_relay_count > Aggregator.MAX_IP_RELAY_COUNTER:
+        # Allow double the limit before issuing a warning
+        if ip_relay_count > Aggregator.MAX_IP_RELAY_COUNTER * 2:
             Aggregator.warn_unexpected_field_value("PeerIPAddressConsensusRelayCount",
                                                    fields, event_desc)
 
