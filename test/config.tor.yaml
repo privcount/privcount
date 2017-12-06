@@ -9,11 +9,14 @@ tally_server:
         - 'domain-top-1k.txt'
         - 'domain-tld.txt'
         - 'domain-cc.txt'
+        - 'domain-google.txt'
+        - 'domain-torproject.txt'
         - 'domain-local.txt'
-        - 'domain-example.txt'
-        - 'domain-arpa.txt'
-        - 'domain-onion.txt'
-        - 'domain-i2p.txt'
+        # negligible traffic
+        #- 'domain-example.txt'
+        #- 'domain-arpa.txt'
+        #- 'domain-onion.txt'
+        #- 'domain-i2p.txt'
     country_files:
         - 'country-all.txt'
         - 'country-known.txt'
