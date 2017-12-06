@@ -1909,6 +1909,40 @@ class Aggregator(ReconnectingClientFactory):
                              is_mandatory=False):
             return False
 
+        # We check other flag combinations, using their integer values so it's
+        # easier to add them
+        is_exit = get_int_value("{}IsExitFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=0)
+
+        is_dir = get_int_value("{}IsDirFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=0)
+
+        is_hsdir = get_int_value("{}IsHSDirFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=0)
+
+        is_intro = get_int_value("{}IsIntroFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=0)
+
+        is_rend = get_int_value("{}IsRendFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=0)
+
+        if is_exit + is_dir + is_hsdir + is_intro + is_rend > 1:
+            # we could use warn_unexpected_field_value here, but that doesn't
+            # really work
+            logging.warning("Unexpected position flag combination in {}circuit event {} in {}"
+                            .format(prefix + " " if len(prefix) > 0 else "",
+                                    fields, event_desc))
+
         # This flag is only present for HSDir and Intro positions,
         # but is present whether it is 0 or 1
         if not is_flag_valid("{}IsHSClientSideFlag".format(prefix),
