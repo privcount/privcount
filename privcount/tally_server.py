@@ -345,7 +345,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         assert new_counters is not None
         # Find all the counters we want to modify
         for counter_name in new_counters:
-            if "CountryMatchConnection" in counter_name and counter_name.endswith("CountList"):
+            if "CountryMatch" in counter_name and counter_name.endswith("CountList"):
                 TallyServer.modify_bins(new_country_list_count,
                                         new_counters[counter_name])
 
