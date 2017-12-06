@@ -1714,12 +1714,16 @@ class Aggregator(ReconnectingClientFactory):
 
     @staticmethod
     def is_hs_version_valid(fields, event_desc,
-                            is_mandatory=False):
+                            is_mandatory=False,
+                            prefix=None):
         '''
-        Check that fields["HiddenServiceVersionNumber"] exists and is 2 or 3.
+        Check that the HiddenServiceVersionNumber in fields exists, and is
+        2 or 3. Uses prefix before HiddenServiceVersionNumber if it is set.
         See is_int_valid for details.
         '''
-        return is_int_valid("HiddenServiceVersionNumber",
+        if prefix is None:
+            prefix = ""
+        return is_int_valid("{}HiddenServiceVersionNumber".format(prefix),
                             fields, event_desc,
                             is_mandatory=is_mandatory,
                             min_value=2, max_value=3)
@@ -1821,6 +1825,9 @@ class Aggregator(ReconnectingClientFactory):
         Returns True if they are all valid, False if one or more are not.
         Logs a warning using event_desc for the first field that is invalid.
         '''
+        if prefix is None:
+            prefix = ""
+
         # Validate the potentially mandatory fields
 
         if not is_float_valid("EventTimestamp",
@@ -1834,81 +1841,83 @@ class Aggregator(ReconnectingClientFactory):
         # in some rare cases, NextChannelId can be missing
         if not Aggregator.are_circuit_id_fields_valid(fields, event_desc,
                                                       is_mandatory=False,
-                                                      prefix="Next"):
+                                                      prefix="{}Next"
+                                                      .format(prefix)):
             return False
 
 
         if not Aggregator.are_circuit_id_fields_valid(fields, event_desc,
                                                       is_mandatory=False,
-                                                      prefix="Previous"):
+                                                      prefix="{}Previous"
+                                                      .format(prefix)):
             return False
 
         # We could try to validate that the position flags occur in the right
         # combinations, but the Tor patch already does that
 
         # These flags are only present when they are 1
-        if not is_flag_valid("IsOriginFlag",
+        if not is_flag_valid("{}IsOriginFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
-        if not is_flag_valid("IsEntryFlag",
+        if not is_flag_valid("{}IsEntryFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
-        if not is_flag_valid("IsMidFlag",
+        if not is_flag_valid("{}IsMidFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
-        if not is_flag_valid("IsEndFlag",
+        if not is_flag_valid("{}IsEndFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
-        # Similarly, we don't bother checking subcategory combinations
-        if not is_flag_valid("IsExitFlag",
+        # Similarly, the Tor patch checks some subcategory combinations
+        if not is_flag_valid("{}IsExitFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
-        if not is_flag_valid("IsDirFlag",
+        if not is_flag_valid("{}IsDirFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
-        if not is_flag_valid("IsHSDirFlag",
+        if not is_flag_valid("{}IsHSDirFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
-        if not is_flag_valid("IsIntroFlag",
+        if not is_flag_valid("{}IsIntroFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
         # Only appears when IsIntroFlag and IsHSClientSideFlag are true
         # But there's not much point in checking for that
-        if not is_flag_valid("IsClientIntroLegacyFlag",
+        if not is_flag_valid("{}IsClientIntroLegacyFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
-        if not is_flag_valid("IsRendFlag",
+        if not is_flag_valid("{}IsRendFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
         # This flag is only present for HSDir and Intro positions,
         # but is present whether it is 0 or 1
-        if not is_flag_valid("IsHSClientSideFlag",
+        if not is_flag_valid("{}IsHSClientSideFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
 
         # This flag is only present when it is 1
-        if not is_flag_valid("IsMarkedForCloseFlag",
+        if not is_flag_valid("{}IsMarkedForCloseFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
@@ -1916,11 +1925,12 @@ class Aggregator(ReconnectingClientFactory):
         # Make sure we were designed to work with the event's
         # HiddenServiceVersionNumber
         if not Aggregator.is_hs_version_valid(fields, event_desc,
-                                              is_mandatory=False):
+                                              is_mandatory=False,
+                                              prefix=prefix):
             return False
 
         # This flag is only present when it is 1
-        if not is_flag_valid("HasReceivedCreateCellFlag",
+        if not is_flag_valid("{}HasReceivedCreateCellFlag".format(prefix),
                              fields, event_desc,
                              is_mandatory=False):
             return False
@@ -1931,14 +1941,14 @@ class Aggregator(ReconnectingClientFactory):
         # ONION_HANDSHAKE_TYPE_TAP  0x0000
         # ONION_HANDSHAKE_TYPE_FAST 0x0001
         # ONION_HANDSHAKE_TYPE_NTOR 0x0002
-        if not is_int_valid("OnionHandshakeType",
+        if not is_int_valid("{}OnionHandshakeType".format(prefix),
                             fields, event_desc,
                             is_mandatory=False,
                             min_value=0, max_value=2):
             return False
 
         # 50 is an arbitrary maximum failure reason length
-        if not is_string_valid("FailureReasonString",
+        if not is_string_valid("{}FailureReasonString".format(prefix),
                     fields, event_desc,
                     is_mandatory=False,
                     min_len=1, max_len=50):
