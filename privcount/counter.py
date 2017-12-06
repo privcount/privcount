@@ -531,6 +531,27 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitHostnameInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitHostnameInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
+# The base counts for the ExitDomain*Web*Stream* counters
+'ExitHostnameWebInitialStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebInitialStreamByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebInitialStreamOutboundByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebInitialStreamInboundByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+
+'ExitHostnameWebSubsequentStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebSubsequentStreamByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebSubsequentStreamOutboundByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebSubsequentStreamInboundByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameWebSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+
 # IP version after DNS resolution and position
 'ExitIPv4SubsequentStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitIPv4SubsequentStreamByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },

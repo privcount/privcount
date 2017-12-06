@@ -1325,6 +1325,13 @@ class Aggregator(ReconnectingClientFactory):
 
         # now collect statistics on list matches for each web hostname
         if host_ip_version == "Hostname" and stream_web == "Web":
+
+            # and combined host / web / stream on circuit
+            # Hostname + Web + Initial / Subsequent
+            self._increment_stream_end_counters(host_ip_version + stream_web + stream_circ,
+                                                totalbw, writebw, readbw,
+                                                ratio, lifetime)
+
             domain_exact_match_bin_list = []
             domain_suffix_match_bin_list = []
             # we assume the exact and suffix objs have the same length

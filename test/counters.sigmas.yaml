@@ -2023,3 +2023,39 @@ counters:
         sigma: 0.0
     NonEntryConnectionASMatchCircuitCountList:
         sigma: 0.0
+    ExitHostnameWebInitialStreamLifeTime:
+        sigma: 0.0
+    ExitHostnameWebSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitHostnameWebInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameWebSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameWebInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameWebSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameWebInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitHostnameWebSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitHostnameWebInitialStreamByteRatio:
+        sigma: 0.0
+    ExitHostnameWebSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitHostnameWebInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitHostnameWebSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitHostnameWebInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitHostnameWebSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitHostnameWebInitialStreamByteCount:
+        sigma: 0.0
+    ExitHostnameWebSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitHostnameWebInitialStreamCount:
+        sigma: 0.0
+    ExitHostnameWebSubsequentStreamCount:
+        sigma: 0.0
