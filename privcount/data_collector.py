@@ -1327,14 +1327,16 @@ class Aggregator(ReconnectingClientFactory):
                                                 totalbw, writebw, readbw,
                                                 ratio, lifetime)
 
-        # now collect statistics on list matches for each web hostname
-        if host_ip_version == "Hostname" and stream_web == "Web":
 
+        if host_ip_version == "Hostname" and stream_web == "Web":
             # and combined host / web / stream on circuit
             # Hostname + Web + Initial / Subsequent
             self._increment_stream_end_counters(host_ip_version + stream_web + stream_circ,
                                                 totalbw, writebw, readbw,
                                                 ratio, lifetime)
+
+        # now collect statistics on list matches for each initial web hostname
+        if host_ip_version == "Hostname" and stream_web == "Web" and stream_circ == "Initial":
 
             domain_exact_match_bin_list = []
             domain_suffix_match_bin_list = []

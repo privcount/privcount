@@ -1223,18 +1223,6 @@ counters:
     ExitDomainNoSuffixMatchWebInitialStreamLifeTime:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchWebSubsequentStreamLifeTime:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchWebSubsequentStreamLifeTime:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchWebSubsequentStreamLifeTime:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchWebSubsequentStreamLifeTime:
-        estimated_value: 0.0
-        sensitivity: 0.0
     ExitDomainExactMatchWebStreamInboundByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
@@ -1257,18 +1245,6 @@ counters:
         estimated_value: 0.0
         sensitivity: 0.0
     ExitDomainNoSuffixMatchWebInitialStreamInboundByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchWebSubsequentStreamInboundByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchWebSubsequentStreamInboundByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchWebSubsequentStreamInboundByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchWebSubsequentStreamInboundByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     ExitDomainExactMatchWebStreamOutboundByteHistogram:
@@ -1295,18 +1271,6 @@ counters:
     ExitDomainNoSuffixMatchWebInitialStreamOutboundByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchWebSubsequentStreamOutboundByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchWebSubsequentStreamOutboundByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchWebSubsequentStreamOutboundByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchWebSubsequentStreamOutboundByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     ExitDomainExactMatchWebStreamByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
@@ -1329,18 +1293,6 @@ counters:
         estimated_value: 0.0
         sensitivity: 0.0
     ExitDomainNoSuffixMatchWebInitialStreamByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchWebSubsequentStreamByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchWebSubsequentStreamByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchWebSubsequentStreamByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchWebSubsequentStreamByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     ExitDomainExactMatchWebStreamByteRatio:
@@ -1367,18 +1319,6 @@ counters:
     ExitDomainNoSuffixMatchWebInitialStreamByteRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchWebSubsequentStreamByteRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoExactMatchWebSubsequentStreamByteRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchWebSubsequentStreamByteRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainNoSuffixMatchWebSubsequentStreamByteRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     ExitDomainExactMatchWebStreamInboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
@@ -1389,12 +1329,6 @@ counters:
         estimated_value: 0.0
         sensitivity: 0.0
     ExitDomainSuffixMatchWebInitialStreamInboundByteCountList:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchWebSubsequentStreamInboundByteCountList:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchWebSubsequentStreamInboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
     ExitDomainExactMatchWebStreamOutboundByteCountList:
@@ -1409,12 +1343,6 @@ counters:
     ExitDomainSuffixMatchWebInitialStreamOutboundByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchWebSubsequentStreamOutboundByteCountList:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchWebSubsequentStreamOutboundByteCountList:
-        estimated_value: 0.0
-        sensitivity: 0.0
     ExitDomainExactMatchWebStreamByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
@@ -1427,12 +1355,6 @@ counters:
     ExitDomainSuffixMatchWebInitialStreamByteCountList:
         estimated_value: 0.0
         sensitivity: 0.0
-    ExitDomainExactMatchWebSubsequentStreamByteCountList:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchWebSubsequentStreamByteCountList:
-        estimated_value: 0.0
-        sensitivity: 0.0
     ExitDomainExactMatchWebStreamCountList:
         estimated_value: 0.0
         sensitivity: 0.0
@@ -1443,12 +1365,6 @@ counters:
         estimated_value: 0.0
         sensitivity: 0.0
     ExitDomainSuffixMatchWebInitialStreamCountList:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainExactMatchWebSubsequentStreamCountList:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    ExitDomainSuffixMatchWebSubsequentStreamCountList:
         estimated_value: 0.0
         sensitivity: 0.0
     Entry0RelayOnAddressConnectionInboundByteHistogram:
