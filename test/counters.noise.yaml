@@ -2975,3 +2975,57 @@ counters:
     ExitHostnameWebSubsequentStreamCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    ExitHostnameNonWebInitialStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebSubsequentStreamLifeTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebInitialStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebSubsequentStreamInboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebInitialStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebSubsequentStreamOutboundByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebInitialStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebSubsequentStreamByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebInitialStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebSubsequentStreamByteRatio:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebInitialStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebSubsequentStreamInboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebInitialStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebSubsequentStreamOutboundByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebInitialStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebSubsequentStreamByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebInitialStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitHostnameNonWebSubsequentStreamCount:
+        estimated_value: 0.0
+        sensitivity: 0.0

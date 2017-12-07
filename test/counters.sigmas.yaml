@@ -2003,3 +2003,39 @@ counters:
         sigma: 0.0
     ExitHostnameWebSubsequentStreamCount:
         sigma: 0.0
+    ExitHostnameNonWebInitialStreamLifeTime:
+        sigma: 0.0
+    ExitHostnameNonWebSubsequentStreamLifeTime:
+        sigma: 0.0
+    ExitHostnameNonWebInitialStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameNonWebSubsequentStreamInboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameNonWebInitialStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameNonWebSubsequentStreamOutboundByteHistogram:
+        sigma: 0.0
+    ExitHostnameNonWebInitialStreamByteHistogram:
+        sigma: 0.0
+    ExitHostnameNonWebSubsequentStreamByteHistogram:
+        sigma: 0.0
+    ExitHostnameNonWebInitialStreamByteRatio:
+        sigma: 0.0
+    ExitHostnameNonWebSubsequentStreamByteRatio:
+        sigma: 0.0
+    ExitHostnameNonWebInitialStreamInboundByteCount:
+        sigma: 0.0
+    ExitHostnameNonWebSubsequentStreamInboundByteCount:
+        sigma: 0.0
+    ExitHostnameNonWebInitialStreamOutboundByteCount:
+        sigma: 0.0
+    ExitHostnameNonWebSubsequentStreamOutboundByteCount:
+        sigma: 0.0
+    ExitHostnameNonWebInitialStreamByteCount:
+        sigma: 0.0
+    ExitHostnameNonWebSubsequentStreamByteCount:
+        sigma: 0.0
+    ExitHostnameNonWebInitialStreamCount:
+        sigma: 0.0
+    ExitHostnameNonWebSubsequentStreamCount:
+        sigma: 0.0

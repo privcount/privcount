@@ -552,6 +552,27 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitHostnameWebSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitHostnameWebSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
+# The non-web equivalents of ExitHostnameWebInitial/SubsequentStream*
+'ExitHostnameNonWebInitialStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebInitialStreamByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebInitialStreamOutboundByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebInitialStreamInboundByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebInitialStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+
+'ExitHostnameNonWebSubsequentStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebSubsequentStreamByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebSubsequentStreamOutboundByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebSubsequentStreamInboundByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebSubsequentStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebSubsequentStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebSubsequentStreamInboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
+'ExitHostnameNonWebSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
+
 # IP version after DNS resolution and position
 'ExitIPv4SubsequentStreamCount' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitIPv4SubsequentStreamByteCount' : { STREAM_EVENT, CIRCUIT_EVENT },
