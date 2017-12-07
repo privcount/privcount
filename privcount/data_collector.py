@@ -1815,6 +1815,48 @@ class Aggregator(ReconnectingClientFactory):
         return True
 
     @staticmethod
+    def make_circuit_common_fields_valid(fields, event_desc,
+                                         is_mandatory=False,
+                                         prefix=None):
+        '''
+        Work around some conflicting fields from Tor by removing the one that
+        is least likely to be correct.
+        '''
+        if prefix is None:
+            prefix = ""
+
+        # Extract the flag values
+        is_exit = get_flag_value("{}IsExitFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=False)
+
+        is_dir = get_flag_value("{}IsDirFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=False)
+
+        is_hsdir = get_flag_value("{}IsHSDirFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=False)
+
+        is_intro = get_flag_value("{}IsIntroFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=False)
+
+        is_rend = get_flag_value("{}IsRendFlag".format(prefix),
+                                fields, event_desc,
+                                is_mandatory=False,
+                                default=False)
+
+        # We see the exit flag even on non-exit relays, so it's the one that's
+        # got to go
+        if is_exit and (is_dir or is_hsdir or is_intro or is_rend):
+            del fields["{}IsExitFlag".format(prefix)]
+
+    @staticmethod
     def are_circuit_common_fields_valid(fields, event_desc,
                                         is_mandatory=False,
                                         prefix=None):
@@ -1829,6 +1871,11 @@ class Aggregator(ReconnectingClientFactory):
         '''
         if prefix is None:
             prefix = ""
+
+        # Work around some unexpected flags from Tor
+        Aggregator.make_circuit_common_fields_valid(fields, event_desc,
+                                                    is_mandatory=is_mandatory,
+                                                    prefix=prefix)
 
         # Validate the potentially mandatory fields
 
@@ -1910,40 +1957,6 @@ class Aggregator(ReconnectingClientFactory):
                              fields, event_desc,
                              is_mandatory=False):
             return False
-
-        # We check other flag combinations, using their integer values so it's
-        # easier to add them
-        is_exit = get_int_value("{}IsExitFlag".format(prefix),
-                                fields, event_desc,
-                                is_mandatory=False,
-                                default=0)
-
-        is_dir = get_int_value("{}IsDirFlag".format(prefix),
-                                fields, event_desc,
-                                is_mandatory=False,
-                                default=0)
-
-        is_hsdir = get_int_value("{}IsHSDirFlag".format(prefix),
-                                fields, event_desc,
-                                is_mandatory=False,
-                                default=0)
-
-        is_intro = get_int_value("{}IsIntroFlag".format(prefix),
-                                fields, event_desc,
-                                is_mandatory=False,
-                                default=0)
-
-        is_rend = get_int_value("{}IsRendFlag".format(prefix),
-                                fields, event_desc,
-                                is_mandatory=False,
-                                default=0)
-
-        if is_exit + is_dir + is_hsdir + is_intro + is_rend > 1:
-            # we could use warn_unexpected_field_value here, but that doesn't
-            # really work
-            logging.warning("Unexpected position flag combination in {}circuit event {} in {}"
-                            .format(prefix + " " if len(prefix) > 0 else "",
-                                    fields, event_desc))
 
         # This flag is only present for HSDir and Intro positions,
         # but is present whether it is 0 or 1
