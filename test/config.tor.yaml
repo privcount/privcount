@@ -1,33 +1,12 @@
 # config for tor single-round integration test
+# this config leaves out most optional features, and uses alternative features
+# wherever possible. This tests that PrivCount can run with these features
+# disabled.
 
 tally_server:
     counters: 'counters.bins.yaml'
     # add a lot of noise, because tor runs as an unpublished relay on the live net
     sigmas: 'counters.sigmas_large.yaml'
-    traffic_model: 'traffic.model.json'
-    traffic_noise: 'traffic.noise.yaml'
-    domain_files:
-        - 'domain-top-1k.txt'
-        - 'domain-tld.txt'
-        - 'domain-cc.txt'
-        - 'domain-google.txt'
-        - 'domain-torproject.txt'
-        - 'domain-local.txt'
-    country_files:
-        - 'country-all.txt'
-        - 'country-known.txt'
-        - 'country-top-10.txt'
-        - 'country-unknown.txt'
-        - 'country-no-geoip.txt'
-    as_prefix_files:
-        4: 'as-ipv4-test.ipasn'
-        6: 'as-ipv6-test.ipasn'
-    as_files:
-        - 'as-rank.txt'
-        - 'as-top-100.txt'
-        - 'as-ipv4-extra.txt'
-        - 'as-ipv6-extra.txt'
-    allocation: 'counters.allocation.yaml'
     noise_weight:
         '*': 1.0
     listen_port: 20001
@@ -37,8 +16,6 @@ tally_server:
     collect_period: 60
     event_period: 15
     checkin_period: 15
-    # We only run one round, so this is unused
-    delay_period: 86400
     key: 'keys/ts.pem'
     cert: 'keys/ts.cert'
     secret_handshake: 'keys/secret_handshake.yaml'
@@ -61,7 +38,4 @@ data_collector:
     share_keepers:
         # Template list value, replaced by run_test.sh
         - SK_LIST
-    # We only run one round, so this is unused
-    delay_period: 86400
-    rotate_period: 5
     secret_handshake: 'keys/secret_handshake.yaml'

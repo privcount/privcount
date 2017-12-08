@@ -855,7 +855,7 @@ function link_latest() {
     "$W" "Error: No $PREFIX $SUFFIX file produced."
     exit 1
   else
-    "$W" "Warning: No $PREFIX $SUFFIX file produced."
+    "$I" "No $PREFIX $SUFFIX file produced."
   fi
   popd > /dev/null
 }
@@ -936,13 +936,13 @@ if [ "$PRIVCOUNT_LOG" != "-q" ]; then
   if [ -e "$TEST_DIR/privcount.traffic.model.latest.json" -a \
        -e "$OLD_DIR/privcount.traffic.model.latest.json" ]; then
     "$I" "Comparing latest traffic model with previous traffic model..."
-    # PrivCount is entirely deterministic: if there are any other differences,
-    # they are due to code changes, or are a bug, or need to be filtered out
-    # here
+    # PrivCount inject is entirely deterministic: if there are any other
+    # differences, they are due to code changes, or are a bug, or need to be
+    # filtered out here
     diff --minimal --unified=10 \
       "$OLD_DIR/privcount.traffic.model.latest.json" \
       "$TEST_DIR/privcount.traffic.model.latest.json" || true
-  else
+  elif [ -e "$TEST_DIR/privcount.traffic.model.latest.json" ]; then
     # Since we need old/latest and latest, it takes two runs to generate the
     # first traffic model file comparison
     "$W" "Warning: traffic model files could not be compared."
