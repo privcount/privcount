@@ -12,11 +12,6 @@ tally_server:
         - 'domain-google.txt'
         - 'domain-torproject.txt'
         - 'domain-local.txt'
-        # negligible traffic
-        #- 'domain-example.txt'
-        #- 'domain-arpa.txt'
-        #- 'domain-onion.txt'
-        #- 'domain-i2p.txt'
     country_files:
         - 'country-all.txt'
         - 'country-known.txt'
@@ -33,25 +28,14 @@ tally_server:
         - 'as-ipv6-extra.txt'
     allocation: 'counters.allocation.yaml'
     noise_weight:
-        # We can't know our test tor relays' fingerprints in advance
-        # * means 'any other relay', and should only be used for testing
         '*': 1.0
     listen_port: 20001
     # Template values, replaced by run_test.sh
     sk_threshold: PRIVCOUNT_SHARE_KEEPERS
     dc_threshold: DATA_COLLECTOR_COUNT
-    #sk_threshold: 1
-    #dc_threshold: 3
-    # The elapsed test time is approximately:
-    #     collect_period + 2*event_period
     collect_period: 60
-    # There must be at least two event periods in each collect period
     event_period: 15
-    # There must be at least two checkin periods in each collect period
-    # The checking period should also be less than or equal to the event
-    # period, unless you are willing to wait a while for client status updates
     checkin_period: 15
-    # We only run one round, so this is unused
     delay_period: 86400
     # Ignore some circuits, so we test this feature
     circuit_sample_rate: 0.5
@@ -59,7 +43,6 @@ tally_server:
     max_cell_events_per_circuit: 25
     key: 'keys/ts.pem'
     cert: 'keys/ts.cert'
-    # if the key file does not exist, the TS creates a file with a random key
     secret_handshake: 'keys/secret_handshake.yaml'
 
 share_keeper:
@@ -68,17 +51,12 @@ share_keeper:
     tally_server_info:
         ip: '127.0.0.1'
         port: 20001
-    # We only run one round, so this is unused
     delay_period: 86400
     secret_handshake: 'keys/secret_handshake.yaml'
 
 data_collector:
     # Template values, replaced by run_test.sh
     name: 'dc-chutney-test-DC_SOURCE_PORT'
-    # the Tor control connection from which we will receive events
-    # Can be:
-    # - port, with ip optional (default 127.0.0.1), or
-    # - a unix socket path
     event_source:
         # Template value, replaced by run_test.sh
         port: DC_SOURCE_PORT
@@ -88,9 +66,6 @@ data_collector:
     share_keepers:
         # Template list value, replaced by run_test.sh
         - SK_LIST
-        # - '0e193e4a66cf0332bc64ad613bb651579a10e08afdbb54aa49e9ea2286ccd41c'
-        # - ...
-    # We only run one round, so this is unused
     delay_period: 86400
     rotate_period: 5
     secret_handshake: 'keys/secret_handshake.yaml'
