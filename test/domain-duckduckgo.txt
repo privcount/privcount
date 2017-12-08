@@ -1,0 +1,2 @@
+# Tor Browser's default search engine
+duckduckgo.com

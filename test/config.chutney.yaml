@@ -11,6 +11,7 @@ tally_server:
         - 'domain-cc.txt'
         - 'domain-google.txt'
         - 'domain-torproject.txt'
+        - 'domain-duckduckgo.txt'
         - 'domain-local.txt'
     country_files:
         - 'country-all.txt'
