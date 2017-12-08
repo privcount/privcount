@@ -28,7 +28,7 @@ grep -i "^ *$NAME_REGEX:$" "$TEST_DIR/traffic.noise.yaml" \
     | tr -d " \t:" > "$TEST_DIR/traffic.noise.yaml.names.extra"
 
 # Process the test counter files
-for counters in "$TEST_DIR"/counters.{bins,noise,sigmas}.yaml; do
+for counters in "$TEST_DIR"/counters.{bins,noise,sigmas,sigmas_large}.yaml; do
     #echo "Processing $counters:"
     grep -i "^[ \t]*$NAME_REGEX:$" "$counters" \
         | grep -v -e '^#' -e 'bins:' -e 'privacy:' -e 'counters:' \

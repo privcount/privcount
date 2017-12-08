@@ -44,6 +44,12 @@ for counter in `cat "$BASE_DIR"/missing_counters`; do
     echo "        sigma: 0.0" >> "$TEST_DIR"/counters.sigmas.yaml
 done
 
+echo "Adding missing counters to counters.sigmas_large.yaml:"
+for counter in `cat "$BASE_DIR"/missing_counters`; do
+    echo "    $counter:" >> "$TEST_DIR"/counters.sigmas_large.yaml
+    echo "        sigma: 1.0e+12" >> "$TEST_DIR"/counters.sigmas_large.yaml
+done
+
 echo "Adding missing counters to counters.bins.yaml:"
 for counter in `cat "$BASE_DIR"/missing_counters`; do
      echo "    $counter:" >> "$TEST_DIR"/counters.bins.yaml

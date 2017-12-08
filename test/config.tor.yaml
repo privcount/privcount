@@ -2,7 +2,8 @@
 
 tally_server:
     counters: 'counters.bins.yaml'
-    noise: 'counters.noise.yaml'
+    # add a lot of noise, because tor runs as an unpublished relay on the live net
+    sigmas: 'counters.sigmas_large.yaml'
     traffic_model: 'traffic.model.json'
     traffic_noise: 'traffic.noise.yaml'
     domain_files:

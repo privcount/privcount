@@ -1,0 +1,1952 @@
+# this file contains large sigma values, so it can be used on live tests
+counters:
+    ZeroCount:
+        sigma: 0.0
+    EntryCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    EntryCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    EntryCircuitCellRatio:
+        sigma: 1.0e+12
+    ExitCircuitInterStreamCreationTime:
+        sigma: 1.0e+12
+    ExitCircuitInteractiveInterStreamCreationTime:
+        sigma: 1.0e+12
+    ExitCircuitOtherPortInterStreamCreationTime:
+        sigma: 1.0e+12
+    ExitCircuitP2PInterStreamCreationTime:
+        sigma: 1.0e+12
+    ExitCircuitWebInterStreamCreationTime:
+        sigma: 1.0e+12
+    ExitCircuitLifeTime:
+        sigma: 1.0e+12
+    ExitActiveCircuitLifeTime:
+        sigma: 1.0e+12
+    ExitInactiveCircuitLifeTime:
+        sigma: 1.0e+12
+    ExitCircuitStreamHistogram:
+        sigma: 1.0e+12
+    ExitCircuitInteractiveStreamHistogram:
+        sigma: 1.0e+12
+    ExitCircuitOtherPortStreamHistogram:
+        sigma: 1.0e+12
+    ExitCircuitP2PStreamHistogram:
+        sigma: 1.0e+12
+    ExitCircuitWebStreamHistogram:
+        sigma: 1.0e+12
+    EntryCircuitCount:
+        sigma: 1.0e+12
+    EntryActiveCircuitCount:
+        sigma: 1.0e+12
+    EntryInactiveCircuitCount:
+        sigma: 1.0e+12
+    ExitCircuitCount:
+        sigma: 1.0e+12
+    ExitActiveCircuitCount:
+        sigma: 1.0e+12
+    ExitInactiveCircuitCount:
+        sigma: 1.0e+12
+    ExitInteractiveCircuitCount:
+        sigma: 1.0e+12
+    ExitOtherPortCircuitCount:
+        sigma: 1.0e+12
+    ExitP2PCircuitCount:
+        sigma: 1.0e+12
+    ExitWebCircuitCount:
+        sigma: 1.0e+12
+    EntryClientIPActiveCircuitHistogram:
+        sigma: 1.0e+12
+    EntryClientIPInactiveCircuitHistogram:
+        sigma: 1.0e+12
+    EntryActiveClientIPCount:
+        sigma: 1.0e+12
+    EntryInactiveClientIPCount:
+        sigma: 1.0e+12
+    EntryClientIPCount:
+        sigma: 1.0e+12
+    ExitStreamByteCount:
+        sigma: 1.0e+12
+    ExitStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitInteractiveStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitOtherPortStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitP2PStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitWebStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitInteractiveStreamByteCount:
+        sigma: 1.0e+12
+    ExitOtherPortStreamByteCount:
+        sigma: 1.0e+12
+    ExitStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitInteractiveStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitOtherPortStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitP2PStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitWebStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitP2PStreamByteCount:
+        sigma: 1.0e+12
+    ExitStreamByteRatio:
+        sigma: 1.0e+12
+    ExitInteractiveStreamByteRatio:
+        sigma: 1.0e+12
+    ExitOtherPortStreamByteRatio:
+        sigma: 1.0e+12
+    ExitP2PStreamByteRatio:
+        sigma: 1.0e+12
+    ExitWebStreamByteRatio:
+        sigma: 1.0e+12
+    ExitWebStreamByteCount:
+        sigma: 1.0e+12
+    ExitStreamLifeTime:
+        sigma: 1.0e+12
+    ExitInteractiveStreamLifeTime:
+        sigma: 1.0e+12
+    ExitOtherPortStreamLifeTime:
+        sigma: 1.0e+12
+    ExitP2PStreamLifeTime:
+        sigma: 1.0e+12
+    ExitWebStreamLifeTime:
+        sigma: 1.0e+12
+    ExitStreamCount:
+        sigma: 1.0e+12
+    ExitInteractiveStreamCount:
+        sigma: 1.0e+12
+    ExitOtherPortStreamCount:
+        sigma: 1.0e+12
+    ExitP2PStreamCount:
+        sigma: 1.0e+12
+    ExitWebStreamCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddUpdatedUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRejectIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddNewIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRejectDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddNewDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddUpdatedRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRejectRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddNewRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectExpiredHaveCachedCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectFutureHaveCachedCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectExpiredNoCachedCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectFutureNoCachedCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUpdatedCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddUpdatedCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUnparseableCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectUnparseableCount:
+        sigma: 1.0e+12
+    HSDir2StoreCount:
+        sigma: 1.0e+12
+    HSDir3StoreCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectDuplicateCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectObsoleteCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectObsoleteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUpdatedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddUpdatedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddNewIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUpdatedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddUpdatedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddNewDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectExpiredHaveCachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectFutureHaveCachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectExpiredNoCachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectFutureNoCachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUpdatedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectDuplicateClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectObsoleteClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectExpiredHaveCachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectFutureHaveCachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectExpiredNoCachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectFutureNoCachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUpdatedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectDuplicateNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectObsoleteNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddNewCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddNewCount:
+        sigma: 1.0e+12
+    Rend2ClientSentCellCount:
+        sigma: 1.0e+12
+    Intro2CircuitCount:
+        sigma: 1.0e+12
+    HSDir2CircuitCount:
+        sigma: 1.0e+12
+    MidCircuitCount:
+        sigma: 1.0e+12
+    EndCircuitCount:
+        sigma: 1.0e+12
+    Rend2CircuitCount:
+        sigma: 1.0e+12
+    Rend2ServiceCircuitCount:
+        sigma: 1.0e+12
+    ExitAndRend2ServiceCircuitCount:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceCircuitCount:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceCircuitCount:
+        sigma: 1.0e+12
+    OriginCircuitCount:
+        sigma: 1.0e+12
+    SingleHopCircuitCount:
+        sigma: 1.0e+12
+    DirCircuitCount:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientCircuitCount:
+        sigma: 1.0e+12
+    Rend2ClientCircuitCount:
+        sigma: 1.0e+12
+    ExitAndRend2ClientCircuitCount:
+        sigma: 1.0e+12
+    Rend2MultiHopClientCircuitCount:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionOverlapHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionOverlapHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionOverlapHistogram:
+        sigma: 1.0e+12
+    EntryConnectionOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionOverlapHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionLifeTime:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionLifeTime:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionLifeTime:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionLifeTime:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionLifeTime:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionLifeTime:
+        sigma: 1.0e+12
+    EntryConnectionLifeTime:
+        sigma: 1.0e+12
+    NonEntryConnectionLifeTime:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCount:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCount:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCount:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCount:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCount:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCount:
+        sigma: 1.0e+12
+    EntryConnectionCount:
+        sigma: 1.0e+12
+    NonEntryConnectionCount:
+        sigma: 1.0e+12
+    Intro2ServiceCircuitCount:
+        sigma: 1.0e+12
+    Rend2FailureCircuitCount:
+        sigma: 1.0e+12
+    Intro2FailureCircuitCount:
+        sigma: 1.0e+12
+    Rend2ServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro2ServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend2ClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro2ClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend2SuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro2SuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend2ServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro2ServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend2ClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro2ClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro2ClientCircuitCount:
+        sigma: 1.0e+12
+    ExitP2PStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitWebStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitInteractiveStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitOtherPortStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitP2PStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitWebStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitInteractiveStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitOtherPortStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitP2PStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitWebStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitInteractiveStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitOtherPortStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4StreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv6StreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv4InitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv6InitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv4LiteralInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv6LiteralInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv4LiteralStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv6LiteralStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv4SubsequentStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv6SubsequentStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv4LiteralSubsequentStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv6LiteralSubsequentStreamLifeTime:
+        sigma: 1.0e+12
+    ExitSubsequentStreamLifeTime:
+        sigma: 1.0e+12
+    ExitIPv4StreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6StreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4InitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6InitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4LiteralInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6LiteralInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4LiteralStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6LiteralStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4SubsequentStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6SubsequentStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4LiteralSubsequentStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6LiteralSubsequentStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitSubsequentStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4StreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6StreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4InitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6InitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4LiteralInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6LiteralInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4LiteralStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6LiteralStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4SubsequentStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6SubsequentStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4LiteralSubsequentStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6LiteralSubsequentStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitSubsequentStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4StreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6StreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4InitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6InitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4LiteralInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6LiteralInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4LiteralStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6LiteralStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4SubsequentStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6SubsequentStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4LiteralSubsequentStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv6LiteralSubsequentStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitSubsequentStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitIPv4StreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv6StreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv4InitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv6InitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv4LiteralInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv6LiteralInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv4LiteralStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv6LiteralStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv4SubsequentStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv6SubsequentStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv4LiteralSubsequentStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv6LiteralSubsequentStreamByteRatio:
+        sigma: 1.0e+12
+    ExitSubsequentStreamByteRatio:
+        sigma: 1.0e+12
+    ExitIPv4StreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6StreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4InitialStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6InitialStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralInitialStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralInitialStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitInitialStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4SubsequentStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6SubsequentStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralSubsequentStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralSubsequentStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitSubsequentStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4StreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6StreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4InitialStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6InitialStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralInitialStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralInitialStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitInitialStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4SubsequentStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6SubsequentStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralSubsequentStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralSubsequentStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitSubsequentStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitIPv4StreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv6StreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv4InitialStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv6InitialStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralInitialStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralInitialStreamByteCount:
+        sigma: 1.0e+12
+    ExitInitialStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv4SubsequentStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv6SubsequentStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralSubsequentStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralSubsequentStreamByteCount:
+        sigma: 1.0e+12
+    ExitSubsequentStreamByteCount:
+        sigma: 1.0e+12
+    ExitIPv4StreamCount:
+        sigma: 1.0e+12
+    ExitIPv6StreamCount:
+        sigma: 1.0e+12
+    ExitIPv4InitialStreamCount:
+        sigma: 1.0e+12
+    ExitIPv6InitialStreamCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralInitialStreamCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralInitialStreamCount:
+        sigma: 1.0e+12
+    ExitInitialStreamCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralStreamCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralStreamCount:
+        sigma: 1.0e+12
+    ExitIPv4SubsequentStreamCount:
+        sigma: 1.0e+12
+    ExitIPv6SubsequentStreamCount:
+        sigma: 1.0e+12
+    ExitIPv4LiteralSubsequentStreamCount:
+        sigma: 1.0e+12
+    ExitIPv6LiteralSubsequentStreamCount:
+        sigma: 1.0e+12
+    ExitSubsequentStreamCount:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebStreamLifeTime:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebStreamLifeTime:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebStreamLifeTime:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebStreamLifeTime:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebStreamByteRatio:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebStreamByteRatio:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebStreamByteRatio:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebStreamByteRatio:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitDomainNoExactMatchWebInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitDomainNoSuffixMatchWebInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebStreamInboundByteCountList:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebStreamInboundByteCountList:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebInitialStreamInboundByteCountList:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebInitialStreamInboundByteCountList:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebStreamOutboundByteCountList:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebStreamOutboundByteCountList:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebInitialStreamOutboundByteCountList:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebInitialStreamOutboundByteCountList:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebStreamByteCountList:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebStreamByteCountList:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebInitialStreamByteCountList:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebInitialStreamByteCountList:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebStreamCountList:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebStreamCountList:
+        sigma: 1.0e+12
+    ExitDomainExactMatchWebInitialStreamCountList:
+        sigma: 1.0e+12
+    ExitDomainSuffixMatchWebInitialStreamCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionInboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionOutboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionInboundByteCount:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionInboundByteCount:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionInboundByteCount:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionInboundByteCount:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionInboundByteCount:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionInboundByteCount:
+        sigma: 1.0e+12
+    EntryConnectionInboundByteCount:
+        sigma: 1.0e+12
+    NonEntryConnectionInboundByteCount:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionOutboundByteCount:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionOutboundByteCount:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionOutboundByteCount:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionOutboundByteCount:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionOutboundByteCount:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionOutboundByteCount:
+        sigma: 1.0e+12
+    EntryConnectionOutboundByteCount:
+        sigma: 1.0e+12
+    NonEntryConnectionOutboundByteCount:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionByteCount:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionByteCount:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionByteCount:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionByteCount:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionByteCount:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionByteCount:
+        sigma: 1.0e+12
+    EntryConnectionByteCount:
+        sigma: 1.0e+12
+    NonEntryConnectionByteCount:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionInboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionInboundCircuitCount:
+        sigma: 1.0e+12
+    EntryConnectionInboundCircuitCount:
+        sigma: 1.0e+12
+    NonEntryConnectionInboundCircuitCount:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionOutboundCircuitCount:
+        sigma: 1.0e+12
+    EntryConnectionOutboundCircuitCount:
+        sigma: 1.0e+12
+    NonEntryConnectionOutboundCircuitCount:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCircuitCount:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCircuitCount:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCircuitCount:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCircuitCount:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCircuitCount:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCircuitCount:
+        sigma: 1.0e+12
+    EntryConnectionCircuitCount:
+        sigma: 1.0e+12
+    NonEntryConnectionCircuitCount:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryNoMatchLifeTime:
+        sigma: 1.0e+12
+    EntryConnectionCountryNoMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryNoMatchLifeTime:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchLifeTime:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchLifeTime:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryNoMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryNoMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchInboundByteCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchInboundByteCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchByteCountList:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchByteCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchByteCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchCountList:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionCountryMatchCircuitCountList:
+        sigma: 1.0e+12
+    EntryConnectionCountryMatchCircuitCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionCountryMatchCircuitCountList:
+        sigma: 1.0e+12
+    ExitNonWebStreamLifeTime:
+        sigma: 1.0e+12
+    ExitNonWebStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitNonWebStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitNonWebStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitNonWebStreamByteRatio:
+        sigma: 1.0e+12
+    ExitNonWebStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitNonWebStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitNonWebStreamByteCount:
+        sigma: 1.0e+12
+    ExitNonWebStreamCount:
+        sigma: 1.0e+12
+    ExitHostnameWebStreamLifeTime:
+        sigma: 1.0e+12
+    ExitHostnameNonWebStreamLifeTime:
+        sigma: 1.0e+12
+    ExitHostnameStreamLifeTime:
+        sigma: 1.0e+12
+    ExitHostnameInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitHostnameSubsequentStreamLifeTime:
+        sigma: 1.0e+12
+    ExitHostnameWebStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameNonWebStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameSubsequentStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameWebStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameNonWebStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameSubsequentStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameWebStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameNonWebStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameSubsequentStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameWebStreamByteRatio:
+        sigma: 1.0e+12
+    ExitHostnameNonWebStreamByteRatio:
+        sigma: 1.0e+12
+    ExitHostnameStreamByteRatio:
+        sigma: 1.0e+12
+    ExitHostnameInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitHostnameSubsequentStreamByteRatio:
+        sigma: 1.0e+12
+    ExitHostnameWebStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameInitialStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameSubsequentStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameWebStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameInitialStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameSubsequentStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameWebStreamByteCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebStreamByteCount:
+        sigma: 1.0e+12
+    ExitHostnameStreamByteCount:
+        sigma: 1.0e+12
+    ExitHostnameInitialStreamByteCount:
+        sigma: 1.0e+12
+    ExitHostnameSubsequentStreamByteCount:
+        sigma: 1.0e+12
+    ExitHostnameWebStreamCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebStreamCount:
+        sigma: 1.0e+12
+    ExitHostnameStreamCount:
+        sigma: 1.0e+12
+    ExitHostnameInitialStreamCount:
+        sigma: 1.0e+12
+    ExitHostnameSubsequentStreamCount:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchLifeTime:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchLifeTime:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchLifeTime:
+        sigma: 1.0e+12
+    EntryConnectionASMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchLifeTime:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASNoMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASNoMatchLifeTime:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASNoMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASNoMatchLifeTime:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASNoMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASNoMatchLifeTime:
+        sigma: 1.0e+12
+    EntryConnectionASNoMatchLifeTime:
+        sigma: 1.0e+12
+    NonEntryConnectionASNoMatchLifeTime:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASNoMatchInboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASNoMatchOutboundByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASNoMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASNoMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASNoMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASNoMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASNoMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASNoMatchByteHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASNoMatchByteHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASNoMatchByteHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchOverlapHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASNoMatchOverlapHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASNoMatchInboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASNoMatchOutboundCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    EntryConnectionASNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    NonEntryConnectionASNoMatchCircuitHistogram:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchInboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchInboundByteCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchInboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchInboundByteCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchInboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchInboundByteCountList:
+        sigma: 1.0e+12
+    EntryConnectionASMatchInboundByteCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchInboundByteCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    EntryConnectionASMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchOutboundByteCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchByteCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchByteCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchByteCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchByteCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchByteCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchByteCountList:
+        sigma: 1.0e+12
+    EntryConnectionASMatchByteCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchByteCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchCountList:
+        sigma: 1.0e+12
+    EntryConnectionASMatchCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    EntryConnectionASMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchInboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    EntryConnectionASMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchOutboundCircuitCountList:
+        sigma: 1.0e+12
+    Entry0RelayOnAddressConnectionASMatchCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry0RelayOnAddressConnectionASMatchCircuitCountList:
+        sigma: 1.0e+12
+    Entry1RelayOnAddressConnectionASMatchCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry1RelayOnAddressConnectionASMatchCircuitCountList:
+        sigma: 1.0e+12
+    Entry2RelayOnAddressConnectionASMatchCircuitCountList:
+        sigma: 1.0e+12
+    NonEntry2RelayOnAddressConnectionASMatchCircuitCountList:
+        sigma: 1.0e+12
+    EntryConnectionASMatchCircuitCountList:
+        sigma: 1.0e+12
+    NonEntryConnectionASMatchCircuitCountList:
+        sigma: 1.0e+12
+    ExitHostnameWebInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitHostnameWebSubsequentStreamLifeTime:
+        sigma: 1.0e+12
+    ExitHostnameWebInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameWebSubsequentStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameWebInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameWebSubsequentStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameWebInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameWebSubsequentStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameWebInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitHostnameWebSubsequentStreamByteRatio:
+        sigma: 1.0e+12
+    ExitHostnameWebInitialStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameWebSubsequentStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameWebInitialStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameWebSubsequentStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameWebInitialStreamByteCount:
+        sigma: 1.0e+12
+    ExitHostnameWebSubsequentStreamByteCount:
+        sigma: 1.0e+12
+    ExitHostnameWebInitialStreamCount:
+        sigma: 1.0e+12
+    ExitHostnameWebSubsequentStreamCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebInitialStreamLifeTime:
+        sigma: 1.0e+12
+    ExitHostnameNonWebSubsequentStreamLifeTime:
+        sigma: 1.0e+12
+    ExitHostnameNonWebInitialStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameNonWebSubsequentStreamInboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameNonWebInitialStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameNonWebSubsequentStreamOutboundByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameNonWebInitialStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameNonWebSubsequentStreamByteHistogram:
+        sigma: 1.0e+12
+    ExitHostnameNonWebInitialStreamByteRatio:
+        sigma: 1.0e+12
+    ExitHostnameNonWebSubsequentStreamByteRatio:
+        sigma: 1.0e+12
+    ExitHostnameNonWebInitialStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebSubsequentStreamInboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebInitialStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebSubsequentStreamOutboundByteCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebInitialStreamByteCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebSubsequentStreamByteCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebInitialStreamCount:
+        sigma: 1.0e+12
+    ExitHostnameNonWebSubsequentStreamCount:
+        sigma: 1.0e+12

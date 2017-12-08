@@ -901,14 +901,28 @@ if [ "$PRIVCOUNT_LOG" != "-q" ]; then
       -e "$OLD_DIR/privcount.outcome.latest.json" ]; then
     # there's no point in comparing the tallies JSON or results PDF
     "$I" "Comparing latest outcomes file with previous outcomes file..."
+    case "$PRIVCOUNT_SOURCE" in
+      inject|chutney)
+        EXTRA_IGNORE="DUMMY_STRING_NO_MATCH"
+        ;;
+      tor)
+        # Since we're adding noise, ignore all tallied figures
+        EXTRA_IGNORE="                    -*[1-9][0-9]*"
+        ;;
+      *)
+        "$W" "Source $PRIVCOUNT_SOURCE not supported."
+        exit 1
+        ;;
+    esac
+
     # skip expected differences due to time or network jitter
-    # PrivCount is entirely deterministic: if there are any other differences,
-    # they are due to code changes, or are a bug, or need to be filtered out
-    # here
+    # PrivCount inject is entirely deterministic: if there are any other
+    # differences, they are due to code changes, or are a bug, or need to be
+    # filtered out here
     diff --minimal --unified=10 \
       -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
       -I "[Dd]elay" -I "Collect" -I "End" -I "client_address" \
-      -I "fingerprint" \
+      -I "fingerprint" -I "$EXTRA_IGNORE" \
       "$OLD_DIR/privcount.outcome.latest.json" \
       "$TEST_DIR/privcount.outcome.latest.json" || true
   else
