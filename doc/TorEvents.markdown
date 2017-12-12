@@ -284,7 +284,9 @@ TODO: expand documentation
           IsOriginFlag, IsEntryFlag, IsMidFlag, IsEndFlag,
           IsExitFlag, IsDirFlag, IsHSDirFlag, IsIntroFlag, IsRendFlag,
           IsHSClientSideFlag, HiddenServiceVersionNumber,
-          IsMarkedForCloseFlag
+          IsMarkedForCloseFlag,
+          HasReceivedCreateCellFlag, OnionHandshakeType, FailureReasonString,
+          ExitStreamCount
         Circuit-Specific:
           CreatedTimestamp, IsLegacyCircuitEndEventFlag,
           StateString, PurposeCode, PurposeString, HSStateString,

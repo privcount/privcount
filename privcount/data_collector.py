@@ -2001,6 +2001,12 @@ class Aggregator(ReconnectingClientFactory):
                     min_len=1, max_len=50):
             return False
 
+        if not is_int_valid("{}ExitStreamCount".format(prefix),
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=1, max_value=None):
+            return False
+
         # if everything passed, this much is ok
         return True
 
@@ -2097,7 +2103,8 @@ class Aggregator(ReconnectingClientFactory):
           IsClientIntroLegacyFlag,
           IsHSClientSideFlag, HiddenServiceVersionNumber,
           IsMarkedForCloseFlag,
-          HasReceivedCreateCellFlag, OnionHandshakeType, FailureReasonString
+          HasReceivedCreateCellFlag, OnionHandshakeType, FailureReasonString,
+          ExitStreamCount
         Cell-Specific:
           IsSentFlag, IsOutboundFlag,
           CellCircuitId, CellCommandString,
@@ -2403,7 +2410,8 @@ class Aggregator(ReconnectingClientFactory):
           IsClientIntroLegacyFlag,
           IsHSClientSideFlag, HiddenServiceVersionNumber,
           IsMarkedForCloseFlag,
-          HasReceivedCreateCellFlag, OnionHandshakeType, FailureReasonString
+          HasReceivedCreateCellFlag, OnionHandshakeType, FailureReasonString,
+          ExitStreamCount
         Circuit-Specific:
           IsLegacyCircuitEndEventFlag,
           StateString, PurposeCode, PurposeString, HSStateString,
