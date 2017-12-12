@@ -248,8 +248,12 @@ circuit activity counters.
 
 #### Event Format
 
-This event has positional fields: order is important. Fields must not be added
-or removed from this event: that would break client code.
+This event has positional fields: order is important.
+
+The "Circuit Exit Stream Number" field was added in PrivCount 2.0.0.
+
+Additional fields must not be added or removed from this event: that would
+break client code, and require a major version increment.
 
 It includes the following fields:
 * Channel ID (if the OR channel has not been cleared)
@@ -262,6 +266,7 @@ It includes the following fields:
 * Current Timestamp
 * Remote Host Address (hostname or IPv4 or IPv6)
 * Resolved Remote IP Address (IPv4 or IPv6)
+* Circuit Exit Stream Number (Starts at 1)
 
 #### Known Issues
 

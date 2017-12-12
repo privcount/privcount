@@ -1220,11 +1220,11 @@ class Aggregator(ReconnectingClientFactory):
                                            bin=bin,
                                            inc=readbw)
 
-    STREAM_ENDED_ITEMS = 10
+    STREAM_ENDED_ITEMS = 11
 
     # Positional event: fields is a list of Values.
     # All fields are mandatory, order matters
-    # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, RemoteHost, RemoteIP
+    # 'PRIVCOUNT_STREAM_ENDED', ChanID, CircID, StreamID, ExitPort, ReadBW, WriteBW, TimeStart, TimeEnd, RemoteHost, RemoteIP, CircuitExitStreamNumber
     # See doc/TorEvents.markdown for details
     def _handle_stream_event(self, items):
         assert(len(items) == Aggregator.STREAM_ENDED_ITEMS)
@@ -1233,6 +1233,7 @@ class Aggregator(ReconnectingClientFactory):
         start, end = float(items[6]), float(items[7])
         remote_host = items[8]
         remote_ip = items[9]
+        exit_stream_number = items[10]
 
         # TODO: secure delete
         #del items
@@ -1242,8 +1243,7 @@ class Aggregator(ReconnectingClientFactory):
         if readbw < 0 or writebw < 0 or totalbw <= 0:
             return True
 
-        is_stream_first_on_circ = not self.is_circ_known(chanid=chanid,
-                                                         circid=circid)
+        is_stream_first_on_circ = (exit_stream_number == 1)
 
         self.circ_info.setdefault(chanid, {}).setdefault(circid, {'num_streams': {'Interactive':0, 'Web':0, 'P2P':0, 'OtherPort':0}, 'stream_starttimes': {'Interactive':[], 'Web':[], 'P2P':[], 'OtherPort':[]}})
 
