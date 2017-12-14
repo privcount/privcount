@@ -93,6 +93,8 @@ def log_tally_server_status(status):
     t, r = status['sks_total'], status['sks_required']
     a, i = status['sks_active'], status['sks_idle']
     logging.info("--server status: ShareKeepers: have {}, need {}, {}/{} active, {}/{} idle".format(t, r, a, t, i, t))
+    continue_str = ""
+    next_round_str = ""
     if continue_collecting(status['completed_phases'],
                            status['continue'],
                            status['state']):
@@ -100,20 +102,28 @@ def log_tally_server_status(status):
                                    status['continue'],
                                    status['state'])
         if rem is not None:
-            continue_str = "continue for {} more rounds".format(rem)
+            continue_str = "continue collecting for {} more rounds,".format(rem)
         else:
-            continue_str = "continue indefinitely"
+            continue_str = "continue collecting indefinitely,"
         next_start_time = status['delay_until']
         if next_start_time > time():
-            next_round_str = " in {}".format(format_delay_time_until(
-                                                 next_start_time, 'at'))
+            next_round_str = "next round in {}".format(format_delay_time_until(next_start_time, 'at'))
         else:
-            next_round_str = " as soon as clients are ready"
+            next_round_str = "next round as soon as clients are ready"
     else:
-        continue_str = "stop"
-        next_round_str = " after this collection round"
-    logging.info("--server status: Rounds: completed {}, configured to {} collecting{}"
+        continue_str = "stop collecting"
+        if status['state'] == 'active':
+            next_round_str = "after this collection round"
+        else:
+            next_round_str = "until the tally server config is changed"
+    total_rounds = get_total_rounds(status['continue'])
+    if total_rounds is None:
+        total_string = ""
+    else:
+        total_string = "/{}".format(total_rounds)
+    logging.info("--server status: Rounds: completed {}{}, configured to {} {}"
                  .format(status['completed_phases'],
+                         total_string,
                          continue_str,
                          next_round_str))
 
