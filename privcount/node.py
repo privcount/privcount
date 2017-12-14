@@ -17,27 +17,34 @@ from privcount.log import format_delay_time_until, format_elapsed_time_since, su
 from privcount.statistics_noise import DEFAULT_SIGMA_TOLERANCE
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
-def get_remaining_rounds(completed_phases, continue_config, current_state):
+def get_total_rounds(continue_config):
         '''
         If the TS is configured to continue collecting a limited number of
-        rounds, return the number of rounds. Otherwise, if it will continue
-        forever, return None.
+        rounds, return the total number of rounds, which may be zero.
+        Otherwise, if it will continue forever, return None.
         '''
-        assert current_state in ['active', 'idle']
-        min_remaining = 0
-        # run at least once, including the current round if we are active
-        if completed_phases == 0 and current_state == 'idle':
-            min_remaining = 1
         if isinstance(continue_config, bool):
             if continue_config:
                 return None
             else:
-                return max(0, min_remaining)
+                return 1
         else:
-            remaining = continue_config - completed_phases
-            if current_state == 'active':
-                remaining -= 1
-            return max(remaining, min_remaining)
+            return long(continue_config)
+
+def get_remaining_rounds(completed_phases, continue_config, current_state):
+        '''
+        If the TS is configured to continue collecting a limited number of
+        rounds, return the remaining number of rounds, which may be zero.
+        Otherwise, if it will continue forever, return None.
+        '''
+        assert current_state in ['active', 'idle']
+        total_rounds = get_total_rounds(continue_config)
+        if total_rounds is None:
+            return None
+        remaining = total_rounds - completed_phases
+        if current_state == 'active':
+            remaining -= 1
+        return max(remaining, 0)
 
 def continue_collecting(completed_phases, continue_config, current_state):
         '''
