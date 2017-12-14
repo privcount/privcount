@@ -919,7 +919,7 @@ if [ "$PRIVCOUNT_LOG" != "-q" ]; then
     # PrivCount inject is entirely deterministic: if there are any other
     # differences, they are due to code changes, or are a bug, or need to be
     # filtered out here
-    diff --minimal --unified=10 \
+    diff --minimal --unified=5 \
       -I "time" -I "[Cc]lock" -I "alive" -I "rtt" -I "Start" -I "Stop" \
       -I "[Dd]elay" -I "Collect" -I "End" -I "client_address" \
       -I "fingerprint" -I "$EXTRA_IGNORE" \
@@ -939,7 +939,7 @@ if [ "$PRIVCOUNT_LOG" != "-q" ]; then
     # PrivCount inject is entirely deterministic: if there are any other
     # differences, they are due to code changes, or are a bug, or need to be
     # filtered out here
-    diff --minimal --unified=10 \
+    diff --minimal --unified=5 \
       "$OLD_DIR/privcount.traffic.model.latest.json" \
       "$TEST_DIR/privcount.traffic.model.latest.json" || true
   elif [ -e "$TEST_DIR/privcount.traffic.model.latest.json" ]; then
