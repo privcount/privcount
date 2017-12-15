@@ -131,7 +131,8 @@ def json_serialise(obj):
     Return a string containing a JSON-serialised form of obj.
     This is a compact form suitable for sending on the wire.
     '''
-    return json.dumps(obj)
+    # avoid spaces, because they are meaningless bytes
+    return json.dumps(obj, separators=(',', ':'))
 
 def encode_data(data_structure):
     """
