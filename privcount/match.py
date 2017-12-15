@@ -10,7 +10,8 @@ import bisect
 import logging
 import pyasn
 
-from privcount.log import summarise_string
+from privcount.crypto import json_serialise
+from privcount.log import summarise_string, format_bytes
 
 def lower_if_hasattr(obj):
     '''
@@ -36,6 +37,10 @@ def exact_match_prepare_collection(exact_collection):
       logging.warning("Removing {} duplicates from the collection: '{}'"
                       .format(len(exact_collection) - len(exact_set),
                               summarise_string(str(dups), 100)))
+    # the encoded json measures transmission size, not RAM size
+    logging.info("Exact match prepared {} items ({})"
+                 .format(len(exact_set),
+                         format_bytes(len(json_serialise(list(exact_set))))))
     return exact_set
 
 
@@ -130,6 +135,12 @@ def suffix_match_prepare_collection(suffix_collection, separator=""):
     # This takes about 20 seconds for the Alexa Top 1 million, and only finds
     # 239 duplicates. So maybe it's not worth doing.
     #suffix_match_uniquify_collection(suffix_obj, separator)
+
+    # the encoded json measures transmission size, not RAM size
+    logging.info("Suffix match prepared {} items ({})"
+                 .format(len(suffix_obj),
+                         format_bytes(len(json_serialise(suffix_obj)))))
+
     return suffix_obj
 
 def suffix_match(suffix_obj, search_str, separator=""):
@@ -176,7 +187,15 @@ def ipasn_prefix_match_prepare_collection(ipasn_string):
     This object must be treated as opaque and read-only.
     '''
     assert ipasn_string is not None
-    return pyasn.pyasn(None, ipasn_string=ipasn_string)
+    obj = pyasn.pyasn(None, ipasn_string=ipasn_string)
+    # we want to measure transmission size, not RAM size
+    # we don't transmit obj, because it's opaque C
+    # instead, we assume that the json-serialised string will be about the
+    # same size as the actual string
+    logging.info("IP-ASN match prepared {} items ({})"
+                 .format(len(ipasn_string.splitlines()),
+                         format_bytes(len(ipasn_string))))
+    return obj
 
 def ipasn_prefix_match(ipasn_prefix_obj, search_ip):
     '''

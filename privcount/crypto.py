@@ -126,6 +126,13 @@ def b64_padded_length(byte_count):
     assert padded_length % B64_PAD_TO_MULTIPLE == 0
     return padded_length
 
+def json_serialise(obj):
+    '''
+    Return a string containing a JSON-serialised form of obj.
+    This is a compact form suitable for sending on the wire.
+    '''
+    return json.dumps(obj)
+
 def encode_data(data_structure):
     """
     Encode an arbitrary python data structure in a format that is suitable
@@ -138,7 +145,7 @@ def encode_data(data_structure):
     Returns a base64 blob that can safely be encrypted, decrypted, then passed
     to decode_data to produce the original data structure.
     """
-    json_string = json.dumps(data_structure)
+    json_string = json_serialise(data_structure)
     return b64encode(json_string)
 
 def decode_data(encoded_string):

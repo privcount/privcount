@@ -313,3 +313,30 @@ def format_last_event_time_since(last_event_timestamp):
     else:
         return "last Tor event was {}".format(format_elapsed_time_since(
                                                   last_event_timestamp, 'at'))
+
+def format_bytes_helper(byte_count, divisor, unit_string, unlimited=False):
+    '''
+    Implements the repetitive parts of format_bytes.
+    Returns a formatted (byte_count / divisor) using unit_string, if byte_count
+    is less than 1024 * divisor, or unlimited is True.
+    '''
+    if byte_count < divisor * 1024 or unlimited:
+        byte_units = float(byte_count) / divisor
+        return "{:.1f} {}".format(byte_units, unit_string)
+    # try the next size up
+    return None
+
+def format_bytes(byte_count):
+    '''
+    Format byte_count as a string in bytes (B), kilobytes (kB), megabytes (MB),
+    or gigabytes (GB) to one decimal place.
+    '''
+    # This is somewhat wasteful. I don't care
+    formats = [
+        # yes, this catches negatives, but that's unlikely to matter
+        format_bytes_helper(byte_count, 1, "B"),
+        format_bytes_helper(byte_count, 1024, "kB"),
+        format_bytes_helper(byte_count, 1024**2, "MB"),
+        format_bytes_helper(byte_count, 1024**3, "GB", unlimited=True)
+                 ]
+    return next(f for f in formats if f is not None)

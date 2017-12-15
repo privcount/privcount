@@ -14,7 +14,7 @@ from cryptography.hazmat.primitives.hashes import SHA256
 
 from privcount.connection import transport_info, transport_remote_info, transport_local_info
 from privcount.counter import get_events_for_counters, get_valid_events
-from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length
+from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length, json_serialise
 from privcount.log import log_error, errorCallback, stop_reactor, summarise_string
 
 PRIVCOUNT_SHORT_VERSION_STRING = '2.0.0'
@@ -949,7 +949,7 @@ class PrivCountServerProtocol(PrivCountProtocol):
 
     def send_status_event(self):
         status = self.factory.get_status()
-        self.sendLine("STATUS {} {}".format(time(), json.dumps(status)))
+        self.sendLine("STATUS {} {}".format(time(), json_serialise(status)))
         self.last_sent_time = time()
 
     def handle_status_event(self, event_type, event_payload):
@@ -996,7 +996,7 @@ class PrivCountServerProtocol(PrivCountProtocol):
 
     def send_start_event(self, config):
         assert config is not None
-        self.sendLine("START {}".format(json.dumps(config)))
+        self.sendLine("START {}".format(json_serialise(config)))
 
     def handle_start_event(self, event_type, event_payload):
         parts = event_payload.split(' ', 1)
@@ -1012,7 +1012,7 @@ class PrivCountServerProtocol(PrivCountProtocol):
 
     def send_stop_event(self, config):
         assert config is not None
-        self.sendLine("STOP {}".format(json.dumps(config)))
+        self.sendLine("STOP {}".format(json_serialise(config)))
 
     def handle_stop_event(self, event_type, event_payload):
         parts = event_payload.split(' ', 1)
@@ -1092,7 +1092,7 @@ class PrivCountClientProtocol(PrivCountProtocol):
             self.factory.set_server_status(server_status)
 
             status = self.factory.get_status()
-            self.sendLine("STATUS {} {}".format(time(), json.dumps(status)))
+            self.sendLine("STATUS {} {}".format(time(), json_serialise(status)))
             return True
         return False
 
@@ -1100,7 +1100,7 @@ class PrivCountClientProtocol(PrivCountProtocol):
         start_config = json.loads(event_payload)
         result_data = self.factory.do_start(start_config)
         if result_data is not None:
-            self.sendLine("START SUCCESS {}".format(json.dumps(result_data)))
+            self.sendLine("START SUCCESS {}".format(json_serialise(result_data)))
         else:
             self.sendLine("START FAIL")
         return True
@@ -1109,7 +1109,7 @@ class PrivCountClientProtocol(PrivCountProtocol):
         stop_config = json.loads(event_payload)
         result_data = self.factory.do_stop(stop_config)
         if result_data is not None:
-            self.sendLine("STOP SUCCESS {}".format(json.dumps(result_data)))
+            self.sendLine("STOP SUCCESS {}".format(json_serialise(result_data)))
         else:
             self.sendLine("STOP FAIL")
         return True
