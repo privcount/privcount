@@ -259,6 +259,7 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                                      config.get('max_cell_events_per_circuit', -1),
                                      config.get('circuit_sample_rate', 1.0),
                                      config.get('domain_lists', []),
+                                     config.get('domain_suffixes', {}),
                                      config.get('country_lists', []),
                                      config.get('as_data', {}))
 
@@ -415,7 +416,7 @@ class Aggregator(ReconnectingClientFactory):
     def __init__(self, counters, traffic_model_config, sk_uids,
                  noise_weight, modulus, tor_control_port, rotate_period,
                  use_setconf, max_cell_events_per_circuit, circuit_sample_rate,
-                 domain_lists, country_lists, as_data):
+                 domain_lists, domain_suffixes, country_lists, as_data):
         self.secure_counters = SecureCounters(counters, modulus,
                                               require_generate_noise=True)
         self.collection_counters = counters
@@ -434,12 +435,10 @@ class Aggregator(ReconnectingClientFactory):
         self.circuit_sample_rate = float(circuit_sample_rate)
         # Prepare the lists for exact and suffix matching, as appropriate
         self.domain_exact_objs = []
-        self.domain_suffix_objs = []
+        self.domain_suffix_obj = domain_suffixes
         for i in xrange(len(domain_lists)):
             logging.info('Preparing domain list {}'.format(i))
             self.domain_exact_objs.append(exact_match_prepare_collection(domain_lists[i]))
-            self.domain_suffix_objs.append(suffix_match_prepare_collection(domain_lists[i],
-                                                                           separator="."))
         self.country_exact_objs = []
         for i in xrange(len(country_lists)):
             logging.info('Preparing country list {}'.format(i))
@@ -1338,11 +1337,8 @@ class Aggregator(ReconnectingClientFactory):
 
             domain_exact_match_bin_list = []
             domain_suffix_match_bin_list = []
-            # we assume the exact and suffix objs have the same length
-            assert len(self.domain_exact_objs) == len(self.domain_suffix_objs)
             for i in xrange(len(self.domain_exact_objs)):
                 domain_exact_obj = self.domain_exact_objs[i]
-                domain_suffix_obj = self.domain_suffix_objs[i]
 
                 # check for an exact match
                 # this is O(N), but obviously correct
@@ -1361,10 +1357,13 @@ class Aggregator(ReconnectingClientFactory):
                     # check for a suffix match
                     # A generalised suffix tree might be faster here
                     # this is O(log(N)) because it's a binary search followed by a string prefix match
-                    if suffix_match(domain_suffix_obj, remote_host,
-                                    separator="."):
+                    domain_suffix_match_bin = suffix_match(domain_suffix_obj,
+                                                           remote_host,
+                                                           separator=".")
+                    if domain_suffix_match_bin is not None:
                         suffix_match_str = "DomainSuffixMatch"
-                        domain_suffix_match_bin_list.append(i)
+                        # The TS guarantees that the lists are disjoint
+                        domain_suffix_match_bin_list = [domain_suffix_match_bin]
                     else:
                         suffix_match_str = "DomainNoSuffixMatch"
 

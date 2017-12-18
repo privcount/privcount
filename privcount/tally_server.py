@@ -18,7 +18,7 @@ from base64 import b64encode
 from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
-from privcount.config import normalise_path, choose_secret_handshake_path, check_domain_name, check_country_code, check_as_number, validate_ip_address, validate_ip_network_address_prefix
+from privcount.config import normalise_path, choose_secret_handshake_path
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
@@ -151,21 +151,12 @@ class TallyServer(ServerFactory, PrivCountServer):
         if self.collection_phase is not None:
             self.collection_phase.log_status()
 
-    @staticmethod
-    def line_is_comment(line):
-        '''
-        Is line a comment line?
-        Comment lines are empty, or start with #, //, or ;
-        Line should be stripped before calling this function.
-        '''
-        return (len(line) == 0 or line.startswith('#') or line.startswith('//')
-                or line.startswith(';'))
-
     def load_match_file(self, file_path, new_match_lists,
                         old_match_files, old_match_lists,
                         check_domain=False, check_country=False,
                         check_as=False,
-                        prepare_exact=True, prepare_suffix=True):
+                        prepare_exact=True, prepare_suffix=True,
+                        existing_suffixes=None, collection_tag={}):
         '''
         Load a match file from file_path into new_match_lists.
         If check_domain, then check that each line in the file is a valid
@@ -178,34 +169,14 @@ class TallyServer(ServerFactory, PrivCountServer):
         If the file is not in old_match_files, or the contents do not match
         old_match_lists, then check that the list can be prepared for
         matching, based on prepare_exact and prepare_suffix.
+        If prepare_suffix and existing_suffixes is not None, add the suffixes
+        to existing_suffixes with tag collection_tag.
         Returns the normalised file_path.
         '''
-        file_path = normalise_path(file_path)
-        assert os.path.exists(file_path)
-
-        # import and validate this list of match names
-        # This can take a few seconds
-        match_list = []
-        with open(file_path, 'r') as fin:
-            for line in fin:
-                # Ignore leading or trailing whitespace
-                line = line.strip()
-                # Ignore comments
-                if TallyServer.line_is_comment(line):
-                    continue
-                if check_domain:
-                    assert check_domain_name(line)
-                    # Always lowercase matches, IANA likes them uppercase
-                    line = line.lower()
-                if check_country:
-                    assert check_country_code(line)
-                    # Always lowercase matches, MaxMind likes them uppercase
-                    line = line.lower()
-                if check_as:
-                    # Now convert the AS number to an integer
-                    line = int(line)
-                    assert check_as_number(line)
-                match_list.append(line)
+        (file_path, match_list) = load_match_list(file_path,
+                                                  check_domain=check_domain,
+                                                  check_country=check_country,
+                                                  check_as=check_as)
 
         # lists must have at least one entry
         assert len(match_list) > 0
@@ -220,14 +191,19 @@ class TallyServer(ServerFactory, PrivCountServer):
             if prepare_exact:
                 exact_match_prepare_collection(match_list)
             if prepare_suffix:
-                suffix_match_prepare_collection(match_list, separator=".")
+                suffix_match_prepare_collection(match_list, separator=".",
+                                                existing_suffixes=existing_suffixes,
+                                                collection_tag=collection_tag)
 
         # Now, add the list to the list of match lists
         new_match_lists.append(match_list)
         return file_path
 
-    def load_domain_file(self, file_path, new_domain_lists,
-                         old_domain_files, old_domain_lists):
+    def load_domain_file(self,
+                         file_path, new_domain_lists,
+                         old_domain_files, old_domain_lists,
+                         existing_domain_suffixes=None,
+                         collection_tag={}):
         '''
         Load a domain file using load_match_file().
         '''
@@ -235,7 +211,9 @@ class TallyServer(ServerFactory, PrivCountServer):
                                     old_domain_files, old_domain_lists,
                                     check_domain=True, check_country=False,
                                     check_as=False,
-                                    prepare_exact=True, prepare_suffix=True)
+                                    prepare_exact=True, prepare_suffix=True,
+                                    existing_suffixes=existing_domain_suffixes,
+                                    collection_tag=collection_tag)
 
     def load_country_file(self, file_path, new_country_lists,
                           old_country_files, old_country_lists):
@@ -275,20 +253,18 @@ class TallyServer(ServerFactory, PrivCountServer):
         the list can be prepared for matching, based on prepare_prefix.
         Returns the normalised file_path.
         '''
-        file_path = normalise_path(file_path)
-        assert os.path.exists(file_path)
         assert ip_version == 4 or ip_version == 6
-
-        # import and validate this list of address / prefix / AS number lines
-        # This takes under a second for the coalesced IPv4 prefixes
         assert ip_version not in new_as_prefix_maps
 
-        with open(file_path, 'r') as fin:
-            # just send the file to the DCs as a string
-            prefix_map = fin.read()
+        # import this list of address / prefix / AS number lines
+        # This takes under a second for the coalesced IPv4 prefixes
+        (file_path, map_list) = load_as_prefix_map(file_path)
 
         # maps must not be empty
-        assert len(prefix_map) > 0
+        assert len(map_list) > 0
+
+        # just send the file to the DCs as a string
+        prefix_map = "\n".join(map_list)
 
         # only re-process the map when it changes
         if (self.config is None or
@@ -512,14 +488,17 @@ class TallyServer(ServerFactory, PrivCountServer):
                     logging.error("the set of traffic model bins and noise labels are not equal")
                     assert False
 
-            # optional lists of DNS domain names
+            # optional lists and processed suffixes of DNS domain names
             ts_conf['domain_lists'] = []
+            ts_conf['domain_suffixes'] = {}
             if 'domain_files' in ts_conf and len(ts_conf['domain_files']) > 0:
                 for i in xrange(len(ts_conf['domain_files'])):
                     file_path = self.load_domain_file(ts_conf['domain_files'][i],
                                                       ts_conf['domain_lists'],
                                                       self.config.get('domain_files', []) if self.config is not None else [],
-                                                      self.config.get('domain_lists', []) if self.config is not None else [])
+                                                      self.config.get('domain_lists', []) if self.config is not None else [],
+                                                      existing_domain_suffixes=ts_conf['domain_suffixes'],
+                                                      collection_tag=i)
                     ts_conf['domain_files'][i] = file_path
                 # now, adjust the bins so we can count every list
                 TallyServer.modify_domain_bins(len(ts_conf['domain_files']),
@@ -1225,6 +1204,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                 self.config['max_cell_events_per_circuit'],
                                                 self.config['circuit_sample_rate'],
                                                 self.config['domain_lists'],
+                                                self.config['domain_suffixes'],
                                                 self.config['country_lists'],
                                                 self.config['as_data'],
                                                 self.config)
@@ -1325,7 +1305,7 @@ class CollectionPhase(object):
                  noise_weight_config, dc_threshold_config, sk_uids,
                  sk_public_keys, dc_uids, modulus, clock_padding,
                  max_cell_events_per_circuit, circuit_sample_rate,
-                 domain_lists, country_lists, as_data,
+                 domain_lists, domain_suffixes, country_lists, as_data,
                  tally_server_config):
         # store configs
         self.period = period
@@ -1343,6 +1323,7 @@ class CollectionPhase(object):
         self.max_cell_events_per_circuit = max_cell_events_per_circuit
         self.circuit_sample_rate = circuit_sample_rate
         self.domain_lists = domain_lists
+        self.domain_suffixes = domain_suffixes
         self.country_lists = country_lists
         self.as_data = as_data
         # make a deep copy, so we can delete unnecesary keys
@@ -1582,6 +1563,7 @@ class CollectionPhase(object):
             config['max_cell_events_per_circuit'] = self.max_cell_events_per_circuit
             config['circuit_sample_rate'] = self.circuit_sample_rate
             config['domain_lists'] = self.domain_lists
+            config['domain_suffixes'] = self.domain_suffixes
             config['country_lists'] = self.country_lists
             config['as_data'] = self.as_data
             logging.info("sending start comand with {} counters ({} bins) and requesting {} shares to data collector {}"
@@ -1772,6 +1754,8 @@ class CollectionPhase(object):
         # The config has already been deepcopied
         PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
                                             'domain_lists')
+        PrivCountNode.summarise_match_suffixes(result_context['TallyServer']['Config'],
+                                               'domain_suffixes')
         PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
                                             'country_lists')
         PrivCountNode.summarise_match_maps(result_context['TallyServer']['Config'].get('as_data', {}),

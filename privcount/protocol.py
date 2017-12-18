@@ -791,9 +791,9 @@ class PrivCountProtocol(LineOnlyReceiver):
                       .format(transport_info(self.transport)))
         self.is_valid_connection = True
         # now that we have authenticated, allow longer lines
-        # PrivCount 2.0.0 reached 18 MB with all counters, a large traffic
+        # PrivCount 2.0.0 reached 55 MB with all counters, a large traffic
         # model, large domain sets, 20 DCs, and 10 SKs
-        self.MAX_LENGTH = 100*1024*1024
+        self.MAX_LENGTH = 200*1024*1024
 
     def handshake_failed(self):
         '''

@@ -248,6 +248,21 @@ class PrivCountNode(object):
             deepcopied_start_config[match_list_key][i] = short_string
 
     @staticmethod
+    def summarise_match_suffixes(deepcopied_start_config, match_suffix_key):
+        '''
+        If deepcopied_start_config contains match_suffix_key, and it contains
+        any match suffixes, summarise them.
+        You must deep-copy start_config before calling this function.
+        '''
+        # this is not a very good summary, but it duplicates the lists, so
+        # that's ok
+        match_suffixes = deepcopied_start_config.get(match_suffix_key, {})
+        if len(match_suffixes) > 0:
+            short_string = summarise_list(match_suffixes.keys(),
+                                          PrivCountNode.MAX_MATCH_LEN)
+            deepcopied_start_config[match_suffix_key] = short_string
+
+    @staticmethod
     def summarise_match_maps(deepcopied_start_config, match_map_key):
         '''
         If deepcopied_start_config contains match_map_key, and it contains
@@ -441,6 +456,8 @@ class PrivCountClient(PrivCountNode):
             response['Config']['Start'] = deepcopy(self.start_config)
             PrivCountNode.summarise_match_lists(response['Config']['Start'],
                                                 'domain_lists')
+            PrivCountNode.summarise_match_suffixes(response['Config']['Start'],
+                                                   'domain_suffixes')
             PrivCountNode.summarise_match_lists(response['Config']['Start'],
                                                 'country_lists')
             PrivCountNode.summarise_match_maps(response['Config']['Start'].get('as_data', {}),
