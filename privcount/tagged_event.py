@@ -1,9 +1,9 @@
 '''
-  Created on Jun 14, 2017
+Created on Jun 14, 2017
 
-  @author: teor
+@author: teor
 
-  See LICENSE for licensing information
+See LICENSE for licensing information
 '''
 
 import logging
