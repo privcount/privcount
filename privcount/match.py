@@ -287,7 +287,7 @@ def suffix_match(suffix_obj, search_string, separator=""):
     None on no match. If you are only looking for exact matches, use
     exact_match() to find them more efficiently.
     '''
-    if suffix_obj is None or search_str is None or separator is None:
+    if suffix_obj is None or search_string is None or separator is None:
         return None
     # Split and reverse the string for matching
     search_list = suffix_match_split(search_string, separator=separator)
@@ -403,10 +403,10 @@ def suffix_reverse_match_prepare_collection(suffix_collection, separator=""):
 
     return suffix_obj
 
-def suffix_reverse_match(suffix_obj, search_str, separator=""):
+def suffix_reverse_match(suffix_obj, search_string, separator=""):
     '''
     Performs an efficient O(log(N)) case-insensitive suffix match on
-    search_str in suffix_obj.
+    search_string in suffix_obj.
     If specified, the separator is also required before the suffix.
     For example, domain suffixes use "." as a separator between components.
 
@@ -416,7 +416,7 @@ def suffix_reverse_match(suffix_obj, search_str, separator=""):
     Returns True on a suffix match, but False on exact match and no match.
     Use exact_match() to find exact matches.
     '''
-    if suffix_obj is None or search_str is None:
+    if suffix_obj is None or search_string is None:
         return False
     # This code works on sorted lists, but checking is expensive
     # assert suffix_obj == sorted(suffix_obj)
@@ -425,11 +425,11 @@ def suffix_reverse_match(suffix_obj, search_str, separator=""):
     # this is O(log(N)) because it's a binary search followed by a string
     # prefix match
     # We need to strip separators to make sure the match works.
-    reversed_search_str = reverse_string(search_str.lower().strip(separator))
+    reversed_search_string = reverse_string(search_string.lower().strip(separator))
     # Longer strings sort after shorter strings, so our candidate is the
     # previous string. This works when there are multiple possible matches,
     # but it is inefficient.
-    candidate_idx = bisect.bisect_left(suffix_obj, reversed_search_str) - 1
+    candidate_idx = bisect.bisect_left(suffix_obj, reversed_search_string) - 1
     # We should always get an entry in the list
     assert candidate_idx < len(suffix_obj)
     # If there is no previous entry, the string is definitely not a match
@@ -437,9 +437,9 @@ def suffix_reverse_match(suffix_obj, search_str, separator=""):
         return False
     candidate_reversed_suffix = suffix_obj[candidate_idx]
     #logging.warning("{} -> {} candidate {} -> {} in {}"
-    #                .format(search_str, reversed_search_str, candidate_idx,
+    #                .format(search_string, reversed_search_string, candidate_idx,
     #                        candidate_reversed_suffix, suffix_obj))
-    return reversed_search_str.startswith(candidate_reversed_suffix)
+    return reversed_search_string.startswith(candidate_reversed_suffix)
 
 def ipasn_prefix_match_prepare_string(ipasn_string):
     '''
@@ -503,17 +503,17 @@ def suffix_reverse_match_prepare_domains(suffix_collection):
     return suffix_reverse_match_prepare_collection(suffix_collection,
                                                    separator=".")
 
-def suffix_match_domain(suffix_obj, search_str):
+def suffix_match_domain(suffix_obj, search_string):
     '''
     Adapter for easy domain matching
     '''
-    return suffix_match(suffix_obj, search_str, separator=".")
+    return suffix_match(suffix_obj, search_string, separator=".")
 
-def suffix_reverse_match_domain(suffix_obj, search_str):
+def suffix_reverse_match_domain(suffix_obj, search_string):
     '''
     Adapter for easy reverse domain matching
     '''
-    return suffix_reverse_match(suffix_obj, search_str, separator=".")
+    return suffix_reverse_match(suffix_obj, search_string, separator=".")
 
 def ipasn_prefix_match_prepare_list(ipasn_list):
     '''
