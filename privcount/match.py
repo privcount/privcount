@@ -232,29 +232,31 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
             # but we cannot add a child to an existing terminal object
             # because the existing tree contains a shorter suffix of
             # the string we are inserting
-            insert_element = suffix_node.get(insert_component)
+            next_suffix_node = suffix_node.get(insert_component)
+            prev_suffix_node = suffix_node
             if (suffix_node != suffix_obj and
-                is_collection_tag_valid(insert_element)):
+                is_collection_tag_valid(next_suffix_node)):
                 # there is an existing suffix that terminates here, and we are
                 # about to insert a longer suffix. Instead, ignore the longer
                 # suffix
                 has_longer_suffix = True
                 longer_suffix_list.append(insert_string)
+                suffix_node = next_suffix_node
                 break
             # walk the tree, adding an entry for this suffix
-            prev_suffix_node = suffix_node
-            suffix_node = suffix_node.setdefault(insert_component, {})
+            suffix_node = (next_suffix_node if next_suffix_node is not None else
+                           suffix_node.setdefault(insert_component, {}))
         # we cannot have children in our terminal object
         # because the existing tree contains longer strings, and we are
         # a shorter suffix of all those existing strings
-        if suffix_node != {} and not has_longer_suffix:
+        if not is_collection_tag_valid(suffix_node) and not has_longer_suffix:
             # sort names alphabetically, so the logs are in a sensible order
             child_summary = summarise_list(sorted(suffix_node.keys()), 50)
             logging.info("Adding shorter suffix {} for collection {}, pruning existing children {}"
                          .format(insert_string, collection_tag, child_summary))
-            if prev_suffix_node is not None:
-                assert not is_collection_tag_valid(prev_suffix_node[insert_component])
-                prev_suffix_node[insert_component] = collection_tag
+        # now, place (or replace) the end of the domain with the collection tag
+        if prev_suffix_node is not None:
+            prev_suffix_node[insert_component] = collection_tag
 
     if len(longer_suffix_list) > 0:
         # sort names alphabetically, so the logs are in a sensible order
@@ -266,7 +268,6 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
     logging.info("Suffix match {} prepared {} items ({})"
                  .format(collection_tag, len(suffix_collection),
                          format_bytes(len(json_serialise(suffix_obj)))))
-
     return suffix_obj
 
 def suffix_match(suffix_obj, search_string, separator=""):
