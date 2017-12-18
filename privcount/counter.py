@@ -427,35 +427,6 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitHostnameNonWebStreamByteRatio' : { STREAM_EVENT },
 'ExitHostnameNonWebStreamLifeTime' : { STREAM_EVENT },
 
-# The first domain list is used for the ExitDomain*MatchWebStream Ratio, LifeTime, and Histogram counters
-# Their ExitDomainNo*MatchWebStream* equivalents are used when there is no match in the first list
-
-# Does the domain match any domain in the first list?
-'ExitDomainExactMatchWebStreamByteHistogram' : { STREAM_EVENT },
-'ExitDomainExactMatchWebStreamOutboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainExactMatchWebStreamInboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainExactMatchWebStreamByteRatio' : { STREAM_EVENT },
-'ExitDomainExactMatchWebStreamLifeTime' : { STREAM_EVENT },
-
-'ExitDomainNoExactMatchWebStreamByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoExactMatchWebStreamOutboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoExactMatchWebStreamInboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoExactMatchWebStreamByteRatio' : { STREAM_EVENT },
-'ExitDomainNoExactMatchWebStreamLifeTime' : { STREAM_EVENT },
-
-# Does the domain have any domain in the first list as a suffix?
-'ExitDomainSuffixMatchWebStreamByteHistogram' : { STREAM_EVENT },
-'ExitDomainSuffixMatchWebStreamOutboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainSuffixMatchWebStreamInboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainSuffixMatchWebStreamByteRatio' : { STREAM_EVENT },
-'ExitDomainSuffixMatchWebStreamLifeTime' : { STREAM_EVENT },
-
-'ExitDomainNoSuffixMatchWebStreamByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoSuffixMatchWebStreamOutboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoSuffixMatchWebStreamInboundByteHistogram' : { STREAM_EVENT },
-'ExitDomainNoSuffixMatchWebStreamByteRatio' : { STREAM_EVENT },
-'ExitDomainNoSuffixMatchWebStreamLifeTime' : { STREAM_EVENT },
-
 # Position of stream on circuit
 # These also use CIRCUIT_EVENT, because that avoids collisions between old and
 # new streams with the same circuit id. See #451.
@@ -625,6 +596,9 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitHostnameSubsequentStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitHostnameSubsequentStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
+# The first domain list is used for the ExitDomain*MatchWebInitialStream Ratio, LifeTime, and Histogram counters
+# Their ExitDomainNo*MatchWebInitialStream* equivalents are used when there is no match in the first list
+
 # Does the initial domain on the circuit match any domain in the first list?
 'ExitDomainExactMatchWebInitialStreamByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitDomainExactMatchWebInitialStreamOutboundByteHistogram' : { STREAM_EVENT, CIRCUIT_EVENT },
@@ -651,24 +625,12 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'ExitDomainNoSuffixMatchWebInitialStreamByteRatio' : { STREAM_EVENT, CIRCUIT_EVENT },
 'ExitDomainNoSuffixMatchWebInitialStreamLifeTime' : { STREAM_EVENT, CIRCUIT_EVENT },
 
-# The number of bins in the ExitDomain*MatchWebStream*CountList counters is
+# The number of bins in the ExitDomain*MatchWebInitialStream*CountList counters is
 # determined at runtime, based on the number of configured domain lists
 # Each domain list gets a bin in each counter, and there is a final bin
 # for "no match in any list" (multiple lists may match: all matching bins
 # will be incremented). Since there is an unmatched bin, there are no
-# ExitDomainNo*MatchWebStream*CountList counters.
-
-# Does the domain match any domain in the list for each bin? Or is it unmatched by all the lists?
-'ExitDomainExactMatchWebStreamCountList' : { STREAM_EVENT },
-'ExitDomainExactMatchWebStreamByteCountList' : { STREAM_EVENT },
-'ExitDomainExactMatchWebStreamOutboundByteCountList' : { STREAM_EVENT },
-'ExitDomainExactMatchWebStreamInboundByteCountList' : { STREAM_EVENT },
-
-# Does the domain have any domain in the list for each bin as a suffix? Or is it unmatched by all the lists?
-'ExitDomainSuffixMatchWebStreamCountList' : { STREAM_EVENT },
-'ExitDomainSuffixMatchWebStreamByteCountList' : { STREAM_EVENT },
-'ExitDomainSuffixMatchWebStreamOutboundByteCountList' : { STREAM_EVENT },
-'ExitDomainSuffixMatchWebStreamInboundByteCountList' : { STREAM_EVENT },
+# ExitDomainNo*MatchWebInitialStream*CountList counters.
 
 # Does the initial domain on the circuit match any domain in the list for each bin? Or is it unmatched by all the lists?
 'ExitDomainExactMatchWebInitialStreamCountList' : { STREAM_EVENT, CIRCUIT_EVENT },

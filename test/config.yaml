@@ -21,9 +21,9 @@ tally_server:
         # These lists must be disjoint. The tally server will log an info-level
         # message when it eliminates duplicate entries.
         #
-        # The first domain list is used for the ExitDomain*MatchWebStream Ratio, LifeTime, and Histogram counters
-        # Their ExitDomainNo*MatchWebStream* equivalents are used when there is no match in the first list
-        # Each domain list corresponds to a bin in the ExitDomain*MatchWebStream*CountList counters
+        # The first domain list is used for the ExitDomain*MatchWebInitialStream Ratio, LifeTime, and Histogram counters
+        # Their ExitDomainNo*MatchWebInitialStream* equivalents are used when there is no match in the first list
+        # Each domain list corresponds to a bin in the ExitDomain*MatchWebInitialStream*CountList counters
         # (Multiple matches are possible, the final bin is used for unmatched domains)
         #
         # See domain-top-1k.txt for the commands that create this list

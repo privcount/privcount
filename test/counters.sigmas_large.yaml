@@ -730,14 +730,6 @@ counters:
         sigma: 1.0e+12
     ExitSubsequentStreamCount:
         sigma: 1.0e+12
-    ExitDomainExactMatchWebStreamLifeTime:
-        sigma: 1.0e+12
-    ExitDomainNoExactMatchWebStreamLifeTime:
-        sigma: 1.0e+12
-    ExitDomainSuffixMatchWebStreamLifeTime:
-        sigma: 1.0e+12
-    ExitDomainNoSuffixMatchWebStreamLifeTime:
-        sigma: 1.0e+12
     ExitDomainExactMatchWebInitialStreamLifeTime:
         sigma: 1.0e+12
     ExitDomainNoExactMatchWebInitialStreamLifeTime:
@@ -745,14 +737,6 @@ counters:
     ExitDomainSuffixMatchWebInitialStreamLifeTime:
         sigma: 1.0e+12
     ExitDomainNoSuffixMatchWebInitialStreamLifeTime:
-        sigma: 1.0e+12
-    ExitDomainExactMatchWebStreamInboundByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainNoExactMatchWebStreamInboundByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainSuffixMatchWebStreamInboundByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainNoSuffixMatchWebStreamInboundByteHistogram:
         sigma: 1.0e+12
     ExitDomainExactMatchWebInitialStreamInboundByteHistogram:
         sigma: 1.0e+12
@@ -762,14 +746,6 @@ counters:
         sigma: 1.0e+12
     ExitDomainNoSuffixMatchWebInitialStreamInboundByteHistogram:
         sigma: 1.0e+12
-    ExitDomainExactMatchWebStreamOutboundByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainNoExactMatchWebStreamOutboundByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainSuffixMatchWebStreamOutboundByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainNoSuffixMatchWebStreamOutboundByteHistogram:
-        sigma: 1.0e+12
     ExitDomainExactMatchWebInitialStreamOutboundByteHistogram:
         sigma: 1.0e+12
     ExitDomainNoExactMatchWebInitialStreamOutboundByteHistogram:
@@ -777,14 +753,6 @@ counters:
     ExitDomainSuffixMatchWebInitialStreamOutboundByteHistogram:
         sigma: 1.0e+12
     ExitDomainNoSuffixMatchWebInitialStreamOutboundByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainExactMatchWebStreamByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainNoExactMatchWebStreamByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainSuffixMatchWebStreamByteHistogram:
-        sigma: 1.0e+12
-    ExitDomainNoSuffixMatchWebStreamByteHistogram:
         sigma: 1.0e+12
     ExitDomainExactMatchWebInitialStreamByteHistogram:
         sigma: 1.0e+12
@@ -794,14 +762,6 @@ counters:
         sigma: 1.0e+12
     ExitDomainNoSuffixMatchWebInitialStreamByteHistogram:
         sigma: 1.0e+12
-    ExitDomainExactMatchWebStreamByteRatio:
-        sigma: 1.0e+12
-    ExitDomainNoExactMatchWebStreamByteRatio:
-        sigma: 1.0e+12
-    ExitDomainSuffixMatchWebStreamByteRatio:
-        sigma: 1.0e+12
-    ExitDomainNoSuffixMatchWebStreamByteRatio:
-        sigma: 1.0e+12
     ExitDomainExactMatchWebInitialStreamByteRatio:
         sigma: 1.0e+12
     ExitDomainNoExactMatchWebInitialStreamByteRatio:
@@ -810,33 +770,17 @@ counters:
         sigma: 1.0e+12
     ExitDomainNoSuffixMatchWebInitialStreamByteRatio:
         sigma: 1.0e+12
-    ExitDomainExactMatchWebStreamInboundByteCountList:
-        sigma: 1.0e+12
-    ExitDomainSuffixMatchWebStreamInboundByteCountList:
-        sigma: 1.0e+12
     ExitDomainExactMatchWebInitialStreamInboundByteCountList:
         sigma: 1.0e+12
     ExitDomainSuffixMatchWebInitialStreamInboundByteCountList:
-        sigma: 1.0e+12
-    ExitDomainExactMatchWebStreamOutboundByteCountList:
-        sigma: 1.0e+12
-    ExitDomainSuffixMatchWebStreamOutboundByteCountList:
         sigma: 1.0e+12
     ExitDomainExactMatchWebInitialStreamOutboundByteCountList:
         sigma: 1.0e+12
     ExitDomainSuffixMatchWebInitialStreamOutboundByteCountList:
         sigma: 1.0e+12
-    ExitDomainExactMatchWebStreamByteCountList:
-        sigma: 1.0e+12
-    ExitDomainSuffixMatchWebStreamByteCountList:
-        sigma: 1.0e+12
     ExitDomainExactMatchWebInitialStreamByteCountList:
         sigma: 1.0e+12
     ExitDomainSuffixMatchWebInitialStreamByteCountList:
-        sigma: 1.0e+12
-    ExitDomainExactMatchWebStreamCountList:
-        sigma: 1.0e+12
-    ExitDomainSuffixMatchWebStreamCountList:
         sigma: 1.0e+12
     ExitDomainExactMatchWebInitialStreamCountList:
         sigma: 1.0e+12

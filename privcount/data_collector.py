@@ -1372,16 +1372,12 @@ class Aggregator(ReconnectingClientFactory):
                 else:
                     exact_match_str = "DomainNoExactMatch"
 
-                # The first domain list is used for the ExitDomain*MatchWebStream
+                # The first domain list is used for the ExitDomain*MatchInitialWebStream
                 # Ratio, LifeTime, and Histogram counters
-                # Their ExitDomainNo*MatchWebStream* equivalents are used when
+                # Their ExitDomainNo*MatchWebInitialStream* equivalents are used when
                 # there is no match in the first list
 
                 # collect exact match / no match counts for the first list
-                self._increment_stream_end_histograms(exact_match_str + stream_web,
-                                                      totalbw, writebw, readbw,
-                                                      ratio, lifetime)
-
                 self._increment_stream_end_histograms(exact_match_str + stream_web + stream_circ,
                                                       totalbw, writebw, readbw,
                                                       ratio, lifetime)
@@ -1391,9 +1387,6 @@ class Aggregator(ReconnectingClientFactory):
                 # increment the final bin if none of the lists match
 
                 # collect exact match counts per list
-                self._increment_stream_end_count_lists("DomainExactMatch" + stream_web,
-                                                       domain_exact_match_bin,
-                                                       totalbw, writebw, readbw)
                 self._increment_stream_end_count_lists("DomainExactMatch" + stream_web + stream_circ,
                                                        domain_exact_match_bin,
                                                        totalbw, writebw, readbw)
@@ -1415,18 +1408,11 @@ class Aggregator(ReconnectingClientFactory):
                     suffix_match_str = "DomainNoSuffixMatch"
 
                 # collect suffix match / no match counts for the first list
-                self._increment_stream_end_histograms(suffix_match_str + stream_web,
-                                                      totalbw, writebw, readbw,
-                                                      ratio, lifetime)
-
                 self._increment_stream_end_histograms(suffix_match_str + stream_web + stream_circ,
                                                       totalbw, writebw, readbw,
                                                       ratio, lifetime)
 
                 # collect suffix match counts per list
-                self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web,
-                                                       domain_suffix_match_bin,
-                                                       totalbw, writebw, readbw)
                 self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web + stream_circ,
                                                        domain_suffix_match_bin,
                                                        totalbw, writebw, readbw)
