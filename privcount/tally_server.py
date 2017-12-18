@@ -22,7 +22,7 @@ from privcount.config import normalise_path, choose_secret_handshake_path, check
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
-from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_collection
+from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_string, load_match_list, load_as_prefix_map
 from privcount.node import PrivCountNode, PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
 from privcount.statistics_noise import get_noise_allocation, get_sanity_check_counter, DEFAULT_DUMMY_COUNTER_NAME
@@ -299,7 +299,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                          .format(ip_version, file_path))
             if prepare_prefix:
                 # check that the format is parseable before sending to DCs
-                prefix_map_obj = ipasn_prefix_match_prepare_collection(
+                prefix_map_obj = ipasn_prefix_match_prepare_string(
                                      prefix_map)
 
         # Now, add the map to the dict of prefix maps

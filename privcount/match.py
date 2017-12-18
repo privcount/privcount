@@ -177,7 +177,7 @@ def suffix_match(suffix_obj, search_str, separator=""):
     #logging.warning("{} -> {} candidate {} -> {} in {}".format(search_str, reversed_search_str, candidate_idx, candidate_reversed_suffix, suffix_obj))
     return reversed_search_str.startswith(candidate_reversed_suffix)
 
-def ipasn_prefix_match_prepare_collection(ipasn_string):
+def ipasn_prefix_match_prepare_string(ipasn_string):
     '''
     Prepare ipasn data for efficient IP prefix matching.
     ipasn_string is a string containing a newline-separated list of IP prefix
