@@ -6,6 +6,7 @@ import scipy.stats
 import yaml
 
 from privcount.counter import DEFAULT_SIGMA_TOLERANCE, DEFAULT_EPSILON_TOLERANCE, DEFAULT_SIGMA_RATIO_TOLERANCE, DEFAULT_DUMMY_COUNTER_NAME, is_circuit_sample_counter
+from privcount.log import summarise_list
 
 def satisfies_dp(sensitivity, epsilon, delta, std):
     '''
@@ -194,9 +195,6 @@ def get_expected_noise_ratio(excess_noise_ratio, sigma, estimated_value):
         # let negative excess_noise_ratio raise an exception
         return math.sqrt(excess_noise_ratio) * sigma / estimated_value
 
-# Have we logged a zero sensitivity error or zero sigma error?
-logged_zero_noise = False
-
 def get_opt_privacy_allocation(epsilon, delta, stats_parameters,
                                excess_noise_ratio,
                                sigma_tol=DEFAULT_SIGMA_TOLERANCE,
@@ -230,21 +228,29 @@ def get_opt_privacy_allocation(epsilon, delta, stats_parameters,
         delta, tol=epsilon_tol)
     # turn opt sigma ratio into per-parameter sigmas
     opt_sigmas = dict()
+    zero_sigmas = []
+    low_sigmas = []
     for param, (sensitivity, val) in stats_parameters.iteritems():
         opt_sigma = get_sigma(excess_noise_ratio, opt_sigma_ratio, val)
         # Check if the sigma is too small
         if param != DEFAULT_DUMMY_COUNTER_NAME:
             if opt_sigma == 0.0:
-                global logged_zero_noise
-                if not logged_zero_noise:
-                    logging.warning("sigma for {} is zero, this provides no differential privacy for this statistic"
-                                    .format(param))
-                    logged_zero_noise = True
+                zero_sigmas.append(param)
             elif opt_sigma < DEFAULT_SIGMA_TOLERANCE:
-                logging.warning("sigma {} for {} is less than the sigma tolerance {}, the calculated value may be inaccurate and may vary each time it is calculated"
-                                .format(opt_sigma, param, sigma_tol))
-
+                low_sigmas.append(param)
         opt_sigmas[param] = opt_sigma
+
+    if len(zero_sigmas) > 0:
+        # sort names alphabetically, so the logs are in a sensible order
+        counter_summary = summarise_list(sorted(zero_sigmas), 50)
+        logging.error("sigmas for {} are zero, this provides no differential privacy for these statistics"
+                      .format(counter_summary))
+
+    if len(low_sigmas) > 0:
+        # sort names alphabetically, so the logs are in a sensible order
+        counter_summary = summarise_list(sorted(low_sigmas), 50)
+        logging.warning("sigmas for {} are less than the sigma tolerance {}, their calculated values may be inaccurate and may vary each time they are calculated"
+                        .format(low_sigmas, sigma_tol))
 
     return (opt_epsilons, opt_sigmas, opt_sigma_ratio)
 
@@ -314,20 +320,25 @@ def get_noise_allocation(noise_parameters,
     excess_noise_ratio = noise['excess_noise_ratio']
     # rearrange the counter values, and produce the parameter-only structure
     stats_parameters = {}
+    zero_sigmas = []
     for stat in counters:
         sensitivity = counters[stat]['sensitivity']
         estimated_value = counters[stat]['estimated_value']
         if is_circuit_sample_counter(stat):
             estimated_value *= circuit_sample_rate
-        global logged_zero_noise
-        if sensitivity == 0 and stat != DEFAULT_DUMMY_COUNTER_NAME and not logged_zero_noise:
-            # If you want a counter with no noise, try using 1e-6 instead
-            logging.error("sensitivity for {} is zero, calculated sigmas will be zero for all statistics"
-                          .format(stat))
-            logged_zero_noise = True
+        if sensitivity == 0 and stat != DEFAULT_DUMMY_COUNTER_NAME:
+            zero_sigmas.append(stat)
         statistics = (sensitivity,
                       estimated_value)
         stats_parameters[stat] = statistics
+
+    if len(zero_sigmas) > 0:
+        # sort names alphabetically, so the logs are in a sensible order
+        counter_summary = summarise_list(sorted(zero_sigmas), 50)
+        # If you want a counter with no noise, try using 1e-6 instead
+        logging.error("sensitivity for {} is zero, calculated sigmas will be zero for all statistics"
+                        .format(counter_summary))
+
     # calculate the noise allocations
     # and update the structure with defaults, if not already present
     epsilons, sigmas, sigma_ratio = \

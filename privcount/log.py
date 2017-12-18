@@ -115,6 +115,32 @@ def summarise_string(long_str, max_len, ellipsis='...'):
         assert len(summary_str) == max_len
         return summary_str
 
+def summarise_list(obj_list, max_obj_str_len):
+    '''
+    Summarise obj_list into a string containing a str() of the first object,
+    and, if there is more than one object in the list, a str() of the last
+    object, and a count of objects in the list. The summary is limited to
+    2*max_obj_str_len, plus an ellipsis and count.
+    If there are no objects in the list, returns the empty string.
+    '''
+    if len(obj_list) == 0:
+        return ""
+
+    # summarise overlong match strings, even if they are the first or last
+    first_last_list = [str(obj_list[0])]
+    max_len = max_obj_str_len
+    if len(obj_list) > 1:
+        # always have an ellipsis, even if the objects or list are short
+        ellipsis = "...."
+        first_last_list.append(ellipsis)
+        max_len += len(ellipsis)
+        first_last_list.append(str(obj_list[-1]))
+        max_len += max_obj_str_len
+        return "{} ({})".format(summarise_string("".join(first_last_list), max_len),
+                                len(obj_list))
+    else:
+        return summarise_string("".join(first_last_list), max_len)
+
 def normalise_time(time):
     '''
     Return the normalised value of time

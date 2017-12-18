@@ -34,9 +34,9 @@ def exact_match_prepare_collection(exact_collection):
     # Finding each duplicate takes a lot longer
     if len(exact_collection) != len(exact_set):
       dups = [obj for obj in exact_set if exact_collection.count(obj) > 1]
-      logging.warning("Removing {} duplicates from the collection: '{}'"
-                      .format(len(exact_collection) - len(exact_set),
-                              summarise_string(str(dups), 100)))
+      dups_summary = summarise_list(sorted(dups), 50)
+      logging.warning("Removing {} duplicates from the collection"
+                      .format(dups_summary))
     # the encoded json measures transmission size, not RAM size
     logging.info("Exact match prepared {} items ({})"
                  .format(len(exact_set),

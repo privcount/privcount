@@ -972,7 +972,7 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e "Unwanted event type PRIVCOUNT_CONNECTION_ENDED" \
   -e "Unwanted event type PRIVCOUNT_STREAM_BYTES_TRANSFERRED" \
   -e "Unexpected PeerIPAddressConsensusRelayCount value" \
-  -e "is zero, this provides no differential privacy" \
+  -e "zero, this provides no differential privacy" \
   -e "calculated sigmas will be zero for all statistics" \
   "$TEST_DIR/"privcount.*.latest.log \
   || true

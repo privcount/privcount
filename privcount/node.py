@@ -13,7 +13,7 @@ from time import time
 
 from privcount.config import normalise_path
 from privcount.counter import check_counters_config, check_noise_weight_config, combine_counters, CollectionDelay, float_accuracy, add_counter_limits_to_config, count_bins
-from privcount.log import format_delay_time_until, format_elapsed_time_since, summarise_string
+from privcount.log import format_delay_time_until, format_elapsed_time_since, summarise_string, summarise_list
 from privcount.statistics_noise import DEFAULT_SIGMA_TOLERANCE
 from privcount.traffic_model import TrafficModel, check_traffic_model_config
 
@@ -235,31 +235,6 @@ class PrivCountNode(object):
     MAX_MATCH_LEN = 253
 
     @staticmethod
-    def summarise_match_list(match_list):
-        '''
-        Summarise match_list into a string containing a str() of the first
-        match object, and, if there is more than one match object in the list,
-        a str() of the last match object. (There must be at least one entry in
-        the list.)
-
-        Returns a string.
-        '''
-        assert len(match_list) > 0
-
-        # summarise overlong match strings, even if they are the first or last
-        # Allow (MAX_MATCH_LEN + 1 for LF) * 2 + 4 for ellipsis
-        first_last_list = [str(match_list[0])]
-        max_len = PrivCountNode.MAX_MATCH_LEN + 1
-        if len(match_list) > 1:
-            # always have an ellipsis, even if the list is short
-            ellipsis = "...."
-            first_last_list.append(ellipsis)
-            max_len += len(ellipsis) + 1
-            first_last_list.append(str(match_list[-1]))
-            max_len += PrivCountNode.MAX_MATCH_LEN + 1
-        return summarise_string("".join(first_last_list), max_len)
-
-    @staticmethod
     def summarise_match_lists(deepcopied_start_config, match_list_key):
         '''
         If deepcopied_start_config contains match_list_key, and it contains
@@ -268,7 +243,8 @@ class PrivCountNode(object):
         '''
         for i in xrange(len(deepcopied_start_config.get(match_list_key, []))):
             match_list = deepcopied_start_config[match_list_key][i]
-            short_string = PrivCountNode.summarise_match_list(match_list)
+            short_string = summarise_list(match_list,
+                                          PrivCountNode.MAX_MATCH_LEN)
             deepcopied_start_config[match_list_key][i] = short_string
 
     @staticmethod
@@ -280,7 +256,8 @@ class PrivCountNode(object):
         '''
         for k in deepcopied_start_config.get(match_map_key, {}):
             match_map = deepcopied_start_config[match_map_key][k]
-            short_string = PrivCountNode.summarise_match_list(match_map.splitlines())
+            short_string = summarise_list(match_map.splitlines(),
+                                          PrivCountNode.MAX_MATCH_LEN)
             deepcopied_start_config[match_map_key][k] = short_string
 
 class PrivCountServer(PrivCountNode):
