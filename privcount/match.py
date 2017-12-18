@@ -27,6 +27,7 @@ def exact_match_prepare_collection(exact_collection):
     Returns an object that can be passed to exact_match().
     This object must be treated as opaque and read-only.
     '''
+    assert exact_collection is not None
     # Set matching uses a hash table, so it's more efficient
     exact_collection = [lower_if_hasattr(obj) for obj in exact_collection]
     exact_set = frozenset(exact_collection)
@@ -50,6 +51,8 @@ def exact_match(exact_obj, search_obj):
     If search_obj is a string, performs a case-insensitive match.
     exact_obj must have been created by exact_match_prepare_collection().
     '''
+    if exact_obj is None:
+        return False
     # This code works efficiently on set, frozenset, and dict
     assert hasattr(exact_obj, 'issubset') or hasattr(exact_obj, 'has_key')
     # This is a single hash table lookup
@@ -127,6 +130,8 @@ def suffix_match_prepare_collection(suffix_collection, separator=""):
     Returns an object that can be passed to suffix_match().
     This object must be treated as opaque and read-only.
     '''
+    assert suffix_collection is not None
+    assert separator is not None
     # A binary search is efficient, even if it does double the RAM
     # requirement. And it's unlikely we could get rid of all the references to
     # the strings in the collection after reversing them, anyway.
@@ -156,6 +161,8 @@ def suffix_match(suffix_obj, search_str, separator=""):
     Returns True on a suffix match, but False on exact match and no match.
     Use exact_match() to find exact matches.
     '''
+    if suffix_obj is None or search_str is None:
+        return False
     # This code works on sorted lists, but checking is expensive
     # assert suffix_obj == sorted(suffix_obj)
     # We could also store the separator, and check it is the same

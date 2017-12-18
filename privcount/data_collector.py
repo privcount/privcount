@@ -3191,7 +3191,7 @@ class Aggregator(ReconnectingClientFactory):
                                               fields, event_desc,
                                               is_mandatory=True)
 
-        remote_as = ipasn_prefix_match(self.as_prefix_map_objs[remote_ip_obj.version],
+        remote_as = ipasn_prefix_match(self.as_prefix_map_objs.get(remote_ip_obj.version),
                                        remote_ip_obj)
 
         # Extract the optional fields, and give them defaults
