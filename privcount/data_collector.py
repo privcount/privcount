@@ -433,12 +433,30 @@ class Aggregator(ReconnectingClientFactory):
         self.noise_weight_value = None
         self.max_cell_events_per_circuit = int(max_cell_events_per_circuit)
         self.circuit_sample_rate = float(circuit_sample_rate)
+        # Check whether we need to collect exact or suffix match counters
+        self.needs_domain_match = False
+        for k in self.collection_counters:
+            if "DomainExactMatch" in k or "DomainNoExactMatch" in k:
+                self.needs_domain_match = True
+                break
+        self.needs_suffix_match = False
+        for k in self.collection_counters:
+            if "DomainSuffixMatch" in k or "DomainNoSuffixMatch" in k:
+                self.needs_suffix_match = True
+                break
         # Prepare the lists for exact and suffix matching, as appropriate
         self.domain_exact_objs = []
-        self.domain_suffix_obj = domain_suffixes
-        for i in xrange(len(domain_lists)):
-            logging.info('Preparing domain list {}'.format(i))
-            self.domain_exact_objs.append(exact_match_prepare_collection(domain_lists[i]))
+        if self.needs_domain_match:
+            for i in xrange(len(domain_lists)):
+                logging.info('Preparing domain list {}'.format(i))
+                self.domain_exact_objs.append(exact_match_prepare_collection(domain_lists[i]))
+        else:
+            logging.info('No domain exact counters, skipping domain exact lists')
+        self.domain_suffix_obj = {}
+        if self.needs_suffix_match:
+            self.domain_suffix_obj = domain_suffixes
+        else:
+            logging.info('No domain suffix counters, skipping domain suffix object')
         self.country_exact_objs = []
         for i in xrange(len(country_lists)):
             logging.info('Preparing country list {}'.format(i))
@@ -1187,37 +1205,36 @@ class Aggregator(ReconnectingClientFactory):
                                        inc=1)
 
     def _increment_stream_end_count_lists(self, subcategory,
-                                          matching_bin_list,
+                                          matching_bin,
                                           totalbw, writebw, readbw):
         '''
         Increment the Stream*ListCount counters for subcategory using
-        matching_bin_list and the fields provided.
-        If matching_bin_list is empty, increment the final bin in each counter.
+        matching_bin and the fields provided.
+        If matching_bin is None, increment the final bin in each counter.
         '''
-        if len(matching_bin_list) == 0:
+        if matching_bin is None:
             # the final bin always goes to inf
-            matching_bin_list = [float('inf')]
+             matching_bin = [float('inf')]
 
-        for bin in matching_bin_list:
-            # there will always be at least two bins in each counter:
-            # the matching bin for the first list, and the unmatched bin
-            self.secure_counters.increment('Exit{}StreamCountList'
-                                           .format(subcategory),
-                                           bin=bin,
-                                           inc=1)
+        # there will always be at least two bins in each counter:
+        # the matching bin for the first list, and the unmatched bin
+        self.secure_counters.increment('Exit{}StreamCountList'
+                                       .format(subcategory),
+                                       bin=matching_bin,
+                                       inc=1)
 
-            self.secure_counters.increment('Exit{}StreamByteCountList'
-                                           .format(subcategory),
-                                           bin=bin,
-                                           inc=totalbw)
-            self.secure_counters.increment('Exit{}StreamOutboundByteCountList'
-                                           .format(subcategory),
-                                           bin=bin,
-                                           inc=writebw)
-            self.secure_counters.increment('Exit{}StreamInboundByteCountList'
-                                           .format(subcategory),
-                                           bin=bin,
-                                           inc=readbw)
+        self.secure_counters.increment('Exit{}StreamByteCountList'
+                                       .format(subcategory),
+                                       bin=matching_bin,
+                                       inc=totalbw)
+        self.secure_counters.increment('Exit{}StreamOutboundByteCountList'
+                                       .format(subcategory),
+                                       bin=matching_bin,
+                                       inc=writebw)
+        self.secure_counters.increment('Exit{}StreamInboundByteCountList'
+                                       .format(subcategory),
+                                       bin=matching_bin,
+                                       inc=readbw)
 
     STREAM_ENDED_ITEMS = 11
 
@@ -1335,76 +1352,84 @@ class Aggregator(ReconnectingClientFactory):
         # now collect statistics on list matches for each initial web hostname
         if host_ip_version == "Hostname" and stream_web == "Web" and stream_circ == "Initial":
 
-            domain_exact_match_bin_list = []
-            domain_suffix_match_bin_list = []
-            for i in xrange(len(self.domain_exact_objs)):
-                domain_exact_obj = self.domain_exact_objs[i]
+            if self.needs_exact_match:
+                domain_exact_match_bin = None
+                for i in xrange(len(self.domain_exact_objs)):
+                    domain_exact_obj = self.domain_exact_objs[i]
 
-                # check for an exact match
-                # this is O(N), but obviously correct
-                # assert exact_match(domain_exact_obj, remote_host) == any([remote_host == domain for domain in domain_exact_obj])
-                # this is O(N), but obviously correct
-                # assert suffix_match(domain_suffix_obj, remote_host) == any([remote_host.endswith("." + domain) for domain in domain_exact_obj])
-                # this is O(1), because set uses a hash table internally
-                if exact_match(domain_exact_obj, remote_host):
+                    # check for an exact match
+                    # this is O(N), but obviously correct
+                    # assert exact_match(domain_exact_obj, remote_host) == any([remote_host == domain for domain in domain_exact_obj])
+
+                    # this is O(1), because set uses a hash table internally
+                    if exact_match(domain_exact_obj, remote_host):
+                        domain_exact_match_bin = i
+                        # The TS guarantees that the lists are disjoint
+                        break
+
+                if domain_exact_match_bin == 0:
                     exact_match_str = "DomainExactMatch"
-                    domain_exact_match_bin_list.append(i)
-                    # an exact match implies a suffix match
-                    suffix_match_str = "DomainSuffixMatch"
-                    domain_suffix_match_bin_list.append(i)
                 else:
                     exact_match_str = "DomainNoExactMatch"
-                    # check for a suffix match
-                    # A generalised suffix tree might be faster here
-                    # this is O(log(N)) because it's a binary search followed by a string prefix match
-                    domain_suffix_match_bin = suffix_match(domain_suffix_obj,
-                                                           remote_host,
-                                                           separator=".")
-                    if domain_suffix_match_bin is not None:
-                        suffix_match_str = "DomainSuffixMatch"
-                        # The TS guarantees that the lists are disjoint
-                        domain_suffix_match_bin_list = [domain_suffix_match_bin]
-                    else:
-                        suffix_match_str = "DomainNoSuffixMatch"
 
                 # The first domain list is used for the ExitDomain*MatchWebStream
                 # Ratio, LifeTime, and Histogram counters
                 # Their ExitDomainNo*MatchWebStream* equivalents are used when
                 # there is no match in the first list
-                if i == 0:
-                    # collect exact match & first / subsequent domain on circuit
-                    self._increment_stream_end_histograms(exact_match_str + stream_web,
-                                                          totalbw, writebw, readbw,
-                                                          ratio, lifetime)
 
-                    self._increment_stream_end_histograms(exact_match_str + stream_web + stream_circ,
-                                                          totalbw, writebw, readbw,
-                                                          ratio, lifetime)
+                # collect exact match / no match counts for the first list
+                self._increment_stream_end_histograms(exact_match_str + stream_web,
+                                                      totalbw, writebw, readbw,
+                                                      ratio, lifetime)
 
-                    # collect suffix match & first / subsequent domain on circuit
-                    self._increment_stream_end_histograms(suffix_match_str + stream_web,
-                                                          totalbw, writebw, readbw,
-                                                          ratio, lifetime)
+                self._increment_stream_end_histograms(exact_match_str + stream_web + stream_circ,
+                                                      totalbw, writebw, readbw,
+                                                      ratio, lifetime)
 
-                    self._increment_stream_end_histograms(suffix_match_str + stream_web + stream_circ,
-                                                          totalbw, writebw, readbw,
-                                                          ratio, lifetime)
+                # Now that we know which list matched, increment its CountList
+                # counters' bin. Instead of using No*Match counters, we
+                # increment the final bin if none of the lists match
 
-            # Now that we know which lists matched, increment their CountList
-            # counters. Instead of using No*Match counters, we increment the
-            # final bin if none of the lists match
-            self._increment_stream_end_count_lists("DomainExactMatch" + stream_web,
-                                                   domain_exact_match_bin_list,
-                                                   totalbw, writebw, readbw)
-            self._increment_stream_end_count_lists("DomainExactMatch" + stream_web + stream_circ,
-                                                   domain_exact_match_bin_list,
-                                                   totalbw, writebw, readbw)
-            self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web,
-                                                   domain_suffix_match_bin_list,
-                                                   totalbw, writebw, readbw)
-            self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web + stream_circ,
-                                                   domain_suffix_match_bin_list,
-                                                   totalbw, writebw, readbw)
+                # collect exact match counts per list
+                self._increment_stream_end_count_lists("DomainExactMatch" + stream_web,
+                                                       domain_exact_match_bin,
+                                                       totalbw, writebw, readbw)
+                self._increment_stream_end_count_lists("DomainExactMatch" + stream_web + stream_circ,
+                                                       domain_exact_match_bin,
+                                                       totalbw, writebw, readbw)
+
+            if self.needs_suffix_match:
+                # check for a suffix match
+                # this is O(N), but obviously correct
+                # assert suffix_match(domain_suffix_obj, remote_host) == any([remote_host.endswith("." + domain) for domain in domain_exact_obj])
+
+                # this is O(D), where D is the number of domain components
+                # The TS guarantees that the lists are disjoint
+                domain_suffix_match_bin = suffix_match(domain_suffix_obj,
+                                                       remote_host,
+                                                       separator=".")
+
+                if domain_suffix_match_bin == 0:
+                    suffix_match_str = "DomainSuffixMatch"
+                else:
+                    suffix_match_str = "DomainNoSuffixMatch"
+
+                # collect suffix match / no match counts for the first list
+                self._increment_stream_end_histograms(suffix_match_str + stream_web,
+                                                      totalbw, writebw, readbw,
+                                                      ratio, lifetime)
+
+                self._increment_stream_end_histograms(suffix_match_str + stream_web + stream_circ,
+                                                      totalbw, writebw, readbw,
+                                                      ratio, lifetime)
+
+                # collect suffix match counts per list
+                self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web,
+                                                       domain_suffix_match_bin,
+                                                       totalbw, writebw, readbw)
+                self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web + stream_circ,
+                                                       domain_suffix_match_bin,
+                                                       totalbw, writebw, readbw)
 
         return True
 
