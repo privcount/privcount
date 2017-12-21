@@ -52,6 +52,7 @@ tally_server:
         # (Multiple matches are possible, the final bin is used for unmatched countries)
         - 'country-all.txt'
         - 'country-known.txt'
+        - 'country-rank.txt'
         - 'country-top-10.txt'
         - 'country-unknown.txt'
         - 'country-no-geoip.txt'

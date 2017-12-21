@@ -16,6 +16,7 @@ tally_server:
     country_files:
         - 'country-all.txt'
         - 'country-known.txt'
+        - 'country-rank.txt'
         - 'country-top-10.txt'
         - 'country-unknown.txt'
         - 'country-no-geoip.txt'
