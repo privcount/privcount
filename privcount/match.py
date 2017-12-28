@@ -210,6 +210,7 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
     '''
     assert suffix_collection is not None
     assert is_collection_tag_valid(collection_tag)
+    #assert type(existing_suffixes) == dict
     # Create a tree of suffix components using nested python dicts
     # the terminal object is an empty dict
     if existing_suffixes is None:
@@ -218,6 +219,7 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
         suffix_obj = existing_suffixes
     longer_suffix_list = []
     for insert_string in suffix_collection:
+        #assert type(suffix_obj) == dict
         insert_list = suffix_match_split(insert_string, separator=separator)
         prev_suffix_node = None
         suffix_node = suffix_obj
@@ -227,34 +229,39 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
             # since we have stripped periods from the start and end, a double
             # dot is almost certainly a typo
             assert len(insert_component) > 0
+
             # we are allowed to add any child to the root
             # but we cannot add a child to an existing terminal object
             # because the existing tree contains a shorter suffix of
             # the string we are inserting
+            #assert type(suffix_node) == dict
             next_suffix_node = suffix_node.get(insert_component)
-            prev_suffix_node = suffix_node
-            if (suffix_node != suffix_obj and
-                is_collection_tag_valid(next_suffix_node)):
+            if (is_collection_tag_valid(next_suffix_node)):
                 # there is an existing suffix that terminates here, and we are
                 # about to insert a longer suffix. Instead, ignore the longer
                 # suffix
                 has_longer_suffix = True
                 longer_suffix_list.append(insert_string)
-                suffix_node = next_suffix_node
                 break
+
             # walk the tree, adding an entry for this suffix
+            prev_suffix_node = suffix_node
             suffix_node = (next_suffix_node if next_suffix_node is not None else
                            suffix_node.setdefault(insert_component, {}))
+
         # we cannot have children in our terminal object
         # because the existing tree contains longer strings, and we are
         # a shorter suffix of all those existing strings
-        if not is_collection_tag_valid(suffix_node) and not has_longer_suffix:
+        if (not has_longer_suffix and
+            not is_collection_tag_valid(suffix_node) and len(suffix_node) > 0):
             # sort names alphabetically, so the logs are in a sensible order
             child_summary = summarise_list(sorted(suffix_node.keys()), 50)
             logging.info("Adding shorter suffix {} for collection {}, pruning existing children {}"
                          .format(insert_string, collection_tag, child_summary))
+
         # now, place (or replace) the end of the domain with the collection tag
-        if prev_suffix_node is not None:
+        if not has_longer_suffix:
+            #assert prev_suffix_node is not None
             prev_suffix_node[insert_component] = collection_tag
 
     if len(longer_suffix_list) > 0:
