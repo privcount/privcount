@@ -42,14 +42,25 @@ def main():
     run_plot(args)
 
 def add_plot_args(parser):
-    parser.add_argument('-d', '--data',
+
+    parser.add_argument('-t', '--tallies',
         help="""Append a PATH to a privcount tallies.json file,
+                and the LABEL we should use for the graph legend for this
+                set of experimental results. Using '-o', '--outcome' is the
+                prefered way to plot results in order to include error bars.""",
+        metavar=("PATH", "LABEL"),
+        nargs=2,
+        required=False,
+        action=PlotDataAction, dest="data_tallies", default=[])
+
+    parser.add_argument('-o', '--outcome',
+        help="""Append a PATH to a privcount outcome.json file,
                 and the LABEL we should use for the graph legend for this
                 set of experimental results""",
         metavar=("PATH", "LABEL"),
         nargs=2,
-        required="True",
-        action=PlotDataAction, dest="experiments")
+        required=False,
+        action=PlotDataAction, dest="data_outcome", default=[])
 
     parser.add_argument('-p', '--prefix',
         help="a STRING filename prefix for graphs we generate",
@@ -63,6 +74,14 @@ def add_plot_args(parser):
         metavar="LIST",
         action="store", dest="lineformats",
         default=LINEFORMATS)
+
+    parser.add_argument('-d', '--data',
+        help="""This option is deprecated (it was replaced with '-t' and
+                '--tallies').""",
+        metavar=("PATH", "LABEL"),
+        nargs=2,
+        required=False,
+        action=PlotDataAction, dest="experiments", default=[])
 
 def import_plotting():
     global matplotlib
@@ -114,6 +133,8 @@ def import_plotting():
 def run_plot(args):
     import_plotting()
 
+    args.experiments = args.experiments + args.data_tallies + args.data_outcome
+
     lflist = args.lineformats.strip().split(",")
     lfcycle = cycle(lflist)
 
@@ -122,7 +143,11 @@ def run_plot(args):
         dataset_color = lfcycle.next()
         dataset_label = label
         fin = open(path, 'r')
-        histograms = json.load(fin)
+        data = json.load(fin)
+        if 'Tally' in data: # this is an outcomes file
+            histograms = data['Tally']
+        else: # this is a tallies file
+            histograms = data
         fin.close()
 
         for name in histograms.keys():
