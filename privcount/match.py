@@ -188,13 +188,12 @@ def suffix_match_split(suffix_string, separator=""):
 
 def is_collection_tag_valid(collection_tag):
     '''
-    Collection tags can be empty dicts or any non-dict object.
+    Collection tags can be any non-dict object that is not None.
     '''
-    return ((type(collection_tag) != dict or collection_tag == {}) and
-            collection_tag is not None)
+    return type(collection_tag) != dict and collection_tag is not None
 
 def suffix_match_prepare_collection(suffix_collection, separator="",
-                                    existing_suffixes=None, collection_tag={}):
+                                    existing_suffixes=None, collection_tag=-1):
     '''
     Prepare a collection of strings for efficient suffix matching.
     If specified, the separator is also required before the suffix.
@@ -203,8 +202,8 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
     If existing_suffixes is not None, add the new suffixes to
     existing_suffixes, and return existing_suffixes. Each suffix is terminated
     with collection_tag, which can be used to distinguish between suffixes
-    from different lists. collection_tag must be an empty dict, or a non-dict
-    type.
+    from different lists. collection_tag must be a non-dict type that is not
+    None.
 
     Returns an object that can be passed to suffix_match().
     This object must be treated as opaque and read-only.

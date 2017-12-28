@@ -156,7 +156,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                         check_domain=False, check_country=False,
                         check_as=False,
                         prepare_exact=True, prepare_suffix=True,
-                        existing_suffixes=None, collection_tag={}):
+                        existing_suffixes=None, collection_tag=-1):
         '''
         Load a match file from file_path into new_match_lists.
         If check_domain, then check that each line in the file is a valid
@@ -203,7 +203,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                          file_path, new_domain_lists,
                          old_domain_files, old_domain_lists,
                          existing_domain_suffixes=None,
-                         collection_tag={}):
+                         collection_tag=-1):
         '''
         Load a domain file using load_match_file().
         '''
