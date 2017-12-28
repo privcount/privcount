@@ -68,7 +68,7 @@ def check_country_code(country_str):
         # Unknown country or missing geoip database
         return True
     country_str = country_str.lower()
-    bad_chars = country_str.strip("abcdefghijklmnopqrstuvwxyz")
+    bad_chars = country_str.strip("abcdefghijklmnopqrstuvwxyz01213456789")
     return len(bad_chars) == 0 and len(country_str) == 2
 
 def check_as_number(as_number):
