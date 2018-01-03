@@ -853,7 +853,6 @@ function link_latest() {
     ln -s $GLOB_PATTERN "$LATEST_NAME"
   elif [ "$IS_MANDATORY" -eq 1 ]; then
     "$W" "Error: No $PREFIX $SUFFIX file produced."
-    exit 1
   else
     "$I" "No $PREFIX $SUFFIX file produced."
   fi
