@@ -1249,7 +1249,7 @@ class Aggregator(ReconnectingClientFactory):
         start, end = float(items[6]), float(items[7])
         remote_host = items[8]
         remote_ip = items[9]
-        exit_stream_number = items[10]
+        exit_stream_number = int(items[10])
 
         # TODO: secure delete
         #del items
