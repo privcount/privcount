@@ -560,7 +560,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                     ts_conf['domain_suffixes']))
                             raise
 
-            assert len(ts_conf['domain_files']) == len(ts_conf['domain_lists'])
+            assert len(ts_conf.get('domain_files', [])) == len(ts_conf['domain_lists'])
             assert (len(ts_conf['domain_lists']) > 0) == (len(ts_conf['domain_suffixes']) > 0)
 
 
@@ -581,7 +581,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                 TallyServer.modify_country_bins(len(ts_conf['country_files']),
                                                 ts_conf['counters'])
 
-            assert len(ts_conf['country_files']) == len(ts_conf['country_lists'])
+            assert len(ts_conf.get('country_files', [])) == len(ts_conf['country_lists'])
 
 
             # This is used by the prefix maps and the AS lists
@@ -607,9 +607,10 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                    prepare_prefix=True)
                     ts_conf['as_prefix_files'][ipv] = file_path
 
-            assert len(ts_conf['as_prefix_files']) == len(ts_conf['as_data']['prefix_maps'])
+            assert len(ts_conf.get('as_prefix_files', [])) == len(ts_conf['as_data']['prefix_maps'])
             # you must have both IPv4 and IPv6 prefix mappings, or neither
             assert (4 in ts_conf['as_data']['prefix_maps']) == (6 in ts_conf['as_data']['prefix_maps'])
+
 
             # optional lists of AS numbers from the CAIDA AS prefix files or AS rankings
             old_as_files = self.config.get('as_files', []) if self.config is not None else []
@@ -629,7 +630,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                 TallyServer.modify_as_bins(len(ts_conf['as_files']),
                                            ts_conf['counters'])
 
-            assert len(ts_conf['as_files']) == len(ts_conf['as_data']['lists'])
+            assert len(ts_conf.get('as_files', [])) == len(ts_conf['as_data']['lists'])
 
             # you must have both prefix mappings and AS lists, or neither
             assert (len(ts_conf['as_data']['prefix_maps']) > 0) == (len(ts_conf['as_data']['lists']) > 0)
