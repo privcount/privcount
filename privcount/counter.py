@@ -2634,6 +2634,15 @@ class SecureCounters(object):
                                       inc=1)
         '''
         if self.counters is not None and counter_name in self.counters:
+            # check that we have the right types, and that we're not losing
+            # precision
+            bin = float(bin)
+            if float(inc) != float(int(inc)):
+                logging.warning("Ignoring fractional part of counter {} bin {} increment {}: {}"
+                                .format(counter_name, bin, inc,
+                                        float(inc) - float(int(inc))))
+                assert float(inc) == float(int(inc))
+            inc = int(inc)
             # You must pass SINGLE_BIN if counter_name is a single bin
             if len(self.counters[counter_name]['bins']) == 1:
                 assert(SecureCounters.is_single_bin_value(bin))
@@ -2643,7 +2652,7 @@ class SecureCounters(object):
                 bin = float(bin)
             for item in self.counters[counter_name]['bins']:
                 if SecureCounters.is_in_bin(item[0], item[1], bin):
-                    item[2] = ((long(item[2]) + long(inc))
+                    item[2] = ((int(item[2]) + int(inc))
                                % self.modulus)
 
     def _tally_counter(self, counter):
