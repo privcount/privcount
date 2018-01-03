@@ -516,6 +516,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                     logging.error("the set of traffic model bins and noise labels are not equal")
                     assert False
 
+
             # optional lists and processed suffixes of DNS domain names
             old_domain_files = self.config.get('domain_files', []) if self.config is not None else []
             old_domain_lists = self.config.get('domain_lists', []) if self.config is not None else []
@@ -525,8 +526,7 @@ class TallyServer(ServerFactory, PrivCountServer):
             if 'domain_files' in ts_conf and len(ts_conf['domain_files']) > 0:
                 # Track list changes for suffix reloads
                 has_any_list_changed = False
-                # replace any lists that have changed
-                ts_conf['domain_lists'] = old_domain_lists
+                # reload all the exact match lists
                 for i in xrange(len(ts_conf['domain_files'])):
                     (file_path,
                      has_list_changed) = self.load_domain_file_exact(ts_conf['domain_files'][i],
@@ -535,6 +535,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                                      old_domain_lists)
                     ts_conf['domain_files'][i] = file_path
                     has_any_list_changed = has_any_list_changed or has_list_changed
+                # if any have changed, reload the suffixes
                 if not has_any_list_changed:
                     ts_conf['domain_suffixes'] = old_domain_suffixes
                 else:
@@ -559,13 +560,16 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                     ts_conf['domain_suffixes']))
                             raise
 
+            assert len(ts_conf['domain_files']) == len(ts_conf['domain_lists'])
+            assert (len(ts_conf['domain_lists']) > 0) == (len(ts_conf['domain_suffixes']) > 0)
+
+
             # optional lists of country codes from the MaxMind GeoIP database
             old_country_files = self.config.get('country_files', []) if self.config is not None else []
             old_country_lists = self.config.get('country_lists', []) if self.config is not None else []
             ts_conf['country_lists'] = []
             if 'country_files' in ts_conf and len(ts_conf['country_files']) > 0:
-                ts_conf['country_lists'] = old_country_lists
-                # replace any lists that have changed
+                # reload all the lists
                 for i in xrange(len(ts_conf['country_files'])):
                     (file_path,
                      _) = self.load_country_file(ts_conf['country_files'][i],
@@ -576,6 +580,9 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # now, adjust the bins so we can count every list
                 TallyServer.modify_country_bins(len(ts_conf['country_files']),
                                                 ts_conf['counters'])
+
+            assert len(ts_conf['country_files']) == len(ts_conf['country_lists'])
+
 
             # This is used by the prefix maps and the AS lists
             old_as_data = self.config.get('as_data', {}) if self.config is not None else {}
@@ -588,8 +595,7 @@ class TallyServer(ServerFactory, PrivCountServer):
             # you must have both IPv4 and IPv6 prefix mappings, or neither
             # we keep IPv4 and IPv6 prefixes separate because it makes matching faster
             if ('as_prefix_files' in ts_conf and len(ts_conf['as_prefix_files']) == 2):
-                ts_conf['as_data']['prefix_maps'] = old_as_prefix_maps
-                # replace any lists that have changed
+                # reload all the prefix maps
                 for ipv in ts_conf['as_prefix_files']:
                     assert ipv == 4 or ipv == 6
                     (file_path,
@@ -601,12 +607,16 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                    prepare_prefix=True)
                     ts_conf['as_prefix_files'][ipv] = file_path
 
+            assert len(ts_conf['as_prefix_files']) == len(ts_conf['as_data']['prefix_maps'])
+            # you must have both IPv4 and IPv6 prefix mappings, or neither
+            assert (4 in ts_conf['as_data']['prefix_maps']) == (6 in ts_conf['as_data']['prefix_maps'])
+
             # optional lists of AS numbers from the CAIDA AS prefix files or AS rankings
             old_as_files = self.config.get('as_files', []) if self.config is not None else []
             old_as_lists = old_as_data.get('lists', [])
             ts_conf['as_data']['lists'] = []
             if 'as_files' in ts_conf and len(ts_conf['as_files']) > 0:
-                ts_conf['as_data']['lists'] = old_as_lists
+                # reload all the lists
                 for i in xrange(len(ts_conf['as_files'])):
                     (file_path,
                      _) = self.load_as_file(ts_conf['as_files'][i],
@@ -619,10 +629,11 @@ class TallyServer(ServerFactory, PrivCountServer):
                 TallyServer.modify_as_bins(len(ts_conf['as_files']),
                                            ts_conf['counters'])
 
-            # you must have both IPv4 and IPv6 prefix mappings, or neither
-            assert (4 in ts_conf['as_data']['prefix_maps']) == (6 in ts_conf['as_data']['prefix_maps'])
+            assert len(ts_conf['as_files']) == len(ts_conf['as_data']['lists'])
+
             # you must have both prefix mappings and AS lists, or neither
             assert (len(ts_conf['as_data']['prefix_maps']) > 0) == (len(ts_conf['as_data']['lists']) > 0)
+
 
             # an optional noise allocation results file
             if 'allocation' in ts_conf:
