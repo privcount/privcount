@@ -132,21 +132,26 @@ def lower_if_hasattr(obj):
     '''
     return obj.lower() if hasattr(obj, 'lower') else obj
 
-def exact_match_prepare_collection(exact_collection):
+def exact_match_prepare_collection(exact_collection, validate=True):
     '''
     Prepare a hashable object collection for efficient exact matching.
     If the objects in the collection are strings, lowercases them.
+
+    If validate is True, checks that exact_match() returns True for each
+    item in exact_collection.
+
     Returns an object that can be passed to exact_match().
     This object must be treated as opaque and read-only.
     '''
     assert exact_collection is not None
     # Set matching uses a hash table, so it's more efficient
-    exact_collection = [lower_if_hasattr(obj) for obj in exact_collection]
-    exact_set = frozenset(exact_collection)
+    exact_collection_lower = [lower_if_hasattr(obj) for obj in exact_collection]
+    exact_set = frozenset(exact_collection_lower)
     # Log a message if there were any duplicates
     # Finding each duplicate takes a lot longer
     if len(exact_collection) != len(exact_set):
-      dups = [obj for obj in exact_set if exact_collection.count(obj) > 1]
+      dups = [obj for obj in exact_set
+              if exact_collection_lower.count(lower_if_hasattr(obj)) > 1]
       dups_summary = summarise_list(sorted(dups), 50)
       logging.warning("Removing {} duplicates from the collection"
                       .format(dups_summary))
@@ -154,8 +159,14 @@ def exact_match_prepare_collection(exact_collection):
     logging.info("Exact match prepared {} items ({})"
                  .format(len(exact_set),
                          format_bytes(len(json_serialise(list(exact_set))))))
-    return exact_set
 
+    # Now check that each item actually matches the list
+    if validate:
+        logging.info("Validating {} items".format(len(exact_collection)))
+        for item in exact_collection:
+            assert exact_match(exact_set, item)
+
+    return exact_set
 
 def exact_match(exact_obj, search_obj):
     '''
@@ -165,8 +176,8 @@ def exact_match(exact_obj, search_obj):
     '''
     if exact_obj is None:
         return False
-    # This code works efficiently on set, frozenset, and dict
-    assert hasattr(exact_obj, 'issubset') or hasattr(exact_obj, 'has_key')
+    # This code only works efficiently on sets
+    assert hasattr(exact_obj, 'issubset')
     # This is a single hash table lookup
     return lower_if_hasattr(search_obj) in exact_obj
 
@@ -193,7 +204,8 @@ def is_collection_tag_valid(collection_tag):
     return type(collection_tag) != dict and collection_tag is not None
 
 def suffix_match_prepare_collection(suffix_collection, separator="",
-                                    existing_suffixes=None, collection_tag=-1):
+                                    existing_suffixes=None, collection_tag=-1,
+                                    validate=True):
     '''
     Prepare a collection of strings for efficient suffix matching.
     If specified, the separator is also required before the suffix.
@@ -204,6 +216,9 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
     with collection_tag, which can be used to distinguish between suffixes
     from different lists. collection_tag must be a non-dict type that is not
     None.
+
+    If validate is True, checks that suffix_match() returns True for each
+    item in suffix_collection.
 
     Returns an object that can be passed to suffix_match().
     This object must be treated as opaque and read-only.
@@ -264,6 +279,17 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
             #assert prev_suffix_node is not None
             prev_suffix_node[insert_component] = collection_tag
 
+        # Now check that each item actually matches the list
+        if validate:
+            try:
+                assert suffix_match(suffix_obj, insert_string,
+                                    separator=separator) is not None
+            except:
+                logging.warning("Validating suffix {} failed:\nCollection:\n{}\nTree:\n{}"
+                                .format(insert_string, suffix_collection,
+                                        suffix_obj))
+                raise
+
     if len(longer_suffix_list) > 0:
         # sort names alphabetically, so the logs are in a sensible order
         suffix_summary = summarise_list(sorted(longer_suffix_list), 50)
@@ -274,6 +300,7 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
     logging.info("Suffix match {} prepared {} items ({})"
                  .format(collection_tag, len(suffix_collection),
                          format_bytes(len(json_serialise(suffix_obj)))))
+
     return suffix_obj
 
 def suffix_match(suffix_obj, search_string, separator=""):
@@ -300,6 +327,8 @@ def suffix_match(suffix_obj, search_string, separator=""):
     # Walk the tree
     suffix_node = suffix_obj
     for search_component in search_list:
+        #logging.debug("{} in {}:\nTree:\n{}"
+        #              .format(search_component, search_list, suffix_node))
         # an empty string can never match anything
         if len(search_component) == 0:
             return None
