@@ -123,7 +123,7 @@ def hsdir_v3_descriptor_store_overlap(valid_after):
     '''
     Returns the v3 HSDir overlap proportion for valid_after.
     '''
-    assert valid_after >= 0
+    assert valid_after >= datetime.datetime.min
     valid_after -= CLIENT_CONSENSUS_DELAY_TIMEDELTA
     if (valid_after.time() > HSDIR_V3_STORE_OVERLAP_START_TIME and
         valid_after.time() <= HSDIR_V3_STORE_OVERLAP_END_TIME):
