@@ -72,13 +72,17 @@ All fingerprints
 #       including services with stealth client auth
 INTRO_ESTABLISH_PER_SERVICE = 3.0
 
-# 3 and 2 are the hard-coded (v2) or default consensus parameter (v3) values
-HSDIR_SPREAD = 3
-HSDIR_REPLICA = 2
+# These are the hard-coded v2 values
+HSDIR_V2_SPREAD = 3
+HSDIR_V2_REPLICA = 2
+
+# These are the default v3 values
+HSDIR_V3_SPREAD_STORE = 4
+HSDIR_V3_REPLICA = 2
 
 # The entire hash ring of v2 HSDirs will see each onion address stored 6 times
 # per service upload
-HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE = HSDIR_SPREAD * HSDIR_REPLICA
+HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE = HSDIR_V2_SPREAD * HSDIR_V2_REPLICA
 
 # The entire hash ring of v2 HSDirs will see each onion address fetched once
 # per service access
@@ -86,11 +90,11 @@ HSDIR_V2_ONION_ADDRESS_FETCH_PER_SERVICE = 1.0
 
 # The entire hash ring of v3 HSDirs will see each descriptor id stored 3 times
 # per service upload
-HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE = HSDIR_SPREAD
+HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE = HSDIR_V3_SPREAD_STORE
 
 # The entire hash ring of v3 HSDirs will see each descriptor id fetched
 # 0.5 times per service access
-HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE = 1.0 / HSDIR_REPLICA
+HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE = 1.0 / HSDIR_V3_REPLICA
 
 # v2 hidden services publish two descriptors whenever they publish in the last
 # hour of each period. Periods are offset throughout each day, using the first
@@ -195,7 +199,7 @@ def main():
     print "{:.15f} : hsdir2 spread-weighted service onion address mean (6 stores per onion address, 1/24 overlap)".format(mean(hsdir2_svc_fracs)*HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE)
     print "{:.15f} : hsdir2 spread-weighted client onion address mean (1 fetch per onion address)".format(mean(hsdir2_fracs)*HSDIR_V2_ONION_ADDRESS_FETCH_PER_SERVICE)
     print "{:.15f} : hsdir3 relay fraction mean".format(mean(hsdir3_fracs))
-    print "{:.15f} : hsdir3 approximate service descriptor id mean (3 stores per descriptor id, per onion address, 00:00 - 12:00 overlap)".format(mean(hsdir3_svc_fracs)*HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE)
+    print "{:.15f} : hsdir3 approximate service descriptor id mean ({} stores per descriptor id, per onion address, 00:00 - 12:00 overlap)".format(mean(hsdir3_svc_fracs)*HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE, HSDIR_V3_SPREAD_STORE)
     print "{:.15f} : hsdir3 approximate client descriptor id mean (0.5 fetches per descriptor id, per onion address)".format(mean(hsdir3_fracs)*HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE)
     print "{:.15f} : intro2,3 service establish mean (default 3 intro points per onion address, max 10)".format(mean(intro_fracs)*INTRO_ESTABLISH_PER_SERVICE)
     print "{:.15f} : intro2,3 client introduce mean (1 introduce per onion address)".format(mean(intro_fracs))
@@ -258,6 +262,18 @@ def get_fractional_weights(consensus_path, my_fingerprints):
     # for my_fingerprints. If my_fingerprints is None, uses all fingerprints
     # in the consensus. (This is used for testing.)
     net_status = next(parse_file(consensus_path, document_handler='DOCUMENT', validate=False))
+    # check that our assumed consensus parameters are correct
+    if 'hsdir_spread_store' in net_status.params and net_status.params['hsdir_spread_store'] != HSDIR_V3_SPREAD_STORE:
+        logging.warning("Consensus {} has hsdir_spread_store {}, but we expect {}"
+                        .format(net_status.valid_after,
+                                net_status.params['hsdir_spread_store'],
+                                HSDIR_V3_SPREAD_STORE))
+    if 'hsdir_n_replicas' in net_status.params and net_status.params['hsdir_n_replicas'] != HSDIR_V3_REPLICA:
+        logging.warning("Consensus {} has hsdir_n_replicas {}, but we expect {}"
+                        .format(net_status.valid_after,
+                                net_status.params['hsdir_n_replicas'],
+                                HSDIR_V3_REPLICA))
+
     bw_weight_scale = net_status.params['bwweightscale'] if 'bwweightscale' in net_status.params else 1.0
 
     my_guard, total_guard, my_middle, total_middle, my_exit, total_exit = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
@@ -357,19 +373,19 @@ def is_hsdir_v2(flags):
     '''
     return Flag.HSDIR in flags
 
-def get_ring_index(index, ring):
+def get_hsdir_v2_ring_index(index, ring):
     '''
     Get index from ring, treating it as a circular list
     '''
     # We can't loop more than once, because we won't know how many times
-    # we've looped. This means we must have at least HSDIR_SPREAD HSDirs
+    # we've looped. This means we must have at least HSDIR_V2_SPREAD HSDirs
     # in our hash ring
-    assert len(ring) >= HSDIR_SPREAD
+    assert len(ring) >= HSDIR_V2_SPREAD
     modulus = len(ring)
     valid_index = index % modulus
     return ring[valid_index]
 
-def get_ring_size(arbitrary_hash):
+def get_hsdir_v2_ring_size(arbitrary_hash):
     '''
     Calculate the spread amount of the entire hash ring, based on
     arbitrary_hash, which is a hex-encoded hash with leading zeroes.
@@ -377,14 +393,14 @@ def get_ring_size(arbitrary_hash):
     '''
     return 2L**(4*len(arbitrary_hash))
 
-def get_ring_spread(later_hash, earlier_hash):
+def get_hsdir_v2_ring_spread(later_hash, earlier_hash):
     '''
     Calculate the spread amount between later and earlier, which are
     hex-encoded hashes in a ring. Returns a long.
     '''
     assert len(later_hash) == len(earlier_hash)
-    assert HSDIR_SPREAD > 0
-    hash_modulus = get_ring_size(later_hash)
+    assert HSDIR_V2_SPREAD > 0
+    hash_modulus = get_hsdir_v2_ring_size(later_hash)
     spread_amount = (long(later_hash, 16) - long(earlier_hash, 16)) % hash_modulus
     # If we've looped the whole way around
     if spread_amount == 0:
@@ -392,7 +408,7 @@ def get_ring_spread(later_hash, earlier_hash):
     else:
         return spread_amount
 
-def get_hsdir_spread(hash, ring):
+def get_hsdir_v2_spread(hash, ring):
     '''
     Return the proportion of ring occupied by the HSDir spread allocated to
     hash, as a floating point fraction, accurate to at least the first
@@ -404,12 +420,12 @@ def get_hsdir_spread(hash, ring):
 
     # find the hashes in the spread
     hash_index = ring.index(hash)
-    spread_index = hash_index - HSDIR_SPREAD
-    spread_hash = get_ring_index(spread_index, ring)
+    spread_index = hash_index - HSDIR_V2_SPREAD
+    spread_hash = get_hsdir_v2_ring_index(spread_index, ring)
 
     # find the integer-accurate spread amount and ring size
-    spread_amount = get_ring_spread(hash, spread_hash)
-    ring_size = get_ring_size(hash)
+    spread_amount = get_hsdir_v2_ring_spread(hash, spread_hash)
+    ring_size = get_hsdir_v2_ring_size(hash)
 
     # make them into floating-point numbers
     # when ring_size is less than the floating-point exponent, we don't lose
@@ -478,7 +494,7 @@ def get_bw_weight(flags, position, bw_weights, version=None, protocols=None,
             return bw_weights['Wem']
     elif (position == 'h2'):
         if is_hsdir_v2(flags):
-            return get_hsdir_spread(hsdir2_hash, hsdir2_ring)
+            return get_hsdir_v2_spread(hsdir2_hash, hsdir2_ring)
         else:
             return 0.0
     elif (position == 'h3'):
