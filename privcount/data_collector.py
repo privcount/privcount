@@ -1219,7 +1219,7 @@ class Aggregator(ReconnectingClientFactory):
 
         if matching_bin is None:
             # the final bin always goes to inf
-             matching_bin = [float('inf')]
+             matching_bin = float('inf')
 
         # there will always be at least two bins in each counter:
         # the matching bin for the first list, and the unmatched bin
@@ -1395,11 +1395,10 @@ class Aggregator(ReconnectingClientFactory):
                 # increment the final bin if none of the lists match
 
                 # collect exact match counts per list
-                if domain_exact_match_bin is not None:
-                    self._increment_stream_end_count_lists("DomainExactMatch" + stream_web + stream_circ,
-                                                           domain_exact_match_bin,
-                                                           totalbw, writebw,
-                                                           readbw)
+                self._increment_stream_end_count_lists("DomainExactMatch" + stream_web + stream_circ,
+                                                       domain_exact_match_bin,
+                                                       totalbw, writebw,
+                                                       readbw)
 
             if self.needs_domain_suffix_match:
 
@@ -1432,11 +1431,10 @@ class Aggregator(ReconnectingClientFactory):
                                                       ratio, lifetime)
 
                 # collect suffix match counts per list
-                if domain_suffix_match_bin is not None:
-                    self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web + stream_circ,
-                                                           domain_suffix_match_bin,
-                                                           totalbw, writebw,
-                                                           readbw)
+                self._increment_stream_end_count_lists("DomainSuffixMatch" + stream_web + stream_circ,
+                                                       domain_suffix_match_bin,
+                                                       totalbw, writebw,
+                                                       readbw)
 
         #logging.debug("class: {} web: {} IP: {} Host: {} {} Stream: {} Exact: {} Suffix: {}"
         #              .format(stream_class, stream_web,
