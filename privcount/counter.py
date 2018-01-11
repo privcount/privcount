@@ -13,7 +13,7 @@ from random import SystemRandom
 from copy import deepcopy
 from math import sqrt, isnan
 
-from privcount.log import format_period, format_elapsed_time_since, format_delay_time_until
+from privcount.log import format_period, format_elapsed_time_since, format_delay_time_until, summarise_list
 
 DEFAULT_SIGMA_TOLERANCE = 1e-6
 DEFAULT_EPSILON_TOLERANCE = 1e-15
@@ -1791,9 +1791,9 @@ def extra_counters(first, second, first_name, second_name, action_name):
     extra_keys = _extra_counter_keys(first, second)
     # Log missing keys
     # sort names alphabetically, so the logs are in a sensible order
-    for key in sorted(extra_keys):
-        logging.info("{} counter '{}' because it has a {}, but no {}"
-                     .format(action_name, key, first_name, second_name))
+    counter_summary = summarise_list(sorted(extra_keys), 50)
+    logging.info("{} counters '{}' because they have a {}, but no {}"
+                 .format(action_name, counter_summary, first_name, second_name))
 
     return extra_keys
 
@@ -2053,12 +2053,10 @@ class CollectionDelay(object):
             return False
 
         # Ignore and log missing sigmas
-        previous_sigmas = skip_missing_sigmas(
-            previous_allocation['counters'],
-            'proposed sigma')
-        proposed_sigmas = skip_missing_sigmas(
-            proposed_allocation['counters'],
-            'proposed sigma')
+        previous_sigmas = skip_missing_sigmas(previous_allocation['counters'],
+                                              'previous sigma')
+        proposed_sigmas = skip_missing_sigmas(proposed_allocation['counters'],
+                                              'proposed sigma')
 
         # Check that we have the same set of counters
         common_sigmas = common_counters(previous_sigmas, proposed_sigmas,
