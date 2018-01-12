@@ -1790,10 +1790,12 @@ def extra_counters(first, second, first_name, second_name, action_name):
     '''
     extra_keys = _extra_counter_keys(first, second)
     # Log missing keys
-    # sort names alphabetically, so the logs are in a sensible order
-    counter_summary = summarise_list(sorted(extra_keys), 50)
-    logging.info("{} counters '{}' because they have a {}, but no {}"
-                 .format(action_name, counter_summary, first_name, second_name))
+    if len(extra_keys) > 0:
+        # sort names alphabetically, so the logs are in a sensible order
+        counter_summary = summarise_list(sorted(extra_keys), 50)
+        logging.info("{} counters '{}' because they have a {}, but no {}"
+                     .format(action_name, counter_summary,
+                             first_name, second_name))
 
     return extra_keys
 
