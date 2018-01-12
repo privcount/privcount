@@ -1550,7 +1550,8 @@ class CollectionPhase(object):
             # the sk got our encrypted share successfully
             logging.info("share keeper {} started and received its shares"
                          .format(cname))
-            self.need_shares.remove(client_uid)
+            if client_uid in self.need_shares:
+                self.need_shares.remove(client_uid)
             if len(self.need_shares) == 0:
                 if self.state == 'starting_sks':
                     self._change_state('started')
