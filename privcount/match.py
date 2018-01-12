@@ -220,8 +220,9 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
     If validate is True, checks that suffix_match() returns True for each
     item in suffix_collection.
 
-    Returns an object that can be passed to suffix_match().
-    This object must be treated as opaque and read-only.
+    Returns a tuple containing an object that can be passed to suffix_match(),
+    and a boolean that is True if any duplicate domains were found.
+    The object must be treated as opaque and read-only.
     '''
     assert suffix_collection is not None
     assert is_collection_tag_valid(collection_tag)
@@ -233,6 +234,7 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
     else:
         suffix_obj = existing_suffixes
     longer_suffix_list = []
+    duplicates = False
     for insert_string in suffix_collection:
         #assert type(suffix_obj) == dict
         insert_list = suffix_match_split(insert_string, separator=separator)
@@ -269,10 +271,14 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
         # a shorter suffix of all those existing strings
         if (not has_longer_suffix and
             not is_collection_tag_valid(suffix_node) and len(suffix_node) > 0):
+            duplicates = True
             # sort names alphabetically, so the logs are in a sensible order
             child_summary = summarise_list(sorted(suffix_node.keys()), 50)
+            child_all = " ".join(suffix_node.keys())
             logging.info("Adding shorter suffix {} for collection {}, pruning existing children {}"
                          .format(insert_string, collection_tag, child_summary))
+            logging.debug("Adding shorter suffix {} for collection {}, pruning existing children {}"
+                          .format(insert_string, collection_tag, child_all))
 
         # now, place (or replace) the end of the domain with the collection tag
         if not has_longer_suffix:
@@ -291,17 +297,21 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
                 raise
 
     if len(longer_suffix_list) > 0:
+        duplicates = True
         # sort names alphabetically, so the logs are in a sensible order
         suffix_summary = summarise_list(sorted(longer_suffix_list), 50)
+        suffix_all = " ".join(longer_suffix_list)
         logging.info("Suffix match for {} ignored longer suffixes {}"
                      .format(collection_tag, suffix_summary))
+        logging.debug("Suffix match for {} ignored longer suffixes {}"
+                      .format(collection_tag, suffix_all))
 
     # the encoded json measures transmission size, not RAM size
     logging.info("Suffix match {} prepared {} items ({})"
                  .format(collection_tag, len(suffix_collection),
                          format_bytes(len(json_serialise(suffix_obj)))))
 
-    return suffix_obj
+    return (suffix_obj, duplicates)
 
 def suffix_match(suffix_obj, search_string, separator=""):
     '''
@@ -529,7 +539,9 @@ def suffix_match_prepare_domains(suffix_collection):
     '''
     Adapter for easy domain list preparation
     '''
-    return suffix_match_prepare_collection(suffix_collection, separator=".")
+    (obj, _) = suffix_match_prepare_collection(suffix_collection,
+                                               separator=".")
+    return obj
 
 def suffix_reverse_match_prepare_domains(suffix_collection):
     '''
