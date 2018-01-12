@@ -21,7 +21,7 @@ from privcount.connection import connect, disconnect, validate_connection_config
 from privcount.counter import SecureCounters, counter_modulus, add_counter_limits_to_config, combine_counters, has_noise_weight, get_noise_weight, count_bins, are_events_expected, get_valid_counters
 from privcount.crypto import get_public_digest_string, load_public_key_string, encrypt
 from privcount.log import log_error, format_delay_time_wait, format_last_event_time_since, format_elapsed_time_since, errorCallback, summarise_string
-from privcount.match import exact_match_prepare_collection, exact_match, suffix_match_prepare_collection, suffix_match, ipasn_prefix_match_prepare_string, ipasn_prefix_match
+from privcount.match import exact_match_prepare_collection, exact_match, suffix_match, ipasn_prefix_match_prepare_string, ipasn_prefix_match
 from privcount.node import PrivCountClient, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountClientProtocol, TorControlClientProtocol, get_privcount_version
 from privcount.tagged_event import parse_tagged_event, is_string_valid, is_list_valid, is_int_valid, is_flag_valid, is_float_valid, is_ip_address_valid, get_string_value, get_list_value, get_int_value, get_flag_value, get_float_value, get_ip_address_value, get_ip_address_object
