@@ -466,11 +466,8 @@ This event is sent when tor attempts to parse and store an onion service
 descriptor. Any attempt to upload a service descriptor triggers this event,
 even if the descriptor was unparseable or not cached (see CacheReasonString).
 
-Onion Services are also known as Hidden Services.
-
-Service descriptor versions 2 and 3 are supported
-(see HiddenServiceVersionNumber). Version 3 has not been tested, because a
-full service implementation is not available.
+Onion Services are also known as Hidden Services. Onion service descriptor
+versions 2 and 3 are supported (see HiddenServiceVersionNumber).
 
 Version 3 service descriptors encrypt the onion address. As a subsitute, the
 event includes the BlindedEd25519PublicKey identifier, which changes every day,
@@ -537,6 +534,47 @@ Optional in v3, Not Available in v2:
 It has the following known issues:
 * PrivCount's additional RAM allocations may affect Tor's HSDir cache
   https://github.com/privcount/privcount/issues/349
+
+### PRIVCOUNT_HSDIR_CACHE_FETCH
+
+TODO: expand documentation
+
+Mandatory:
+* HiddenServiceVersionNumber
+* EventTimestamp
+* CacheReasonString
+* CacheQueryByteCount
+
+Optional, Only in Parseable Requests:
+* HasCacheEntryFlag
+
+Optional, Only in Cached Descriptors:
+* EncodedDescriptorByteCount
+* EncodedIntroPointByteCount
+
+Optional in v2, Not Available in v3, Only in Parseable Requests:
+* DescriptorIdBase32String (v2 only, not yet implemented in v3)
+
+Optional in v2, Not Available in v3, Only in Cached Descriptors:
+* CacheLastServedTime
+* OnionAddress (v2 only)
+* DescriptorCreationTime
+* SupportedProtocolBitfield
+* RequiresClientAuthFlag
+* IntroPointCount (missing if using client auth)
+* IntroPointFingerprintList (missing if using client auth)
+
+Optional in v3, Not Available in v2, Only in Parseable Requests:
+* BlindedEd25519PublicKeyBase64String
+
+Optional in v3, Not Available in v2, Only in Cached Descriptors:
+* CacheCreatedTime
+* RevisionNumber
+* DescriptorLifetime
+
+Limitations:
+
+See PRIVCOUNT_HSDIR_CACHE_STORE.
 
 ## PrivCount Event Field Format
 

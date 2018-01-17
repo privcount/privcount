@@ -250,6 +250,7 @@ STREAM_EVENT = 'PRIVCOUNT_STREAM_ENDED'
 CIRCUIT_EVENT = 'PRIVCOUNT_CIRCUIT_CLOSE'
 CONNECTION_EVENT = 'PRIVCOUNT_CONNECTION_CLOSE'
 HSDIR_STORE_EVENT = 'PRIVCOUNT_HSDIR_CACHE_STORE'
+HSDIR_FETCH_EVENT = 'PRIVCOUNT_HSDIR_CACHE_FETCH'
 
 # Unused events
 # PrivCount never used this event, it was used by PrivEx
@@ -269,6 +270,7 @@ def get_valid_events():
                   CIRCUIT_EVENT,
                   CONNECTION_EVENT,
                   HSDIR_STORE_EVENT,
+                  HSDIR_FETCH_EVENT,
                   # Unused events
                   DNS_EVENT,
                   LEGACY_CIRCUIT_EVENT,

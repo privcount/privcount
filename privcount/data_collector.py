@@ -1094,7 +1094,8 @@ class Aggregator(ReconnectingClientFactory):
         if (event_code == 'PRIVCOUNT_CIRCUIT_CELL' or
             event_code == 'PRIVCOUNT_CIRCUIT_CLOSE' or
             event_code == 'PRIVCOUNT_CONNECTION_CLOSE' or
-            event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE'):
+            event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE' or
+            event_code == 'PRIVCOUNT_HSDIR_CACHE_FETCH'):
             fields = parse_tagged_event(items)
         else:
             logging.warning("Unexpected {} event when parsing: '{}'"
@@ -1114,6 +1115,8 @@ class Aggregator(ReconnectingClientFactory):
             return self._handle_connection_close_event(fields)
         elif event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE':
             return self._handle_hsdir_stored_event(fields)
+        elif event_code == 'PRIVCOUNT_HSDIR_CACHE_FETCH':
+            return True
         else:
             logging.warning("Unexpected {} event when handling: '{}'"
                             .format(event_code, " ".join(items)))
