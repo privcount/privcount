@@ -17,20 +17,24 @@ and the length of collection must protect user privacy.
 
 ## Are different PrivCount versions compatible?
 
+PrivCount version 2.0.0 changes the names of some counters, and changes the
+format of the stream end event. Tally Servers and Data Collectors must run
+version 2.0.0 or later of PrivCount and the PrivCount Tor Patch.
+
 All PrivCount versions in a major series are compatible, as long as you are
 collecting counters known to all nodes. For example, you can collect the
-EntryActiveCircuitCount using a mix of nodes on any PrivCount 1.*.* version.
-
-Share Keepers on version 1.1.0 and later can store shares for any counters,
-even counters introduced in subsequent Data Collector and Tally Server
-versions.
-
-Tally Servers on version 1.0.2 and later ignore Data Collectors on versions
-1.0.1 and earlier, because they have a critical security issue.
+EntryActiveCircuitCount using a mix of nodes on any PrivCount 2.*.* version.
 
 Data Collectors can use any PrivCount Tor Patch that supports the events for
 the counters they are collecting. For example, you can collect the
 EntryActiveCircuitCount using the PrivCount Tor Patch 1.0.0 or later.
+
+Share Keepers on version 1.1.0 and later can store shares for any counters,
+even counters introduced in subsequent Data Collector and Tally Server
+versions (even versions 2.0.0 and later).
+
+Tally Servers on version 1.0.2 and later ignore Data Collectors on versions
+1.0.1 and earlier, because they have a critical security issue.
 
 The PrivCount Tor Patch may be available for multiple tor versions:
  * Tor relays on 0.3.0.8 and later are used for v3 HSDir
@@ -53,6 +57,34 @@ BSD license. See LICENSE for details.
 
 Issue numbers are from:
     https://github.com/privcount/privcount/issues
+
+## PrivCount 2.0.0
+
+PrivCount version 2.0.0 changes the names of some counters, and changes the
+format of the stream end event. Tally Servers and Data Collectors must run
+version 2.0.0 or later of PrivCount and the PrivCount Tor Patch.
+
+It also adds a dependency on pyasn.
+
+It adds the following counters:
+* Onion Service Failures,
+* Exit Domain Names and Domain Suffixes,
+* Client Autonomous System Numbers,
+* Client Countries.
+
+It contains important fixes for the Tally Server, Data Collectors, and the
+PrivCount Tor patch. All PrivCount node operators and relay operators should
+upgrade.
+
+The version of the PrivCount Tor Patch released with PrivCount 2.0.0 is:
+* privcount-2.0.0-tor-0.3.0.13-dev (Tor stable, with additional patches)
+
+This Tor version fixes several relay security issues.
+See Tor's release announcements for details:
+https://blog.torproject.org/new-stable-tor-releases-security-fixes-0319-03013-02914-02817-02516
+
+A full list of issues resolved in this release is available at:
+https://github.com/privcount/privcount/milestone/2?closed=1
 
 ## PrivCount 1.1.0
 
