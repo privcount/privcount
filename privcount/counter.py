@@ -2063,7 +2063,7 @@ class CollectionDelay(object):
         # Check that we have the same set of counters
         common_sigmas = common_counters(previous_sigmas, proposed_sigmas,
                                         'previous sigma', 'proposed sigma',
-                                        'can''t compare sigmas on')
+                                        "can't compare sigmas on")
         if len(common_sigmas) != len(previous_sigmas):
             return True
         if len(common_sigmas) != len(proposed_sigmas):
