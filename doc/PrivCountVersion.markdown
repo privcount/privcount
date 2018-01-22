@@ -51,7 +51,8 @@ files, in both the PrivCount and Tor repositories:
 
     bumpversion major|minor|patch
 
-The default configuration creates a git commit, and tags it "privcount-a.b.c".
+The default configuration creates a git commit with the new version.
+You will need to manually tag this commit "privcount-a.b.c".
 
 If the PrivCount protocol changes in an incompatible way, you will need to
 update PrivCountProtocol.HANDSHAKE_VERSION manually.
