@@ -755,7 +755,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                 for k in ts_conf:
                     if k not in self.config or ts_conf[k] != self.config[k]:
                         old_val_str = str(self.config[k]) if k in self.config else '(absent)'
-                        new_val_str = str(ts_conf[k])
+                        new_val_str = str(ts_conf[k]) if k in ts_conf else '(absent)'
                         logging.info("updated config for key {} from {} to {}"
                                      .format(k,
                                              summarise_string(
@@ -765,8 +765,11 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                           new_val_str,
                                                           100)))
                         logging.debug("updated config for key {} (full values) from {} to {}"
-                                      .format(k, self.config[k], ts_conf[k]))
-                        self.config[k] = ts_conf[k]
+                                      .format(k, old_val_str, new_val_str))
+                        if k in ts_conf:
+                            self.config[k] = ts_conf[k]
+                        else:
+                            del self.config[k]
                         changed = True
                 if not changed:
                     logging.debug('no config changes found')
