@@ -244,7 +244,8 @@ class PrivCountNode(object):
         for i in xrange(len(deepcopied_start_config.get(match_list_key, []))):
             match_list = deepcopied_start_config[match_list_key][i]
             short_string = summarise_list(match_list,
-                                          PrivCountNode.MAX_MATCH_LEN)
+                                          PrivCountNode.MAX_MATCH_LEN,
+                                          sort_output=False)
             deepcopied_start_config[match_list_key][i] = short_string
 
     @staticmethod
@@ -259,7 +260,8 @@ class PrivCountNode(object):
         match_suffixes = deepcopied_start_config.get(match_suffix_key, {})
         if len(match_suffixes) > 0:
             short_string = summarise_list(match_suffixes.keys(),
-                                          PrivCountNode.MAX_MATCH_LEN)
+                                          PrivCountNode.MAX_MATCH_LEN,
+                                          sort_output=False)
             deepcopied_start_config[match_suffix_key] = short_string
 
     @staticmethod
@@ -272,7 +274,8 @@ class PrivCountNode(object):
         for k in deepcopied_start_config.get(match_map_key, {}):
             match_map = deepcopied_start_config[match_map_key][k]
             short_string = summarise_list(match_map.splitlines(),
-                                          PrivCountNode.MAX_MATCH_LEN)
+                                          PrivCountNode.MAX_MATCH_LEN,
+                                          sort_output=False)
             deepcopied_start_config[match_map_key][k] = short_string
 
 class PrivCountServer(PrivCountNode):

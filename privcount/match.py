@@ -273,7 +273,7 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
             not is_collection_tag_valid(suffix_node) and len(suffix_node) > 0):
             duplicates = True
             # sort names alphabetically, so the logs are in a sensible order
-            child_summary = summarise_list(sorted(suffix_node.keys()), 50)
+            child_summary = summarise_list(suffix_node.keys(), 50)
             child_all = " ".join(suffix_node.keys())
             logging.info("Adding shorter suffix {} for collection {}, pruning existing children {}"
                          .format(insert_string, collection_tag, child_summary))
@@ -299,7 +299,7 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
     if len(longer_suffix_list) > 0:
         duplicates = True
         # sort names alphabetically, so the logs are in a sensible order
-        suffix_summary = summarise_list(sorted(longer_suffix_list), 50)
+        suffix_summary = summarise_list(longer_suffix_list, 50)
         suffix_all = " ".join(longer_suffix_list)
         logging.info("Suffix match for {} ignored longer suffixes {}"
                      .format(collection_tag, suffix_summary))

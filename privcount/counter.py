@@ -1792,7 +1792,7 @@ def extra_counters(first, second, first_name, second_name, action_name):
     # Log missing keys
     if len(extra_keys) > 0:
         # sort names alphabetically, so the logs are in a sensible order
-        counter_summary = summarise_list(sorted(extra_keys), 50)
+        counter_summary = summarise_list(extra_keys, 50)
         logging.info("{} counters '{}' because they have a {}, but no {}"
                      .format(action_name, counter_summary,
                              first_name, second_name))
@@ -1837,7 +1837,7 @@ def _skip_missing(counters, expected_subkey, detailed_source=None):
             invalid_counters.append(key)
     if len(invalid_counters) > 0:
         # sort names alphabetically, so the logs are in a sensible order
-        counter_summary = summarise_list(sorted(invalid_counters), 50)
+        counter_summary = summarise_list(invalid_counters, 50)
         logging.warning("ignoring counters {} because they are configured as {} counters, but they do not have any {} value"
                         .format(counter_summary, detailed_source, expected_subkey))
     return valid_counters
