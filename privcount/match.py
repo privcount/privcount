@@ -132,10 +132,22 @@ def lower_if_hasattr(obj):
     '''
     return obj.lower() if hasattr(obj, 'lower') else obj
 
-def exact_match_prepare_collection(exact_collection, validate=True):
+def exact_match_prepare_collection(exact_collection,
+                                   existing_exacts=None,
+                                   validate=True):
     '''
     Prepare a hashable object collection for efficient exact matching.
     If the objects in the collection are strings, lowercases them.
+
+    existing_exacts is a list of previously prepared collections.
+
+    If existing_exacts is not None, append the new collection to
+    existing_exacts, as well as returning the prepared collection.
+
+    If multiple lists are prepared using the same existing_exacts, then
+    the final lists are disjoint. Any duplicate items are ignored, and a
+    warning is logged. (An item that appears in multiple input lists is
+    output in the earliest list it appears in.)
 
     If validate is True, checks that exact_match() returns True for each
     item in exact_collection.
@@ -152,21 +164,32 @@ def exact_match_prepare_collection(exact_collection, validate=True):
     if len(exact_collection) != len(exact_set):
       dups = [obj for obj in exact_set
               if exact_collection_lower.count(lower_if_hasattr(obj)) > 1]
-      dups_summary = summarise_list(sorted(dups), 50)
-      logging.warning("Removing {} duplicates from the collection"
+      dups_summary = summarise_list(dups, 50)
+      logging.warning("Removing {} duplicates within this collection"
                       .format(dups_summary))
     # the encoded json measures transmission size, not RAM size
     logging.info("Exact match prepared {} items ({})"
                  .format(len(exact_set),
                          format_bytes(len(json_serialise(list(exact_set))))))
 
-    # Now check that each item actually matches the list
+    # Check that each item actually matches the list
     if validate:
         logging.info("Validating {} items".format(len(exact_collection)))
         for item in exact_collection:
             assert exact_match(exact_set, item)
 
-    return exact_set
+    if existing_exacts is None:
+        return exact_set
+    else:
+        # Remove any items that appear in earlier lists
+        disjoint_exact_set = exact_set.difference(*existing_exacts)
+        duplicate_exact_set = exact_set.difference(disjoint_exact_set)
+        if len(duplicate_exact_set) > 0:
+            dups_summary = summarise_list(duplicate_exact_set, 50)
+            logging.warning("Removing {} duplicates that are also in an earlier collection"
+                            .format(dups_summary))
+        existing_exacts.append(disjoint_exact_set)
+        return disjoint_exact_set
 
 def exact_match(exact_obj, search_obj):
     '''
@@ -211,11 +234,20 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
     If specified, the separator is also required before the suffix.
     For example, domain suffixes use "." as a separator between components.
 
+    existing_suffixes is a previously prepared suffix data structure.
+
     If existing_suffixes is not None, add the new suffixes to
     existing_suffixes, and return existing_suffixes. Each suffix is terminated
     with collection_tag, which can be used to distinguish between suffixes
     from different lists. collection_tag must be a non-dict type that is not
     None.
+
+    If multiple lists are prepared using the same existing_suffixes, then the
+    final suffix data structure is disjoint. Any duplicate or longer
+    suffixes are eliminated, and a warning is logged. (A suffix that appears
+    in multiple input lists is output in the earliest list it appears in.
+    A shorter suffix in a later list replaces any longer suffixes in earlier
+    lists.)
 
     If validate is True, checks that suffix_match() returns True for each
     item in suffix_collection.
@@ -275,8 +307,8 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
             # sort names alphabetically, so the logs are in a sensible order
             child_summary = summarise_list(suffix_node.keys(), 50)
             child_all = " ".join(suffix_node.keys())
-            logging.info("Adding shorter suffix {} for collection {}, pruning existing children {}"
-                         .format(insert_string, collection_tag, child_summary))
+            logging.warning("Adding shorter suffix {} for collection {}, pruning existing children {}"
+                            .format(insert_string, collection_tag, child_summary))
             logging.debug("Adding shorter suffix {} for collection {}, pruning existing children {}"
                           .format(insert_string, collection_tag, child_all))
 
@@ -301,8 +333,8 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
         # sort names alphabetically, so the logs are in a sensible order
         suffix_summary = summarise_list(longer_suffix_list, 50)
         suffix_all = " ".join(longer_suffix_list)
-        logging.info("Suffix match for {} ignored longer suffixes {}"
-                     .format(collection_tag, suffix_summary))
+        logging.warning("Suffix match for {} ignored longer suffixes {}"
+                        .format(collection_tag, suffix_summary))
         logging.debug("Suffix match for {} ignored longer suffixes {}"
                       .format(collection_tag, suffix_all))
 

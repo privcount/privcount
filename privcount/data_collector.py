@@ -449,7 +449,8 @@ class Aggregator(ReconnectingClientFactory):
         if self.needs_domain_exact_match:
             for i in xrange(len(domain_lists)):
                 logging.info('Preparing domain list {}'.format(i))
-                self.domain_exact_objs.append(exact_match_prepare_collection(domain_lists[i]))
+                exact_match_prepare_collection(domain_lists[i],
+                                               existing_exacts=self.domain_exact_objs)
         else:
             logging.info('No domain exact counters, skipping domain exact lists')
         self.domain_suffix_obj = {}
@@ -460,7 +461,8 @@ class Aggregator(ReconnectingClientFactory):
         self.country_exact_objs = []
         for i in xrange(len(country_lists)):
             logging.info('Preparing country list {}'.format(i))
-            self.country_exact_objs.append(exact_match_prepare_collection(country_lists[i]))
+            exact_match_prepare_collection(country_lists[i],
+                                           existing_exacts=self.country_exact_objs)
         # IP addresses are prefix-matched against IP to AS maps,
         # then the ASs are exact-matched against AS lists
         self.as_prefix_map_objs = {}
@@ -474,7 +476,8 @@ class Aggregator(ReconnectingClientFactory):
         self.as_exact_objs = []
         for i in xrange(len(as_data.get('lists', []))):
             logging.info('Preparing AS list {}'.format(i))
-            self.as_exact_objs.append(exact_match_prepare_collection(as_data['lists'][i]))
+            exact_match_prepare_collection(as_data['lists'][i],
+                                           existing_exacts=self.as_exact_objs)
         self.connector = None
         self.connector_list = None
         self.protocol = None

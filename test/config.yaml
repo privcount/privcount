@@ -18,8 +18,9 @@ tally_server:
     # a list of paths to files of newline-separated DNS domain name strings
     # BEWARE: these do not match the MaxMind Country Codes
     domain_files:
-        # These lists must be disjoint. The tally server will log an info-level
-        # message when it eliminates duplicate entries.
+        # These lists must be disjoint. The tally server will log a
+        # warning when it eliminates duplicate entries, or
+        # entries that are longer suffixes of other entries.
         #
         # The first domain list is used for the ExitDomain*MatchWebInitialStream Ratio, LifeTime, and Histogram counters
         # Their ExitDomainNo*MatchWebInitialStream* equivalents are used when there is no match in the first list
@@ -46,6 +47,9 @@ tally_server:
     # BEWARE: these do not match the IANA Country Codes
     # country-all.txt contains instructions for creating country lists
     country_files:
+        # These lists must be disjoint. The tally server will log a
+        # warning when it eliminates duplicate entries.
+        #
         # The first country list is used for the *CountryMatchConnection, LifeTime and *Histogram counters
         # Their *CountryNoMatchConnection equivalents are used when there is no match in the first list
         # Each country list corresponds to a bin in the *CountryMatchConnection*CountList counters
@@ -69,6 +73,9 @@ tally_server:
     # a list of paths to files of newline-separated AS Numbers
     # each file contains instructions for creating the list
     as_files:
+        # These lists must be disjoint. The tally server will log a
+        # warning when it eliminates duplicate entries.
+        #
         # The first AS list is used for the *ASMatchConnection, LifeTime and *Histogram counters
         # Their *ASNoMatchConnection equivalents are used when there is no match in the first list
         # Each AS list corresponds to a bin in the *ASMatchConnection*CountList counters

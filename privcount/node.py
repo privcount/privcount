@@ -459,10 +459,16 @@ class PrivCountClient(PrivCountNode):
             response['Config']['Start'] = deepcopy(self.start_config)
             PrivCountNode.summarise_match_lists(response['Config']['Start'],
                                                 'domain_lists')
+            PrivCountNode.summarise_match_lists(response['Config']['Start'],
+                                                'domain_exacts')
             PrivCountNode.summarise_match_suffixes(response['Config']['Start'],
                                                    'domain_suffixes')
             PrivCountNode.summarise_match_lists(response['Config']['Start'],
                                                 'country_lists')
+            PrivCountNode.summarise_match_lists(response['Config']['Start'],
+                                                'country_exacts')
+            PrivCountNode.summarise_match_lists(response['Config']['Start'],
+                                                'as_raw_lists')
             PrivCountNode.summarise_match_maps(response['Config']['Start'].get('as_data', {}),
                                                'prefix_maps')
             PrivCountNode.summarise_match_lists(response['Config']['Start'].get('as_data', {}),

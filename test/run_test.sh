@@ -973,6 +973,9 @@ grep -v -e NOTICE -e INFO -e DEBUG \
   -e "Unexpected PeerIPAddressConsensusRelayCount value" \
   -e "zero, this provides no differential privacy" \
   -e "calculated sigmas will be zero for all statistics" \
+  -e "ignored longer suffixes" \
+  -e "pruning existing children" \
+  -e "duplicates that are also in an earlier collection" \
   "$TEST_DIR/"privcount.*.latest.log \
   || true
 # Log any source-specific warnings
