@@ -75,7 +75,7 @@ class TorCtlClient(ReconnectingClientFactory):
         # ask for all the events
         events = get_valid_events()
         # events -= { 'PRIVCOUNT_CIRCUIT_CELL', }
-        print "Relay events: {}".format(", ".join(events))
+        print "Relay events: {}".format(", ".join(sorted(events)))
         self.client.startCollection(None, event_list=events)
         return self.client
 
