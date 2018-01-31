@@ -83,14 +83,16 @@ Here is how I generate an events.txt file:
 
 2. Open another terminal in a privcount-patched tor directory:
 
-    ../chutney/tools/test-network.sh --flavour hs-exit-min --data 100
+    ../chutney/tools/test-network.sh --flavour hs-single-onion-v23-exit-min \
+        --data 100
 
    The single client in this network will produce 1 stream with 100 bytes of
-   data, to both the exit and the onion service in the network.
+   data, to the exit and all the onion services in the network.
    You might need to run the the network a few times to see all the different
    events.
 
-   If your chutney doesn't have hs-exit-min, get the latest version using:
+   If your chutney doesn't have hs-single-onion-v23-exit-min, get the latest
+   version using:
 
    git clone https://git.torproject.org/chutney.git
 
