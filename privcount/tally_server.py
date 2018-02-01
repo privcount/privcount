@@ -22,7 +22,7 @@ from privcount.config import normalise_path, choose_secret_handshake_path, _extr
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string, summarise_list
-from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_string, load_match_list, load_as_prefix_map, exact_match, suffix_match
+from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_string, load_match_list, load_as_prefix_map, exact_match, suffix_match, suffix_match_validate_item
 from privcount.node import PrivCountNode, PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
 from privcount.statistics_noise import get_noise_allocation, get_sanity_check_counter, DEFAULT_DUMMY_COUNTER_NAME
@@ -599,15 +599,12 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # and check that the matching actually works
                 for i in xrange(len(ts_conf['domain_lists'])):
                     for item in ts_conf['domain_lists'][i]:
-                        try:
-                            assert suffix_match(ts_conf['domain_suffixes'],
-                                                item, separator=".") is not None
-                        except:
-                            logging.warning("Validating domain {} list {} failed:\nList:\n{}\nSuffix:\n{}"
-                                            .format(item, i,
-                                                    ts_conf['domain_lists'][i],
-                                                    ts_conf['domain_suffixes']))
-                            raise
+                        suffix_match_validate_item(ts_conf['domain_suffixes'],
+                                                   item,
+                                                   ts_conf['domain_lists'][i],
+                                                   separator=".",
+                                                   expected_collection_tag=i,
+                                                   expect_disjoint=False)
 
             assert len(ts_conf.get('domain_files', [])) == len(ts_conf['domain_lists'])
             assert len(ts_conf.get('domain_files', [])) == len(ts_conf['domain_exacts'])
