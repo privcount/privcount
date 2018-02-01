@@ -151,11 +151,12 @@ class TallyServer(ServerFactory, PrivCountServer):
         if self.collection_phase is not None:
             self.collection_phase.log_status()
 
-    def load_match_file(self, file_path, new_match_lists,
+    @staticmethod
+    def load_match_file(config, file_path, new_match_lists,
                         old_match_files, old_match_lists,
                         check_domain=False, check_country=False,
                         check_as=False,
-                        prepare_exact=True, prepare_suffix=True,
+                        prepare_exact=False, prepare_suffix=False,
                         existing_exacts=None, existing_suffixes=None,
                         collection_tag=-1, has_any_previous_list_changed=False):
         '''
@@ -170,10 +171,10 @@ class TallyServer(ServerFactory, PrivCountServer):
         CAIDA AS Number, and load the first AS number in each AS set or
         multi-origin AS.
 
-        If the file is not in old_match_files, or the contents do not match
-        old_match_lists, or has_any_previous_list_changed is True, then check
-        that the list can be prepared for matching, based on prepare_exact and
-        prepare_suffix.
+        If config is None, or the file is not in old_match_files, or the
+        contents do not match old_match_lists, or
+        has_any_previous_list_changed is True, then check that the list can be
+        prepared for matching, based on prepare_exact and prepare_suffix.
 
         If prepare_exact and existing_exacts are not None, add the exacts
         to existing_exacts.
@@ -196,7 +197,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         # only re-process the list when it changes, because it takes
         # about 5 seconds to process the Alexa Top 1 million
         if (has_any_previous_list_changed or
-            self.config is None or
+            config is None or
             old_match_files is None or
             file_path not in old_match_files or
             old_match_lists is None or
@@ -218,7 +219,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             new_match_lists.append(match_list)
         return (file_path, has_list_changed)
 
-    def load_domain_file_exact(self,
+    @staticmethod
+    def load_domain_file_exact(config,
                                file_path, new_domain_lists,
                                old_domain_files, old_domain_lists,
                                existing_domain_exacts,
@@ -226,15 +228,15 @@ class TallyServer(ServerFactory, PrivCountServer):
         '''
         Load a domain file exact matches using load_match_file().
         '''
-        return self.load_match_file(file_path, new_domain_lists,
-                                    old_domain_files, old_domain_lists,
-                                    check_domain=True, check_country=False,
-                                    check_as=False,
-                                    prepare_exact=True, prepare_suffix=False,
-                                    existing_exacts=existing_domain_exacts,
-                                    has_any_previous_list_changed=has_any_previous_domain_list_changed)
+        return TallyServer.load_match_file(config, file_path, new_domain_lists,
+                                           old_domain_files, old_domain_lists,
+                                           check_domain=True,
+                                           prepare_exact=True,
+                                           existing_exacts=existing_domain_exacts,
+                                           has_any_previous_list_changed=has_any_previous_domain_list_changed)
 
-    def load_domain_file_suffix(self,
+    @staticmethod
+    def load_domain_file_suffix(config,
                                 file_path,
                                 existing_domain_suffixes=None,
                                 collection_tag=-1):
@@ -242,15 +244,15 @@ class TallyServer(ServerFactory, PrivCountServer):
         Load a domain file suffix matches using load_match_file().
         Always reloads all suffixes, regardless of previous suffixes.
         '''
-        return self.load_match_file(file_path, None,
-                                    None, None,
-                                    check_domain=True, check_country=False,
-                                    check_as=False,
-                                    prepare_exact=False, prepare_suffix=True,
-                                    existing_suffixes=existing_domain_suffixes,
-                                    collection_tag=collection_tag)
+        return TallyServer.load_match_file(config, file_path, None,
+                                           None, None,
+                                           check_domain=True,
+                                           prepare_suffix=True,
+                                           existing_suffixes=existing_domain_suffixes,
+                                           collection_tag=collection_tag)
 
-    def load_country_file(self, file_path, new_country_lists,
+    @staticmethod
+    def load_country_file(config, file_path, new_country_lists,
                           old_country_files, old_country_lists,
                           existing_country_exacts,
                           has_any_previous_country_list_changed):
@@ -258,15 +260,15 @@ class TallyServer(ServerFactory, PrivCountServer):
         Load a country file using load_match_file().
         '''
         # country files only do exact matching
-        return self.load_match_file(file_path, new_country_lists,
-                                    old_country_files, old_country_lists,
-                                    check_domain=False, check_country=True,
-                                    check_as=False,
-                                    prepare_exact=True, prepare_suffix=False,
-                                    existing_exacts=existing_country_exacts,
-                                    has_any_previous_list_changed=has_any_previous_country_list_changed)
+        return TallyServer.load_match_file(config, file_path, new_country_lists,
+                                           old_country_files, old_country_lists,
+                                           check_country=True,
+                                           prepare_exact=True,
+                                           existing_exacts=existing_country_exacts,
+                                           has_any_previous_list_changed=has_any_previous_country_list_changed)
 
-    def load_as_file(self, file_path, new_as_lists,
+    @staticmethod
+    def load_as_file(config, file_path, new_as_lists,
                      old_as_files, old_as_lists,
                      existing_as_exacts,
                      has_any_previous_as_list_changed):
@@ -275,15 +277,15 @@ class TallyServer(ServerFactory, PrivCountServer):
         '''
         # AS files do exact matching of AS numbers, after a prefix lookup on
         # an IP address using a separate data file
-        return self.load_match_file(file_path, new_as_lists,
-                                    old_as_files, old_as_lists,
-                                    check_domain=False, check_country=False,
-                                    check_as=True,
-                                    prepare_exact=True, prepare_suffix=False,
-                                    existing_exacts=existing_as_exacts,
-                                    has_any_previous_list_changed=has_any_previous_as_list_changed)
+        return TallyServer.load_match_file(config, file_path, new_as_lists,
+                                           old_as_files, old_as_lists,
+                                           check_as=True,
+                                           prepare_exact=True,
+                                           existing_exacts=existing_as_exacts,
+                                           has_any_previous_list_changed=has_any_previous_as_list_changed)
 
-    def load_as_prefix_file(self, ip_version, file_path, new_as_prefix_maps,
+    @staticmethod
+    def load_as_prefix_file(config, ip_version, file_path, new_as_prefix_maps,
                             old_as_prefix_files, old_as_prefix_maps,
                             prepare_prefix=True):
         '''
@@ -292,9 +294,10 @@ class TallyServer(ServerFactory, PrivCountServer):
         newline. Loads data from from file_path into
         new_as_prefix_maps[ip_version].
 
-        If file_path is not equal to old_as_prefix_files[ip_version], or the
-        contents do not match old_as_prefix_maps[ip_version], then check that
-        the list can be prepared for matching, based on prepare_prefix.
+        If config is None, or file_path is not equal to
+        old_as_prefix_files[ip_version], or the contents do not match
+        old_as_prefix_maps[ip_version], then check that the list can be
+        prepared for matching, based on prepare_prefix.
 
         Returns the normalised file_path, and a boolean indicating whether the
         list changed since the last time it was loaded.
@@ -314,7 +317,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         prefix_map = "\n".join(map_list)
 
         # only re-process the map when it changes
-        if (self.config is None or
+        if (config is None or
             file_path != old_as_prefix_files.get(ip_version) or
             prefix_map != old_as_prefix_maps.get(ip_version)):
             has_list_changed = True
@@ -551,12 +554,14 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # reload all the exact match lists
                 for i in xrange(len(ts_conf['domain_files'])):
                     (file_path,
-                     has_list_changed) = self.load_domain_file_exact(ts_conf['domain_files'][i],
-                                                                     ts_conf['domain_lists'],
-                                                                     old_domain_files,
-                                                                     old_domain_lists,
-                                                                     ts_conf['domain_exacts'],
-                                                                     has_any_list_changed)
+                     has_list_changed) = TallyServer.load_domain_file_exact(
+                                                    self.config,
+                                                    ts_conf['domain_files'][i],
+                                                    ts_conf['domain_lists'],
+                                                    old_domain_files,
+                                                    old_domain_lists,
+                                                    ts_conf['domain_exacts'],
+                                                    has_any_list_changed)
                     ts_conf['domain_files'][i] = file_path
                     if has_list_changed:
                         has_any_list_changed = True
@@ -573,17 +578,21 @@ class TallyServer(ServerFactory, PrivCountServer):
                         ts_conf['domain_lists'] = []
                         ts_conf['domain_exacts'] = []
                         for i in xrange(len(ts_conf['domain_files'])):
-                            _ = self.load_domain_file_exact(ts_conf['domain_files'][i],
-                                                            ts_conf['domain_lists'],
-                                                            old_domain_files,
-                                                            old_domain_lists,
-                                                            ts_conf['domain_exacts'],
-                                                            has_any_list_changed)
+                            _ = TallyServer.load_domain_file_exact(
+                                                    self.config,
+                                                    ts_conf['domain_files'][i],
+                                                    ts_conf['domain_lists'],
+                                                    old_domain_files,
+                                                    old_domain_lists,
+                                                    ts_conf['domain_exacts'],
+                                                    has_any_list_changed)
                     # if any of the lists have changed, reload the suffixes
                     for i in xrange(len(ts_conf['domain_files'])):
-                        _ = self.load_domain_file_suffix(ts_conf['domain_files'][i],
-                                                         existing_domain_suffixes=ts_conf['domain_suffixes'],
-                                                         collection_tag=i)
+                        _ = TallyServer.load_domain_file_suffix(
+                                                    self.config,
+                                                    ts_conf['domain_files'][i],
+                                                    existing_domain_suffixes=ts_conf['domain_suffixes'],
+                                                    collection_tag=i)
                 # now, adjust the bins so we can count every list
                 TallyServer.modify_domain_bins(len(ts_conf['domain_files']),
                                                ts_conf['counters'])
@@ -618,12 +627,14 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # reload all the lists
                 for i in xrange(len(ts_conf['country_files'])):
                     (file_path,
-                     has_list_changed) = self.load_country_file(ts_conf['country_files'][i],
-                                                                ts_conf['country_lists'],
-                                                                old_country_files,
-                                                                old_country_lists,
-                                                                ts_conf['country_exacts'],
-                                                                has_any_list_changed)
+                     has_list_changed) = TallyServer.load_country_file(
+                                                  self.config,
+                                                  ts_conf['country_files'][i],
+                                                  ts_conf['country_lists'],
+                                                  old_country_files,
+                                                  old_country_lists,
+                                                  ts_conf['country_exacts'],
+                                                  has_any_list_changed)
                     ts_conf['country_files'][i] = file_path
                     if has_list_changed:
                         has_any_list_changed = True
@@ -638,12 +649,14 @@ class TallyServer(ServerFactory, PrivCountServer):
                     ts_conf['country_lists'] = []
                     ts_conf['country_exacts'] = []
                     for i in xrange(len(ts_conf['country_files'])):
-                        _ = self.load_country_file(ts_conf['country_files'][i],
-                                                   ts_conf['country_lists'],
-                                                   old_country_files,
-                                                   old_country_lists,
-                                                   ts_conf['country_exacts'],
-                                                   has_any_list_changed)
+                        _ = TallyServer.load_country_file(
+                                                  self.config,
+                                                  ts_conf['country_files'][i],
+                                                  ts_conf['country_lists'],
+                                                  old_country_files,
+                                                  old_country_lists,
+                                                  ts_conf['country_exacts'],
+                                                  has_any_list_changed)
                 # now, adjust the bins so we can count every list
                 TallyServer.modify_country_bins(len(ts_conf['country_files']),
                                                 ts_conf['counters'])
@@ -667,12 +680,14 @@ class TallyServer(ServerFactory, PrivCountServer):
                 for ipv in ts_conf['as_prefix_files']:
                     assert ipv == 4 or ipv == 6
                     (file_path,
-                     _) = self.load_as_prefix_file(ipv,
-                                                   ts_conf['as_prefix_files'][ipv],
-                                                   ts_conf['as_data']['prefix_maps'],
-                                                   old_as_prefix_files,
-                                                   old_as_prefix_maps,
-                                                   prepare_prefix=True)
+                     _) = TallyServer.load_as_prefix_file(
+                                           self.config,
+                                           ipv,
+                                           ts_conf['as_prefix_files'][ipv],
+                                           ts_conf['as_data']['prefix_maps'],
+                                           old_as_prefix_files,
+                                           old_as_prefix_maps,
+                                           prepare_prefix=True)
                     ts_conf['as_prefix_files'][ipv] = file_path
 
             assert len(ts_conf.get('as_prefix_files', [])) == len(ts_conf['as_data']['prefix_maps'])
@@ -695,12 +710,14 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # reload all the lists
                 for i in xrange(len(ts_conf['as_files'])):
                     (file_path,
-                     has_list_changed) = self.load_as_file(ts_conf['as_files'][i],
-                                                           ts_conf['as_raw_lists'],
-                                                           old_as_files,
-                                                           old_as_lists,
-                                                           ts_conf['as_data']['lists'],
-                                                           has_any_list_changed)
+                     has_list_changed) = TallyServer.load_as_file(
+                                                 self.config,
+                                                 ts_conf['as_files'][i],
+                                                 ts_conf['as_raw_lists'],
+                                                 old_as_files,
+                                                 old_as_lists,
+                                                 ts_conf['as_data']['lists'],
+                                                 has_any_list_changed)
                     ts_conf['as_files'][i] = file_path
                     if has_list_changed:
                         has_any_list_changed = True
@@ -715,12 +732,14 @@ class TallyServer(ServerFactory, PrivCountServer):
                     ts_conf['as_raw_lists'] = []
                     ts_conf['as_data']['lists'] = []
                     for i in xrange(len(ts_conf['as_files'])):
-                        _ = self.load_as_file(ts_conf['as_files'][i],
-                                              ts_conf['as_raw_lists'],
-                                              old_as_files,
-                                              old_as_lists,
-                                              ts_conf['as_data']['lists'],
-                                              has_any_list_changed)
+                        _ = TallyServer.load_as_file(
+                                                  self.config,
+                                                  ts_conf['as_files'][i],
+                                                  ts_conf['as_raw_lists'],
+                                                  old_as_files,
+                                                  old_as_lists,
+                                                  ts_conf['as_data']['lists'],
+                                                  has_any_list_changed)
                 # now, adjust the bins so we can count every list
                 TallyServer.modify_as_bins(len(ts_conf['as_files']),
                                            ts_conf['counters'])
