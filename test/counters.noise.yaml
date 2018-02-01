@@ -2945,3 +2945,21 @@ counters:
     ExitHostnameNonWebSubsequentStreamCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    HSDir2FetchCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchCount:
+        estimated_value: 0.0
+        sensitivity: 0.0

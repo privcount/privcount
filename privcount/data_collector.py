@@ -1116,7 +1116,7 @@ class Aggregator(ReconnectingClientFactory):
         elif event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE':
             return self._handle_hsdir_stored_event(fields)
         elif event_code == 'PRIVCOUNT_HSDIR_CACHE_FETCH':
-            return True
+            return self._handle_hsdir_fetched_event(fields)
         else:
             logging.warning("Unexpected {} event when handling: '{}'"
                             .format(event_code, " ".join(items)))
@@ -3432,6 +3432,16 @@ class Aggregator(ReconnectingClientFactory):
 
         # Validate the mandatory fields
 
+        # 50 is an arbitrary limit, the current maximum is 11 characters
+        if not is_string_valid("CacheReasonString",
+                               fields, event_desc,
+                               is_mandatory=True,
+                               min_len=1,
+                               max_len=50):
+            return False
+
+        # Validate the optional fields
+
         # Check the cache flags
 
         if not is_flag_valid("HasExistingCacheEntryFlag",
@@ -3501,6 +3511,25 @@ class Aggregator(ReconnectingClientFactory):
                               min_value=0.0):
             return False
         if not Aggregator.is_allowed_version_valid("DescriptorCreationTime",
+                                                   fields, event_desc,
+                                                   allowed_version=2):
+            return False
+
+        # Always 32 characters, checked by Tor, not yet implemented in v3,
+        # if it is implemented in v3, it will be longer
+        if not is_string_valid("DescriptorIdBase32String",
+                               fields, event_desc,
+                               is_mandatory=False,
+                               min_len=32):
+            return False
+
+        # Onion Addresses are v2 only, and checked by Tor
+        if not is_string_valid("OnionAddress",
+                               fields, event_desc,
+                               is_mandatory=False,
+                               min_len=16, max_len=16):
+            return False
+        if not Aggregator.is_allowed_version_valid("OnionAddress",
                                                    fields, event_desc,
                                                    allowed_version=2):
             return False
@@ -3584,6 +3613,17 @@ class Aggregator(ReconnectingClientFactory):
             Aggregator.warn_unexpected_field_value("DescriptorLifetime",
                                                    fields, event_desc)
         if not Aggregator.is_allowed_version_valid("DescriptorLifetime",
+                                                   fields, event_desc,
+                                                   allowed_version=3):
+            return False
+
+        # BlindedEd25519PublicKeyBase64String are v3 only, and checked by Tor
+        if not is_string_valid("BlindedEd25519PublicKeyBase64String",
+                               fields, event_desc,
+                               is_mandatory=False,
+                               min_len=43, max_len=43):
+            return False
+        if not Aggregator.is_allowed_version_valid("BlindedEd25519PublicKeyBase64String",
                                                    fields, event_desc,
                                                    allowed_version=3):
             return False
@@ -3784,9 +3824,11 @@ class Aggregator(ReconnectingClientFactory):
           CacheReasonString, HasExistingCacheEntryFlag, WasAddedToCacheFlag,
           EncodedDescriptorByteCount, EncodedIntroPointByteCount
         v2:
+          OnionAddress, DescriptorIdBase32String,
           DescriptorCreationTime, SupportedProtocolBitfield,
           RequiresClientAuthFlag, IntroPointCount, IntroPointFingerprintList
         v3:
+          BlindedEd25519PublicKeyBase64String,
           RevisionNumber, DescriptorLifetime
 
         See doc/TorEvents.markdown for all field names and definitions.
@@ -3947,6 +3989,159 @@ class Aggregator(ReconnectingClientFactory):
                                                   bin=revision_num,
                                                   inc=1,
                                                   log_missing_counters=False)
+        # we processed and handled the event
+        return True
+
+    @staticmethod
+    def are_hsdir_fetched_fields_valid(fields, event_desc):
+        '''
+        Check if the PRIVCOUNT_HSDIR_CACHE_FETCH fields are valid.
+        Returns True if they are all valid, False if one or more are not.
+        Logs a warning using event_desc for the first field that is invalid.
+        '''
+
+        if not Aggregator.are_hsdir_common_fields_valid(fields, event_desc):
+            return False
+
+        hs_version = Aggregator.get_hs_version(fields, event_desc,
+                                               is_mandatory=True)
+
+        # Validate the mandatory cache fields
+
+        if not is_int_valid("CacheQueryByteCount",
+                            fields, event_desc,
+                            is_mandatory=True,
+                            min_value=0):
+            return False
+
+        # Validate the optional cache fields
+
+        if not is_flag_valid("HasCacheEntryFlag",
+                             fields, event_desc,
+                             is_mandatory=False):
+            return False
+
+
+        if not is_int_valid("CacheLastServedTime",
+                              fields, event_desc,
+                              is_mandatory=False,
+                              min_value=0):
+            return False
+        if not Aggregator.is_allowed_version_valid("CacheLastServedTime",
+                                                   fields, event_desc,
+                                                   allowed_version=2):
+            return False
+
+        if not is_int_valid("CacheCreatedTime",
+                            fields, event_desc,
+                            is_mandatory=False,
+                            min_value=0):
+            return False
+        if not Aggregator.is_allowed_version_valid("CacheCreatedTime",
+                                                   fields, event_desc,
+                                                   allowed_version=3):
+            return False
+
+        # if everything passed, we're ok
+        return True
+
+    def _increment_hsdir_fetched_counters(self, counter_suffix, hs_version,
+                                          reason_str, has_cache_entry,
+                                          event_desc,
+                                          bin=SINGLE_BIN,
+                                          inc=1,
+                                          log_missing_counters=True):
+        '''
+        Increment bin by inc for the set of counters ending in
+        counter_suffix, using hs_version, reason_str, and has_cache_entry,
+        to create the counter names.
+        If log_missing_counters, warn the operator when a requested counter
+        is not in the table in counters.py. Otherwise, unknown names are
+        ignored.
+        '''
+        # create counter names from version and has_cache_entry
+        # TODO: match reason_str against a count list
+        cached_str = "Cached" if has_cache_entry else "Uncached"
+
+        store_counter = "HSDir{}Fetch{}".format(hs_version,
+                                                counter_suffix)
+        cached_counter = "HSDir{}Fetch{}{}".format(hs_version,
+                                                   cached_str,
+                                                   counter_suffix)
+
+        # warn the operator if we don't know the counter name
+        if log_missing_counters:
+            Aggregator.warn_unknown_counter(store_counter,
+                                            counter_suffix,
+                                            event_desc)
+            cached_origin = "HasCacheEntryFlag and {}".format(counter_suffix)
+            Aggregator.warn_unknown_counter(cached_counter,
+                                            cached_origin,
+                                            event_desc)
+
+        # Increment the counters
+        self.secure_counters.increment(store_counter,
+                                       bin=bin,
+                                       inc=inc)
+        self.secure_counters.increment(cached_counter,
+                                       bin=bin,
+                                       inc=inc)
+
+    def _handle_hsdir_fetched_event(self, fields):
+        '''
+        Process a PRIVCOUNT_HSDIR_CACHE_FETCH event
+        This is a tagged event: fields is a dictionary of Key=Value pairs.
+        Fields may be optional, order is unimportant.
+
+        Fields used:
+        Common:
+          HiddenServiceVersionNumber, EventTimestamp,
+          CacheQueryByteCount, CacheReasonString, HasCacheEntryFlag,
+          EncodedDescriptorByteCount, EncodedIntroPointByteCount,
+        v2:
+          OnionAddress, DescriptorIdBase32String,
+          CacheLastServedTime,
+          DescriptorCreationTime, SupportedProtocolBitfield,
+          RequiresClientAuthFlag, IntroPointCount, IntroPointFingerprintList
+        v3:
+          BlindedEd25519PublicKeyBase64String, CacheCreatedTime,
+          RevisionNumber, DescriptorLifetime
+
+        See doc/TorEvents.markdown for all field names and definitions.
+        Returns True if an event was successfully processed (or ignored).
+        Never returns False: we prefer to warn about malformed events and
+        continue processing.
+        '''
+        event_desc = "in PRIVCOUNT_HSDIR_CACHE_FETCH event"
+
+        if not Aggregator.are_hsdir_fetched_fields_valid(fields, event_desc):
+            # handle the event by warning (in the validator) and ignoring it
+            return True
+
+        # Extract mandatory fields
+        hs_version = Aggregator.get_hs_version(fields, event_desc,
+                                               is_mandatory=True)
+        reason_str = get_string_value("CacheReasonString",
+                                      fields, event_desc,
+                                      is_mandatory=True)
+
+        # Extract the optional fields
+        # Cache common
+        has_cache_entry = get_flag_value("HasCacheEntryFlag",
+                                         fields, event_desc,
+                                         is_mandatory=False)
+
+        # Increment counters for mandatory fields
+        # These are the base counters that cover all the upload cases
+        self._increment_hsdir_fetched_counters("Count",
+                                               hs_version,
+                                               reason_str,
+                                               has_cache_entry,
+                                               event_desc,
+                                               bin=SINGLE_BIN,
+                                               inc=1,
+                                               log_missing_counters=True)
+
         # we processed and handled the event
         return True
 

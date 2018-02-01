@@ -1495,3 +1495,9 @@ TODO: merge and integrate with existing counter tests
 - ExitHostnameNonWebSubsequentStreamByteCount
 - ExitHostnameNonWebInitialStreamCount
 - ExitHostnameNonWebSubsequentStreamCount
+- HSDir2FetchCachedCount
+- HSDir3FetchCachedCount
+- HSDir2FetchUncachedCount
+- HSDir3FetchUncachedCount
+- HSDir2FetchCount
+- HSDir3FetchCount

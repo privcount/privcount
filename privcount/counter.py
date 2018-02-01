@@ -1538,6 +1538,15 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'HSDir3StoreAddNewRevisionHistogram' : { HSDIR_STORE_EVENT },
 'HSDir3StoreAddUpdatedRevisionHistogram' : { HSDIR_STORE_EVENT },
 
+# descriptor fetch counters
+'HSDir2FetchCount' : { HSDIR_FETCH_EVENT },
+'HSDir3FetchCount' : { HSDIR_FETCH_EVENT },
+
+'HSDir2FetchCachedCount' : { HSDIR_FETCH_EVENT },
+'HSDir2FetchUncachedCount' : { HSDIR_FETCH_EVENT },
+'HSDir3FetchCachedCount' : { HSDIR_FETCH_EVENT },
+'HSDir3FetchUncachedCount' : { HSDIR_FETCH_EVENT },
+
 # the sanity check counter doesn't depend on any events
 DEFAULT_DUMMY_COUNTER_NAME : set(),
 }

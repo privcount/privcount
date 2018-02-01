@@ -1983,3 +1983,15 @@ counters:
         sigma: 0.0
     ExitHostnameNonWebSubsequentStreamCount:
         sigma: 0.0
+    HSDir2FetchCachedCount:
+        sigma: 0.0
+    HSDir3FetchCachedCount:
+        sigma: 0.0
+    HSDir2FetchUncachedCount:
+        sigma: 0.0
+    HSDir3FetchUncachedCount:
+        sigma: 0.0
+    HSDir2FetchCount:
+        sigma: 0.0
+    HSDir3FetchCount:
+        sigma: 0.0

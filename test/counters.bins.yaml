@@ -10011,3 +10011,21 @@ counters:
     ExitHostnameNonWebSubsequentStreamCount:
         bins:
         - [-.inf, .inf]
+    HSDir2FetchCachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchCachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchUncachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchCount:
+        bins:
+        - [-.inf, .inf]

@@ -1894,3 +1894,15 @@ counters:
         sigma: 1.0e+12
     ExitHostnameNonWebSubsequentStreamCount:
         sigma: 1.0e+12
+    HSDir2FetchCachedCount:
+        sigma: 1.0e+12
+    HSDir3FetchCachedCount:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedCount:
+        sigma: 1.0e+12
+    HSDir3FetchUncachedCount:
+        sigma: 1.0e+12
+    HSDir2FetchCount:
+        sigma: 1.0e+12
+    HSDir3FetchCount:
+        sigma: 1.0e+12
