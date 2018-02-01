@@ -269,62 +269,37 @@ class TallyServer(ServerFactory, PrivCountServer):
         return (file_path, has_list_changed)
 
     @staticmethod
-    def modify_bins(new_bin_count, counter, add_inf_bin=True):
+    def modify_bins(bin_count, counter, add_inf_bin=True):
         '''
-        Put new_bin_count bins in counter,
-        then add a bin up to float('inf') if add_inf_bin is True.
+        Put bin_count bins in counter, with ranges:
+            [0, 1), [1, 2), ... , [bin_count-1, bin_count)
+        If add_inf_bin is True, also add a bin with range:
+            [bin_count, inf]
         '''
+        assert bin_count > 0
         # Don't assume there are any existing bins
         counter['bins'] = []
         counter_bins = counter['bins']
-        # Add bins up to new_bin_count
-        for bin in xrange(new_bin_count):
-            counter_bins.append([bin, bin+1])
+        # Add bins up to bin_count
+        for bin in xrange(bin_count):
+            counter_bins.append([float(bin), float(bin+1)])
         if add_inf_bin:
-            counter_bins.append([new_bin_count, float('inf')])
+            counter_bins.append([float(bin_count), float('inf')])
 
     @staticmethod
-    def modify_domain_bins(new_domain_list_count, new_counters):
+    def modify_counter_list_bins(bin_count, counter_list, add_inf_bin=True,
+                                 counter_filter=None):
         '''
-        Put new_domain_list_count bins in each domain counter in new_counters,
-        then add an unmatched bin to each counter. Uses modify_bins().
-        '''
-        assert new_domain_list_count > 0
-        assert new_counters is not None
-        # Find all the counters we want to modify
-        for counter_name in new_counters:
-            if counter_name.startswith("ExitDomain") and counter_name.endswith("CountList"):
-                TallyServer.modify_bins(new_domain_list_count,
-                                        new_counters[counter_name])
+        Use modify_bins(bin_count, add_inf_bin=add_inf_bin) on each counter in
+        counter_list.
 
-    @staticmethod
-    def modify_country_bins(new_country_list_count, new_counters):
+        Uses counter_filter to find the counter names to modify.
         '''
-        Put new_country_list_count bins in each country counter in new_counters,
-        then add an unmatched bin to each counter. Uses modify_bins().
-        '''
-        assert new_country_list_count > 0
-        assert new_counters is not None
-        # Find all the counters we want to modify
-        for counter_name in new_counters:
-            if "CountryMatch" in counter_name and counter_name.endswith("CountList"):
-                TallyServer.modify_bins(new_country_list_count,
-                                        new_counters[counter_name])
-
-    @staticmethod
-    def modify_as_bins(new_as_list_count, new_counters):
-        '''
-        Put new_as_list_count bins in each AS counter in new_counters,
-        then add an unmatched bin to each counter. Uses modify_bins().
-        '''
-        assert new_as_list_count > 0
-        assert new_counters is not None
-        # Find all the counters we want to modify
-        for counter_name in new_counters:
-            # ASs have both Entry Connection and Exit Stream counters
-            if "ASMatch" in counter_name and counter_name.endswith("CountList"):
-                TallyServer.modify_bins(new_as_list_count,
-                                        new_counters[counter_name])
+        assert counter_list is not None
+        for counter_name in counter_list:
+            if counter_filter is not None and counter_filter(counter_name):
+                TallyServer.modify_bins(bin_count,
+                                        counter_list[counter_name])
 
     def refresh_config(self):
         '''
@@ -538,9 +513,12 @@ class TallyServer(ServerFactory, PrivCountServer):
                                 existing_suffixes=ts_conf['domain_suffixes'],
                                 collection_tag=i,
                                 has_any_previous_list_changed=True)
-                # now, adjust the bins so we can count every list
-                TallyServer.modify_domain_bins(len(ts_conf['domain_files']),
-                                               ts_conf['counters'])
+                # Domains only have Exit counters
+                TallyServer.modify_counter_list_bins(
+                   len(ts_conf['domain_files']),
+                   ts_conf['counters'],
+                   counter_filter=(lambda counter_name: counter_name.startswith("ExitDomain") and
+                                                        counter_name.endswith("CountList")))
                 # and check that the matching actually works
                 for i in xrange(len(ts_conf['domain_lists'])):
                     for item in ts_conf['domain_lists'][i]:
@@ -603,9 +581,12 @@ class TallyServer(ServerFactory, PrivCountServer):
                                 prepare_exact=True,
                                 existing_exacts=ts_conf['country_exacts'],
                                 has_any_previous_list_changed=True)
-                # now, adjust the bins so we can count every list
-                TallyServer.modify_country_bins(len(ts_conf['country_files']),
-                                                ts_conf['counters'])
+                # Countries have both Entry and NonEntry Connection counters
+                TallyServer.modify_counter_list_bins(
+                   len(ts_conf['country_files']),
+                   ts_conf['counters'],
+                   counter_filter=(lambda counter_name: "CountryMatch" in counter_name and
+                                                        counter_name.endswith("CountList")))
 
             assert len(ts_conf.get('country_files', [])) == len(ts_conf['country_lists'])
             assert len(ts_conf.get('country_files', [])) == len(ts_conf['country_exacts'])
@@ -690,9 +671,12 @@ class TallyServer(ServerFactory, PrivCountServer):
                                 prepare_exact=True,
                                 existing_exacts=ts_conf['as_data']['lists'],
                                 has_any_previous_list_changed=True)
-                # now, adjust the bins so we can count every list
-                TallyServer.modify_as_bins(len(ts_conf['as_files']),
-                                           ts_conf['counters'])
+                # ASs have both Entry and NonEntry Connection counters
+                TallyServer.modify_counter_list_bins(
+                   len(ts_conf['as_files']),
+                   ts_conf['counters'],
+                   counter_filter=(lambda counter_name: "ASMatch" in counter_name and
+                                                        counter_name.endswith("CountList")))
 
             assert len(ts_conf.get('as_files', [])) == len(ts_conf['as_raw_lists'])
             assert len(ts_conf.get('as_files', [])) == len(ts_conf['as_data']['lists'])
