@@ -22,6 +22,7 @@ export PRIVCOUNT_DIRECTORY=${PRIVCOUNT_DIRECTORY:-`dirname "$TEST_DIR"`}
 PRIVCOUNT_SOURCE=${PRIVCOUNT_SOURCE:-inject}
 PRIVCOUNT_SHARE_KEEPERS=${PRIVCOUNT_SHARE_KEEPERS:-1}
 PRIVCOUNT_UNIT_TESTS=${PRIVCOUNT_UNIT_TESTS:-1}
+PRIVCOUNT_COUNTER_CHECKS=${PRIVCOUNT_COUNTER_CHECKS:-1}
 PRIVCOUNT_PLOT=${PRIVCOUNT_PLOT:-1}
 PRIVCOUNT_CLEAN_KEYS=${PRIVCOUNT_CLEAN_KEYS:-0}
 PRIVCOUNT_LOG=${PRIVCOUNT_LOG:-""}
@@ -76,6 +77,9 @@ do
       ;;
     --no-unit-tests|-x)
       PRIVCOUNT_UNIT_TESTS=0
+      ;;
+    --no-counter-checks|-y)
+      PRIVCOUNT_COUNTER_CHECKS=0
       ;;
     --no-plot|-z)
       PRIVCOUNT_PLOT=0
@@ -149,6 +153,8 @@ do
       "$I" "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
       "$W" "  -x: skip unit tests"
       "$I" "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
+      "$W" "  -y: skip counter and event checks"
+      "$I" "    default: '$PRIVCOUNT_COUNTER_CHECKS' (1: run, 0: skip)"
       "$W" "  -z: skip plot"
       "$I" "    default: '$PRIVCOUNT_PLOT' (1: run, 0: skip)"
       "$W" "  -e: clean keys before starting PrivCount"
@@ -437,20 +443,22 @@ if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then
 fi
 
 # Run the counter and event matching checks
-if [ "$PRIVCOUNT_LOG" = "-q" ]; then
-  "$TEST_DIR/test_event_match.sh" > /dev/null
-else
-  "$I" "Checking that all events have counters, increments, tests, and docs:"
-  "$TEST_DIR/test_event_match.sh"
-  "$I" ""
-fi
+if [ "$PRIVCOUNT_COUNTER_CHECKS" -eq 1 ]; then
+  if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+    "$TEST_DIR/test_event_match.sh" > /dev/null
+  else
+    "$I" "Checking that all events have counters, increments, tests, and docs:"
+    "$TEST_DIR/test_event_match.sh"
+    "$I" ""
+  fi
 
-if [ "$PRIVCOUNT_LOG" = "-q" ]; then
-  "$TEST_DIR/test_counter_match.sh" > /dev/null
-else
-  "$I" "Checking that all counters have events, increments, tests, and docs:"
-  "$TEST_DIR/test_counter_match.sh"
-  "$I" ""
+  if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+    "$TEST_DIR/test_counter_match.sh" > /dev/null
+  else
+    "$I" "Checking that all counters have events, increments, tests, and docs:"
+    "$TEST_DIR/test_counter_match.sh"
+    "$I" ""
+  fi
 fi
 
 if [ "$PRIVCOUNT_UNIT_TESTS" -eq 1 ]; then
