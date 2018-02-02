@@ -101,10 +101,10 @@ def is_string_valid(field_name, fields, event_desc,
         return True
     field_value = fields[field_name]
     field_len = len(field_value)
-    field_value_log = summarise_string(field_value, 20)
+    field_value_summary = summarise_string(field_value)
     if min_len is not None and field_len < min_len:
         logging.warning("Ignored {} length {}: '{}', must be at least {} characters {}"
-                        .format(field_name, field_len, field_value_log,
+                        .format(field_name, field_len, field_value_summary,
                                 min_len, event_desc))
         logging.debug("Ignored {} length {} (full string): '{}', must be at least {} characters {}"
                       .format(field_name, field_len, field_value,
@@ -113,7 +113,7 @@ def is_string_valid(field_name, fields, event_desc,
         return False
     if max_len is not None and field_len > max_len:
         logging.warning("Ignored {} length {}: '{}', must be at most {} characters {}"
-                        .format(field_name, field_len, field_value_log,
+                        .format(field_name, field_len, field_value_summary,
                                 max_len, event_desc))
         logging.debug("Ignored {} length {} (full string): '{}', must be at most {} characters {}"
                       .format(field_name, field_len, field_value,
@@ -144,7 +144,7 @@ def is_list_valid(field_name, fields, event_desc,
         # valid optional field, keep on processing
         return True
     field_value = fields[field_name]
-    field_value_log = summarise_string(field_value, 20)
+    field_value_summary = summarise_string(field_value)
     # Assume a zero-length value is a list with no items
     if len(field_value) > 0:
         list_count = field_value.count(',') + 1
@@ -152,7 +152,7 @@ def is_list_valid(field_name, fields, event_desc,
         list_count = 0
     if min_count is not None and list_count < min_count:
         logging.warning("Ignored {} '{}', must have at least {} items {}"
-                        .format(field_name, field_value_log, min_count,
+                        .format(field_name, field_value_summary, min_count,
                                 event_desc))
         logging.debug("Ignored {} (full list) '{}', must have at least {} items {}"
                       .format(field_name, field_value, min_count,
@@ -161,7 +161,7 @@ def is_list_valid(field_name, fields, event_desc,
         return False
     if max_count is not None and list_count > max_count:
         logging.warning("Ignored {} '{}', must have at most {} items {}"
-                        .format(field_name, field_value_log, max_count,
+                        .format(field_name, field_value_summary, max_count,
                                 event_desc))
         logging.debug("Ignored {} (full list) '{}', must have at most {} items {}"
                       .format(field_name, field_value, max_count,

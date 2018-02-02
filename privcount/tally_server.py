@@ -525,7 +525,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                     # sanity check
                     if set(tmodel_bins.keys()) != set(tmodel_noise.keys()):
                         logging.error("the set of initial bins and noise labels are not equal")
-                        assert False
+                        assert set(tmodel_bins.keys()) != set(tmodel_noise.keys())
 
                 # inject the traffic model counter bins and noise configs, i.e.,
                 # append the traffic model bins and noise to the other configured values
@@ -534,8 +534,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                     ts_conf['noise']['counters'].update(tmodel_noise)
                 if set(ts_conf['counters'].keys()) != set(ts_conf['noise']['counters'].keys()):
                     logging.error("the set of traffic model bins and noise labels are not equal")
-                    assert False
-
+                    assert set(ts_conf['counters'].keys()) != set(ts_conf['noise']['counters'].keys())
 
             # optional lists and processed suffixes of DNS domain names
             old_domain_files = self.config.get('domain_files', []) if self.config is not None else []
@@ -842,9 +841,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert -min_tally_counter_value() < counter_modulus()
 
             if self.config == None:
-                self.config = ts_conf
-                logging.info("using config = %s",
-                             summarise_string(str(self.config), 100))
+                logging.info("using initial config = %s",
+                             summarise_string(str(self.config)))
                 logging.debug("using config (full value) = %s",
                               str(self.config))
             else:
@@ -1143,7 +1141,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         '''
         # Allow standard-length tor relay nicknames and fingerprints
         # Replace entire hex characters when summarising, not just ...
-        return summarise_string(uid, 20, ellipsis='....')
+        return summarise_string(uid, max_len=20, ellipsis='....')
 
     def get_client_type(self, uid, status=None):
         '''

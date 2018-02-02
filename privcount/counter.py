@@ -1823,10 +1823,9 @@ def _skip_missing(counters, expected_subkey, detailed_source=None):
         else:
             invalid_counters.append(key)
     if len(invalid_counters) > 0:
-        # sort names alphabetically, so the logs are in a sensible order
-        counter_summary = summarise_list(invalid_counters, 50)
         logging.warning("ignoring counters {} because they are configured as {} counters, but they do not have any {} value"
-                        .format(counter_summary, detailed_source, expected_subkey))
+                        .format(summarise_list(invalid_counters),
+                                detailed_source, expected_subkey))
     return valid_counters
 
 def skip_missing_bins(bins, detailed_source=None):

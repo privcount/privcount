@@ -1797,9 +1797,8 @@ class Aggregator(ReconnectingClientFactory):
         '''
         if field_name in fields:
             field_value = fields[field_name]
-            field_value_log = summarise_string(field_value, 20)
             value_message = "{} value '{}'".format(field_name,
-                                                   field_value_log)
+                                                   summarise_string(field_value))
             full_value_message = "{} value (full value) '{}'".format(
                                                                   field_name,
                                                                   field_value)

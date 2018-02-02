@@ -15,7 +15,7 @@ from cryptography.hazmat.primitives.hashes import SHA256
 from privcount.connection import transport_info, transport_remote_info, transport_local_info
 from privcount.counter import get_events_for_counters, get_valid_events
 from privcount.crypto import CryptoHash, get_hmac, verify_hmac, b64_padded_length, json_serialise
-from privcount.log import log_error, errorCallback, stop_reactor, summarise_string
+from privcount.log import log_error, errorCallback, stop_reactor, summarise_string, summarise_list
 
 PRIVCOUNT_SHORT_VERSION_STRING = '2.0.1'
 
@@ -218,7 +218,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             # failing due to an exception can cause an infinite retry loop.
             logging.error(
                 "Exception {} while processing event type: {} payload: {}"
-                .format(e, event_type, summarise_string(event_payload, 100)))
+                .format(e, event_type, summarise_string(event_payload)))
             logging.debug(
                 "Exception {} while processing event type: {} payload: (full) {}"
                 .format(e, event_type, event_payload))
@@ -229,7 +229,7 @@ class PrivCountProtocol(LineOnlyReceiver):
             except BaseException as e:
                 logging.error("Exception {} in protocol failure after event type: {} payload: {}"
                               .format(e, event_type,
-                                      summarise_string(event_payload, 100)))
+                                      summarise_string(event_payload)))
                 logging.debug("Exception {} in protocol failure after event type: {} payload: (full) {}"
                               .format(e, event_type, event_payload))
 
@@ -1665,7 +1665,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                              " ".join(self.collection_events),
                              0 if counter_list is None else len(counter_list),
                              "(none)" if counter_list is None else
-                             summarise_string(" ".join(counter_list), 100),
+                             summarise_list(counter_list),
                              0 if event_list is None else len(event_list),
                              "(none)" if event_list is None else
                              " ".join(event_list)))
