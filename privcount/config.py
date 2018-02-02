@@ -128,3 +128,15 @@ def validate_ip_network_address_prefix(address, prefix, strict=True):
             return ipaddress.IPv6Network((ip_address, prefix), strict=strict)
     except ValueError:
         return None
+
+def _extra_keys(first, second):
+    '''
+    Return the extra keys in first that are not in second.
+    '''
+    return set(first.keys()).difference(second.keys())
+
+def _common_keys(first, second):
+    '''
+    Return the set of keys shared by first and second.
+    '''
+    return set(first.keys()).intersection(second.keys())

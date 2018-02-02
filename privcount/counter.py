@@ -13,6 +13,7 @@ from random import SystemRandom
 from copy import deepcopy
 from math import sqrt, isnan
 
+from privcount.config import _extra_keys, _common_keys
 from privcount.log import format_period, format_elapsed_time_since, format_delay_time_until, summarise_list
 
 DEFAULT_SIGMA_TOLERANCE = 1e-6
@@ -1777,33 +1778,19 @@ def check_sigmas_config(sigmas, allow_unknown_counters=False):
             return False
     return True
 
-def _extra_counter_keys(first, second):
-    '''
-    Return the extra counter keys in first that are not in second.
-    '''
-    return set(first.keys()).difference(second.keys())
-
 def extra_counters(first, second, first_name, second_name, action_name):
     '''
     Return the extra counter keys in first that are not in second.
     Warn about taking action_name on any missing counters.
     '''
-    extra_keys = _extra_counter_keys(first, second)
+    extra_keys = _extra_keys(first, second)
     # Log missing keys
     if len(extra_keys) > 0:
-        # sort names alphabetically, so the logs are in a sensible order
-        counter_summary = summarise_list(extra_keys, 50)
         logging.info("{} counters '{}' because they have a {}, but no {}"
-                     .format(action_name, counter_summary,
+                     .format(action_name, summarise_list(extra_keys),
                              first_name, second_name))
 
     return extra_keys
-
-def _common_counter_keys(first, second):
-    '''
-    Return the set of counter keys shared by first and second.
-    '''
-    return set(first.keys()).intersection(second.keys())
 
 def common_counters(first, second, first_name, second_name, action_name):
     '''
@@ -1815,7 +1802,7 @@ def common_counters(first, second, first_name, second_name, action_name):
     extra_counters(second, first, second_name, first_name, action_name)
 
     # return common keys
-    return _common_counter_keys(first, second)
+    return _common_keys(first, second)
 
 def _skip_missing(counters, expected_subkey, detailed_source=None):
     '''

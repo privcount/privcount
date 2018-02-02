@@ -278,6 +278,24 @@ class PrivCountNode(object):
                                           sort_output=False)
             deepcopied_start_config[match_map_key][k] = short_string
 
+    @staticmethod
+    def log_config_key_changed(key_name,
+                               old_val_str="(absent)",
+                               new_val_str="(absent)"):
+        '''
+        Log a config key change for key_name from old_val_str to new_val_str.
+        If the key was added or deleted, don't specify old_val_str or
+        new_val_str.
+
+        Logs an info-level summary, and a full debug log.
+        '''
+        logging.info("updated config for key {} from {} to {}"
+                     .format(key_name,
+                             summarise_string(old_val_str),
+                             summarise_string(new_val_str)))
+        logging.debug("updated config for key {} (full values) from {} to {}"
+                      .format(key_name, old_val_str, new_val_str))
+
 class PrivCountServer(PrivCountNode):
     '''
     A mixin class that hosts common functionality for PrivCount server

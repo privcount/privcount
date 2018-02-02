@@ -18,10 +18,10 @@ from base64 import b64encode
 from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
-from privcount.config import normalise_path, choose_secret_handshake_path
+from privcount.config import normalise_path, choose_secret_handshake_path, _extra_keys, _common_keys
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
-from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
+from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string, summarise_list
 from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_string, load_match_list, load_as_prefix_map, exact_match, suffix_match
 from privcount.node import PrivCountNode, PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
@@ -849,27 +849,26 @@ class TallyServer(ServerFactory, PrivCountServer):
                               str(self.config))
             else:
                 changed = False
-                for k in ts_conf:
-                    if k not in self.config or ts_conf[k] != self.config[k]:
-                        old_val_str = str(self.config[k]) if k in self.config else '(absent)'
-                        new_val_str = str(ts_conf[k]) if k in ts_conf else '(absent)'
-                        logging.info("updated config for key {} from {} to {}"
-                                     .format(k,
-                                             summarise_string(
-                                                          old_val_str,
-                                                          100),
-                                             summarise_string(
-                                                          new_val_str,
-                                                          100)))
-                        logging.debug("updated config for key {} (full values) from {} to {}"
-                                      .format(k, old_val_str, new_val_str))
-                        if k in ts_conf:
-                            self.config[k] = ts_conf[k]
-                        else:
-                            del self.config[k]
+                for k in _extra_keys(self.config, ts_conf):
+                    changed = True
+                    PrivCountNode.log_config_key_changed(k,
+                                                         old_val_str=self.config[k])
+                for k in _extra_keys(ts_conf, self.config):
+                    changed = True
+                    PrivCountNode.log_config_key_changed(k,
+                                                         new_val_str=ts_conf[k])
+                for k in _common_keys(self.config, ts_conf):
+                    if self.config[k] != ts_conf[k]:
                         changed = True
+                        PrivCountNode.log_config_key_changed(k,
+                                                             old_val_str=self.config[k],
+                                                             new_val_str=ts_conf[k])
                 if not changed:
                     logging.debug('no config changes found')
+
+            # unconditionally replace the config, even if it hasn't changed
+            # this avoids bugs in the change logic above
+            self.config = ts_conf
 
         except AssertionError:
             logging.warning("problem reading config file: invalid data")
