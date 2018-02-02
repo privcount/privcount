@@ -132,6 +132,27 @@ def lower_if_hasattr(obj):
     '''
     return obj.lower() if hasattr(obj, 'lower') else obj
 
+def exact_match_validate_item(exact_obj, search_string,
+                              original_list):
+    '''
+    Search exact_obj for search_string.
+
+    If the search fails, log a warning using original_list, and raise an
+    exception.
+    '''
+    try:
+        assert exact_match(exact_obj, search_string)
+    except:
+        logging.warning("Validating exact {} failed:\nOriginal:\n{}\nSet:\n{}"
+                        .format(search_string,
+                                summarise_list(original_list),
+                                summarise_list(exact_obj)))
+        logging.debug("Validating exact {} failed:\nOriginal (full):\n{}\nSet (full):\n{}"
+                      .format(search_string,
+                              original_list,
+                              exact_obj))
+        raise
+
 def exact_match_prepare_collection(exact_collection,
                                    existing_exacts=None,
                                    validate=True):
@@ -173,9 +194,8 @@ def exact_match_prepare_collection(exact_collection,
 
     # Check that each item actually matches the list
     if validate:
-        logging.info("Validating {} items".format(len(exact_collection)))
         for item in exact_collection:
-            assert exact_match(exact_set, item)
+            exact_match_validate_item(exact_set, item, exact_collection)
 
     if existing_exacts is None:
         return exact_set

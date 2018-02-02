@@ -22,7 +22,7 @@ from privcount.config import normalise_path, choose_secret_handshake_path, _extr
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string, summarise_list
-from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_string, load_match_list, load_as_prefix_map, exact_match, suffix_match, suffix_match_validate_item
+from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_string, load_match_list, load_as_prefix_map, exact_match, suffix_match, suffix_match_validate_item, exact_match_validate_item
 from privcount.node import PrivCountNode, PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
 from privcount.statistics_noise import get_noise_allocation, get_sanity_check_counter, DEFAULT_DUMMY_COUNTER_NAME
@@ -152,16 +152,19 @@ class TallyServer(ServerFactory, PrivCountServer):
             self.collection_phase.log_status()
 
     @staticmethod
-    def load_match_file(config, file_path, new_match_lists,
-                        old_match_files, old_match_lists,
-                        check_domain=False, check_country=False,
-                        check_as=False,
-                        prepare_exact=False, prepare_suffix=False,
-                        existing_exacts=None, existing_suffixes=None,
-                        collection_tag=-1, has_any_previous_list_changed=False):
+    def load_match_file(config,
+                        file_path,
+                        old_match_files=None,
+                        old_match_lists=None,
+                        new_match_lists=None,
+                        check_domain=False,
+                        check_country=False,
+                        check_as=False):
         '''
-        Load a match file from file_path into new_match_lists, existing_exacts,
-        and existing_suffixes, ignoring them if they are None.
+        Load a match file from file_path.
+
+        If new_match_lists is not none, append the file's contents to that
+        list as an array.
 
         If check_domain, then check that each line in the file is a valid
         domain name, and lowecase the string.
@@ -172,20 +175,12 @@ class TallyServer(ServerFactory, PrivCountServer):
         multi-origin AS.
 
         If config is None, or the file is not in old_match_files, or the
-        contents do not match old_match_lists, or
-        has_any_previous_list_changed is True, then check that the list can be
-        prepared for matching, based on prepare_exact and prepare_suffix.
-
-        If prepare_exact and existing_exacts are not None, add the exacts
-        to existing_exacts.
-
-        If prepare_suffix and existing_suffixes are not None, add the suffixes
-        to existing_suffixes with tag collection_tag.
+        contents do not match old_match_lists, then mark the list as changed.
 
         Returns a tuple containing the normalised file_path, and a boolean
         indicating whether the list changed since the last time it was loaded.
         '''
-        has_list_changed = False
+        assert file_path is not None
         (file_path, match_list) = load_match_list(file_path,
                                                   check_domain=check_domain,
                                                   check_country=check_country,
@@ -194,30 +189,63 @@ class TallyServer(ServerFactory, PrivCountServer):
         # lists must have at least one entry
         assert len(match_list) > 0
 
-        # only re-process the list when it changes, because it takes
-        # about 5 seconds to process the Alexa Top 1 million
-        if (has_any_previous_list_changed or
-            config is None or
+        # it takes about 5 seconds to process the Alexa Top 1 million
+        # so let the caller know if the list changed
+        has_list_changed = False
+        if (config is None or
             old_match_files is None or
             file_path not in old_match_files or
             old_match_lists is None or
             match_list != old_match_lists[old_match_files.index(file_path)]):
             has_list_changed = True
-            if prepare_exact or prepare_suffix:
-                # make sure the DCs will be able to process the lists
-                logging.info("Checking matches for '{}'".format(file_path))
-            if prepare_exact:
-                exact_match_prepare_collection(match_list,
-                                               existing_exacts=existing_exacts)
-            if prepare_suffix:
-                suffix_match_prepare_collection(match_list, separator=".",
-                                                existing_suffixes=existing_suffixes,
-                                                collection_tag=collection_tag)
+            logging.info("Changed list: '{}'".format(file_path))
+
 
         # Now, add the raw list to the list of match lists
         if new_match_lists is not None:
             new_match_lists.append(match_list)
+
         return (file_path, has_list_changed)
+
+    @staticmethod
+    def process_match_list(match_list,
+                           prepare_exact=False,
+                           prepare_suffix=False,
+                           suffix_separator=None,
+                           existing_exacts=None,
+                           existing_suffixes=None,
+                           collection_tag=-1):
+        '''
+        Process a match list from match_list.
+
+        If existing_exacts or existing_suffixes are not None, process the
+        match list's contents into that data structure.
+
+        If prepare_exact is True, check that the list can be prepared for
+        exact matching. If existing_exacts is not None, add the exacts
+        to existing_exacts.
+
+        If prepare_suffix is True, check that the list can be prepared for
+        suffix matching. If existing_suffixes is not None, add the suffixes
+        to existing_suffixes with tag collection_tag.
+        '''
+        assert match_list is not None
+        # lists must have at least one entry
+        assert len(match_list) > 0
+
+        if prepare_exact or prepare_suffix:
+            logging.info("Checking matches for '{}'"
+                         .format(summarise_list(match_list,
+                                                sort_output=False)))
+        # make sure the DCs will be able to process the lists
+        if prepare_exact:
+            exact_match_prepare_collection(match_list,
+                                           existing_exacts=existing_exacts)
+        if prepare_suffix:
+            suffix_match_prepare_collection(match_list,
+                                            separator=suffix_separator,
+                                            existing_suffixes=existing_suffixes,
+                                            collection_tag=collection_tag)
 
     @staticmethod
     def load_as_prefix_file(config, ip_version, file_path, new_as_prefix_maps,
@@ -300,6 +328,197 @@ class TallyServer(ServerFactory, PrivCountServer):
             if counter_filter is not None and counter_filter(counter_name):
                 TallyServer.modify_bins(bin_count,
                                         counter_list[counter_name])
+
+    @staticmethod
+    def load_match_config(old_config,
+                          new_config,
+                          files_key,
+                          lists_key,
+                          check_domain=False,
+                          check_country=False,
+                          check_as=False,
+                          counters_key='counters',
+                          counter_filter=None,
+                          old_processed_config=None,
+                          new_processed_config=None,
+                          exacts_key=None,
+                          suffixes_key=None,
+                          suffix_separator=None,
+                          validate=True,
+                          expect_disjoint=False):
+        '''
+        Load raw list data from each file in new_config[files_key] into
+        new_config[lists_key], using old_config to check if the files need
+        to be re-processed. Update the paths in new_config[files_key] to
+        absolute paths.
+
+        Pass check_* directly to load_match_file().
+
+        Once the files have been processed, update the bins for counters in
+        counters_key that return true for counter_filter(counter_name).
+
+        If old_processed_config is not None, use it instead of old_config for
+        exacts_key and suffixes_key. If new_processed_config is not None,
+        use it in a similar way.
+
+        If exacts_key is not None, process the lists as exact match lists into
+        exacts_key. If suffixes_key is not None, process the lists as suffix
+        match lists into suffixes_key, using suffix_separator.
+        '''
+        assert new_config is not None
+        assert files_key is not None
+        assert lists_key is not None
+        assert counter_filter is not None
+        # do we ever  you want to load a list without processing it?
+        assert exacts_key is not None or suffixes_key is not None
+        assert (suffixes_key is None) == (suffix_separator is None)
+
+        # set defaults if missing
+        if old_processed_config is None:
+            old_processed_config = old_config
+        if new_processed_config is None:
+          new_processed_config = new_config
+
+        old_match_files = old_config.get(files_key, []) if old_config is not None else []
+        old_match_lists = old_config.get(lists_key, []) if old_config is not None else []
+        old_match_exacts = old_processed_config.get(exacts_key, {}) if (old_processed_config is not None and exacts_key is not None) else []
+        old_match_suffixes = old_processed_config.get(suffixes_key, {}) if (old_processed_config is not None and suffixes_key is not None) else {}
+        new_config[lists_key] = []
+        if exacts_key is not None:
+            new_processed_config[exacts_key] = []
+        if suffixes_key is not None:
+            new_processed_config[suffixes_key] = {}
+        if files_key in new_config and len(new_config[files_key]) > 0:
+            # Track list changes for processed list reloads
+            has_any_previous_list_changed = False
+            # reload all the raw lists
+            for i in xrange(len(new_config[files_key])):
+                (file_path,
+                 has_list_changed) = TallyServer.load_match_file(
+                                         old_config,
+                                         new_config[files_key][i],
+                                         old_match_files=old_match_files,
+                                         old_match_lists=old_match_lists,
+                                         new_match_lists=new_config[lists_key],
+                                         check_domain=check_domain,
+                                         check_country=check_country,
+                                         check_as=check_as)
+                new_config[files_key][i] = file_path
+                if has_list_changed:
+                    has_any_previous_list_changed = True
+            if not has_any_previous_list_changed:
+                # skip processing the lists into new_processed_config,
+                # because they have not changed
+                if exacts_key is not None:
+                    new_processed_config[exacts_key] = old_match_exacts
+                if suffixes_key is not None:
+                    new_processed_config[suffixes_key] = old_match_suffixes
+            else:
+              # process the lists
+              for i in xrange(len(new_config[files_key])):
+                  if exacts_key is not None:
+                      TallyServer.process_match_list(
+                          new_config[lists_key][i],
+                          prepare_exact=True,
+                          existing_exacts=new_processed_config[exacts_key])
+                  if suffixes_key is not None:
+                      TallyServer.process_match_list(
+                          new_config[lists_key][i],
+                          prepare_suffix=True,
+                          suffix_separator=suffix_separator,
+                          existing_suffixes=new_processed_config[suffixes_key],
+                          collection_tag=i)
+            # modify the bins
+            TallyServer.modify_counter_list_bins(
+               len(new_config[files_key]),
+               new_config[counters_key],
+               counter_filter=counter_filter)
+            # and check that the matching actually works
+            if validate:
+                for i in xrange(len(new_config[lists_key])):
+                    for item in new_config[lists_key][i]:
+                        if exacts_key is not None:
+                            # if there are any duplicates, we can only validate
+                            # the first list
+                            if expect_disjoint or i == 0:
+                                exact_match_validate_item(new_processed_config[exacts_key][i],
+                                                          item,
+                                                          new_config[lists_key][i])
+                        if suffixes_key is not None:
+                            suffix_match_validate_item(new_processed_config[suffixes_key],
+                                                       item,
+                                                       new_config[lists_key][i],
+                                                       separator=suffix_separator,
+                                                       expected_collection_tag=i,
+                                                       # our test data contains duplicates
+                                                       expect_disjoint=expect_disjoint)
+
+        logging.debug("Counts: Files: {} Raw: {} Exacts: {} Suffixes: {}"
+                      .format(len(new_config.get(files_key, [])),
+                              len(new_config[lists_key]),
+                              len(new_processed_config.get(exacts_key, [])),
+                              len(new_processed_config.get(suffixes_key, []))))
+        assert len(new_config.get(files_key, [])) == len(new_config[lists_key])
+        if exacts_key is not None:
+            assert len(new_config.get(files_key, [])) == len(new_processed_config[exacts_key])
+        if suffixes_key is not None:
+            assert (len(new_config.get(files_key, [])) > 0) == (len(new_processed_config[suffixes_key]) > 0)
+
+    @staticmethod
+    def load_as_prefix_config(old_config,
+                              new_config,
+                              files_key,
+                              old_processed_config=None,
+                              new_processed_config=None,
+                              maps_key=None):
+        '''
+        Load raw AS prefix data from each file in new_config[files_key] into
+        new_config[maps_key], using old_config to check if the files need to
+        be re-processed. Update the paths in new_config[files_key] to absolute
+        paths.
+
+        If old_processed_config is not None, use it instead of old_config for
+        maps_key and suffixes_key. If new_processed_config is not None,
+        use it in a similar way.
+
+        Process the lists as AS prefix lists to confirm they are valid, then
+        discard the results.
+        '''
+        assert new_config is not None
+        assert files_key is not None
+        assert maps_key is not None
+
+        # set defaults if missing
+        if old_processed_config is None:
+            old_processed_config = old_config
+        if new_processed_config is None:
+          new_processed_config = new_config
+
+        # optional mappings of IPv4 and IPv6 prefixes to CAIDA AS numbers
+        # Custom code for loading the prefix maps unconditionally
+        old_as_prefix_files = old_config.get(files_key, {}) if old_config is not None else {}
+        old_as_prefix_maps = old_processed_config.get(maps_key, {})
+        new_processed_config[maps_key] = {}
+        # you must have both IPv4 and IPv6 prefix mappings, or neither
+        # we keep IPv4 and IPv6 prefixes separate because it makes matching faster
+        if (files_key in new_config and len(new_config[files_key]) == 2):
+            # always reload all the prefix maps
+            for ipv in new_config[files_key]:
+                assert ipv == 4 or ipv == 6
+                (file_path, _) = TallyServer.load_as_prefix_file(
+                                     old_config,
+                                     ipv,
+                                     new_config[files_key][ipv],
+                                     new_processed_config[maps_key],
+                                     old_as_prefix_files,
+                                     old_as_prefix_maps,
+                                     prepare_prefix=True)
+                new_config[files_key][ipv] = file_path
+
+        assert len(new_config.get(files_key, [])) == len(new_processed_config[maps_key])
+        # you must have both IPv4 and IPv6 prefix mappings, or neither
+        assert (4 in new_processed_config[maps_key]) == (6 in new_processed_config[maps_key])
+
 
     def refresh_config(self):
         '''
@@ -450,237 +669,66 @@ class TallyServer(ServerFactory, PrivCountServer):
                     assert set(ts_conf['counters'].keys()) != set(ts_conf['noise']['counters'].keys())
 
             # optional lists and processed suffixes of DNS domain names
-            old_domain_files = self.config.get('domain_files', []) if self.config is not None else []
-            old_domain_lists = self.config.get('domain_lists', []) if self.config is not None else []
-            old_domain_exacts = self.config.get('domain_exacts', {}) if self.config is not None else []
-            old_domain_suffixes = self.config.get('domain_suffixes', {}) if self.config is not None else {}
-            ts_conf['domain_lists'] = []
-            ts_conf['domain_exacts'] = []
-            ts_conf['domain_suffixes'] = {}
-            if 'domain_files' in ts_conf and len(ts_conf['domain_files']) > 0:
-                # Track list changes for suffix reloads
-                has_any_previous_list_changed = False
-                first_changed_list = None
-                # reload all the exact match lists
-                for i in xrange(len(ts_conf['domain_files'])):
-                    (file_path,
-                     has_list_changed) = TallyServer.load_match_file(
-                                             self.config,
-                                             ts_conf['domain_files'][i],
-                                             ts_conf['domain_lists'],
-                                             old_domain_files,
-                                             old_domain_lists,
-                                             check_domain=True,
-                                             prepare_exact=True,
-                                             existing_exacts=ts_conf['domain_exacts'],
-                                             has_any_previous_list_changed=has_any_previous_list_changed)
-                    ts_conf['domain_files'][i] = file_path
-                    if has_list_changed:
-                        has_any_previous_list_changed = True
-                        first_changed_list = i
-                if not has_any_previous_list_changed:
-                    # we skipped loading exacts into ts_conf,
-                    # because they hadn't changed
-                    ts_conf['domain_exacts'] = old_domain_exacts
-                    ts_conf['domain_suffixes'] = old_domain_suffixes
-                else:
-                    # only reload exacts if they changed partway through
-                    # the list, otherwise we are just repeating the load above
-                    if first_changed_list > 0:
-                        ts_conf['domain_lists'] = []
-                        ts_conf['domain_exacts'] = []
-                        for i in xrange(len(ts_conf['domain_files'])):
-                            _ = TallyServer.load_match_file(
-                                    self.config,
-                                    ts_conf['domain_files'][i],
-                                    ts_conf['domain_lists'],
-                                    old_domain_files,
-                                    old_domain_lists,
-                                    check_domain=True,
-                                    prepare_exact=True,
-                                    existing_exacts=ts_conf['domain_exacts'],
-                                    has_any_previous_list_changed=True)
-                    # if any of the lists have changed, reload the suffixes
-                    for i in xrange(len(ts_conf['domain_files'])):
-                        _ = TallyServer.load_match_file(
-                                self.config,
-                                ts_conf['domain_files'][i],
-                                None,
-                                None,
-                                None,
-                                check_domain=True,
-                                prepare_suffix=True,
-                                existing_suffixes=ts_conf['domain_suffixes'],
-                                collection_tag=i,
-                                has_any_previous_list_changed=True)
+            TallyServer.load_match_config(
+                self.config,
+                ts_conf,
+                'domain_files',
+                'domain_lists',
+                check_domain=True,
                 # Domains only have Exit counters
-                TallyServer.modify_counter_list_bins(
-                   len(ts_conf['domain_files']),
-                   ts_conf['counters'],
-                   counter_filter=(lambda counter_name: counter_name.startswith("ExitDomain") and
-                                                        counter_name.endswith("CountList")))
-                # and check that the matching actually works
-                for i in xrange(len(ts_conf['domain_lists'])):
-                    for item in ts_conf['domain_lists'][i]:
-                        suffix_match_validate_item(ts_conf['domain_suffixes'],
-                                                   item,
-                                                   ts_conf['domain_lists'][i],
-                                                   separator=".",
-                                                   expected_collection_tag=i,
-                                                   expect_disjoint=False)
-
-            assert len(ts_conf.get('domain_files', [])) == len(ts_conf['domain_lists'])
-            assert len(ts_conf.get('domain_files', [])) == len(ts_conf['domain_exacts'])
-            assert (len(ts_conf['domain_lists']) > 0) == (len(ts_conf['domain_suffixes']) > 0)
-
+                counter_filter=(lambda counter_name: counter_name.startswith("ExitDomain") and
+                                                     counter_name.endswith("CountList")),
+                exacts_key='domain_exacts',
+                suffixes_key='domain_suffixes',
+                suffix_separator=".")
 
             # optional lists of country codes from the MaxMind GeoIP database
-            old_country_files = self.config.get('country_files', []) if self.config is not None else []
-            old_country_lists = self.config.get('country_lists', []) if self.config is not None else []
-            old_country_exacts = self.config.get('country_exacts', {}) if self.config is not None else []
-            ts_conf['country_lists'] = []
-            ts_conf['country_exacts'] = []
-            if 'country_files' in ts_conf and len(ts_conf['country_files']) > 0:
-                # Track list changes for reloads
-                has_any_previous_list_changed = False
-                first_changed_list = None
-                # reload all the lists
-                for i in xrange(len(ts_conf['country_files'])):
-                    (file_path,
-                     has_list_changed) = TallyServer.load_match_file(
-                                            self.config,
-                                            ts_conf['country_files'][i],
-                                            ts_conf['country_lists'],
-                                            old_country_files,
-                                            old_country_lists,
-                                            check_country=True,
-                                            prepare_exact=True,
-                                            existing_exacts=ts_conf['country_exacts'],
-                                            has_any_previous_list_changed=has_any_previous_list_changed)
-                    ts_conf['country_files'][i] = file_path
-                    if has_list_changed:
-                        has_any_previous_list_changed = True
-                        first_changed_list = i
-                if not has_any_previous_list_changed:
-                    # we skipped loading exacts into ts_conf,
-                    # because they hadn't changed
-                    ts_conf['country_exacts'] = old_country_exacts
-                elif first_changed_list > 0:
-                    # only reload if the exacts changed partway through
-                    # the list, otherwise we are just repeating the load above
-                    ts_conf['country_lists'] = []
-                    ts_conf['country_exacts'] = []
-                    for i in xrange(len(ts_conf['country_files'])):
-                        _ = TallyServer.load_match_file(
-                                self.config,
-                                ts_conf['country_files'][i],
-                                ts_conf['country_lists'],
-                                old_country_files,
-                                old_country_lists,
-                                check_country=True,
-                                prepare_exact=True,
-                                existing_exacts=ts_conf['country_exacts'],
-                                has_any_previous_list_changed=True)
+            TallyServer.load_match_config(
+                self.config,
+                ts_conf,
+                'country_files',
+                'country_lists',
+                check_country=True,
                 # Countries have both Entry and NonEntry Connection counters
-                TallyServer.modify_counter_list_bins(
-                   len(ts_conf['country_files']),
-                   ts_conf['counters'],
-                   counter_filter=(lambda counter_name: "CountryMatch" in counter_name and
-                                                        counter_name.endswith("CountList")))
+                counter_filter=(lambda counter_name: "CountryMatch" in counter_name and
+                                                     counter_name.endswith("CountList")),
+                exacts_key='country_exacts')
 
-            assert len(ts_conf.get('country_files', [])) == len(ts_conf['country_lists'])
-            assert len(ts_conf.get('country_files', [])) == len(ts_conf['country_exacts'])
-
-
-            # This is used by the prefix maps and the AS lists
+            # as_data is used as the processed config by the prefix maps and the AS lists
             old_as_data = self.config.get('as_data', {}) if self.config is not None else {}
             ts_conf['as_data'] = {}
 
             # optional mappings of IPv4 and IPv6 prefixes to CAIDA AS numbers
-            old_as_prefix_files = self.config.get('as_prefix_files', {}) if self.config is not None else {}
-            old_as_prefix_maps = old_as_data.get('prefix_maps', {})
-            ts_conf['as_data']['prefix_maps'] = {}
-            # you must have both IPv4 and IPv6 prefix mappings, or neither
-            # we keep IPv4 and IPv6 prefixes separate because it makes matching faster
-            if ('as_prefix_files' in ts_conf and len(ts_conf['as_prefix_files']) == 2):
-                # always reload all the prefix maps
-                for ipv in ts_conf['as_prefix_files']:
-                    assert ipv == 4 or ipv == 6
-                    (file_path,
-                     _) = TallyServer.load_as_prefix_file(
-                                           self.config,
-                                           ipv,
-                                           ts_conf['as_prefix_files'][ipv],
-                                           ts_conf['as_data']['prefix_maps'],
-                                           old_as_prefix_files,
-                                           old_as_prefix_maps,
-                                           prepare_prefix=True)
-                    ts_conf['as_prefix_files'][ipv] = file_path
-
-            assert len(ts_conf.get('as_prefix_files', [])) == len(ts_conf['as_data']['prefix_maps'])
-            # you must have both IPv4 and IPv6 prefix mappings, or neither
-            assert (4 in ts_conf['as_data']['prefix_maps']) == (6 in ts_conf['as_data']['prefix_maps'])
-
+            TallyServer.load_as_prefix_config(
+                self.config,
+                ts_conf,
+                'as_prefix_files',
+                # we put the raw prefixes in as_data to make them easier to
+                # send to the data collectors
+                old_processed_config=old_as_data,
+                new_processed_config=ts_conf['as_data'],
+                maps_key='prefix_maps')
 
             # optional lists of AS numbers from the CAIDA AS prefix files or AS rankings
-            old_as_files = self.config.get('as_files', []) if self.config is not None else []
-            old_as_lists = self.config.get('as_raw_lists', []) if self.config is not None else []
-            old_as_exacts = self.config.get('as_data', {}).get('lists', []) if self.config is not None else []
-            ts_conf['as_raw_lists'] = []
-            # these are 'exacts' (exact lists), but they are keyed as 'lists'
-            # so we don't break compatibility with older Data Collectors
-            ts_conf['as_data']['lists'] = []
-            if 'as_files' in ts_conf and len(ts_conf['as_files']) > 0:
-                # Track list changes for reloads
-                has_any_previous_list_changed = False
-                first_changed_list = None
-                # reload all the lists
-                for i in xrange(len(ts_conf['as_files'])):
-                    (file_path,
-                     has_any_previous_list_changed) = TallyServer.load_match_file(
-                                                          self.config,
-                                                          ts_conf['as_files'][i],
-                                                          ts_conf['as_raw_lists'],
-                                                          old_as_files,
-                                                          old_as_lists,
-                                                          check_as=True,
-                                                          prepare_exact=True,
-                                                          existing_exacts=ts_conf['as_data']['lists'],
-                                                          has_any_previous_list_changed=has_any_previous_list_changed)
-                    ts_conf['as_files'][i] = file_path
-                    if has_list_changed:
-                        has_any_previous_list_changed = True
-                        first_changed_list = i
-                if not has_any_previous_list_changed:
-                    # we skipped loading exacts into ts_conf,
-                    # because they hadn't changed
-                    ts_conf['as_data']['lists'] = old_as_exacts
-                elif first_changed_list > 0:
-                    # only reload if the exacts changed partway through
-                    # the list, otherwise we are just repeating the load above
-                    ts_conf['as_raw_lists'] = []
-                    ts_conf['as_data']['lists'] = []
-                    for i in xrange(len(ts_conf['as_files'])):
-                        _ = TallyServer.load_match_file(
-                                self.config,
-                                ts_conf['as_files'][i],
-                                ts_conf['as_raw_lists'],
-                                old_as_files,
-                                old_as_lists,
-                                check_as=True,
-                                prepare_exact=True,
-                                existing_exacts=ts_conf['as_data']['lists'],
-                                has_any_previous_list_changed=True)
+            TallyServer.load_match_config(
+                self.config,
+                ts_conf,
+                'as_files',
+                # the raw lists have a different name to avoid confusion with
+                # ['as_data]['lists'], which has to keep the same name for
+                # backwards compatibility
+                'as_raw_lists',
+                check_as=True,
                 # ASs have both Entry and NonEntry Connection counters
-                TallyServer.modify_counter_list_bins(
-                   len(ts_conf['as_files']),
-                   ts_conf['counters'],
-                   counter_filter=(lambda counter_name: "ASMatch" in counter_name and
-                                                        counter_name.endswith("CountList")))
+                counter_filter=(lambda counter_name: "ASMatch" in counter_name and
+                                                     counter_name.endswith("CountList")),
+                # we put the processed lists in as_data to make them easier to
+                # send to the data collectors
+                old_processed_config=old_as_data,
+                new_processed_config=ts_conf['as_data'],
+                exacts_key='lists')
 
-            assert len(ts_conf.get('as_files', [])) == len(ts_conf['as_raw_lists'])
-            assert len(ts_conf.get('as_files', [])) == len(ts_conf['as_data']['lists'])
-
+            # do some additional checks on the AS lists
             # you must have both prefix mappings and AS lists, or neither
             assert (len(ts_conf['as_data']['prefix_maps']) > 0) == (len(ts_conf['as_data']['lists']) > 0)
 
