@@ -345,7 +345,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                           suffixes_key=None,
                           suffix_separator=None,
                           validate=True,
-                          expect_disjoint=False):
+                          reject_overlapping_lists=False):
         '''
         Load raw list data from each file in new_config[files_key] into
         new_config[lists_key], using old_config to check if the files need
@@ -364,6 +364,9 @@ class TallyServer(ServerFactory, PrivCountServer):
         If exacts_key is not None, process the lists as exact match lists into
         exacts_key. If suffixes_key is not None, process the lists as suffix
         match lists into suffixes_key, using suffix_separator.
+
+        If reject_overlapping_lists is True, assert if any of the lists are
+        overlapping. Otherwise, warn and remove overlaps.
         '''
         assert new_config is not None
         assert files_key is not None
@@ -440,7 +443,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                         if exacts_key is not None:
                             # if there are any duplicates, we can only validate
                             # the first list
-                            if expect_disjoint or i == 0:
+                            if reject_overlapping_lists or i == 0:
                                 exact_match_validate_item(new_processed_config[exacts_key][i],
                                                           item,
                                                           new_config[lists_key][i])
@@ -450,8 +453,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                        new_config[lists_key][i],
                                                        separator=suffix_separator,
                                                        expected_collection_tag=i,
-                                                       # our test data contains duplicates
-                                                       expect_disjoint=expect_disjoint)
+                                                       reject_overlapping_lists=reject_overlapping_lists)
 
         logging.debug("Counts: Files: {} Raw: {} Exacts: {} Suffixes: {}"
                       .format(len(new_config.get(files_key, [])),
@@ -668,6 +670,10 @@ class TallyServer(ServerFactory, PrivCountServer):
                     logging.error("the set of traffic model bins and noise labels are not equal")
                     assert set(ts_conf['counters'].keys()) != set(ts_conf['noise']['counters'].keys())
 
+            # Do we reject overlapping lists, or warn and remove overlaps?
+            ts_conf.setdefault('reject_overlapping_lists', True)
+            assert isinstance(ts_conf['reject_overlapping_lists'], bool)
+
             # optional lists and processed suffixes of DNS domain names
             TallyServer.load_match_config(
                 self.config,
@@ -680,7 +686,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                      counter_name.endswith("CountList")),
                 exacts_key='domain_exacts',
                 suffixes_key='domain_suffixes',
-                suffix_separator=".")
+                suffix_separator=".",
+                reject_overlapping_lists=ts_conf['reject_overlapping_lists'])
 
             # optional lists of country codes from the MaxMind GeoIP database
             TallyServer.load_match_config(
@@ -692,7 +699,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # Countries have both Entry and NonEntry Connection counters
                 counter_filter=(lambda counter_name: "CountryMatch" in counter_name and
                                                      counter_name.endswith("CountList")),
-                exacts_key='country_exacts')
+                exacts_key='country_exacts',
+                reject_overlapping_lists=ts_conf['reject_overlapping_lists'])
 
             # as_data is used as the processed config by the prefix maps and the AS lists
             old_as_data = self.config.get('as_data', {}) if self.config is not None else {}
@@ -726,7 +734,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                 # send to the data collectors
                 old_processed_config=old_as_data,
                 new_processed_config=ts_conf['as_data'],
-                exacts_key='lists')
+                exacts_key='lists',
+                reject_overlapping_lists=ts_conf['reject_overlapping_lists'])
 
             # do some additional checks on the AS lists
             # you must have both prefix mappings and AS lists, or neither

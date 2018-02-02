@@ -6,6 +6,7 @@ tally_server:
     # Either noise or sigmas must be provided (if noise is present, sigmas is ignored)
     noise: 'counters.noise.yaml' # path to a yaml file containing noise allocation parameters
     #sigmas: 'counters.sigmas.yaml' # path to a yaml file containing pre-calculated sigmas
+
     # The following two traffic model keys are only required if we want to enable traffic model learning
     # The traffic_model file specifies the actual model in the format that PrivCount requires.
     # From this model, PrivCount will extract all of the counters that are necessary to count
@@ -15,13 +16,19 @@ tally_server:
     # template style notation that will be expanded by PrivCount to cover all of the counters that
     # are required to count the model.
     traffic_noise: 'traffic.noise.yaml' # path to file specifying counter key templates and noise parameters
+
+    # These lists must be disjoint.
+    # If there are duplicate entries across multiple lists in a histogram,
+    # If True: reject the config
+    # If False: warn and remove the overlapping entries.
+    #           Duplicate entries in later lists are removed.
+    #           Longer suffixes are removed in favour of shorter suffixes.
+    # Data Collectors always warn and remove overlapping entries.
+    reject_overlapping_lists: True
+
     # a list of paths to files of newline-separated DNS domain name strings
     # BEWARE: these do not match the MaxMind Country Codes
     domain_files:
-        # These lists must be disjoint. The tally server will log a
-        # warning when it eliminates duplicate entries, or
-        # entries that are longer suffixes of other entries.
-        #
         # The first domain list is used for the ExitDomain*MatchWebInitialStream Ratio, LifeTime, and Histogram counters
         # Their ExitDomainNo*MatchWebInitialStream* equivalents are used when there is no match in the first list
         # Each domain list corresponds to a bin in the ExitDomain*MatchWebInitialStream*CountList counters
@@ -31,7 +38,7 @@ tally_server:
         # It takes about 32 MB to transmit the exact and suffix lists
         # Exact 16.5 MB, Suffix 14.7 MB
         #- 'domain-top-1m.txt'
-        - 'domain-google.txt'
+        #- 'domain-google.txt'
         - 'domain-top-1k.txt'
         #- 'domain-tld.txt'
         #- 'domain-cc.txt'
@@ -43,23 +50,22 @@ tally_server:
         - 'domain-arpa.txt'
         - 'domain-onion.txt'
         - 'domain-i2p.txt'
+
     # a list of paths to files of newline-separated MaxMind Country Codes
     # BEWARE: these do not match the IANA Country Codes
     # country-all.txt contains instructions for creating country lists
     country_files:
-        # These lists must be disjoint. The tally server will log a
-        # warning when it eliminates duplicate entries.
-        #
         # The first country list is used for the *CountryMatchConnection, LifeTime and *Histogram counters
         # Their *CountryNoMatchConnection equivalents are used when there is no match in the first list
         # Each country list corresponds to a bin in the *CountryMatchConnection*CountList counters
         # (Multiple matches are possible, the final bin is used for unmatched countries)
-        - 'country-all.txt'
+        #- 'country-all.txt'
         - 'country-known.txt'
-        - 'country-rank.txt'
-        - 'country-top-10.txt'
+        #- 'country-rank.txt'
+        #- 'country-top-10.txt'
         - 'country-unknown.txt'
         - 'country-no-geoip.txt'
+
     # paths to files of newline/tab-separated AS Number to IPv4/IPv6 prefix mappings
     # we replace AS sets and multi-origin ASs with their first member as part
     # of our preprocessing
@@ -73,19 +79,17 @@ tally_server:
     # a list of paths to files of newline-separated AS Numbers
     # each file contains instructions for creating the list
     as_files:
-        # These lists must be disjoint. The tally server will log a
-        # warning when it eliminates duplicate entries.
-        #
         # The first AS list is used for the *ASMatchConnection, LifeTime and *Histogram counters
         # Their *ASNoMatchConnection equivalents are used when there is no match in the first list
         # Each AS list corresponds to a bin in the *ASMatchConnection*CountList counters
         # (Multiple matches are possible, the final bin is used for unmatched ASs)
         - 'as-rank.txt'
-        - 'as-top-100.txt'
-        - 'as-ipv4-extra.txt'
-        - 'as-ipv6-extra.txt'
+        #- 'as-top-100.txt'
+        #- 'as-ipv4-extra.txt'
+        #- 'as-ipv6-extra.txt'
         # You can create this file by concatenating rank, ipv4-extra, and ipv6-extra, and using sort -u to remove duplicates
         #- 'as-all.txt'
+
     # path to a yaml file where the noise allocation is written immediately after calculation. The noise allocation also forms part of the results context.
     allocation: 'counters.allocation.yaml'
     noise_weight: # distribute noise among all machines / data collectors
@@ -99,12 +103,14 @@ tally_server:
         # * means 'any other relay', and should only be used for testing
         # (we know the injector's hard-coded fingerprint)
         # '*': 1.0
+
     listen_port: 20001 # open port on which to listen for remote connections from SKs and DCs
     # number of share keeper nodes required before starting
     # Template value, replaced by run_test.sh
     sk_threshold: PRIVCOUNT_SHARE_KEEPERS
     #sk_threshold: 1
     dc_threshold: 1 # number of data collector nodes required before starting
+
     # If you add a significant number of new counters, you may need to increase
     # the collect, event, and checkin periods
     # The elapsed test time is approximately:
@@ -120,13 +126,15 @@ tally_server:
     always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
     #sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
     continue: 2 # start another collection phase after finishing a previous collection phase. If this value is an integer, run that many rounds before stopping. (The TS always runs at least 1 round.)
+
     circuit_sample_rate: 1.0 # must be between 0.0 and 1.0. Smaller values sample fewer circuits. The injector ignores this option.
     max_cell_events_per_circuit: 25 # Limit cells from Tor. Can be negative to receive all cells from Tor. The injector ignores this option.
+
     # optional overrides:
     key: 'keys/ts.pem' # path to the rsa private key
     cert: 'keys/ts.cert' # path to the public key certificate
     #results: '.' # path to directory where the result files will be written
-    #
+
     # the security of each PrivCount deployment depends on the handshake key
     # being unique, random, and secret
     # all nodes must agree on this key to handshake correctly
@@ -138,13 +146,16 @@ share_keeper:
     # Template values, replaced by run_test.sh
     # path to the rsa private key (optional)
     key: 'keys/sk.SK_NUM.pem'
+
     tally_server_info: # where the tally server is located
         ip: '127.0.0.1'
         port: 20001
+
     # optional overrides:
     delay_period: 1 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
     always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
     sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
+
     # all nodes must agree on this key to handshake correctly
     secret_handshake: 'keys/secret_handshake.yaml'
 
@@ -166,21 +177,25 @@ data_collector:
         # cat /dev/random | hexdump -e '"%x"' -n 32 -v
         # tor --hash-password
         # Add HashedControlPassword to torrc
+
     tally_server_info: # where the tally server is located
         ip: 127.0.0.1
         port: 20001
     # share keepers' public key hashes
     # `openssl rsa -pubout < keys/sk.pem | openssl dgst -sha256`
+
     share_keepers:
         # Template list value, replaced by run_test.sh
         - SK_LIST
         # - '0e193e4a66cf0332bc64ad613bb651579a10e08afdbb54aa49e9ea2286ccd41c'
         # - ...
+
     # optional overrides:
     #use_setconf: True (default: True) whether to use SETCONF to set EnablePrivCount, or rely on the torrc or some other PrivCount instance to do it. This biases results towards long-running connections. Intended for use when testing.
     delay_period: 1 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
     always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
     rotate_period: 5 # (default: 600) sensitive data (like client IP addresses) remains in memory for up to 2*rotate_period
     #sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
+
     # all nodes must agree on this key to handshake correctly
     secret_handshake: 'keys/secret_handshake.yaml'

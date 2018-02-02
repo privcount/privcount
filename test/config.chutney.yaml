@@ -5,6 +5,7 @@ tally_server:
     noise: 'counters.noise.yaml'
     traffic_model: 'traffic.model.json'
     traffic_noise: 'traffic.noise.yaml'
+    reject_overlapping_lists: False
     domain_files:
         - 'domain-top-1k.txt'
         - 'domain-tld.txt'

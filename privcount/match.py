@@ -247,11 +247,12 @@ def is_collection_tag_valid(collection_tag):
 def suffix_match_validate_item(suffix_obj, search_string,
                                original_list, separator="",
                                expected_collection_tag=-1,
-                               expect_disjoint=True):
+                               reject_overlapping_lists=True):
     '''
     Search suffix_obj for search_string using separator.
-    If expect_disjoint is True, make sure it yields expected_collection_tag.
-    Otherwise, make sure it yields a collection tag that is not None.
+    If reject_overlapping_lists is True, make sure it yields
+    expected_collection_tag. Otherwise, make sure it yields a collection tag
+    that is not None.
 
     If the search fails, log a warning using original_list, and raise an
     exception.
@@ -259,7 +260,7 @@ def suffix_match_validate_item(suffix_obj, search_string,
     try:
         found_collection_tag = suffix_match(suffix_obj, search_string,
                                             separator=separator)
-        if expect_disjoint:
+        if reject_overlapping_lists:
             assert found_collection_tag == expected_collection_tag
         else:
             assert found_collection_tag is not None
@@ -268,14 +269,14 @@ def suffix_match_validate_item(suffix_obj, search_string,
                         .format(search_string,
                                 expected_collection_tag,
                                 found_collection_tag,
-                                "required disjoint" if expect_disjoint else "allowed overlaps",
+                                "rejected overlaps" if reject_overlapping_lists else "allowed overlaps",
                                 summarise_list(original_list),
                                 summarise_list(suffix_obj.keys())))
         logging.debug("Validating suffix {} -> {} found {} ({}):\nOriginal (full):\n{}\nTree (full):\n{}"
                       .format(search_string,
                               expected_collection_tag,
                               found_collection_tag,
-                              "required disjoint" if expect_disjoint else "allowed overlaps",
+                              "rejected overlaps" if reject_overlapping_lists else "allowed overlaps",
                               original_list,
                               suffix_obj))
         raise
@@ -370,13 +371,14 @@ def suffix_match_prepare_collection(suffix_collection, separator="",
             #assert prev_suffix_node is not None
             prev_suffix_node[insert_component] = collection_tag
 
-        # Now check that each item actually matches the list
+        # Now check that each item actually matches one of the lists
+        # Allow the lists to have overlaps, we'll check that later
         if validate:
             suffix_match_validate_item(suffix_obj, insert_string,
                                        suffix_collection,
                                        separator=separator,
                                        expected_collection_tag=collection_tag,
-                                       expect_disjoint=False)
+                                       reject_overlapping_lists=False)
 
     if len(longer_suffix_list) > 0:
         duplicates = True
