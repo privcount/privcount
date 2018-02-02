@@ -121,7 +121,6 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
         # we haven't checked if any shares are present, so don't assume
         for share in self.start_config.get('shares', []):
             # this is still encrypted, so there's no need for a secure delete
-            del share['secret']
             share['secret'] = "(encrypted blinding share, deleted by share keeper)"
         # sort the shares, so that their order is consistent between rounds
         self.start_config.get('shares', []).sort()
@@ -222,8 +221,7 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
             sk_conf['name'] = get_public_digest(sk_conf['key'])
 
             # the state file (unused)
-            if 'state' in sk_conf:
-                del sk_conf['state']
+            sk_conf.pop('state', None)
             #sk_conf['state'] = normalise_path(sk_conf['state'])
             #assert os.path.exists(os.path.dirname(sk_conf['state']))
 

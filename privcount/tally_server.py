@@ -769,8 +769,7 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert os.path.exists(ts_conf['results'])
 
             # the state file (unused)
-            if 'state' in ts_conf:
-                del ts_conf['state']
+            ts_conf.pop('state', None)
             #ts_conf['state'] = normalise_path(ts_conf['state'])
             #assert os.path.exists(os.path.dirname(ts_conf['state']))
 
@@ -1837,7 +1836,7 @@ class CollectionPhase(object):
                 if self.client_status[uid].get('type', 'NoType') == type:
                     contexts.setdefault(type, {}).setdefault(uid, {})['Status'] = self.client_status[uid]
                     # remove the (inner) types, because they're redundant now
-                    del contexts[type][uid]['Status']['type']
+                    contexts[type][uid]['Status'].pop('type', None)
                     # add the client config as well
                     if self.client_config is not None and uid in self.client_config:
                         contexts[type][uid]['Config'] = self.client_config[uid]
