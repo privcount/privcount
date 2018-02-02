@@ -81,7 +81,7 @@ def stop_reactor(exit_code=0):
     assert exit_code <= 127
     os._exit(exit_code)
 
-def summarise_string(long_str, max_len, ellipsis='...'):
+def summarise_string(long_str, max_len=100, ellipsis='...'):
         '''
         Summarise a string so it is a suitable length for logging.
         Returns a string that is at most min(max_len, len(long_str)) characters
@@ -115,7 +115,8 @@ def summarise_string(long_str, max_len, ellipsis='...'):
         assert len(summary_str) == max_len
         return summary_str
 
-def summarise_list(obj_collection, max_obj_str_len, sort_output=True):
+def summarise_list(obj_collection, max_obj_str_len=50, sort_output=True,
+                   ellipsis="...."):
     '''
     Summarise obj_collection into a string containing a str() of the first
     object, and, if there is more than one object in the collection, a str()
@@ -139,12 +140,13 @@ def summarise_list(obj_collection, max_obj_str_len, sort_output=True):
         first_last_list = [str(obj_list[0])]
     if len(obj_list) > 1:
         # always have an ellipsis, even if the objects or list are short
-        ellipsis = "...."
         first_last_list.append(ellipsis)
         max_len += len(ellipsis)
         first_last_list.append(str(obj_list[-1]))
         max_len += max_obj_str_len
-    return "'{}' ({})".format(summarise_string("".join(first_last_list), max_len),
+    return "'{}' ({})".format(summarise_string("".join(first_last_list),
+                                               max_len=max_len,
+                                               ellipsis=ellipsis),
                               len(obj_list))
 
 def normalise_time(time):

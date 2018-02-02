@@ -244,7 +244,7 @@ class PrivCountNode(object):
         for i in xrange(len(deepcopied_start_config.get(match_list_key, []))):
             match_list = deepcopied_start_config[match_list_key][i]
             short_string = summarise_list(match_list,
-                                          PrivCountNode.MAX_MATCH_LEN,
+                                          max_obj_str_len=PrivCountNode.MAX_MATCH_LEN,
                                           sort_output=False)
             deepcopied_start_config[match_list_key][i] = short_string
 
@@ -260,7 +260,7 @@ class PrivCountNode(object):
         match_suffixes = deepcopied_start_config.get(match_suffix_key, {})
         if len(match_suffixes) > 0:
             short_string = summarise_list(match_suffixes.keys(),
-                                          PrivCountNode.MAX_MATCH_LEN,
+                                          max_obj_str_len=PrivCountNode.MAX_MATCH_LEN,
                                           sort_output=False)
             deepcopied_start_config[match_suffix_key] = short_string
 
@@ -274,9 +274,27 @@ class PrivCountNode(object):
         for k in deepcopied_start_config.get(match_map_key, {}):
             match_map = deepcopied_start_config[match_map_key][k]
             short_string = summarise_list(match_map.splitlines(),
-                                          PrivCountNode.MAX_MATCH_LEN,
+                                          max_obj_str_len=PrivCountNode.MAX_MATCH_LEN,
                                           sort_output=False)
             deepcopied_start_config[match_map_key][k] = short_string
+
+    @staticmethod
+    def log_config_key_changed(key_name,
+                               old_val_str="(absent)",
+                               new_val_str="(absent)"):
+        '''
+        Log a config key change for key_name from old_val_str to new_val_str.
+        If the key was added or deleted, don't specify old_val_str or
+        new_val_str.
+
+        Logs an info-level summary, and a full debug log.
+        '''
+        logging.info("updated config for key {} from {} to {}"
+                     .format(key_name,
+                             summarise_string(old_val_str),
+                             summarise_string(new_val_str)))
+        logging.debug("updated config for key {} (full values) from {} to {}"
+                      .format(key_name, old_val_str, new_val_str))
 
 class PrivCountServer(PrivCountNode):
     '''

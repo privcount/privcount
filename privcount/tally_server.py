@@ -18,10 +18,10 @@ from base64 import b64encode
 from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
-from privcount.config import normalise_path, choose_secret_handshake_path
+from privcount.config import normalise_path, choose_secret_handshake_path, _extra_keys, _common_keys
 from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
 from privcount.crypto import generate_keypair, generate_cert
-from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string
+from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string, summarise_list
 from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_string, load_match_list, load_as_prefix_map, exact_match, suffix_match
 from privcount.node import PrivCountNode, PrivCountServer, continue_collecting, log_tally_server_status, EXPECTED_EVENT_INTERVAL_MAX, EXPECTED_CONTROL_ESTABLISH_MAX
 from privcount.protocol import PrivCountServerProtocol, get_privcount_version
@@ -525,7 +525,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                     # sanity check
                     if set(tmodel_bins.keys()) != set(tmodel_noise.keys()):
                         logging.error("the set of initial bins and noise labels are not equal")
-                        assert False
+                        assert set(tmodel_bins.keys()) != set(tmodel_noise.keys())
 
                 # inject the traffic model counter bins and noise configs, i.e.,
                 # append the traffic model bins and noise to the other configured values
@@ -534,8 +534,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                     ts_conf['noise']['counters'].update(tmodel_noise)
                 if set(ts_conf['counters'].keys()) != set(ts_conf['noise']['counters'].keys()):
                     logging.error("the set of traffic model bins and noise labels are not equal")
-                    assert False
-
+                    assert set(ts_conf['counters'].keys()) != set(ts_conf['noise']['counters'].keys())
 
             # optional lists and processed suffixes of DNS domain names
             old_domain_files = self.config.get('domain_files', []) if self.config is not None else []
@@ -770,8 +769,7 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert os.path.exists(ts_conf['results'])
 
             # the state file (unused)
-            if 'state' in ts_conf:
-                del ts_conf['state']
+            ts_conf.pop('state', None)
             #ts_conf['state'] = normalise_path(ts_conf['state'])
             #assert os.path.exists(os.path.dirname(ts_conf['state']))
 
@@ -842,34 +840,32 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert -min_tally_counter_value() < counter_modulus()
 
             if self.config == None:
-                self.config = ts_conf
-                logging.info("using config = %s",
-                             summarise_string(str(self.config), 100))
+                logging.info("using initial config = %s",
+                             summarise_string(str(self.config)))
                 logging.debug("using config (full value) = %s",
                               str(self.config))
             else:
                 changed = False
-                for k in ts_conf:
-                    if k not in self.config or ts_conf[k] != self.config[k]:
-                        old_val_str = str(self.config[k]) if k in self.config else '(absent)'
-                        new_val_str = str(ts_conf[k]) if k in ts_conf else '(absent)'
-                        logging.info("updated config for key {} from {} to {}"
-                                     .format(k,
-                                             summarise_string(
-                                                          old_val_str,
-                                                          100),
-                                             summarise_string(
-                                                          new_val_str,
-                                                          100)))
-                        logging.debug("updated config for key {} (full values) from {} to {}"
-                                      .format(k, old_val_str, new_val_str))
-                        if k in ts_conf:
-                            self.config[k] = ts_conf[k]
-                        else:
-                            del self.config[k]
+                for k in _extra_keys(self.config, ts_conf):
+                    changed = True
+                    PrivCountNode.log_config_key_changed(k,
+                                                         old_val_str=self.config[k])
+                for k in _extra_keys(ts_conf, self.config):
+                    changed = True
+                    PrivCountNode.log_config_key_changed(k,
+                                                         new_val_str=ts_conf[k])
+                for k in _common_keys(self.config, ts_conf):
+                    if self.config[k] != ts_conf[k]:
                         changed = True
+                        PrivCountNode.log_config_key_changed(k,
+                                                             old_val_str=self.config[k],
+                                                             new_val_str=ts_conf[k])
                 if not changed:
                     logging.debug('no config changes found')
+
+            # unconditionally replace the config, even if it hasn't changed
+            # this avoids bugs in the change logic above
+            self.config = ts_conf
 
         except AssertionError:
             logging.warning("problem reading config file: invalid data")
@@ -1144,7 +1140,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         '''
         # Allow standard-length tor relay nicknames and fingerprints
         # Replace entire hex characters when summarising, not just ...
-        return summarise_string(uid, 20, ellipsis='....')
+        return summarise_string(uid, max_len=20, ellipsis='....')
 
     def get_client_type(self, uid, status=None):
         '''
@@ -1840,7 +1836,7 @@ class CollectionPhase(object):
                 if self.client_status[uid].get('type', 'NoType') == type:
                     contexts.setdefault(type, {}).setdefault(uid, {})['Status'] = self.client_status[uid]
                     # remove the (inner) types, because they're redundant now
-                    del contexts[type][uid]['Status']['type']
+                    contexts[type][uid]['Status'].pop('type', None)
                     # add the client config as well
                     if self.client_config is not None and uid in self.client_config:
                         contexts[type][uid]['Config'] = self.client_config[uid]

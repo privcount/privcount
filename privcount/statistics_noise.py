@@ -241,16 +241,12 @@ def get_opt_privacy_allocation(epsilon, delta, stats_parameters,
         opt_sigmas[param] = opt_sigma
 
     if len(zero_sigmas) > 0:
-        # sort names alphabetically, so the logs are in a sensible order
-        counter_summary = summarise_list(zero_sigmas, 50)
         logging.error("sigmas for {} are zero, this provides no differential privacy for these statistics"
-                      .format(counter_summary))
+                      .format(summarise_list(zero_sigmas)))
 
     if len(low_sigmas) > 0:
-        # sort names alphabetically, so the logs are in a sensible order
-        counter_summary = summarise_list(low_sigmas, 50)
         logging.warning("sigmas for {} are less than the sigma tolerance {}, their calculated values may be inaccurate and may vary each time they are calculated"
-                        .format(low_sigmas, sigma_tol))
+                        .format(summarise_list(low_sigmas), sigma_tol))
 
     return (opt_epsilons, opt_sigmas, opt_sigma_ratio)
 
@@ -333,11 +329,9 @@ def get_noise_allocation(noise_parameters,
         stats_parameters[stat] = statistics
 
     if len(zero_sigmas) > 0:
-        # sort names alphabetically, so the logs are in a sensible order
-        counter_summary = summarise_list(zero_sigmas, 50)
         # If you want a counter with no noise, try using 1e-6 instead
         logging.error("sensitivity for {} is zero, calculated sigmas will be zero for all statistics"
-                        .format(counter_summary))
+                        .format(summarise_list(zero_sigmas)))
 
     # calculate the noise allocations
     # and update the structure with defaults, if not already present

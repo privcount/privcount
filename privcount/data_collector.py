@@ -354,8 +354,7 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                 dc_conf, conf)
 
             # the state file (unused)
-            if 'state' in dc_conf:
-                del dc_conf['state']
+            dc_conf.pop('state', None)
             #dc_conf['state'] = normalise_path(dc_conf['state'])
             #assert os.path.exists(os.path.dirname(dc_conf['state']))
 
@@ -1800,9 +1799,8 @@ class Aggregator(ReconnectingClientFactory):
         '''
         if field_name in fields:
             field_value = fields[field_name]
-            field_value_log = summarise_string(field_value, 20)
             value_message = "{} value '{}'".format(field_name,
-                                                   field_value_log)
+                                                   summarise_string(field_value))
             full_value_message = "{} value (full value) '{}'".format(
                                                                   field_name,
                                                                   field_value)
@@ -1895,7 +1893,7 @@ class Aggregator(ReconnectingClientFactory):
         # We see the exit flag even on non-exit relays, so it's the one that's
         # got to go
         if is_exit and (is_dir or is_hsdir or is_intro or is_rend):
-            del fields["{}IsExitFlag".format(prefix)]
+            fields.pop("{}IsExitFlag".format(prefix), None)
 
     @staticmethod
     def are_circuit_common_fields_valid(fields, event_desc,

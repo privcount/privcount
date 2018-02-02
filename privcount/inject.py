@@ -172,7 +172,7 @@ class PrivCountDataInjector(ServerFactory):
             self.output_event_count += 1
             logging.info("sending event {} '{}'"
                          .format(self.output_event_count,
-                                 summarise_string(event, 100)))
+                                 summarise_string(event)))
             logging.debug("sending event {} (full event) '{}'"
                           .format(self.output_event_count, event))
             self.protocol.sendLine(event)
