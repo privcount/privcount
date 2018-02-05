@@ -2192,7 +2192,8 @@ class Aggregator(ReconnectingClientFactory):
 
         # Increment counters for optional fields that don't have defaults
 
-        # TODO: generalise, building counter names in code
+        # Don't collect this counter, it's inefficient
+        # Instead, collect Rend2ClientCircuitOutboundCellCount at the circuit level
         if is_client is not None and hs_version is not None:
             if is_rend and is_client and is_sent and hs_version == 2:
                 self.secure_counters.increment('Rend2ClientSentCellCount',
@@ -2433,6 +2434,173 @@ class Aggregator(ReconnectingClientFactory):
         # if everything passed, we're ok
         return True
 
+    def _increment_circuit_close_counters(self, counter_suffix,
+                                          is_origin, is_entry, is_mid, is_end,
+                                          is_exit, is_dir,
+                                          is_hsdir, is_intro, is_rend,
+                                          is_failure, is_hs_client,
+                                          hs_version,
+                                          event_desc,
+                                          bin=SINGLE_BIN,
+                                          inc=1):
+        '''
+        Increment bin by inc for the counter variants ending in
+        counter_suffix, using the remaining parameters to create counter names.
+
+        Unknown counter names are ignored.
+        '''
+        is_single_hop = is_entry and is_end
+
+        if counter_suffix is None:
+            counter_suffix = ""
+
+        # Positions: at least one of these flags is true for each circuit
+
+        if is_origin:
+            self.secure_counters.increment('OriginCircuit{}Count'
+                                           .format(counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
+        if is_entry:
+            self.secure_counters.increment('EntryCircuit{}Count'
+                                           .format(counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
+        if is_mid:
+            self.secure_counters.increment('MidCircuit{}Count'
+                                           .format(counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
+        if is_end:
+            self.secure_counters.increment('EndCircuit{}Count'
+                                           .format(counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
+        if is_single_hop:
+            self.secure_counters.increment('SingleHopCircuit{}Count'
+                                           .format(counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
+        # End subcategories
+        if is_exit:
+            # includes single-hop exits (which aren't supposed to exist)
+            self.secure_counters.increment('ExitCircuit{}Count'
+                                           .format(counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
+        if is_dir:
+            self.secure_counters.increment('DirCircuit{}Count'
+                                           .format(counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
+        # Ignore HS circuits without hs_version
+        if hs_version is None:
+            return
+
+        if is_hsdir:
+            self.secure_counters.increment('HSDir{}Circuit{}Count'
+                                           .format(hs_version, counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
+        if is_hs_client is None:
+            hs_role = None
+        elif is_hs_client:
+            hs_role = "Client"
+        else:
+            hs_role = "Service"
+
+        # Custom Combined counters: collected so there is only one lot of noise added
+        # These counters only have a "CircuitCount" variant
+        if counter_suffix == "":
+            if is_exit:
+                # ExitAndRend2ClientCircuitCount = ExitCircuitCount + Rend2ClientCircuitCount
+                self.secure_counters.increment('ExitAndRend2ClientCircuitCount',
+                                               bin=bin,
+                                               inc=inc)
+                # ExitAndRend2ServiceCircuitCount = ExitCircuitCount + Rend2ServiceCircuitCount
+                self.secure_counters.increment('ExitAndRend2ServiceCircuitCount',
+                                               bin=bin,
+                                               inc=inc)
+
+            # ignore circuits where we don't know the client/server flag
+            if is_rend and hs_version == 2 and hs_role is not None:
+                    # ExitAndRend2ClientCircuitCount = ExitCircuitCount + Rend2ClientCircuitCount
+                    # Use double quotes, so test_counter_match.sh doesn't think it's a duplicate
+                    self.secure_counters.increment("ExitAndRend2{}CircuitCount"
+                                                   .format(hs_role),
+                                                   bin=bin,
+                                                   inc=inc)
+
+        # Use position to share Intro and Rend counters
+        if is_intro:
+            position = "Intro"
+        elif is_rend:
+            position = "Rend"
+        else:
+            # ignore circuits with other positions
+            return
+
+        if is_failure:
+            status = "Failure"
+        else:
+            status = "Success"
+
+        if is_single_hop:
+            if hs_role is None:
+                hop = None
+            elif hs_role == "Client":
+                hop = "Tor2web"
+            else:
+                hop = "SingleOnion"
+        else:
+            hop = "MultiHop"
+
+        # Intro/Rend 2/3 Circuit /InboundCell/OutboundCell Count
+        self.secure_counters.increment('{}{}Circuit{}Count'
+                                       .format(position, hs_version, counter_suffix),
+                                       bin=bin,
+                                       inc=inc)
+
+        # Intro/Rend 2/3 Failure/Success Circuit /InboundCell/OutboundCell Count
+        self.secure_counters.increment('{}{}{}Circuit{}Count'
+                                       .format(position, hs_version, status, counter_suffix),
+                                       bin=bin,
+                                       inc=inc)
+
+
+        if hs_role is not None:
+            # Intro/Rend 2/3 Client/Service Circuit /InboundCell/OutboundCell Count
+            self.secure_counters.increment('{}{}{}Circuit{}Count'
+                                           .format(position, hs_version, hs_role, counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+            # Intro/Rend 2/3 Client/Service Failure/Success Circuit /InboundCell/OutboundCell Count
+            self.secure_counters.increment('{}{}{}{}Circuit{}Count'
+                                           .format(position, hs_version, hs_role, status, counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+            assert hop is not None
+
+            # Intro/Rend 2/3 Tor2WebClient/SingleOnionService/MultiHopClient/MultiHopService Circuit /InboundCell/OutboundCell Count
+            self.secure_counters.increment('{}{}{}{}Circuit{}Count'
+                                           .format(position, hs_version, hop, hs_role, counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
+            # Intro/Rend 2/3 Tor2WebClient/SingleOnionService/MultiHopClient/MultiHopService Failure/Success Circuit /InboundCell/OutboundCell Count
+            self.secure_counters.increment('{}{}{}{}{}Circuit{}Count'
+                                           .format(position, hs_version, hop, hs_role, status, counter_suffix),
+                                           bin=bin,
+                                           inc=inc)
+
     def _handle_circuit_close_event(self, fields):
         '''
         Process a PRIVCOUNT_CIRCUIT_CLOSE event
@@ -2490,7 +2658,6 @@ class Aggregator(ReconnectingClientFactory):
 
         # Extract the optional fields, and give them defaults
 
-        # Unused, included for completeness
         is_origin = get_flag_value("IsOriginFlag",
                                    fields, event_desc,
                                    is_mandatory=False,
@@ -2511,8 +2678,6 @@ class Aggregator(ReconnectingClientFactory):
                                 is_mandatory=False,
                                 default=False)
 
-        is_single_hop = is_entry and is_end
-
         # The end position can be exit, dir, hsdir, intro, or rend
         # (intro circuits can also be middle circuits)
         # Exactly one of these should be true, except for unused preemptive
@@ -2522,19 +2687,16 @@ class Aggregator(ReconnectingClientFactory):
                                  is_mandatory=False,
                                  default=False)
 
-        # Unused, included for completeness
         is_dir = get_flag_value("IsDirFlag",
                                  fields, event_desc,
                                  is_mandatory=False,
                                  default=False)
 
-        # Unused, included for completeness
         is_hsdir = get_flag_value("IsHSDirFlag",
                                  fields, event_desc,
                                  is_mandatory=False,
                                  default=False)
 
-        # Unused, included for completeness
         is_intro = get_flag_value("IsIntroFlag",
                                  fields, event_desc,
                                  is_mandatory=False,
@@ -2552,198 +2714,79 @@ class Aggregator(ReconnectingClientFactory):
 
         is_failure = failure_string is not None
 
+        # Data volumes
+        # At a rend point, both the client and server sides of the splice
+        # are separate circuits with separate counts
+        # We use the maximum values, because:
+        # - origins do not receive outbound cells or send inbound cells
+        # - rend splices receive some setup cells that are never sent onwards
+        outbound_received_cell_count = get_int_value("OutboundReceivedCellCount",
+                                                     fields, event_desc,
+                                                     is_mandatory=False,
+                                                     default=0)
+        outbound_sent_cell_count = get_int_value("OutboundSentCellCount",
+                                                 fields, event_desc,
+                                                 is_mandatory=False,
+                                                 default=0)
+        inbound_received_cell_count = get_int_value("InboundReceivedCellCount",
+                                                    fields, event_desc,
+                                                    is_mandatory=False,
+                                                    default=0)
+        inbound_sent_cell_count = get_int_value("InboundSentCellCount",
+                                                fields, event_desc,
+                                                is_mandatory=False,
+                                                default=0)
+        outbound_cell_count = max(outbound_received_cell_count,
+                                  outbound_sent_cell_count)
+        inbound_cell_count = max(inbound_received_cell_count,
+                                 inbound_sent_cell_count)
+
         # Extract the optional fields that don't have defaults
 
         # If this flag is absent, we don't know if it's client or server
-        is_client = get_flag_value("IsHSClientSideFlag",
-                                   fields, event_desc,
-                                   is_mandatory=False,
-                                   default=None)
+        is_hs_client = get_flag_value("IsHSClientSideFlag",
+                                      fields, event_desc,
+                                      is_mandatory=False,
+                                      default=None)
 
         hs_version = Aggregator.get_hs_version(fields, event_desc,
                                                is_mandatory=False,
                                                default=None)
 
-        # Increment counters for mandatory fields and optional fields that
-        # have defaults
+        # Increment counter variants
 
-        # Increment counters for optional fields that don't have defaults
-
-        # TODO: generalise, building counter names in code
-
-        # Positions: at least one of these flags is true for each circuit
-
-        # Unused, included for completeness
-        if is_origin:
-            self.secure_counters.increment('OriginCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-        if is_entry:
-            self.secure_counters.increment('EntryCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-        if is_mid:
-            self.secure_counters.increment('MidCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-        if is_end:
-            self.secure_counters.increment('EndCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-        # Unused, included for completeness
-        if is_single_hop:
-            self.secure_counters.increment('SingleHopCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-        # End subcategories
-        if is_exit:
-            # includes single-hop exits (which aren't supposed to exist)
-            self.secure_counters.increment('ExitCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-            # Combined counters: collected so there is only one lot of noise added
-            # ExitAndRend2ClientCircuitCount = ExitCircuitCount + Rend2ClientCircuitCount
-            self.secure_counters.increment('ExitAndRend2ClientCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-            # ExitAndRend2ServiceCircuitCount = ExitCircuitCount + Rend2ServiceCircuitCount
-            self.secure_counters.increment('ExitAndRend2ServiceCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-        # Unused, included for completeness
-        if is_dir:
-            self.secure_counters.increment('DirCircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-        # Unused, included for completeness
-        if is_hsdir and hs_version is not None and hs_version == 2:
-            self.secure_counters.increment('HSDir2CircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-
-        if is_intro and hs_version is not None and hs_version == 2:
-            self.secure_counters.increment('Intro2CircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-            if is_failure:
-                self.secure_counters.increment('Intro2FailureCircuitCount',
-                                               bin=SINGLE_BIN,
-                                               inc=1)
-            else:
-                self.secure_counters.increment('Intro2SuccessCircuitCount',
-                                               bin=SINGLE_BIN,
-                                               inc=1)
-            # ignore circuits where we don't know the client/server flag
-            if is_client is not None:
-                if is_client:
-                    self.secure_counters.increment('Intro2ClientCircuitCount',
-                                                 bin=SINGLE_BIN,
-                                                 inc=1)
-                    if is_failure:
-                        self.secure_counters.increment('Intro2ClientFailureCircuitCount',
-                                                       bin=SINGLE_BIN,
-                                                       inc=1)
-                    else:
-                        self.secure_counters.increment('Intro2ClientSuccessCircuitCount',
-                                                       bin=SINGLE_BIN,
-                                                       inc=1)
-                else:
-                    self.secure_counters.increment('Intro2ServiceCircuitCount',
-                                                   bin=SINGLE_BIN,
-                                                   inc=1)
-                    if is_failure:
-                        self.secure_counters.increment('Intro2ServiceFailureCircuitCount',
-                                                       bin=SINGLE_BIN,
-                                                       inc=1)
-                    else:
-                        self.secure_counters.increment('Intro2ServiceSuccessCircuitCount',
-                                                       bin=SINGLE_BIN,
-                                                       inc=1)
-
-        if is_rend and hs_version is not None and hs_version == 2:
-            self.secure_counters.increment('Rend2CircuitCount',
-                                           bin=SINGLE_BIN,
-                                           inc=1)
-            if is_failure:
-                self.secure_counters.increment('Rend2FailureCircuitCount',
-                                               bin=SINGLE_BIN,
-                                               inc=1)
-            else:
-                self.secure_counters.increment('Rend2SuccessCircuitCount',
+        # CircuitCount
+        self._increment_circuit_close_counters("",
+                                               is_origin, is_entry, is_mid, is_end,
+                                               is_exit, is_dir,
+                                               is_hsdir, is_intro, is_rend,
+                                               is_failure, is_hs_client,
+                                               hs_version,
+                                               event_desc,
                                                bin=SINGLE_BIN,
                                                inc=1)
 
-            # ignore circuits where we don't know the client/server flag
-            if is_client is not None:
-                if is_client:
-                    self.secure_counters.increment('Rend2ClientCircuitCount',
-                                                   bin=SINGLE_BIN,
-                                                   inc=1)
-                    # Combined counters: collected so there is only one lot of noise added
-                    # ExitAndRend2ClientCircuitCount = ExitCircuitCount + Rend2ClientCircuitCount
-                    # Use double quotes, so test_counter_match.sh doesn't think it's a duplicate
-                    self.secure_counters.increment("ExitAndRend2ClientCircuitCount",
-                                                   bin=SINGLE_BIN,
-                                                   inc=1)
+        # CircuitOutboundCellCount
+        self._increment_circuit_close_counters("OutboundCell",
+                                               is_origin, is_entry, is_mid, is_end,
+                                               is_exit, is_dir,
+                                               is_hsdir, is_intro, is_rend,
+                                               is_failure, is_hs_client,
+                                               hs_version,
+                                               event_desc,
+                                               bin=SINGLE_BIN,
+                                               inc=outbound_cell_count)
 
-                    if is_failure:
-                        self.secure_counters.increment('Rend2ClientFailureCircuitCount',
-                                                       bin=SINGLE_BIN,
-                                                       inc=1)
-                    else:
-                        self.secure_counters.increment('Rend2ClientSuccessCircuitCount',
-                                                       bin=SINGLE_BIN,
-                                                       inc=1)
-
-                    if is_single_hop:
-                        # Unused, included for completeness
-                        self.secure_counters.increment(
-                                          'Rend2Tor2WebClientCircuitCount',
-                                          bin=SINGLE_BIN,
-                                          inc=1)
-                    else:
-                        self.secure_counters.increment(
-                                          'Rend2MultiHopClientCircuitCount',
-                                          bin=SINGLE_BIN,
-                                          inc=1)
-                else:
-                    self.secure_counters.increment('Rend2ServiceCircuitCount',
-                                                   bin=SINGLE_BIN,
-                                                   inc=1)
-                    # Combined counters: collected so there is only one lot of noise added
-                    # ExitAndRend2ServiceCircuitCount = ExitCircuitCount + Rend2ServiceCircuitCount
-                    # Use double quotes, so test_counter_match.sh doesn't think it's a duplicate
-                    self.secure_counters.increment("ExitAndRend2ServiceCircuitCount",
-                                                   bin=SINGLE_BIN,
-                                                   inc=1)
-
-                    if is_failure:
-                        self.secure_counters.increment('Rend2ServiceFailureCircuitCount',
-                                                       bin=SINGLE_BIN,
-                                                       inc=1)
-                    else:
-                        self.secure_counters.increment('Rend2ServiceSuccessCircuitCount',
-                                                       bin=SINGLE_BIN,
-                                                       inc=1)
-
-                    if is_single_hop:
-                        self.secure_counters.increment(
-                                          'Rend2SingleOnionServiceCircuitCount',
-                                          bin=SINGLE_BIN,
-                                          inc=1)
-                    else:
-                        # Unused, included for completeness
-                        self.secure_counters.increment(
-                                          'Rend2MultiHopServiceCircuitCount',
-                                          bin=SINGLE_BIN,
-                                          inc=1)
+        # CircuitInboundCellCount
+        self._increment_circuit_close_counters("InboundCell",
+                                               is_origin, is_entry, is_mid, is_end,
+                                               is_exit, is_dir,
+                                               is_hsdir, is_intro, is_rend,
+                                               is_failure, is_hs_client,
+                                               hs_version,
+                                               event_desc,
+                                               bin=SINGLE_BIN,
+                                               inc=inbound_cell_count)
 
         # we processed and handled the event
         return True

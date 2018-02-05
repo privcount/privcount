@@ -286,6 +286,9 @@ PRIVCOUNT_COUNTER_EVENTS = {
 
 # these counters depend on the cell sent/received event
 # they are updated in _handle_circuit_cell_event
+
+# Don't collect this counter, it's inefficient
+# Instead, collect Rend2ClientCircuitOutboundCellCount at the circuit level
 'Rend2ClientSentCellCount' : { CELL_EVENT },
 
 # these counters depend on bytes transferred event

@@ -67,18 +67,33 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
         cat "$TEST_DIR/traffic_model.py.names.extra" \
             >> "$OUT_PATH.names.unsorted"
     fi
-    # Add the non-Circuit HSDir, Connection, and
-    # non-Circuit, non-Traffic Model Exit Stream counters
+    # Add the non-custom Circuit Position, HSDir Descriptor, Connection, and
+    # non-Traffic Model Exit Stream counters
     # to the data_collector file
     # These counters are code-driven, so they don't appear as literals in the
     # data_collector source code
     if [ `basename "$code"` = 'data_collector.py' ]; then
         cat "$TEST_DIR/counters.bins.yaml.names" \
+            | grep -e "Circuit.*Count" \
+            | grep -v -e "Connection" \
+               -e "ExitAndRend" \
+               -e "Active" \
+               -e "Inactive" \
+               -e "ExitInteractive" \
+               -e "ExitOtherPort" \
+               -e "ExitP2P" \
+               -e "ExitWeb" \
+            >> "$OUT_PATH.names.unsorted" || true
+        cat "$TEST_DIR/counters.bins.yaml.names" \
             | grep -e "^HSDir[2-3]" \
-                -e "Entry.*Connection" \
-                -e "Exit.*Stream" \
             | grep -v -e "^HSDir[2-3]Circuit" \
-                -e "^ExitStreamTrafficModel" \
+            >> "$OUT_PATH.names.unsorted" || true
+        cat "$TEST_DIR/counters.bins.yaml.names" \
+            | grep -e "Entry.*Connection" \
+            >> "$OUT_PATH.names.unsorted" || true
+        cat "$TEST_DIR/counters.bins.yaml.names" \
+            | grep -e "Exit.*Stream" \
+            | grep -v -e "^ExitStreamTrafficModel" \
                 -e "^ExitCircuit" \
             >> "$OUT_PATH.names.unsorted" || true
     fi
