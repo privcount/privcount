@@ -2963,3 +2963,750 @@ counters:
     HSDir3FetchCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    Rend2CircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2CircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2CircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3CircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3CircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3CircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2FailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2FailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3FailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3FailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2CircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2CircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2CircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3CircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3CircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3CircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2FailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2FailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3FailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3FailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3CircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3CircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3CircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3FailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3FailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0

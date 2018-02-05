@@ -1906,3 +1906,501 @@ counters:
         sigma: 1.0e+12
     HSDir3FetchCount:
         sigma: 1.0e+12
+    Rend2CircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2CircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2CircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3CircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3CircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3CircuitInboundCellCount:
+        sigma: 1.0e+12
+    MidCircuitInboundCellCount:
+        sigma: 1.0e+12
+    EndCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2ServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2ServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3ServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3ServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2FailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2FailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3FailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3FailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2ServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2ServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3ServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3ServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2ClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2ClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3ClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3ClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    OriginCircuitInboundCellCount:
+        sigma: 1.0e+12
+    SingleHopCircuitInboundCellCount:
+        sigma: 1.0e+12
+    DirCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2SuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2SuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3SuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3SuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2ServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2ServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3ServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3ServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2ClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2ClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3ClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3ClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    ExitCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2ClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2ClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3ClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3ClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    EntryCircuitInboundCellCount:
+        sigma: 1.0e+12
+    Rend2CircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2CircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2CircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3CircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3CircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3CircuitOutboundCellCount:
+        sigma: 1.0e+12
+    MidCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    EndCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2ServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2ServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3ServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3ServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2FailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2FailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3FailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3FailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2ServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2ServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3ServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3ServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2ClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2ClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3ClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3ClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    OriginCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    SingleHopCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    DirCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2SuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2SuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3SuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3SuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2ServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2ServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3ServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3ServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2ClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2ClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3ClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3ClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    ExitCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2ClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2ClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3ClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3ClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend2MultiHopClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro2MultiHopClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3MultiHopClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Intro3MultiHopClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    EntryCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    Rend3CircuitCount:
+        sigma: 1.0e+12
+    Intro3CircuitCount:
+        sigma: 1.0e+12
+    HSDir3CircuitCount:
+        sigma: 1.0e+12
+    Rend3ServiceCircuitCount:
+        sigma: 1.0e+12
+    Intro3ServiceCircuitCount:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceCircuitCount:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceCircuitCount:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceCircuitCount:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceCircuitCount:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceCircuitCount:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceCircuitCount:
+        sigma: 1.0e+12
+    Rend3FailureCircuitCount:
+        sigma: 1.0e+12
+    Intro3FailureCircuitCount:
+        sigma: 1.0e+12
+    Rend3ServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro3ServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend3ClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro3ClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend2MultiHopClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro2MultiHopClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend3MultiHopClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Intro3MultiHopClientFailureCircuitCount:
+        sigma: 1.0e+12
+    Rend3SuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro3SuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend3ServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro3ServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend3ClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro3ClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend2MultiHopClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro2MultiHopClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend3MultiHopClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Intro3MultiHopClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    Rend3ClientCircuitCount:
+        sigma: 1.0e+12
+    Intro3ClientCircuitCount:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientCircuitCount:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientCircuitCount:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientCircuitCount:
+        sigma: 1.0e+12
+    Intro2MultiHopClientCircuitCount:
+        sigma: 1.0e+12
+    Rend3MultiHopClientCircuitCount:
+        sigma: 1.0e+12
+    Intro3MultiHopClientCircuitCount:
+        sigma: 1.0e+12
