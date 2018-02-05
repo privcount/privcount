@@ -61,6 +61,7 @@ PRIVCOUNT_CHUTNEY_CONNECTIONS=${PRIVCOUNT_CHUTNEY_CONNECTIONS:-${CHUTNEY_CONNECT
 PRIVCOUNT_CHUTNEY_ROUNDS=${PRIVCOUNT_CHUTNEY_ROUNDS:-${CHUTNEY_ROUNDS:-7}}
 # The chutney default is 10KB, we use 1KB to make counts easy to check
 PRIVCOUNT_CHUTNEY_BYTES=${PRIVCOUNT_CHUTNEY_BYTES:-${CHUTNEY_DATA_BYTES:-1024}}
+PRIVCOUNT_CHUTNEY_START_TIME=${PRIVCOUNT_CHUTNEY_START_TIME:-${CHUTNEY_START_TIME:-50}}
 # other chutney environmental variables are listed in tools/test-network.sh
 
 # internal: not configurable via command-line arguments
@@ -147,6 +148,10 @@ do
       PRIVCOUNT_CHUTNEY_BYTES=$2
       shift
       ;;
+    --chutney-start-time|-w)
+      CHUTNEY_START_TIME=$2
+      shift
+      ;;
     --help|-h)
       "$W" "usage: $0 [...] [<privcount-directory>] -- [<data-source-args...>]"
       "$W" "  -I: run 'pip install -I <privcount-directory>' before testing"
@@ -198,6 +203,8 @@ do
       "$I" "    default: '$PRIVCOUNT_CHUTNEY_ROUNDS'"
       "$W" "  -b chutney-bytes: verify chutney-bytes per client connection"
       "$I" "    default: '$PRIVCOUNT_CHUTNEY_BYTES'"
+      "$W" "  -w chutney-start-time: wait this many seconds before verifying"
+      "$I" "    default: '$PRIVCOUNT_CHUTNEY_START_TIME'"
       "$W" "  <privcount-directory>: the directory privcount is in"
       "$I" "    default: '$PRIVCOUNT_DIRECTORY'"
       "$W" "  <data-source-args...>: arguments appended to the data source"
@@ -315,6 +322,7 @@ export NETWORK_FLAVOUR=${PRIVCOUNT_CHUTNEY_FLAVOUR:-$NETWORK_FLAVOUR}
 export CHUTNEY_CONNECTIONS=${PRIVCOUNT_CHUTNEY_CONNECTIONS:-$CHUTNEY_CONNECTIONS}
 export CHUTNEY_ROUNDS=${PRIVCOUNT_CHUTNEY_ROUNDS:-$CHUTNEY_ROUNDS}
 export CHUTNEY_DATA_BYTES=${PRIVCOUNT_CHUTNEY_BYTES:-$CHUTNEY_DATA_BYTES}
+export CHUTNEY_START_TIME=${PRIVCOUNT_CHUTNEY_START_TIME:-$CHUTNEY_START_TIME}
 
 # The command to start a tor test network using chutney
 CHUTNEY_TEST_NETWORK=$PRIVCOUNT_CHUTNEY_PATH/$PRIVCOUNT_CHUTNEY_LAUNCH
@@ -761,19 +769,13 @@ case "$PRIVCOUNT_SOURCE" in
       | grep -v -e "is relative and will resolve" \
                 -e "no nameservers in '/dev/null'" \
                 -e "Couldn't set up any working nameservers" &
-
-    # If it hasn't finished in 30 seconds, kill it
-    # There is a small risk that it has exited and the pid is a new process
-    # We avoid this by killing all child processes when this script exits
     SOURCE_PID="$!"
-    (sleep 45; \
-      "$I" "Killing $PRIVCOUNT_SOURCE $SOURCE_PID"; \
-      kill "$SOURCE_PID") &
     ;;
   chutney)
     # The chutney output is very verbose: don't save it to the log
     "$I" "For full chutney logs run $CHUTNEY_LOG_CMD" \
       | `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP`
+    # Chutney kills itself and all its tor child processes
     # Chutney's "quiet" mode just isn't quiet enough
     if [ "$PRIVCOUNT_LOG" = "-q" ]; then
       $FIRST_ROUND_CMD 2>&1 \
@@ -783,12 +785,20 @@ case "$PRIVCOUNT_SOURCE" in
     else
       $FIRST_ROUND_CMD 2>&1
     fi
+    SOURCE_PID="$!"
     ;;
   *)
     "$W" "Source $PRIVCOUNT_SOURCE not supported."
     exit 1
     ;;
 esac
+
+# If the source hasn't finished after a reasonable time, kill it
+# There is a small risk that it has exited and the pid is a new process
+# We avoid this by killing all child processes when this script exits
+(sleep 180; \
+  "$I" "Killing old $PRIVCOUNT_SOURCE $SOURCE_PID from round $ROUNDS"; \
+  kill "$SOURCE_PID") &
 
 # Then wait for each job, terminating if any job produces an error
 # Ideally, we'd want to use wait, or wait $job, but that only checks one job
@@ -809,6 +819,8 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
   # succeed if an outcome file is produced
   if [ -f "$TEST_DIR/"privcount.outcome.*.json ]; then
     if [ $ROUNDS -lt $PRIVCOUNT_ROUNDS ]; then
+      "$I" "Killing old $PRIVCOUNT_SOURCE from the previous round..."
+      kill "$SOURCE_PID"
       "$I" "Moving round $ROUNDS results to '$OLD_DIR' ..."
       $MOVE_JSON_COMMAND || true
       # If the plot libraries are not installed, this will always fail
@@ -817,11 +829,18 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       "$I" "Launching $PRIVCOUNT_SOURCE for round $ROUNDS..."
       $OTHER_ROUND_CMD 2>&1 | \
         `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
+      SOURCE_PID="$!"
+      # If the source hasn't finished after a reasonable time, kill it
+      # There is a small risk that it has exited and the pid is a new process
+      # We avoid this by killing all child processes when this script exits
+      (sleep 180; \
+        "$I" "Killing old $PRIVCOUNT_SOURCE $SOURCE_PID from round $ROUNDS"; \
+        kill "$SOURCE_PID") &
     else
       break
     fi
   fi
-  sleep 5
+  sleep 10
   JOB_STATUS=`jobs`
   "$I" "$JOB_STATUS"
 done
