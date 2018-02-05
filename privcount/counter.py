@@ -1589,7 +1589,12 @@ def get_events_for_counter(counter):
     '''
     # when you add an event, but forget to update the table above,
     # you will get an error here
-    event_set = PRIVCOUNT_COUNTER_EVENTS[counter]
+    logging.debug("Finding events for counter: '{}'".format(counter))
+    try:
+        event_set = PRIVCOUNT_COUNTER_EVENTS[counter]
+    except KeyError as e:
+        logging.error("Missing events for counter: '{}'".format(counter))
+        raise
     assert check_event_set_valid(event_set)
     return event_set
 
