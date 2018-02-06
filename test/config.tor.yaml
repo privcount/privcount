@@ -14,8 +14,8 @@ tally_server:
     sk_threshold: PRIVCOUNT_SHARE_KEEPERS
     dc_threshold: 1
     collect_period: 60
-    event_period: 15
-    checkin_period: 15
+    event_period: 20
+    checkin_period: 20
     key: 'keys/ts.pem'
     cert: 'keys/ts.cert'
     secret_handshake: 'keys/secret_handshake.yaml'

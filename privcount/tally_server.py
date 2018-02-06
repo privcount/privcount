@@ -851,9 +851,9 @@ class TallyServer(ServerFactory, PrivCountServer):
 
             if self.config == None:
                 logging.info("using initial config = %s",
-                             summarise_string(str(self.config)))
+                             summarise_string(str(ts_conf)))
                 logging.debug("using config (full value) = %s",
-                              str(self.config))
+                              str(ts_conf))
             else:
                 changed = False
                 for k in _extra_keys(self.config, ts_conf):

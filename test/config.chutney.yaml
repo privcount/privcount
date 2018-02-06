@@ -37,8 +37,8 @@ tally_server:
     sk_threshold: PRIVCOUNT_SHARE_KEEPERS
     dc_threshold: DATA_COLLECTOR_COUNT
     collect_period: 60
-    event_period: 15
-    checkin_period: 15
+    event_period: 20
+    checkin_period: 20
     delay_period: 86400
     # Ignore some circuits, so we test this feature
     circuit_sample_rate: 0.5
@@ -70,5 +70,5 @@ data_collector:
         # Template list value, replaced by run_test.sh
         - SK_LIST
     delay_period: 86400
-    rotate_period: 5
+    rotate_period: 10
     secret_handshake: 'keys/secret_handshake.yaml'

@@ -115,7 +115,7 @@ tally_server:
     # the collect, event, and checkin periods
     # The elapsed test time is approximately:
     #     (collect_period + 2*event_period + delay_period) * rounds
-    collect_period: 40 # (no default, 1 week = 604800 seconds) the safe time frame of stats collection for all stats
+    collect_period: 60 # (no default, 1 week = 604800 seconds) the safe time frame of stats collection for all stats
     # There should be at least two event periods in each collect period
     event_period: 20 # (default: 10 minutes) how often the TS event loop runs
     # There should be at least two checkin periods in each collect period
@@ -194,7 +194,7 @@ data_collector:
     #use_setconf: True (default: True) whether to use SETCONF to set EnablePrivCount, or rely on the torrc or some other PrivCount instance to do it. This biases results towards long-running connections. Intended for use when testing.
     delay_period: 1 # (default: 1 day = 86400 seconds) the number of seconds of enforced delay between rounds that change noise allocations. User activity shorter than this period is protected under differential privacy.
     always_delay: True # (default: False) always enforce the delay period between collection rounds, regardless of whether the noise allocation has changed. Intended for use when testing.
-    rotate_period: 5 # (default: 600) sensitive data (like client IP addresses) remains in memory for up to 2*rotate_period
+    rotate_period: 10 # (default: 600) sensitive data (like client IP addresses) remains in memory for up to 2*rotate_period
     #sigma_decrease_tolerance: 1.0e-6 # (default: 1.0e-6) the sigma value decrease that the node will tolerate before enforcing a delay
 
     # all nodes must agree on this key to handshake correctly
