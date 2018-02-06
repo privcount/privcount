@@ -149,7 +149,7 @@ do
       shift
       ;;
     --chutney-start-time|-w)
-      CHUTNEY_START_TIME=$2
+      PRIVCOUNT_CHUTNEY_START_TIME=$2
       shift
       ;;
     --help|-h)
@@ -793,13 +793,6 @@ case "$PRIVCOUNT_SOURCE" in
     ;;
 esac
 
-# If the source hasn't finished after a reasonable time, kill it
-# There is a small risk that it has exited and the pid is a new process
-# We avoid this by killing all child processes when this script exits
-(sleep 180; \
-  "$I" "Killing old $PRIVCOUNT_SOURCE $SOURCE_PID from round $ROUNDS"; \
-  kill "$SOURCE_PID") &
-
 # Then wait for each job, terminating if any job produces an error
 # Ideally, we'd want to use wait, or wait $job, but that only checks one job
 # at a time, so continuing processes can cause the script to run forever
@@ -830,12 +823,6 @@ while echo "$JOB_STATUS" | grep -q "Running"; do
       $OTHER_ROUND_CMD 2>&1 | \
         `save_to_log "$TEST_DIR" $PRIVCOUNT_SOURCE.$ROUNDS $LOG_TIMESTAMP` &
       SOURCE_PID="$!"
-      # If the source hasn't finished after a reasonable time, kill it
-      # There is a small risk that it has exited and the pid is a new process
-      # We avoid this by killing all child processes when this script exits
-      (sleep 180; \
-        "$I" "Killing old $PRIVCOUNT_SOURCE $SOURCE_PID from round $ROUNDS"; \
-        kill "$SOURCE_PID") &
     else
       break
     fi
