@@ -157,7 +157,7 @@ git add .bumpversion.cfg
 git commit -m "Update bumpversion tag for Tor 0.3.0.7"
 bumpversion major|minor|patch
 git tag -s -m "Release PrivCount 1.0.0 Tor 0.3.0.7" privcount-1.0.0-tor-0.3.0.7
-git push --tags privcount-remote
+git push privcount-remote privcount-1.0.0-tor-0.3.0.7
 ```
 
 ## privcount branch updates
