@@ -2440,7 +2440,6 @@ class Aggregator(ReconnectingClientFactory):
                                           is_hsdir, is_intro, is_rend,
                                           is_failure, is_hs_client,
                                           hs_version,
-                                          event_desc,
                                           bin=SINGLE_BIN,
                                           inc=1):
         '''
@@ -2762,7 +2761,6 @@ class Aggregator(ReconnectingClientFactory):
                                                is_hsdir, is_intro, is_rend,
                                                is_failure, is_hs_client,
                                                hs_version,
-                                               event_desc,
                                                bin=SINGLE_BIN,
                                                inc=1)
 
@@ -2773,7 +2771,6 @@ class Aggregator(ReconnectingClientFactory):
                                                is_hsdir, is_intro, is_rend,
                                                is_failure, is_hs_client,
                                                hs_version,
-                                               event_desc,
                                                bin=SINGLE_BIN,
                                                inc=outbound_cell_count)
 
@@ -2784,7 +2781,6 @@ class Aggregator(ReconnectingClientFactory):
                                                is_hsdir, is_intro, is_rend,
                                                is_failure, is_hs_client,
                                                hs_version,
-                                               event_desc,
                                                bin=SINGLE_BIN,
                                                inc=inbound_cell_count)
 
