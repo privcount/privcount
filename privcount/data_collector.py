@@ -2533,16 +2533,6 @@ class Aggregator(ReconnectingClientFactory):
                                            bin=bin,
                                            inc=inc)
 
-        # Ignore HS circuits without hs_version
-        if hs_version is None:
-            return
-
-        if is_hsdir:
-            self.secure_counters.increment('HSDir{}Circuit{}Count'
-                                           .format(hs_version, counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
-
         if is_hs_client is None:
             hs_role = None
         elif is_hs_client:
@@ -2572,8 +2562,14 @@ class Aggregator(ReconnectingClientFactory):
                                                    bin=bin,
                                                    inc=inc)
 
-        # Use position to share Intro and Rend counters
-        if is_intro:
+        # Ignore HS circuits without hs_version
+        if hs_version is None:
+            return
+
+        # Use position to share HSDir, Intro and Rend counters
+        if is_hsdir:
+            position = "HSDir"
+        elif is_intro:
             position = "Intro"
         elif is_rend:
             position = "Rend"
@@ -2591,7 +2587,7 @@ class Aggregator(ReconnectingClientFactory):
         else:
             hop = "MultiHop"
 
-        # Intro/Rend 2/3 /Failure/Success Circuit /InboundCell/OutboundCell Count
+        # HSDir/Intro/Rend 2/3 /Failure/Success Circuit /InboundCell/OutboundCell Count
         self._increment_circuit_close_status_counters('{}{}'.format(position, hs_version),
                                                       counter_suffix,
                                                       is_failure,
@@ -2599,7 +2595,7 @@ class Aggregator(ReconnectingClientFactory):
                                                       inc=inc)
 
         if hs_role is not None:
-            # Intro/Rend 2/3 Client/Service /Failure/Success Circuit /InboundCell/OutboundCell Count
+            # HSDir/Intro/Rend 2/3 Client/Service /Failure/Success Circuit /InboundCell/OutboundCell Count
             self._increment_circuit_close_status_counters('{}{}{}'.format(position, hs_version, hs_role),
                                                           counter_suffix,
                                                           is_failure,
@@ -2607,7 +2603,7 @@ class Aggregator(ReconnectingClientFactory):
                                                           inc=inc)
 
             assert hop is not None
-            # Intro/Rend 2/3 Client/Service Tor2WebClient/SingleOnionService/MultiHopClient/MultiHopService /Failure/Success Circuit /InboundCell/OutboundCell Count
+            # HSDir/Intro/Rend 2/3 Tor2WebClient/SingleOnionService/MultiHopClient/MultiHopService /Failure/Success Circuit /InboundCell/OutboundCell Count
             self._increment_circuit_close_status_counters('{}{}{}{}'.format(position, hs_version, hop, hs_role),
                                                           counter_suffix,
                                                           is_failure,
