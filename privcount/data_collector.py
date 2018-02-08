@@ -2434,6 +2434,40 @@ class Aggregator(ReconnectingClientFactory):
         # if everything passed, we're ok
         return True
 
+    def _increment_circuit_close_status_counters(self, counter_prefix,
+                                                 counter_suffix,
+                                                 is_failure,
+                                                 bin=SINGLE_BIN,
+                                                 inc=1):
+        '''
+        Increment bin by inc for the counter variants starting with
+        counter_prefix and ending in counter_suffix, using is_failure to
+        create counter names for total, success, and failure counters.
+
+        Unknown counter names are ignored.
+        '''
+        assert counter_prefix is not None
+
+        if counter_suffix is None:
+            counter_suffix = ""
+
+        if is_failure:
+            status = "Failure"
+        else:
+            status = "Success"
+
+        # Prefix Circuit Suffix Count
+        self.secure_counters.increment('{}Circuit{}Count'
+                                       .format(counter_prefix, counter_suffix),
+                                       bin=bin,
+                                       inc=inc)
+
+        # Prefix Failure/Success Circuit Suffix Count
+        self.secure_counters.increment('{}{}Circuit{}Count'
+                                       .format(counter_prefix, status, counter_suffix),
+                                       bin=bin,
+                                       inc=inc)
+
     def _increment_circuit_close_counters(self, counter_suffix,
                                           is_origin, is_entry, is_mid, is_end,
                                           is_exit, is_dir,
@@ -2547,11 +2581,6 @@ class Aggregator(ReconnectingClientFactory):
             # ignore circuits with other positions
             return
 
-        if is_failure:
-            status = "Failure"
-        else:
-            status = "Success"
-
         if is_single_hop:
             if hs_role is None:
                 hop = None
@@ -2562,43 +2591,28 @@ class Aggregator(ReconnectingClientFactory):
         else:
             hop = "MultiHop"
 
-        # Intro/Rend 2/3 Circuit /InboundCell/OutboundCell Count
-        self.secure_counters.increment('{}{}Circuit{}Count'
-                                       .format(position, hs_version, counter_suffix),
-                                       bin=bin,
-                                       inc=inc)
-
-        # Intro/Rend 2/3 Failure/Success Circuit /InboundCell/OutboundCell Count
-        self.secure_counters.increment('{}{}{}Circuit{}Count'
-                                       .format(position, hs_version, status, counter_suffix),
-                                       bin=bin,
-                                       inc=inc)
-
+        # Intro/Rend 2/3 /Failure/Success Circuit /InboundCell/OutboundCell Count
+        self._increment_circuit_close_status_counters('{}{}'.format(position, hs_version),
+                                                      counter_suffix,
+                                                      is_failure,
+                                                      bin=bin,
+                                                      inc=inc)
 
         if hs_role is not None:
-            # Intro/Rend 2/3 Client/Service Circuit /InboundCell/OutboundCell Count
-            self.secure_counters.increment('{}{}{}Circuit{}Count'
-                                           .format(position, hs_version, hs_role, counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
-            # Intro/Rend 2/3 Client/Service Failure/Success Circuit /InboundCell/OutboundCell Count
-            self.secure_counters.increment('{}{}{}{}Circuit{}Count'
-                                           .format(position, hs_version, hs_role, status, counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
+            # Intro/Rend 2/3 Client/Service /Failure/Success Circuit /InboundCell/OutboundCell Count
+            self._increment_circuit_close_status_counters('{}{}{}'.format(position, hs_version, hs_role),
+                                                          counter_suffix,
+                                                          is_failure,
+                                                          bin=bin,
+                                                          inc=inc)
+
             assert hop is not None
-
-            # Intro/Rend 2/3 Tor2WebClient/SingleOnionService/MultiHopClient/MultiHopService Circuit /InboundCell/OutboundCell Count
-            self.secure_counters.increment('{}{}{}{}Circuit{}Count'
-                                           .format(position, hs_version, hop, hs_role, counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
-
-            # Intro/Rend 2/3 Tor2WebClient/SingleOnionService/MultiHopClient/MultiHopService Failure/Success Circuit /InboundCell/OutboundCell Count
-            self.secure_counters.increment('{}{}{}{}{}Circuit{}Count'
-                                           .format(position, hs_version, hop, hs_role, status, counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
+            # Intro/Rend 2/3 Client/Service Tor2WebClient/SingleOnionService/MultiHopClient/MultiHopService /Failure/Success Circuit /InboundCell/OutboundCell Count
+            self._increment_circuit_close_status_counters('{}{}{}{}'.format(position, hs_version, hop, hs_role),
+                                                          counter_suffix,
+                                                          is_failure,
+                                                          bin=bin,
+                                                          inc=inc)
 
     def _handle_circuit_close_event(self, fields):
         '''
