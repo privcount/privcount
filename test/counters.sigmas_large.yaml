@@ -2728,3 +2728,587 @@ counters:
         sigma: 1.0e+12
     HSDir3MultiHopClientCircuitCount:
         sigma: 1.0e+12
+    Rend2CircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2CircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2CircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3CircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3CircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3CircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    MidCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    EndCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2FailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2FailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2FailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3FailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3FailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3FailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    MidFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    EndFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    OriginFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    SingleHopFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    DirFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    ExitFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    EntryFailureCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    OriginCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    SingleHopCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    DirCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2SuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2SuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2SuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3SuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3SuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3SuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    MidSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    EndSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    OriginSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    SingleHopSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    DirSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    ExitSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientSuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    EntrySuccessCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    ExitCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientCircuitInboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2CircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2CircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2CircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3CircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3CircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3CircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    MidCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    EndCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2FailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2FailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2FailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3FailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3FailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3FailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    MidFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    EndFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    OriginFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    SingleHopFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    DirFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    ExitFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    EntryFailureCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    OriginCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    SingleHopCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    DirCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2SuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2SuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2SuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3SuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3SuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3SuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    MidSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    EndSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    OriginSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    SingleHopSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    DirSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    ExitSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientSuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    EntrySuccessCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    ExitCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2ClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2ClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2ClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3ClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3ClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3ClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2Tor2WebClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2Tor2WebClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3Tor2WebClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3Tor2WebClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend2MultiHopClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro2MultiHopClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Rend3MultiHopClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    Intro3MultiHopClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientCircuitOutboundCellHistogram:
+        sigma: 1.0e+12

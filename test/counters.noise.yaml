@@ -4196,3 +4196,879 @@ counters:
     HSDir3MultiHopClientCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    Rend2CircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2CircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2CircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3CircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3CircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3CircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2FailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2FailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3FailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3FailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryFailureCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientSuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntrySuccessCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientCircuitInboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2CircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2CircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2CircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3CircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3CircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3CircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2FailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2FailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3FailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3FailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryFailureCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientSuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntrySuccessCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientCircuitOutboundCellHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0

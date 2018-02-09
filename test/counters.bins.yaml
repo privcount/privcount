@@ -11262,3 +11262,879 @@ counters:
     HSDir3MultiHopClientCircuitCount:
         bins:
         - [-.inf, .inf]
+    Rend2CircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2CircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2CircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3CircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3CircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3CircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    MidCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EndCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2FailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2FailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3FailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3FailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    MidFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EndFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    OriginFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    SingleHopFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    DirFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EntryFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    OriginCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    SingleHopCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    DirCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2SuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2SuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3SuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3SuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    MidSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EndSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    OriginSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    SingleHopSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    DirSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EntrySuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2CircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2CircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2CircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3CircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3CircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3CircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    MidCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EndCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2FailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2FailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3FailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3FailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    MidFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EndFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    OriginFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    SingleHopFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    DirFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EntryFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    OriginCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    SingleHopCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    DirCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2SuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2SuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3SuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3SuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    MidSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EndSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    OriginSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    SingleHopSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    DirSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    EntrySuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    ExitCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
