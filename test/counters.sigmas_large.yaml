@@ -2404,3 +2404,327 @@ counters:
         sigma: 1.0e+12
     Intro3MultiHopClientCircuitCount:
         sigma: 1.0e+12
+    HSDir2ServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2FailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3FailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    MidFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    EndFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    OriginFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    SingleHopFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    DirFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    ExitFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    EntryFailureCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2SuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3SuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    MidSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    EndSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    OriginSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    SingleHopSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    DirSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    ExitSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientSuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    EntrySuccessCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientCircuitInboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2FailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3FailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    MidFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    EndFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    OriginFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    SingleHopFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    DirFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    ExitFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    EntryFailureCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2SuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3SuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    MidSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    EndSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    OriginSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    SingleHopSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    DirSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    ExitSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientSuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    EntrySuccessCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3ClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientCircuitOutboundCellCount:
+        sigma: 1.0e+12
+    HSDir2ServiceCircuitCount:
+        sigma: 1.0e+12
+    HSDir3ServiceCircuitCount:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceCircuitCount:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceCircuitCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceCircuitCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceCircuitCount:
+        sigma: 1.0e+12
+    HSDir2FailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir3FailureCircuitCount:
+        sigma: 1.0e+12
+    MidFailureCircuitCount:
+        sigma: 1.0e+12
+    EndFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir2ServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir3ServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceFailureCircuitCount:
+        sigma: 1.0e+12
+    OriginFailureCircuitCount:
+        sigma: 1.0e+12
+    SingleHopFailureCircuitCount:
+        sigma: 1.0e+12
+    DirFailureCircuitCount:
+        sigma: 1.0e+12
+    ExitFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir2ClientFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir3ClientFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientFailureCircuitCount:
+        sigma: 1.0e+12
+    EntryFailureCircuitCount:
+        sigma: 1.0e+12
+    HSDir2SuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir3SuccessCircuitCount:
+        sigma: 1.0e+12
+    MidSuccessCircuitCount:
+        sigma: 1.0e+12
+    EndSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir2ServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir3ServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir2SingleOnionServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir3SingleOnionServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopServiceSuccessCircuitCount:
+        sigma: 1.0e+12
+    OriginSuccessCircuitCount:
+        sigma: 1.0e+12
+    SingleHopSuccessCircuitCount:
+        sigma: 1.0e+12
+    DirSuccessCircuitCount:
+        sigma: 1.0e+12
+    ExitSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir2ClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir3ClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientSuccessCircuitCount:
+        sigma: 1.0e+12
+    EntrySuccessCircuitCount:
+        sigma: 1.0e+12
+    HSDir2ClientCircuitCount:
+        sigma: 1.0e+12
+    HSDir3ClientCircuitCount:
+        sigma: 1.0e+12
+    HSDir2Tor2WebClientCircuitCount:
+        sigma: 1.0e+12
+    HSDir3Tor2WebClientCircuitCount:
+        sigma: 1.0e+12
+    HSDir2MultiHopClientCircuitCount:
+        sigma: 1.0e+12
+    HSDir3MultiHopClientCircuitCount:
+        sigma: 1.0e+12

@@ -3710,3 +3710,489 @@ counters:
     Intro3MultiHopClientCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    HSDir2ServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryFailureCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientSuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntrySuccessCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientCircuitInboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryFailureCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientSuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntrySuccessCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientCircuitOutboundCellCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryFailureCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientSuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntrySuccessCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientCircuitCount:
+        estimated_value: 0.0
+        sensitivity: 0.0

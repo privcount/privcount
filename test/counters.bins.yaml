@@ -10776,3 +10776,489 @@ counters:
     Intro3MultiHopClientCircuitCount:
         bins:
         - [-.inf, .inf]
+    HSDir2ServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    MidFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    EndFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    OriginFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    SingleHopFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    DirFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    ExitFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    EntryFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    MidSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    EndSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    OriginSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    SingleHopSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    DirSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    ExitSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    EntrySuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    MidFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    EndFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    OriginFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    SingleHopFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    DirFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    ExitFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    EntryFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    MidSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    EndSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    OriginSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    SingleHopSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    DirSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    ExitSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    EntrySuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    MidFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    EndFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    OriginFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    SingleHopFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    DirFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    ExitFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    EntryFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    MidSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    EndSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    OriginSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    SingleHopSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    DirSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    ExitSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    EntrySuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
