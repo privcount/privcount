@@ -656,32 +656,78 @@ PRIVCOUNT_COUNTER_EVENTS = {
 # Non-HS Circuit Positions
 
 # Circuit Counts
-'OriginCircuitCount' : { CIRCUIT_EVENT },
-'EntryCircuitCount' : { CIRCUIT_EVENT },
-'MidCircuitCount' : { CIRCUIT_EVENT },
-'EndCircuitCount' : { CIRCUIT_EVENT },
-'SingleHopCircuitCount' : { CIRCUIT_EVENT },
-'ExitCircuitCount' : { CIRCUIT_EVENT },
-'DirCircuitCount' : { CIRCUIT_EVENT },
-
-# Circuit Cell Counts
 # Inbound cells travel towards the origin
-'OriginCircuitInboundCellCount' : { CIRCUIT_EVENT },
-'EntryCircuitInboundCellCount' : { CIRCUIT_EVENT },
-'MidCircuitInboundCellCount' : { CIRCUIT_EVENT },
-'EndCircuitInboundCellCount' : { CIRCUIT_EVENT },
-'SingleHopCircuitInboundCellCount' : { CIRCUIT_EVENT },
-'ExitCircuitInboundCellCount' : { CIRCUIT_EVENT },
-'DirCircuitInboundCellCount' : { CIRCUIT_EVENT },
-
 # Outbound cells travel towards the end
+
+'OriginCircuitCount' : { CIRCUIT_EVENT },
+'OriginCircuitInboundCellCount' : { CIRCUIT_EVENT },
 'OriginCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'OriginFailureCircuitCount' : { CIRCUIT_EVENT },
+'OriginFailureCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'OriginFailureCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'OriginSuccessCircuitCount' : { CIRCUIT_EVENT },
+'OriginSuccessCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'OriginSuccessCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+
+'EntryCircuitCount' : { CIRCUIT_EVENT },
+'EntryCircuitInboundCellCount' : { CIRCUIT_EVENT },
 'EntryCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'EntryFailureCircuitCount' : { CIRCUIT_EVENT },
+'EntryFailureCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'EntryFailureCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'EntrySuccessCircuitCount' : { CIRCUIT_EVENT },
+'EntrySuccessCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'EntrySuccessCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+
+'MidCircuitCount' : { CIRCUIT_EVENT },
+'MidCircuitInboundCellCount' : { CIRCUIT_EVENT },
 'MidCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'MidFailureCircuitCount' : { CIRCUIT_EVENT },
+'MidFailureCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'MidFailureCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'MidSuccessCircuitCount' : { CIRCUIT_EVENT },
+'MidSuccessCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'MidSuccessCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+
+'EndCircuitCount' : { CIRCUIT_EVENT },
+'EndCircuitInboundCellCount' : { CIRCUIT_EVENT },
 'EndCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'EndFailureCircuitCount' : { CIRCUIT_EVENT },
+'EndFailureCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'EndFailureCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'EndSuccessCircuitCount' : { CIRCUIT_EVENT },
+'EndSuccessCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'EndSuccessCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+
+'SingleHopCircuitCount' : { CIRCUIT_EVENT },
+'SingleHopCircuitInboundCellCount' : { CIRCUIT_EVENT },
 'SingleHopCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'SingleHopFailureCircuitCount' : { CIRCUIT_EVENT },
+'SingleHopFailureCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'SingleHopFailureCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'SingleHopSuccessCircuitCount' : { CIRCUIT_EVENT },
+'SingleHopSuccessCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'SingleHopSuccessCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+
+'ExitCircuitCount' : { CIRCUIT_EVENT },
+'ExitCircuitInboundCellCount' : { CIRCUIT_EVENT },
 'ExitCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'ExitFailureCircuitCount' : { CIRCUIT_EVENT },
+'ExitFailureCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'ExitFailureCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'ExitSuccessCircuitCount' : { CIRCUIT_EVENT },
+'ExitSuccessCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'ExitSuccessCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+
+'DirCircuitCount' : { CIRCUIT_EVENT },
+'DirCircuitInboundCellCount' : { CIRCUIT_EVENT },
 'DirCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'DirFailureCircuitCount' : { CIRCUIT_EVENT },
+'DirFailureCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'DirFailureCircuitOutboundCellCount' : { CIRCUIT_EVENT },
+'DirSuccessCircuitCount' : { CIRCUIT_EVENT },
+'DirSuccessCircuitInboundCellCount' : { CIRCUIT_EVENT },
+'DirSuccessCircuitOutboundCellCount' : { CIRCUIT_EVENT },
 
 # HSDir
 # You probably want the HSDir*Store/Fetch* events instead of these events

@@ -2488,50 +2488,67 @@ class Aggregator(ReconnectingClientFactory):
             counter_suffix = ""
 
         # Positions: at least one of these flags is true for each circuit
+        # But more than one can be true, and it's kinda complicated, so just
+        # do them one by one
+
 
         if is_origin:
-            self.secure_counters.increment('OriginCircuit{}Count'
-                                           .format(counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
+            # Origin /Failure/Success Circuit /InboundCell/OutboundCell Count
+            self._increment_circuit_close_status_counters("Origin",
+                                                          counter_suffix,
+                                                          is_failure,
+                                                          bin=bin,
+                                                          inc=inc)
 
         if is_entry:
-            self.secure_counters.increment('EntryCircuit{}Count'
-                                           .format(counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
+            # Entry /Failure/Success Circuit /InboundCell/OutboundCell Count
+            self._increment_circuit_close_status_counters("Entry",
+                                                          counter_suffix,
+                                                          is_failure,
+                                                          bin=bin,
+                                                          inc=inc)
 
         if is_mid:
-            self.secure_counters.increment('MidCircuit{}Count'
-                                           .format(counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
+            # Mid /Failure/Success Circuit /InboundCell/OutboundCell Count
+            self._increment_circuit_close_status_counters("Mid",
+                                                          counter_suffix,
+                                                          is_failure,
+                                                          bin=bin,
+                                                          inc=inc)
 
         if is_end:
-            self.secure_counters.increment('EndCircuit{}Count'
-                                           .format(counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
+            # End /Failure/Success Circuit /InboundCell/OutboundCell Count
+            self._increment_circuit_close_status_counters("End",
+                                                          counter_suffix,
+                                                          is_failure,
+                                                          bin=bin,
+                                                          inc=inc)
 
         if is_single_hop:
-            self.secure_counters.increment('SingleHopCircuit{}Count'
-                                           .format(counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
+            # SingleHop /Failure/Success Circuit /InboundCell/OutboundCell Count
+            self._increment_circuit_close_status_counters("SingleHop",
+                                                          counter_suffix,
+                                                          is_failure,
+                                                          bin=bin,
+                                                          inc=inc)
 
         # End subcategories
         if is_exit:
             # includes single-hop exits (which aren't supposed to exist)
-            self.secure_counters.increment('ExitCircuit{}Count'
-                                           .format(counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
+            # Exit /Failure/Success Circuit /InboundCell/OutboundCell Count
+            self._increment_circuit_close_status_counters("Exit",
+                                                          counter_suffix,
+                                                          is_failure,
+                                                          bin=bin,
+                                                          inc=inc)
 
         if is_dir:
-            self.secure_counters.increment('DirCircuit{}Count'
-                                           .format(counter_suffix),
-                                           bin=bin,
-                                           inc=inc)
+            # Dir /Failure/Success Circuit /InboundCell/OutboundCell Count
+            self._increment_circuit_close_status_counters("Dir",
+                                                          counter_suffix,
+                                                          is_failure,
+                                                          bin=bin,
+                                                          inc=inc)
 
         if is_hs_client is None:
             hs_role = None
