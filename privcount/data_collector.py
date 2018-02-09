@@ -1616,12 +1616,6 @@ class Aggregator(ReconnectingClientFactory):
                 self.secure_counters.increment('EntryActiveCircuitCount',
                                                bin=SINGLE_BIN,
                                                inc=1)
-                self.secure_counters.increment('EntryCircuitInboundCellHistogram',
-                                               bin=ncellsin,
-                                               inc=1)
-                self.secure_counters.increment('EntryCircuitOutboundCellHistogram',
-                                               bin=ncellsout,
-                                               inc=1)
                 self.secure_counters.increment('EntryCircuitCellRatio', bin=Aggregator._encode_ratio(ncellsin, ncellsout), inc=1)
             else:
                 self.secure_counters.increment('EntryInactiveCircuitCount',
@@ -2467,6 +2461,24 @@ class Aggregator(ReconnectingClientFactory):
                                        .format(counter_prefix, status, counter_suffix),
                                        bin=bin,
                                        inc=inc)
+
+        # Don't create histograms for base circuit counts: they are all inc=1
+        if counter_suffix != "":
+            # if you're trying to set up a histogram in a histogram, something
+            # has gone very wrong with this code
+            assert SecureCounters.is_single_bin_value(bin)
+
+            # Prefix Circuit Suffix Histogram
+            self.secure_counters.increment('{}Circuit{}Histogram'
+                                           .format(counter_prefix, counter_suffix),
+                                           bin=inc,
+                                           inc=1)
+
+            # Prefix Failure/Success Circuit Suffix Histogram
+            self.secure_counters.increment('{}{}Circuit{}Histogram'
+                                           .format(counter_prefix, status, counter_suffix),
+                                           bin=inc,
+                                           inc=1)
 
     def _increment_circuit_close_counters(self, counter_suffix,
                                           is_origin, is_entry, is_mid, is_end,

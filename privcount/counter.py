@@ -1142,8 +1142,6 @@ PRIVCOUNT_COUNTER_EVENTS = {
 # these counters depend on circuit end
 # they are updated in _handle_legacy_exit_circuit_event
 'EntryActiveCircuitCount' : { CIRCUIT_EVENT },
-'EntryCircuitInboundCellHistogram' : { CIRCUIT_EVENT },
-'EntryCircuitOutboundCellHistogram' : { CIRCUIT_EVENT },
 'EntryCircuitCellRatio' : { CIRCUIT_EVENT },
 'EntryInactiveCircuitCount' : { CIRCUIT_EVENT },
 'ExitCircuitLifeTime' : { CIRCUIT_EVENT },
