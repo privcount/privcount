@@ -2727,6 +2727,10 @@ class Aggregator(ReconnectingClientFactory):
                                                  fields, event_desc,
                                                  is_mandatory=False,
                                                  default=0)
+        outbound_legacy_cell_count = get_int_value("OutboundExitCellCount",
+                                                   fields, event_desc,
+                                                   is_mandatory=False,
+                                                   default=0)
         inbound_received_cell_count = get_int_value("InboundReceivedCellCount",
                                                     fields, event_desc,
                                                     is_mandatory=False,
@@ -2735,10 +2739,18 @@ class Aggregator(ReconnectingClientFactory):
                                                 fields, event_desc,
                                                 is_mandatory=False,
                                                 default=0)
+        inbound_legacy_cell_count = get_int_value("InboundExitCellCount",
+                                                  fields, event_desc,
+                                                  is_mandatory=False,
+                                                  default=0)
+
+        # work around a bug where some cells aren't counted
         outbound_cell_count = max(outbound_received_cell_count,
-                                  outbound_sent_cell_count)
+                                  outbound_sent_cell_count,
+                                  outbound_legacy_cell_count)
         inbound_cell_count = max(inbound_received_cell_count,
-                                 inbound_sent_cell_count)
+                                 inbound_sent_cell_count,
+                                 inbound_legacy_cell_count)
 
         # Extract the optional fields that don't have defaults
 
