@@ -75,6 +75,7 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
     if [ `basename "$code"` = 'data_collector.py' ]; then
         cat "$TEST_DIR/counters.bins.yaml.names" \
             | grep -e "Circuit.*Count" \
+               -e "Circuit.*Histogram" \
             | grep -v -e "Connection" \
                -e "ExitAndRend" \
                -e "Active" \
@@ -83,10 +84,11 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
                -e "ExitOtherPort" \
                -e "ExitP2P" \
                -e "ExitWeb" \
+               -e "Stream" \
             >> "$OUT_PATH.names.unsorted" || true
         cat "$TEST_DIR/counters.bins.yaml.names" \
-            | grep -e "^HSDir[2-3]" \
-            | grep -v -e "^HSDir[2-3]Circuit" \
+            | grep -e "^HSDir[23]" \
+            | grep -v -e "^HSDir[23].*Circuit" \
             >> "$OUT_PATH.names.unsorted" || true
         cat "$TEST_DIR/counters.bins.yaml.names" \
             | grep -e "Entry.*Connection" \
