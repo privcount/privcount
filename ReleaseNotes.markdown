@@ -54,6 +54,13 @@ BSD license. See LICENSE for details.
 Issue numbers are from:
     https://github.com/privcount/privcount/issues
 
+## PrivCount 1.1.1
+
+PrivCount 1.1.1:
+* makes ShareKeepers ignore traffic models, fixing bug #493,
+* adds some additional warnings when a round fails to start,
+* ensures that run_test.sh installs the currently checked-out version.
+
 ## PrivCount 1.1.0
 
 PrivCount 1.1.0 adds support for Onion Service Directory Descriptor
