@@ -136,6 +136,7 @@ class ShareKeeper(ReconnectingClientFactory, PrivCountClient):
                                                   allow_unknown_counters=True)
 
         if combined_counters is None:
+            logging.warning("start command from tally server cannot be completed with the supplied counters")
             return None
         else:
             config['counters'] = combined_counters

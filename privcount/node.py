@@ -408,9 +408,10 @@ class PrivCountClient(PrivCountNode):
             return None
 
         # a traffic model is optional
-        if 'traffic_model' in start_config:
+        if 'traffic_model' in start_config and not allow_unknown_counters:
             # if a traffic model was given but is not valid, fail
             if not check_traffic_model_config(start_config['traffic_model']):
+                logging.warning("start command from tally server cannot be completed due to a misconfigured traffic model")
                 return None
 
             # create the model
@@ -422,11 +423,13 @@ class PrivCountClient(PrivCountNode):
         if not check_counters_config(start_config['counters'],
                               start_config['noise']['counters'],
                               allow_unknown_counters=allow_unknown_counters):
+            logging.warning("start command from tally server cannot be completed due to misconfigured counters")
             return None
 
         # if the noise weights don't pass the validity checks, fail
         if not check_noise_weight_config(start_config['noise_weight'],
                                          start_config['dc_threshold']):
+            logging.warning("start command from tally server cannot be completed due to misconfigured noise weights")
             return None
 
         # check if we need to delay this round
@@ -437,6 +440,7 @@ class PrivCountClient(PrivCountNode):
             always_delay=self.config['always_delay'],
             tolerance=self.config['sigma_decrease_tolerance']):
             # we can't start the round yet
+            logging.warning("start command from tally server cannot be completed due to an enforced delay")
             return None
 
         # save various config items for the end of the round

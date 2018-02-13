@@ -154,7 +154,7 @@ do
       ;;
     --help|-h)
       "$W" "usage: $0 [...] [<privcount-directory>] -- [<data-source-args...>]"
-      "$W" "  -I: run 'pip install -I <privcount-directory>' before testing"
+      "$W" "  -I: uninstall and reinstall PrivCount before testing"
       "$I" "    default: $PRIVCOUNT_INSTALL (1: install, 0: don't install) "
       "$W" "  -x: skip unit tests"
       "$I" "    default: '$PRIVCOUNT_UNIT_TESTS' (1: run, 0: skip)"
@@ -409,10 +409,26 @@ if [ "$PRIVCOUNT_INSTALL" -eq 1 ]; then
   #pip --disable-pip-version-check \
   #    install -r "$PRIVCOUNT_DIRECTORY/requirements.txt"
 
+  # Unintall any existing privcount versions
+  # Due to the previous implementation of this script, multiple PrivCount
+  # versions may be installed. Let's uninstall all of them.
+  "$I" "Uninstalling all versions of privcount ..."
+  if [ "$PRIVCOUNT_LOG" = "-q" ]; then
+    while pip $PRIVCOUNT_LOG --disable-pip-version-check \
+        uninstall -y PrivCount > /dev/null 2>&1; do
+      true
+    done
+  else
+    while pip $PRIVCOUNT_LOG --disable-pip-version-check \
+        uninstall -y PrivCount; do
+      true
+    done
+  fi
+
   # Install the latest privcount version
   "$I" "Installing latest version of privcount from '$PRIVCOUNT_DIRECTORY' ..."
   pip $PRIVCOUNT_LOG --disable-pip-version-check \
-      install -I "$PRIVCOUNT_DIRECTORY"
+      install "$PRIVCOUNT_DIRECTORY"
 fi
 
 if [ "$PRIVCOUNT_TOR_MAKE" -eq 1 ]; then

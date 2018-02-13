@@ -29,7 +29,7 @@ Data Collectors can use any PrivCount Tor Patch that supports the events for
 the counters they are collecting. For example, you can collect the
 EntryActiveCircuitCount using the PrivCount Tor Patch 1.0.0 or later.
 
-Share Keepers on version 1.1.0 and later can store shares for any counters,
+Share Keepers on version 1.1.1 and later can store shares for any counters,
 even counters introduced in subsequent Data Collector and Tally Server
 versions (even versions 2.0.0 and later).
 
@@ -57,6 +57,13 @@ BSD license. See LICENSE for details.
 
 Issue numbers are from:
     https://github.com/privcount/privcount/issues
+
+## PrivCount 2.0.1 and 1.1.1
+
+These bugfix versions of PrivCount:
+* make ShareKeepers ignore traffic models, fixing bug #493,
+* add some additional warnings when a round fails to start,
+* ensure that run_test.sh installs the currently checked-out version.
 
 ## PrivCount 2.0.0
 
