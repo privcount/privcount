@@ -323,7 +323,7 @@ class PrivCountClient(PrivCountNode):
             return None
 
         # a traffic model is optional
-        if 'traffic_model' in start_config:
+        if 'traffic_model' in start_config and not allow_unknown_counters:
             # if a traffic model was given but is not valid, fail
             if not check_traffic_model_config(start_config['traffic_model']):
                 return None

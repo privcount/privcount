@@ -21,7 +21,7 @@ All PrivCount versions in a major series are compatible, as long as you are
 collecting counters known to all nodes. For example, you can collect the
 EntryActiveCircuitCount using a mix of nodes on any PrivCount 1.*.* version.
 
-Share Keepers on version 1.1.0 and later can store shares for any counters,
+Share Keepers on version 1.1.1 and later can store shares for any counters,
 even counters introduced in subsequent Data Collector and Tally Server
 versions.
 
