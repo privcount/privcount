@@ -2832,16 +2832,6 @@ class Aggregator(ReconnectingClientFactory):
                                                bin=SINGLE_BIN,
                                                inc=1)
 
-        # CircuitOutboundCellCount
-        self._increment_circuit_close_counters("OutboundCell",
-                                               is_origin, is_entry, is_mid, is_end,
-                                               is_exit, is_dir,
-                                               is_hsdir, is_intro, is_rend,
-                                               is_failure, is_hs_client,
-                                               hs_version,
-                                               bin=SINGLE_BIN,
-                                               inc=outbound_cell_count)
-
         # CircuitInboundCellCount
         self._increment_circuit_close_counters("InboundCell",
                                                is_origin, is_entry, is_mid, is_end,
@@ -2851,6 +2841,16 @@ class Aggregator(ReconnectingClientFactory):
                                                hs_version,
                                                bin=SINGLE_BIN,
                                                inc=inbound_cell_count)
+
+        # CircuitOutboundCellCount
+        self._increment_circuit_close_counters("OutboundCell",
+                                               is_origin, is_entry, is_mid, is_end,
+                                               is_exit, is_dir,
+                                               is_hsdir, is_intro, is_rend,
+                                               is_failure, is_hs_client,
+                                               hs_version,
+                                               bin=SINGLE_BIN,
+                                               inc=outbound_cell_count)
 
         # we processed and handled the event
         return True
