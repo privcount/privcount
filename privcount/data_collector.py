@@ -1558,12 +1558,9 @@ class Aggregator(ReconnectingClientFactory):
                                fields, event_desc,
                                is_mandatory=False)
 
-        ncellsin = get_int_value("InboundExitCellCount",
-                                 fields, event_desc,
-                                 is_mandatory=False)
-        ncellsout = get_int_value("OutboundExitCellCount",
-                                  fields, event_desc,
-                                  is_mandatory=False)
+        # Get cell counts
+        (ncellsin, ncellsout) = Aggregator._get_cell_counts(fields, event_desc)
+
         readbwexit = get_int_value("InboundExitByteCount",
                                    fields, event_desc,
                                    is_mandatory=False)
@@ -2639,6 +2636,51 @@ class Aggregator(ReconnectingClientFactory):
                                                           bin=bin,
                                                           inc=inc)
 
+
+    @staticmethod
+    def _get_cell_counts(fields, event_desc):
+        '''
+        Return the cell counts in fields as an (inbound, outbound) tuple.
+        '''
+        # We use the maximum values, because:
+        # - origins do not receive outbound cells or send inbound cells
+        # - exits do not receive inbound cells or send outbound cells
+        # - rend splices receive some setup cells that are never sent onwards
+        inbound_received_cell_count = get_int_value("InboundReceivedCellCount",
+                                                    fields, event_desc,
+                                                    is_mandatory=False,
+                                                    default=0)
+        inbound_sent_cell_count = get_int_value("InboundSentCellCount",
+                                                fields, event_desc,
+                                                is_mandatory=False,
+                                                default=0)
+        inbound_legacy_cell_count = get_int_value("InboundExitCellCount",
+                                                  fields, event_desc,
+                                                  is_mandatory=False,
+                                                  default=0)
+        outbound_received_cell_count = get_int_value("OutboundReceivedCellCount",
+                                                     fields, event_desc,
+                                                     is_mandatory=False,
+                                                     default=0)
+        outbound_sent_cell_count = get_int_value("OutboundSentCellCount",
+                                                 fields, event_desc,
+                                                 is_mandatory=False,
+                                                 default=0)
+        outbound_legacy_cell_count = get_int_value("OutboundExitCellCount",
+                                                   fields, event_desc,
+                                                   is_mandatory=False,
+                                                   default=0)
+
+        # work around a bug where some cells aren't counted
+        inbound_cell_count = max(inbound_received_cell_count,
+                                 inbound_sent_cell_count,
+                                 inbound_legacy_cell_count)
+        outbound_cell_count = max(outbound_received_cell_count,
+                                  outbound_sent_cell_count,
+                                  outbound_legacy_cell_count)
+
+        return (inbound_cell_count, outbound_cell_count)
+
     def _handle_circuit_close_event(self, fields):
         '''
         Process a PRIVCOUNT_CIRCUIT_CLOSE event
@@ -2755,41 +2797,8 @@ class Aggregator(ReconnectingClientFactory):
         # Data volumes
         # At a rend point, both the client and server sides of the splice
         # are separate circuits with separate counts
-        # We use the maximum values, because:
-        # - origins do not receive outbound cells or send inbound cells
-        # - rend splices receive some setup cells that are never sent onwards
-        outbound_received_cell_count = get_int_value("OutboundReceivedCellCount",
-                                                     fields, event_desc,
-                                                     is_mandatory=False,
-                                                     default=0)
-        outbound_sent_cell_count = get_int_value("OutboundSentCellCount",
-                                                 fields, event_desc,
-                                                 is_mandatory=False,
-                                                 default=0)
-        outbound_legacy_cell_count = get_int_value("OutboundExitCellCount",
-                                                   fields, event_desc,
-                                                   is_mandatory=False,
-                                                   default=0)
-        inbound_received_cell_count = get_int_value("InboundReceivedCellCount",
-                                                    fields, event_desc,
-                                                    is_mandatory=False,
-                                                    default=0)
-        inbound_sent_cell_count = get_int_value("InboundSentCellCount",
-                                                fields, event_desc,
-                                                is_mandatory=False,
-                                                default=0)
-        inbound_legacy_cell_count = get_int_value("InboundExitCellCount",
-                                                  fields, event_desc,
-                                                  is_mandatory=False,
-                                                  default=0)
-
-        # work around a bug where some cells aren't counted
-        outbound_cell_count = max(outbound_received_cell_count,
-                                  outbound_sent_cell_count,
-                                  outbound_legacy_cell_count)
-        inbound_cell_count = max(inbound_received_cell_count,
-                                 inbound_sent_cell_count,
-                                 inbound_legacy_cell_count)
+        (inbound_cell_count,
+         outbound_cell_count) = Aggregator._get_cell_counts(fields, event_desc)
 
         # Extract the optional fields that don't have defaults
 
