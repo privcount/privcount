@@ -1537,6 +1537,14 @@ class Aggregator(ReconnectingClientFactory):
             isc_times.append(start_times[i] - start_times[i-1])
         return isc_times
 
+    @staticmethod
+    def _is_circuit_active(ncellsin, ncellsout):
+        '''
+        Return true if a circuit with ncellsin inbound cells and ncellsout
+        outbound cells is considered active.
+        '''
+        return ncellsin + ncellsout >= 8
+
     # The legacy event is still processed by the injector, but is ignored
     # by PrivCount 1.1.0 and later
     CIRCUIT_ENDED_ITEMS = 12
@@ -1608,7 +1616,7 @@ class Aggregator(ReconnectingClientFactory):
             # prev hop is a client, we are entry
 
             # only count cells ratio on active circuits with legitimate transfers
-            is_active = True if ncellsin + ncellsout >= 8 else False
+            is_active = Aggregator._is_circuit_active(ncellsin, ncellsout)
             if is_active:
                 self.secure_counters.increment('EntryActiveCircuitCount',
                                                bin=SINGLE_BIN,
