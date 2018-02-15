@@ -329,7 +329,7 @@ bin.
 
 TODO: test non-zero Inbound bytes and test zero Outbound bytes.
 This is less critical, because we test non-zero Inbound cells using the
-EntryCircuitCellRatio.
+EntryActiveCircuitCellRatio.
 
 - ExitInteractiveStreamByteRatio
 - ExitOtherPortStreamByteRatio
@@ -480,9 +480,9 @@ Use the instructions under ExitStreamByteCount to change the byte count,
 and therefore the number of Outbound cells. You will need to send around
 16384 bytes to use more than 32 cells.
 
-- EntryCircuitCellRatio
+- EntryActiveCircuitCellRatio
 
-    '.Tally.EntryCircuitCellRatio.bins | map(select(.[2] > 0)) | .[0][1] == 1'
+    '.Tally.EntryActiveCircuitCellRatio.bins | map(select(.[2] > 0)) | .[0][1] == 1'
 
 When sending a small amount of Outbound data, the number of Outbound cells
 exceeds the number of Inbound cells by a small margin.
@@ -725,10 +725,6 @@ TODO: Re-test and merge previous counter
 - Rend2MultiHopClientCircuitCount
 
 ## Cell Counter Tests
-
-### TODO: Category Name
-
-- Rend2ClientSentCellCount
 
 ## Connection Counter Tests
 

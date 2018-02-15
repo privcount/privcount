@@ -41,7 +41,7 @@ counters:
         sensitivity: 0
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
     # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
-    EntryCircuitCellRatio:
+    EntryActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - circuit inter-stream creation times in seconds
@@ -607,9 +607,6 @@ counters:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir3StoreAddNewCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    Rend2ClientSentCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2CircuitCount:

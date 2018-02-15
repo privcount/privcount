@@ -174,7 +174,7 @@ stats_parameters = {\
 # removed due to low utility and complication of counting circuits at both guards and exits
 #    'EntryCircuitInboundCellHistogram' : circuit_histogram_parameters,
 #    'EntryCircuitOutboundCellHistogram' : circuit_histogram_parameters,
-#    'EntryCircuitCellRatio' : circuit_histogram_parameters,
+#    'EntryActiveCircuitCellRatio' : circuit_histogram_parameters,
     ####
     ######
 

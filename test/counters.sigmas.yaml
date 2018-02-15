@@ -26,7 +26,7 @@ counters:
         sigma: 0.0
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
     # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
-    EntryCircuitCellRatio:
+    EntryActiveCircuitCellRatio:
         sigma: 0.0
     # EXIT - circuit inter-stream creation times in seconds
     ExitCircuitInterStreamCreationTime:
@@ -424,8 +424,6 @@ counters:
     HSDir2StoreAddNewCount:
         sigma: 0.0
     HSDir3StoreAddNewCount:
-        sigma: 0.0
-    Rend2ClientSentCellCount:
         sigma: 0.0
     Intro2CircuitCount:
         sigma: 0.0

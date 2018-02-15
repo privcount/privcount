@@ -6,7 +6,7 @@ counters:
         sigma: 1.0e+12
     EntryCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    EntryCircuitCellRatio:
+    EntryActiveCircuitCellRatio:
         sigma: 1.0e+12
     ExitCircuitInterStreamCreationTime:
         sigma: 1.0e+12
@@ -337,8 +337,6 @@ counters:
     HSDir2StoreAddNewCount:
         sigma: 1.0e+12
     HSDir3StoreAddNewCount:
-        sigma: 1.0e+12
-    Rend2ClientSentCellCount:
         sigma: 1.0e+12
     Intro2CircuitCount:
         sigma: 1.0e+12

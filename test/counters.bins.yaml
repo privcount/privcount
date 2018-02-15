@@ -41,7 +41,7 @@ counters:
         - [16384.0, .inf]
     # ENTRY - ratio of cells in to cells out per active circuit on client OR connections
     # value is log(base 2)(out/in), zero when in and out are zero, a large negative number (< -100) when out is zero, and a large positive number (> 100) when in is zero
-    EntryCircuitCellRatio:
+    EntryActiveCircuitCellRatio:
         bins:
         - [-.inf, -20.0]
         - [-20.0, -19.0]
@@ -2004,9 +2004,6 @@ counters:
         bins:
         - [-.inf, .inf]
     HSDir3StoreAddNewCount:
-        bins:
-        - [-.inf, .inf]
-    Rend2ClientSentCellCount:
         bins:
         - [-.inf, .inf]
     Intro2CircuitCount:

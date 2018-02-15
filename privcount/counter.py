@@ -284,13 +284,6 @@ def get_valid_events():
 # test/test_counter_match.sh
 PRIVCOUNT_COUNTER_EVENTS = {
 
-# these counters depend on the cell sent/received event
-# they are updated in _handle_circuit_cell_event
-
-# Don't collect this counter, it's inefficient
-# Instead, collect Rend2ClientCircuitOutboundCellCount at the circuit level
-'Rend2ClientSentCellCount' : { CELL_EVENT },
-
 # these counters depend on bytes transferred event
 # they are updated in _handle_circuit_cell_event_traffic_model
 
@@ -1439,7 +1432,7 @@ PRIVCOUNT_COUNTER_EVENTS = {
 # these counters depend on circuit end
 # they are updated in _handle_legacy_exit_circuit_event
 'EntryActiveCircuitCount' : { CIRCUIT_EVENT },
-'EntryCircuitCellRatio' : { CIRCUIT_EVENT },
+'EntryActiveCircuitCellRatio' : { CIRCUIT_EVENT },
 'EntryInactiveCircuitCount' : { CIRCUIT_EVENT },
 'ExitCircuitLifeTime' : { CIRCUIT_EVENT },
 

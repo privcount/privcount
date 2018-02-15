@@ -1615,13 +1615,16 @@ class Aggregator(ReconnectingClientFactory):
         if prevIsClient:
             # prev hop is a client, we are entry
 
-            # only count cells ratio on active circuits with legitimate transfers
+            # is this circuit active, based on its cell counts?
+            # non-exit circuits only see cells
             is_active = Aggregator._is_circuit_active(ncellsin, ncellsout)
             if is_active:
                 self.secure_counters.increment('EntryActiveCircuitCount',
                                                bin=SINGLE_BIN,
                                                inc=1)
-                self.secure_counters.increment('EntryCircuitCellRatio', bin=Aggregator._encode_ratio(ncellsin, ncellsout), inc=1)
+                self.secure_counters.increment('EntryActiveCircuitCellRatio',
+                                               bin=Aggregator._encode_ratio(ncellsin, ncellsout),
+                                               inc=1)
             else:
                 self.secure_counters.increment('EntryInactiveCircuitCount',
                                                bin=SINGLE_BIN,
@@ -2190,14 +2193,6 @@ class Aggregator(ReconnectingClientFactory):
         # have defaults
 
         # Increment counters for optional fields that don't have defaults
-
-        # Don't collect this counter, it's inefficient
-        # Instead, collect Rend2ClientCircuitOutboundCellCount at the circuit level
-        if is_client is not None and hs_version is not None:
-            if is_rend and is_client and is_sent and hs_version == 2:
-                self.secure_counters.increment('Rend2ClientSentCellCount',
-                                               bin=SINGLE_BIN,
-                                               inc=1)
 
         if self.traffic_model is not None:
             # only exits count traffic model cells
