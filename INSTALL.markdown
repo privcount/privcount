@@ -7,15 +7,25 @@ A PrivCount network consists of a Tally Server (TS), at least two Share Keepers
 
     git clone https://github.com/privcount/privcount.git
     cd privcount
+
+For the stable version:
+
     git checkout origin/privcount
+
+For the latest version:
+
+    git checkout origin/master
 
 ### Upgrade PrivCount from a previous version
 
-To update to branch "privcount" from remote "origin":
+To update your chosen branch from remote "origin":
 
     cd privcount
     git fetch origin
-    git checkout origin/privcount
+    git checkout origin/<chosen-branch> # privcount or master
+
+### Install PrivCount
+
     source venv/bin/activate
     pip install -I .
     # relaunch privcount
@@ -157,7 +167,7 @@ On by default, if the libraries are available.
     Other Linux:    libcap libcap-devel
 
 On by default, if the libraries are available.
-Recommended if you are on Limux which supports capabilities, particularly if
+Recommended if you are on Linux which supports capabilities, particularly if
 your init system uses them.
 
 #### Linux systemd notifications (Required if using systemd)
@@ -185,7 +195,7 @@ Recommended if you are using a control port password.
 
 #### Other Tor Dependencies (Optional)
 
-Tor also supports xz and zstd compression of directory documents (in 0.3.1 and
+Tor also supports lzma and zstd compression of directory documents (in 0.3.1 and
 later).
 
 For details, read the output of:
@@ -199,11 +209,32 @@ Tor builds with --prefix=/usr/local by default.
 We recommend that you perform the following steps to install a
 privcount-patched tor in /usr/local:
 
+#### Download PrivCount-Patched Tor
+
+
     git clone https://github.com/privcount/tor.git tor-privcount
     cd tor-privcount
+
+For the stable version:
+
     git checkout origin/privcount
+
+For the latest version:
+
+    git checkout origin/privcount-master
+
+#### Upgrade Tor from a previous version
+
+To update your chosen branch from remote "origin":
+
+    cd tor-privcount
+    git fetch origin
+    git checkout origin/<chosen-branch> # privcount or privcount-master
+
+#### Build and Install Tor
+
     ./autogen.sh
-    ./configure --disable-asciidoc --prefix=/usr/local
+    ./configure --disable-asciidoc --prefix=/usr/local # other options
     make
     sudo make install
 
