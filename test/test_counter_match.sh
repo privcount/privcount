@@ -76,10 +76,12 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
         cat "$TEST_DIR/counters.bins.yaml.names" \
             | grep -e "Circuit.*Count" \
                -e "Circuit.*Histogram" \
+               -e "Circuit.*Ratio" \
             | grep -v -e "Connection" \
+               -e "ClientIP" \
                -e "ExitAndRend" \
-               -e "Active" \
-               -e "Inactive" \
+               -e "ExitActive" \
+               -e "ExitInactive" \
                -e "ExitInteractive" \
                -e "ExitOtherPort" \
                -e "ExitP2P" \
