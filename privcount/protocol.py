@@ -508,7 +508,7 @@ class PrivCountProtocol(LineOnlyReceiver):
                            prefix,
                            server_cookie +
                            client_cookie):
-            logging.warning("Invalid hmac: verification failed")
+            logging.warning("Invalid hmac: verification failed. Is your privcount secret handshake file the same as the rest of the network?")
             return False
         return True
 
@@ -799,7 +799,7 @@ class PrivCountProtocol(LineOnlyReceiver):
         '''
         Called when the PrivCount handshake fails
         '''
-        logging.warning("Handshake with {} failed"
+        logging.warning("Handshake with {} failed. Is your privcount secret handshake file the same as the rest of the network?"
                         .format(transport_info(self.transport)))
         self.transport.loseConnection()
         self.clear()
