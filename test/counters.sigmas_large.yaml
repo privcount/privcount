@@ -212,13 +212,13 @@ counters:
         sigma: 1.0e+12
     HSDir3StoreAddCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectExpiredHaveCachedCount:
+    HSDir2StoreRejectExpiredCachedCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectFutureHaveCachedCount:
+    HSDir2StoreRejectFutureCachedCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectExpiredNoCachedCount:
+    HSDir2StoreRejectExpiredUncachedCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectFutureNoCachedCount:
+    HSDir2StoreRejectFutureUncachedCount:
         sigma: 1.0e+12
     HSDir2StoreAddUpdatedCount:
         sigma: 1.0e+12
@@ -288,13 +288,13 @@ counters:
         sigma: 1.0e+12
     HSDir2StoreAddClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectExpiredHaveCachedClientAuthCount:
+    HSDir2StoreRejectExpiredCachedClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectFutureHaveCachedClientAuthCount:
+    HSDir2StoreRejectFutureCachedClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectExpiredNoCachedClientAuthCount:
+    HSDir2StoreRejectExpiredUncachedClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectFutureNoCachedClientAuthCount:
+    HSDir2StoreRejectFutureUncachedClientAuthCount:
         sigma: 1.0e+12
     HSDir2StoreAddUpdatedClientAuthCount:
         sigma: 1.0e+12
@@ -306,13 +306,13 @@ counters:
         sigma: 1.0e+12
     HSDir2StoreAddNoClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectExpiredHaveCachedNoClientAuthCount:
+    HSDir2StoreRejectExpiredCachedNoClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectFutureHaveCachedNoClientAuthCount:
+    HSDir2StoreRejectFutureCachedNoClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectExpiredNoCachedNoClientAuthCount:
+    HSDir2StoreRejectExpiredUncachedNoClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectFutureNoCachedNoClientAuthCount:
+    HSDir2StoreRejectFutureUncachedNoClientAuthCount:
         sigma: 1.0e+12
     HSDir2StoreAddUpdatedNoClientAuthCount:
         sigma: 1.0e+12

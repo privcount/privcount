@@ -3869,7 +3869,7 @@ class Aggregator(ReconnectingClientFactory):
             assert hs_version == 2
             assert has_existing is not None
             assert has_client_auth is not None
-            existing_str = "HaveCached" if has_existing else "NoCached"
+            existing_str = "Cached" if has_existing else "Uncached"
             action_counter = "HSDir{}Store{}{}{}{}".format(hs_version,
                                                            added_str,
                                                            reason_str,

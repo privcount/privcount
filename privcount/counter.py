@@ -3745,11 +3745,11 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'HSDir3StoreAddUpdatedCount' : { HSDIR_STORE_EVENT },
 # v2 only
 'HSDir2StoreRejectDuplicateCount' : { HSDIR_STORE_EVENT },
-# All other reasons imply HaveCached or NoCached
-'HSDir2StoreRejectExpiredHaveCachedCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectExpiredNoCachedCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectFutureHaveCachedCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectFutureNoCachedCount' : { HSDIR_STORE_EVENT },
+# All other reasons imply Cached or Uncached
+'HSDir2StoreRejectExpiredCachedCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectExpiredUncachedCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureCachedCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureUncachedCount' : { HSDIR_STORE_EVENT },
 # Both versions
 'HSDir2StoreRejectObsoleteCount' : { HSDIR_STORE_EVENT },
 'HSDir3StoreRejectObsoleteCount' : { HSDIR_STORE_EVENT },
@@ -3764,16 +3764,16 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'HSDir2StoreAddUpdatedNoClientAuthCount' : { HSDIR_STORE_EVENT },
 'HSDir2StoreRejectDuplicateClientAuthCount' : { HSDIR_STORE_EVENT },
 'HSDir2StoreRejectDuplicateNoClientAuthCount' : { HSDIR_STORE_EVENT },
-# All other reasons imply HaveCached or NoCached
+# All other reasons imply Cached or Uncached
 # Unparseable descriptors have unknown Client Auth
-'HSDir2StoreRejectExpiredHaveCachedClientAuthCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectExpiredHaveCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectExpiredNoCachedClientAuthCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectExpiredNoCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectFutureHaveCachedClientAuthCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectFutureHaveCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectFutureNoCachedClientAuthCount' : { HSDIR_STORE_EVENT },
-'HSDir2StoreRejectFutureNoCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectExpiredCachedClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectExpiredCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectExpiredUncachedClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectExpiredUncachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureCachedClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureCachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureUncachedClientAuthCount' : { HSDIR_STORE_EVENT },
+'HSDir2StoreRejectFutureUncachedNoClientAuthCount' : { HSDIR_STORE_EVENT },
 'HSDir2StoreRejectObsoleteClientAuthCount' : { HSDIR_STORE_EVENT },
 'HSDir2StoreRejectObsoleteNoClientAuthCount' : { HSDIR_STORE_EVENT },
 

@@ -650,16 +650,16 @@ counters:
     HSDir3StoreAddCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectExpiredHaveCachedCount:
+    HSDir2StoreRejectExpiredCachedCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectFutureHaveCachedCount:
+    HSDir2StoreRejectFutureCachedCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectExpiredNoCachedCount:
+    HSDir2StoreRejectExpiredUncachedCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectFutureNoCachedCount:
+    HSDir2StoreRejectFutureUncachedCount:
         bins:
         - [-.inf, .inf]
     HSDir2StoreAddUpdatedCount:
@@ -764,16 +764,16 @@ counters:
     HSDir2StoreAddClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectExpiredHaveCachedClientAuthCount:
+    HSDir2StoreRejectExpiredCachedClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectFutureHaveCachedClientAuthCount:
+    HSDir2StoreRejectFutureCachedClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectExpiredNoCachedClientAuthCount:
+    HSDir2StoreRejectExpiredUncachedClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectFutureNoCachedClientAuthCount:
+    HSDir2StoreRejectFutureUncachedClientAuthCount:
         bins:
         - [-.inf, .inf]
     HSDir2StoreAddUpdatedClientAuthCount:
@@ -791,16 +791,16 @@ counters:
     HSDir2StoreAddNoClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectExpiredHaveCachedNoClientAuthCount:
+    HSDir2StoreRejectExpiredCachedNoClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectFutureHaveCachedNoClientAuthCount:
+    HSDir2StoreRejectFutureCachedNoClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectExpiredNoCachedNoClientAuthCount:
+    HSDir2StoreRejectExpiredUncachedNoClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectFutureNoCachedNoClientAuthCount:
+    HSDir2StoreRejectFutureUncachedNoClientAuthCount:
         bins:
         - [-.inf, .inf]
     HSDir2StoreAddUpdatedNoClientAuthCount:

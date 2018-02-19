@@ -64,7 +64,7 @@ Here is how you can construct a PrivCount counter name:
 * Circuit/Stream/TrafficModel/Intro/Descriptor/Upload/Revision/
 * Add/Reject/
 * (Cache Reason String)/
-* HaveCached/NoCached/ (only if not implied by the cache reason)
+* Cached/Uncached/ (only if not implied by the cache reason)
 * ClientAuth/NoClientAuth/
 * Cell/Byte/Creation/Life/Emission/Transition/{SquaredLog,Log,}Delay/Point/
 * Count/Histogram/Ratio/Time

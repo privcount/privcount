@@ -420,16 +420,16 @@ counters:
     HSDir3StoreAddCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectExpiredHaveCachedCount:
+    HSDir2StoreRejectExpiredCachedCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectFutureHaveCachedCount:
+    HSDir2StoreRejectFutureCachedCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectExpiredNoCachedCount:
+    HSDir2StoreRejectExpiredUncachedCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectFutureNoCachedCount:
+    HSDir2StoreRejectFutureUncachedCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreAddUpdatedCount:
@@ -534,16 +534,16 @@ counters:
     HSDir2StoreAddClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectExpiredHaveCachedClientAuthCount:
+    HSDir2StoreRejectExpiredCachedClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectFutureHaveCachedClientAuthCount:
+    HSDir2StoreRejectFutureCachedClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectExpiredNoCachedClientAuthCount:
+    HSDir2StoreRejectExpiredUncachedClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectFutureNoCachedClientAuthCount:
+    HSDir2StoreRejectFutureUncachedClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreAddUpdatedClientAuthCount:
@@ -561,16 +561,16 @@ counters:
     HSDir2StoreAddNoClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectExpiredHaveCachedNoClientAuthCount:
+    HSDir2StoreRejectExpiredCachedNoClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectFutureHaveCachedNoClientAuthCount:
+    HSDir2StoreRejectFutureCachedNoClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectExpiredNoCachedNoClientAuthCount:
+    HSDir2StoreRejectExpiredUncachedNoClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectFutureNoCachedNoClientAuthCount:
+    HSDir2StoreRejectFutureUncachedNoClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreAddUpdatedNoClientAuthCount:

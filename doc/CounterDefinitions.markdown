@@ -201,24 +201,34 @@ Store.
 The reasons that a descriptor may be added or rejected are documented in
 doc/TorEvent.markdown.
 
-### HaveCached/NoCached
+### Cached/Uncached
 
 Whether an existing onion service descriptor was present in the cache during
-an HSDir Store. Only used for Future and Expired CacheReasonStrings.
+an HSDir Store or Fetch.
+
+#### HSDir Stores
+
+Cached/Uncached are only used for Future and Expired CacheReasonStrings.
 
 If the CacheReasonString already provides this information, it is not included
 in the counter name.
 
-CacheReasonString means NoCached:
+CacheReasonString means Uncached:
 * New
 
-CacheReasonString means HaveCached:
+CacheReasonString means Cached:
 * Updated
 * Obsolete
 * Duplicate
 
 CacheReasonString means that we don't know if it was cached:
 * Unparseable
+
+#### HSDir Fetches
+
+Uncached is always considered a failure.
+
+TODO: list of failure reasons.
 
 ### Traffic Model Template Counters
 
