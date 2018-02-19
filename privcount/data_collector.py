@@ -3018,8 +3018,8 @@ class Aggregator(ReconnectingClientFactory):
                                        fields, event_desc,
                                        is_mandatory=True)
 
-        # Allow double the limit before issuing a warning
-        if ip_relay_count > Aggregator.MAX_IP_RELAY_COUNTER * 2:
+        # Allow triple the limit before issuing a warning
+        if ip_relay_count > Aggregator.MAX_IP_RELAY_COUNTER * 3:
             Aggregator.warn_unexpected_field_value("PeerIPAddressConsensusRelayCount",
                                                    fields, event_desc)
 
@@ -3085,11 +3085,11 @@ class Aggregator(ReconnectingClientFactory):
         # If the remote end is a client, this is an entry connection,
         # otherwise, it's middle or exit or both
         position_str = "Entry" if is_client else "NonEntry"
-        # Say how many relays the remote end has on its address
-        # If it has more than the limit, assume it's a test network, and put
-        # them in the highest-valued counter that actually exists
-        ip_relay_count = min(ip_relay_count, Aggregator.MAX_IP_RELAY_COUNTER)
-        shared_relay_str = "{}RelayOnAddress".format(ip_relay_count)
+        # Say if the remote end has relays on its address
+        if ip_relay_count > 0:
+            shared_relay_str = "RelayOnAddress"
+        else:
+            shared_relay_str = "NoRelayOnAddress"
 
         position_counter = "{}Connection{}".format(position_str,
                                                 counter_suffix)
