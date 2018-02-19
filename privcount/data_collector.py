@@ -1643,9 +1643,6 @@ class Aggregator(ReconnectingClientFactory):
         elif nextIsEdge:
             # prev hop is a relay and next is an edge connection, we are exit
             # don't count single-hop exits
-            self.secure_counters.increment('ExitCircuitLifeTime',
-                                           bin=(end - start),
-                                           inc=1)
 
             # check if we have any stream info in this circuit
             circ_is_known = self.is_circ_known(chanid=chanid, circid=circid)
@@ -1656,12 +1653,7 @@ class Aggregator(ReconnectingClientFactory):
 
             if circ_is_known and has_completed_stream:
                 # we have circuit info and at least one stream ended on it
-                self.secure_counters.increment('ExitActiveCircuitCount',
-                                               bin=SINGLE_BIN,
-                                               inc=1)
-                self.secure_counters.increment('ExitActiveCircuitLifeTime',
-                                               bin=(end - start),
-                                               inc=1)
+                # all Exit circuits should pass this test
 
                 # convenience
                 counts = self.circ_info[chanid][circid]['num_streams']
@@ -1721,16 +1713,6 @@ class Aggregator(ReconnectingClientFactory):
                         self.secure_counters.increment('ExitCircuitOtherPortInterStreamCreationTime',
                                                        bin=isct,
                                                        inc=1)
-
-            else:
-                # either we dont know circ, or no streams ended on it
-                self.secure_counters.increment('ExitInactiveCircuitCount',
-                                               bin=SINGLE_BIN,
-                                               inc=1)
-                self.secure_counters.increment('ExitInactiveCircuitLifeTime',
-                                               bin=(end - start),
-                                               inc=1)
-
             # cleanup
             # TODO: secure delete
             if circ_is_known:
@@ -2431,9 +2413,7 @@ class Aggregator(ReconnectingClientFactory):
         Unknown counter names are ignored.
         '''
         assert counter_prefix is not None
-
-        if counter_suffix is None:
-            counter_suffix = ""
+        assert counter_suffix is not None
 
         if is_active:
             activity = "Active"
@@ -2457,8 +2437,10 @@ class Aggregator(ReconnectingClientFactory):
                                        bin=bin,
                                        inc=inc)
 
-        # Exits define "Active" using streams, not cells
-        if not counter_prefix.startswith("Exit"):
+        # Exit, Dir, and HSDir are always Active
+        if (not counter_prefix.startswith("Exit") and
+            not counter_prefix.startswith("Dir") and
+            not counter_prefix.startswith("HSDir")):
             # Prefix Active/Inactive Circuit Suffix
             self.secure_counters.increment('{}{}Circuit{}'
                                            .format(counter_prefix, activity, counter_suffix),
@@ -2470,6 +2452,47 @@ class Aggregator(ReconnectingClientFactory):
                                            .format(counter_prefix, activity, status, counter_suffix),
                                            bin=bin,
                                            inc=inc)
+
+    def _increment_circuit_close_hs_status_counters(self, counter_prefix,
+                                                    counter_suffix,
+                                                    hs_version,
+                                                    is_active,
+                                                    is_failure,
+                                                    bin=SINGLE_BIN,
+                                                    inc=1):
+        '''
+        Increment bin by inc for the counter variants starting with
+        counter_prefix and ending in counter_suffix, using hs_version,
+        is_active and is_failure to create counter names.
+
+        Unknown counter names are ignored.
+        '''
+        assert counter_prefix is not None
+        assert counter_suffix is not None
+        assert hs_version is None or hs_version == 2 or hs_version == 3
+
+        # HSDir/Intro/Rend ...
+        self._increment_circuit_close_status_counters(counter_prefix,
+                                                      counter_suffix,
+                                                      is_active,
+                                                      is_failure,
+                                                      bin=bin,
+                                                      inc=inc)
+
+        # HSDir 2/3 ...
+        # Intro/Rend U/2/3 ...
+        if hs_version is None:
+            hs_version_name = "U"
+        else:
+            hs_version_name = '{}'.format(hs_version)
+
+        self._increment_circuit_close_status_counters('{}{}'
+                                                      .format(counter_prefix, hs_version_name),
+                                                      counter_suffix,
+                                                      is_active,
+                                                      is_failure,
+                                                      bin=bin,
+                                                      inc=inc)
 
     def _increment_circuit_close_counters(self, counter_suffix,
                                           is_active,
@@ -2496,7 +2519,7 @@ class Aggregator(ReconnectingClientFactory):
 
 
         if is_origin:
-            # Origin /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
+            # Origin /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio/LifeTime
             self._increment_circuit_close_status_counters("Origin",
                                                           counter_suffix,
                                                           is_active,
@@ -2505,7 +2528,7 @@ class Aggregator(ReconnectingClientFactory):
                                                           inc=inc)
 
         if is_entry:
-            # Entry /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
+            # Entry /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio/LifeTime
             self._increment_circuit_close_status_counters("Entry",
                                                           counter_suffix,
                                                           is_active,
@@ -2514,7 +2537,7 @@ class Aggregator(ReconnectingClientFactory):
                                                           inc=inc)
 
         if is_mid:
-            # Mid /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
+            # Mid /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio/LifeTime
             self._increment_circuit_close_status_counters("Mid",
                                                           counter_suffix,
                                                           is_active,
@@ -2523,7 +2546,7 @@ class Aggregator(ReconnectingClientFactory):
                                                           inc=inc)
 
         if is_end:
-            # End /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
+            # End /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio/LifeTime
             self._increment_circuit_close_status_counters("End",
                                                           counter_suffix,
                                                           is_active,
@@ -2532,7 +2555,7 @@ class Aggregator(ReconnectingClientFactory):
                                                           inc=inc)
 
         if is_single_hop:
-            # SingleHop /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
+            # SingleHop /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio/LifeTime
             self._increment_circuit_close_status_counters("SingleHop",
                                                           counter_suffix,
                                                           is_active,
@@ -2542,8 +2565,8 @@ class Aggregator(ReconnectingClientFactory):
 
         # End subcategories
         if is_exit:
-            # includes single-hop exits (which aren't supposed to exist)
-            # Exit /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
+            # includes single-hop exits (which are blocked by most exits)
+            # Exit /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/CellRatio/LifeTime
             self._increment_circuit_close_status_counters("Exit",
                                                           counter_suffix,
                                                           is_active,
@@ -2552,7 +2575,7 @@ class Aggregator(ReconnectingClientFactory):
                                                           inc=inc)
 
         if is_dir:
-            # Dir /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
+            # Dir /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/CellRatio/LifeTime
             self._increment_circuit_close_status_counters("Dir",
                                                           counter_suffix,
                                                           is_active,
@@ -2589,11 +2612,7 @@ class Aggregator(ReconnectingClientFactory):
                                                    bin=bin,
                                                    inc=inc)
 
-        # Ignore HS circuits without hs_version
-        if hs_version is None:
-            return
-
-        # Use position to share HSDir, Intro and Rend counters
+        # Use position to abstract HSDir, Intro and Rend counters
         if is_hsdir:
             position = "HSDir"
         elif is_intro:
@@ -2614,31 +2633,39 @@ class Aggregator(ReconnectingClientFactory):
         else:
             hop = "MultiHop"
 
-        # HSDir/Intro/Rend 2/3 /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
-        self._increment_circuit_close_status_counters('{}{}'.format(position, hs_version),
-                                                      counter_suffix,
-                                                      is_active,
-                                                      is_failure,
-                                                      bin=bin,
-                                                      inc=inc)
+        # HSDir /2/3 /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/CellRatio/LifeTime
+        # Intro/Rend /U/2/3 /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio/LifeTime
+        self._increment_circuit_close_hs_status_counters(position,
+                                                         counter_suffix,
+                                                         hs_version,
+                                                         is_active,
+                                                         is_failure,
+                                                         bin=bin,
+                                                         inc=inc)
 
         if hs_role is not None:
-            # HSDir/Intro/Rend 2/3 Client/Service /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
-            self._increment_circuit_close_status_counters('{}{}{}'.format(position, hs_version, hs_role),
-                                                          counter_suffix,
-                                                          is_active,
-                                                          is_failure,
-                                                          bin=bin,
-                                                          inc=inc)
+            # HSDir /2/3 Client/Service /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/CellRatio/LifeTime
+            # Intro/Rend /U/2/3 Client/Service /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio/LifeTime
+            self._increment_circuit_close_hs_status_counters('{}{}'
+                                                             .format(position, hs_role),
+                                                             counter_suffix,
+                                                             hs_version,
+                                                             is_active,
+                                                             is_failure,
+                                                             bin=bin,
+                                                             inc=inc)
 
             assert hop is not None
-            # HSDir/Intro/Rend 2/3 {Tor2Web,MultiHop}Client/{SingleOnion,MultiHop}Service /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio
-            self._increment_circuit_close_status_counters('{}{}{}{}'.format(position, hs_version, hop, hs_role),
-                                                          counter_suffix,
-                                                          is_active,
-                                                          is_failure,
-                                                          bin=bin,
-                                                          inc=inc)
+            # HSDir /2/3 {Tor2Web,MultiHop}Client/{SingleOnion,MultiHop}Service /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/CellRatio/LifeTime
+            # Intro/Rend /U/2/3 {Tor2Web,MultiHop}Client/{SingleOnion,MultiHop}Service /Active/Inactive /Failure/Success Circuit Count/{Inbound,Outbound}Cell{Count,Histogram}/(Active)CellRatio/LifeTime
+            self._increment_circuit_close_hs_status_counters('{}{}{}'
+                                                             .format(position, hop, hs_role),
+                                                             counter_suffix,
+                                                             hs_version,
+                                                             is_active,
+                                                             is_failure,
+                                                             bin=bin,
+                                                             inc=inc)
 
     @staticmethod
     def _get_cell_counts(fields, event_desc):
@@ -2738,6 +2765,12 @@ class Aggregator(ReconnectingClientFactory):
                                 .format(" ".join(sorted(fields)), event_desc))
 
         # Extract mandatory fields
+        start_time = get_float_value("CreatedTimestamp",
+                                     fields, event_desc,
+                                     is_mandatory=True)
+        end_time = get_float_value("EventTimestamp",
+                                   fields, event_desc,
+                                   is_mandatory=True)
 
         # Extract the optional fields, and give them defaults
 
@@ -2820,6 +2853,16 @@ class Aggregator(ReconnectingClientFactory):
                                                is_mandatory=False,
                                                default=None)
 
+        # All Exit, Dir, and HSDir circuits are active, because we identify
+        # them when they open a stream. Use End for inactive circuits.
+        if is_exit or is_dir or is_hsdir:
+            is_active = True
+
+        # Intro and Rend circuits are only active if the responder has
+        # connected. When the responder connects, we set the HS version.
+        if (is_intro or is_rend) and hs_version is None:
+            is_active = False
+
         # Increment counter variants
 
         # *CircuitCount
@@ -2889,6 +2932,17 @@ class Aggregator(ReconnectingClientFactory):
                                                    hs_version,
                                                    bin=ratio,
                                                    inc=1)
+
+        # *CircuitLifeTime
+        self._increment_circuit_close_counters("LifeTime",
+                                               is_active,
+                                               is_origin, is_entry, is_mid, is_end,
+                                               is_exit, is_dir,
+                                               is_hsdir, is_intro, is_rend,
+                                               is_failure, is_hs_client,
+                                               hs_version,
+                                               bin=(end_time - start_time),
+                                               inc=1)
 
         # we processed and handled the event
         return True

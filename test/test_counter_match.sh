@@ -77,11 +77,10 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
             | grep -e "Circuit.*Count" \
                -e "Circuit.*Histogram" \
                -e "Circuit.*Ratio" \
+               -e "Circuit.*LifeTime" \
             | grep -v -e "Connection" \
                -e "ClientIP" \
                -e "ExitAndRend" \
-               -e "ExitActive" \
-               -e "ExitInactive" \
                -e "ExitInteractive" \
                -e "ExitOtherPort" \
                -e "ExitP2P" \

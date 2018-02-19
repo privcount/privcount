@@ -64,16 +64,8 @@ counters:
     ExitCircuitWebInterStreamCreationTime:
         estimated_value: 0.0
         sensitivity: 0
-    # ENTRY - circuit times in seconds for all circuits
+    # EXIT - circuit times in seconds for all circuits
     ExitCircuitLifeTime:
-        estimated_value: 0.0
-        sensitivity: 0
-    # ENTRY - circuit times in seconds for active circuits
-    ExitActiveCircuitLifeTime:
-        estimated_value: 0.0
-        sensitivity: 0
-    # ENTRY - circuit times in seconds for inactive circuits
-    ExitInactiveCircuitLifeTime:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - completed streams per active circuit
@@ -110,14 +102,6 @@ counters:
         sensitivity: 0
     # EXIT - number of circuits
     ExitCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0
-    # EXIT - number of circuits with at least one stream completed
-    ExitActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0
-    # EXIT - number of circuits with no streams completed
-    ExitInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0
     # EXIT - number of circuits for IRC/SSH
@@ -5075,16 +5059,10 @@ counters:
     Intro2ActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveFailureCircuitInboundCellHistogram:
@@ -5099,16 +5077,10 @@ counters:
     Intro2ServiceActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
@@ -5117,16 +5089,10 @@ counters:
     Intro2SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveFailureCircuitInboundCellHistogram:
@@ -5135,16 +5101,10 @@ counters:
     Intro2MultiHopServiceActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveFailureCircuitInboundCellHistogram:
@@ -5153,16 +5113,10 @@ counters:
     SingleHopActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveFailureCircuitInboundCellHistogram:
@@ -5171,16 +5125,10 @@ counters:
     Intro3ClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveFailureCircuitInboundCellHistogram:
@@ -5189,25 +5137,16 @@ counters:
     Intro3Tor2WebClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveFailureCircuitInboundCellHistogram:
@@ -5219,16 +5158,10 @@ counters:
     Intro2InactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveFailureCircuitInboundCellHistogram:
@@ -5243,16 +5176,10 @@ counters:
     Intro2ServiceInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
@@ -5261,16 +5188,10 @@ counters:
     Intro2SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
@@ -5279,16 +5200,10 @@ counters:
     Intro2MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveFailureCircuitInboundCellHistogram:
@@ -5297,16 +5212,10 @@ counters:
     SingleHopInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveFailureCircuitInboundCellHistogram:
@@ -5315,16 +5224,10 @@ counters:
     Intro3ClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
@@ -5333,25 +5236,16 @@ counters:
     Intro3Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveFailureCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveFailureCircuitInboundCellHistogram:
@@ -5363,16 +5257,10 @@ counters:
     Intro2ActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveCircuitInboundCellHistogram:
@@ -5387,16 +5275,10 @@ counters:
     Intro2ServiceActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveCircuitInboundCellHistogram:
@@ -5405,16 +5287,10 @@ counters:
     Intro2SingleOnionServiceActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveCircuitInboundCellHistogram:
@@ -5423,16 +5299,10 @@ counters:
     Intro2MultiHopServiceActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveCircuitInboundCellHistogram:
@@ -5441,16 +5311,10 @@ counters:
     SingleHopActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveCircuitInboundCellHistogram:
@@ -5459,16 +5323,10 @@ counters:
     Intro3ClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveCircuitInboundCellHistogram:
@@ -5477,25 +5335,16 @@ counters:
     Intro3Tor2WebClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveCircuitInboundCellHistogram:
@@ -5507,16 +5356,10 @@ counters:
     Intro2InactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveCircuitInboundCellHistogram:
@@ -5531,16 +5374,10 @@ counters:
     Intro2ServiceInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveCircuitInboundCellHistogram:
@@ -5549,16 +5386,10 @@ counters:
     Intro2SingleOnionServiceInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveCircuitInboundCellHistogram:
@@ -5567,16 +5398,10 @@ counters:
     Intro2MultiHopServiceInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveCircuitInboundCellHistogram:
@@ -5585,16 +5410,10 @@ counters:
     SingleHopInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveCircuitInboundCellHistogram:
@@ -5603,16 +5422,10 @@ counters:
     Intro3ClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveCircuitInboundCellHistogram:
@@ -5621,25 +5434,16 @@ counters:
     Intro3Tor2WebClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveCircuitInboundCellHistogram:
@@ -5651,16 +5455,10 @@ counters:
     Intro2ActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveSuccessCircuitInboundCellHistogram:
@@ -5675,16 +5473,10 @@ counters:
     Intro2ServiceActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
@@ -5693,16 +5485,10 @@ counters:
     Intro2SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
@@ -5711,16 +5497,10 @@ counters:
     Intro2MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveSuccessCircuitInboundCellHistogram:
@@ -5729,16 +5509,10 @@ counters:
     SingleHopActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveSuccessCircuitInboundCellHistogram:
@@ -5747,16 +5521,10 @@ counters:
     Intro3ClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
@@ -5765,25 +5533,16 @@ counters:
     Intro3Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveSuccessCircuitInboundCellHistogram:
@@ -5795,16 +5554,10 @@ counters:
     Intro2InactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveSuccessCircuitInboundCellHistogram:
@@ -5819,16 +5572,10 @@ counters:
     Intro2ServiceInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
@@ -5837,16 +5584,10 @@ counters:
     Intro2SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
@@ -5855,16 +5596,10 @@ counters:
     Intro2MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveSuccessCircuitInboundCellHistogram:
@@ -5873,16 +5608,10 @@ counters:
     SingleHopInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveSuccessCircuitInboundCellHistogram:
@@ -5891,16 +5620,10 @@ counters:
     Intro3ClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
@@ -5909,25 +5632,16 @@ counters:
     Intro3Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveSuccessCircuitInboundCellHistogram:
@@ -5939,16 +5653,10 @@ counters:
     Intro2ActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveFailureCircuitOutboundCellHistogram:
@@ -5963,16 +5671,10 @@ counters:
     Intro2ServiceActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
@@ -5981,16 +5683,10 @@ counters:
     Intro2SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
@@ -5999,16 +5695,10 @@ counters:
     Intro2MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveFailureCircuitOutboundCellHistogram:
@@ -6017,16 +5707,10 @@ counters:
     SingleHopActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveFailureCircuitOutboundCellHistogram:
@@ -6035,16 +5719,10 @@ counters:
     Intro3ClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
@@ -6053,25 +5731,16 @@ counters:
     Intro3Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveFailureCircuitOutboundCellHistogram:
@@ -6083,16 +5752,10 @@ counters:
     Intro2InactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveFailureCircuitOutboundCellHistogram:
@@ -6107,16 +5770,10 @@ counters:
     Intro2ServiceInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
@@ -6125,16 +5782,10 @@ counters:
     Intro2SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
@@ -6143,16 +5794,10 @@ counters:
     Intro2MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveFailureCircuitOutboundCellHistogram:
@@ -6161,16 +5806,10 @@ counters:
     SingleHopInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveFailureCircuitOutboundCellHistogram:
@@ -6179,16 +5818,10 @@ counters:
     Intro3ClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
@@ -6197,25 +5830,16 @@ counters:
     Intro3Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveFailureCircuitOutboundCellHistogram:
@@ -6227,16 +5851,10 @@ counters:
     Intro2ActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveCircuitOutboundCellHistogram:
@@ -6251,16 +5869,10 @@ counters:
     Intro2ServiceActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveCircuitOutboundCellHistogram:
@@ -6269,16 +5881,10 @@ counters:
     Intro2SingleOnionServiceActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveCircuitOutboundCellHistogram:
@@ -6287,16 +5893,10 @@ counters:
     Intro2MultiHopServiceActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveCircuitOutboundCellHistogram:
@@ -6305,16 +5905,10 @@ counters:
     SingleHopActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveCircuitOutboundCellHistogram:
@@ -6323,16 +5917,10 @@ counters:
     Intro3ClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveCircuitOutboundCellHistogram:
@@ -6341,25 +5929,16 @@ counters:
     Intro3Tor2WebClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveCircuitOutboundCellHistogram:
@@ -6371,16 +5950,10 @@ counters:
     Intro2InactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveCircuitOutboundCellHistogram:
@@ -6395,16 +5968,10 @@ counters:
     Intro2ServiceInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveCircuitOutboundCellHistogram:
@@ -6413,16 +5980,10 @@ counters:
     Intro2SingleOnionServiceInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveCircuitOutboundCellHistogram:
@@ -6431,16 +5992,10 @@ counters:
     Intro2MultiHopServiceInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveCircuitOutboundCellHistogram:
@@ -6449,16 +6004,10 @@ counters:
     SingleHopInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveCircuitOutboundCellHistogram:
@@ -6467,16 +6016,10 @@ counters:
     Intro3ClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveCircuitOutboundCellHistogram:
@@ -6485,25 +6028,16 @@ counters:
     Intro3Tor2WebClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveCircuitOutboundCellHistogram:
@@ -6515,16 +6049,10 @@ counters:
     Intro2ActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveSuccessCircuitOutboundCellHistogram:
@@ -6539,16 +6067,10 @@ counters:
     Intro2ServiceActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
@@ -6557,16 +6079,10 @@ counters:
     Intro2SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
@@ -6575,16 +6091,10 @@ counters:
     Intro2MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveSuccessCircuitOutboundCellHistogram:
@@ -6593,16 +6103,10 @@ counters:
     SingleHopActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveSuccessCircuitOutboundCellHistogram:
@@ -6611,16 +6115,10 @@ counters:
     Intro3ClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
@@ -6629,25 +6127,16 @@ counters:
     Intro3Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveSuccessCircuitOutboundCellHistogram:
@@ -6659,16 +6148,10 @@ counters:
     Intro2InactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveSuccessCircuitOutboundCellHistogram:
@@ -6683,16 +6166,10 @@ counters:
     Intro2ServiceInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
@@ -6701,16 +6178,10 @@ counters:
     Intro2SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
@@ -6719,16 +6190,10 @@ counters:
     Intro2MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveSuccessCircuitOutboundCellHistogram:
@@ -6737,16 +6202,10 @@ counters:
     SingleHopInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveSuccessCircuitOutboundCellHistogram:
@@ -6755,16 +6214,10 @@ counters:
     Intro3ClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
@@ -6773,25 +6226,16 @@ counters:
     Intro3Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveSuccessCircuitOutboundCellHistogram:
@@ -6803,16 +6247,10 @@ counters:
     Intro2ActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveFailureCircuitCellRatio:
@@ -6827,16 +6265,10 @@ counters:
     Intro2ServiceActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveFailureCircuitCellRatio:
@@ -6845,16 +6277,10 @@ counters:
     Intro2SingleOnionServiceActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveFailureCircuitCellRatio:
@@ -6863,16 +6289,10 @@ counters:
     Intro2MultiHopServiceActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveFailureCircuitCellRatio:
@@ -6881,16 +6301,10 @@ counters:
     SingleHopActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveFailureCircuitCellRatio:
@@ -6899,16 +6313,10 @@ counters:
     Intro3ClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveFailureCircuitCellRatio:
@@ -6917,25 +6325,16 @@ counters:
     Intro3Tor2WebClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveFailureCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveFailureCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveFailureCircuitCellRatio:
@@ -6947,16 +6346,10 @@ counters:
     Intro2ActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveCircuitCellRatio:
@@ -6971,16 +6364,10 @@ counters:
     Intro2ServiceActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveCircuitCellRatio:
@@ -6989,16 +6376,10 @@ counters:
     Intro2SingleOnionServiceActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveCircuitCellRatio:
@@ -7007,16 +6388,10 @@ counters:
     Intro2MultiHopServiceActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveCircuitCellRatio:
@@ -7025,16 +6400,10 @@ counters:
     SingleHopActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveCircuitCellRatio:
@@ -7043,16 +6412,10 @@ counters:
     Intro3ClientActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveCircuitCellRatio:
@@ -7061,16 +6424,10 @@ counters:
     Intro3Tor2WebClientActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2MultiHopClientActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3MultiHopClientActiveCircuitCellRatio:
@@ -7079,25 +6436,16 @@ counters:
     Intro3MultiHopClientActiveCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3MultiHopClientActiveCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveSuccessCircuitCellRatio:
@@ -7112,16 +6460,10 @@ counters:
     Intro2ServiceActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveSuccessCircuitCellRatio:
@@ -7130,16 +6472,10 @@ counters:
     Intro2SingleOnionServiceActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveSuccessCircuitCellRatio:
@@ -7148,16 +6484,10 @@ counters:
     Intro2MultiHopServiceActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveSuccessCircuitCellRatio:
@@ -7166,16 +6496,10 @@ counters:
     SingleHopActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveSuccessCircuitCellRatio:
@@ -7184,16 +6508,10 @@ counters:
     Intro3ClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveSuccessCircuitCellRatio:
@@ -7202,25 +6520,16 @@ counters:
     Intro3Tor2WebClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveSuccessCircuitCellRatio:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveSuccessCircuitCellRatio:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveSuccessCircuitCellRatio:
@@ -7232,16 +6541,10 @@ counters:
     Intro2ActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveFailureCircuitInboundCellCount:
@@ -7256,16 +6559,10 @@ counters:
     Intro2ServiceActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveFailureCircuitInboundCellCount:
@@ -7274,16 +6571,10 @@ counters:
     Intro2SingleOnionServiceActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveFailureCircuitInboundCellCount:
@@ -7292,16 +6583,10 @@ counters:
     Intro2MultiHopServiceActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveFailureCircuitInboundCellCount:
@@ -7310,16 +6595,10 @@ counters:
     SingleHopActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveFailureCircuitInboundCellCount:
@@ -7328,16 +6607,10 @@ counters:
     Intro3ClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveFailureCircuitInboundCellCount:
@@ -7346,25 +6619,16 @@ counters:
     Intro3Tor2WebClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveFailureCircuitInboundCellCount:
@@ -7376,16 +6640,10 @@ counters:
     Intro2InactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveFailureCircuitInboundCellCount:
@@ -7400,16 +6658,10 @@ counters:
     Intro2ServiceInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveFailureCircuitInboundCellCount:
@@ -7418,16 +6670,10 @@ counters:
     Intro2SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveFailureCircuitInboundCellCount:
@@ -7436,16 +6682,10 @@ counters:
     Intro2MultiHopServiceInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveFailureCircuitInboundCellCount:
@@ -7454,16 +6694,10 @@ counters:
     SingleHopInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveFailureCircuitInboundCellCount:
@@ -7472,16 +6706,10 @@ counters:
     Intro3ClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveFailureCircuitInboundCellCount:
@@ -7490,25 +6718,16 @@ counters:
     Intro3Tor2WebClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveFailureCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveFailureCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveFailureCircuitInboundCellCount:
@@ -7520,16 +6739,10 @@ counters:
     Intro2ActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveCircuitInboundCellCount:
@@ -7544,16 +6757,10 @@ counters:
     Intro2ServiceActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveCircuitInboundCellCount:
@@ -7562,16 +6769,10 @@ counters:
     Intro2SingleOnionServiceActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveCircuitInboundCellCount:
@@ -7580,16 +6781,10 @@ counters:
     Intro2MultiHopServiceActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveCircuitInboundCellCount:
@@ -7598,16 +6793,10 @@ counters:
     SingleHopActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveCircuitInboundCellCount:
@@ -7616,16 +6805,10 @@ counters:
     Intro3ClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveCircuitInboundCellCount:
@@ -7634,25 +6817,16 @@ counters:
     Intro3Tor2WebClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveCircuitInboundCellCount:
@@ -7664,16 +6838,10 @@ counters:
     Intro2InactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveCircuitInboundCellCount:
@@ -7688,16 +6856,10 @@ counters:
     Intro2ServiceInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveCircuitInboundCellCount:
@@ -7706,16 +6868,10 @@ counters:
     Intro2SingleOnionServiceInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveCircuitInboundCellCount:
@@ -7724,16 +6880,10 @@ counters:
     Intro2MultiHopServiceInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveCircuitInboundCellCount:
@@ -7742,16 +6892,10 @@ counters:
     SingleHopInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveCircuitInboundCellCount:
@@ -7760,16 +6904,10 @@ counters:
     Intro3ClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveCircuitInboundCellCount:
@@ -7778,25 +6916,16 @@ counters:
     Intro3Tor2WebClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveCircuitInboundCellCount:
@@ -7808,16 +6937,10 @@ counters:
     Intro2ActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveSuccessCircuitInboundCellCount:
@@ -7832,16 +6955,10 @@ counters:
     Intro2ServiceActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveSuccessCircuitInboundCellCount:
@@ -7850,16 +6967,10 @@ counters:
     Intro2SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveSuccessCircuitInboundCellCount:
@@ -7868,16 +6979,10 @@ counters:
     Intro2MultiHopServiceActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveSuccessCircuitInboundCellCount:
@@ -7886,16 +6991,10 @@ counters:
     SingleHopActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveSuccessCircuitInboundCellCount:
@@ -7904,16 +7003,10 @@ counters:
     Intro3ClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveSuccessCircuitInboundCellCount:
@@ -7922,25 +7015,16 @@ counters:
     Intro3Tor2WebClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveSuccessCircuitInboundCellCount:
@@ -7952,16 +7036,10 @@ counters:
     Intro2InactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveSuccessCircuitInboundCellCount:
@@ -7976,16 +7054,10 @@ counters:
     Intro2ServiceInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
@@ -7994,16 +7066,10 @@ counters:
     Intro2SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveSuccessCircuitInboundCellCount:
@@ -8012,16 +7078,10 @@ counters:
     Intro2MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveSuccessCircuitInboundCellCount:
@@ -8030,16 +7090,10 @@ counters:
     SingleHopInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveSuccessCircuitInboundCellCount:
@@ -8048,16 +7102,10 @@ counters:
     Intro3ClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveSuccessCircuitInboundCellCount:
@@ -8066,25 +7114,16 @@ counters:
     Intro3Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveSuccessCircuitInboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveSuccessCircuitInboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveSuccessCircuitInboundCellCount:
@@ -8096,16 +7135,10 @@ counters:
     Intro2ActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveFailureCircuitOutboundCellCount:
@@ -8120,16 +7153,10 @@ counters:
     Intro2ServiceActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveFailureCircuitOutboundCellCount:
@@ -8138,16 +7165,10 @@ counters:
     Intro2SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveFailureCircuitOutboundCellCount:
@@ -8156,16 +7177,10 @@ counters:
     Intro2MultiHopServiceActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveFailureCircuitOutboundCellCount:
@@ -8174,16 +7189,10 @@ counters:
     SingleHopActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveFailureCircuitOutboundCellCount:
@@ -8192,16 +7201,10 @@ counters:
     Intro3ClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveFailureCircuitOutboundCellCount:
@@ -8210,25 +7213,16 @@ counters:
     Intro3Tor2WebClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveFailureCircuitOutboundCellCount:
@@ -8240,16 +7234,10 @@ counters:
     Intro2InactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveFailureCircuitOutboundCellCount:
@@ -8264,16 +7252,10 @@ counters:
     Intro2ServiceInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
@@ -8282,16 +7264,10 @@ counters:
     Intro2SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveFailureCircuitOutboundCellCount:
@@ -8300,16 +7276,10 @@ counters:
     Intro2MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveFailureCircuitOutboundCellCount:
@@ -8318,16 +7288,10 @@ counters:
     SingleHopInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveFailureCircuitOutboundCellCount:
@@ -8336,16 +7300,10 @@ counters:
     Intro3ClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveFailureCircuitOutboundCellCount:
@@ -8354,25 +7312,16 @@ counters:
     Intro3Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveFailureCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveFailureCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveFailureCircuitOutboundCellCount:
@@ -8384,16 +7333,10 @@ counters:
     Intro2ActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveCircuitOutboundCellCount:
@@ -8408,16 +7351,10 @@ counters:
     Intro2ServiceActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveCircuitOutboundCellCount:
@@ -8426,16 +7363,10 @@ counters:
     Intro2SingleOnionServiceActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveCircuitOutboundCellCount:
@@ -8444,16 +7375,10 @@ counters:
     Intro2MultiHopServiceActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveCircuitOutboundCellCount:
@@ -8462,16 +7387,10 @@ counters:
     SingleHopActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveCircuitOutboundCellCount:
@@ -8480,16 +7399,10 @@ counters:
     Intro3ClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveCircuitOutboundCellCount:
@@ -8498,25 +7411,16 @@ counters:
     Intro3Tor2WebClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveCircuitOutboundCellCount:
@@ -8528,16 +7432,10 @@ counters:
     Intro2InactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveCircuitOutboundCellCount:
@@ -8552,16 +7450,10 @@ counters:
     Intro2ServiceInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveCircuitOutboundCellCount:
@@ -8570,16 +7462,10 @@ counters:
     Intro2SingleOnionServiceInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveCircuitOutboundCellCount:
@@ -8588,16 +7474,10 @@ counters:
     Intro2MultiHopServiceInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveCircuitOutboundCellCount:
@@ -8606,16 +7486,10 @@ counters:
     SingleHopInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveCircuitOutboundCellCount:
@@ -8624,16 +7498,10 @@ counters:
     Intro3ClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveCircuitOutboundCellCount:
@@ -8642,25 +7510,16 @@ counters:
     Intro3Tor2WebClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveCircuitOutboundCellCount:
@@ -8672,16 +7531,10 @@ counters:
     Intro2ActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveSuccessCircuitOutboundCellCount:
@@ -8696,16 +7549,10 @@ counters:
     Intro2ServiceActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
@@ -8714,16 +7561,10 @@ counters:
     Intro2SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveSuccessCircuitOutboundCellCount:
@@ -8732,16 +7573,10 @@ counters:
     Intro2MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveSuccessCircuitOutboundCellCount:
@@ -8750,16 +7585,10 @@ counters:
     SingleHopActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveSuccessCircuitOutboundCellCount:
@@ -8768,16 +7597,10 @@ counters:
     Intro3ClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveSuccessCircuitOutboundCellCount:
@@ -8786,25 +7609,16 @@ counters:
     Intro3Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveSuccessCircuitOutboundCellCount:
@@ -8816,16 +7630,10 @@ counters:
     Intro2InactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveSuccessCircuitOutboundCellCount:
@@ -8840,16 +7648,10 @@ counters:
     Intro2ServiceInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
@@ -8858,16 +7660,10 @@ counters:
     Intro2SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
@@ -8876,16 +7672,10 @@ counters:
     Intro2MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveSuccessCircuitOutboundCellCount:
@@ -8894,16 +7684,10 @@ counters:
     SingleHopInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveSuccessCircuitOutboundCellCount:
@@ -8912,16 +7696,10 @@ counters:
     Intro3ClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
@@ -8930,25 +7708,16 @@ counters:
     Intro3Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveSuccessCircuitOutboundCellCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveSuccessCircuitOutboundCellCount:
@@ -8960,16 +7729,10 @@ counters:
     Intro2ActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveFailureCircuitCount:
@@ -8984,16 +7747,10 @@ counters:
     Intro2ServiceActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveFailureCircuitCount:
@@ -9002,16 +7759,10 @@ counters:
     Intro2SingleOnionServiceActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveFailureCircuitCount:
@@ -9020,16 +7771,10 @@ counters:
     Intro2MultiHopServiceActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveFailureCircuitCount:
@@ -9038,16 +7783,10 @@ counters:
     SingleHopActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveFailureCircuitCount:
@@ -9056,16 +7795,10 @@ counters:
     Intro3ClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveFailureCircuitCount:
@@ -9074,25 +7807,16 @@ counters:
     Intro3Tor2WebClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveFailureCircuitCount:
@@ -9104,16 +7828,10 @@ counters:
     Intro2InactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveFailureCircuitCount:
@@ -9128,16 +7846,10 @@ counters:
     Intro2ServiceInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveFailureCircuitCount:
@@ -9146,16 +7858,10 @@ counters:
     Intro2SingleOnionServiceInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveFailureCircuitCount:
@@ -9164,16 +7870,10 @@ counters:
     Intro2MultiHopServiceInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveFailureCircuitCount:
@@ -9182,16 +7882,10 @@ counters:
     SingleHopInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveFailureCircuitCount:
@@ -9200,16 +7894,10 @@ counters:
     Intro3ClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveFailureCircuitCount:
@@ -9218,25 +7906,16 @@ counters:
     Intro3Tor2WebClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveFailureCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveFailureCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveFailureCircuitCount:
@@ -9248,16 +7927,10 @@ counters:
     Intro2ActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveCircuitCount:
@@ -9272,16 +7945,10 @@ counters:
     Intro2ServiceActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveCircuitCount:
@@ -9290,16 +7957,10 @@ counters:
     Intro2SingleOnionServiceActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveCircuitCount:
@@ -9308,16 +7969,10 @@ counters:
     Intro2MultiHopServiceActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveCircuitCount:
@@ -9326,16 +7981,10 @@ counters:
     SingleHopActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveCircuitCount:
@@ -9344,16 +7993,10 @@ counters:
     Intro3ClientActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveCircuitCount:
@@ -9362,16 +8005,10 @@ counters:
     Intro3Tor2WebClientActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2MultiHopClientActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3MultiHopClientActiveCircuitCount:
@@ -9380,25 +8017,16 @@ counters:
     Intro3MultiHopClientActiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3MultiHopClientActiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2InactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2InactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveCircuitCount:
@@ -9413,16 +8041,10 @@ counters:
     Intro2ServiceInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveCircuitCount:
@@ -9431,16 +8053,10 @@ counters:
     Intro2SingleOnionServiceInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveCircuitCount:
@@ -9449,16 +8065,10 @@ counters:
     Intro2MultiHopServiceInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveCircuitCount:
@@ -9467,16 +8077,10 @@ counters:
     SingleHopInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveCircuitCount:
@@ -9485,16 +8089,10 @@ counters:
     Intro3ClientInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveCircuitCount:
@@ -9503,16 +8101,10 @@ counters:
     Intro3Tor2WebClientInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2MultiHopClientInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3MultiHopClientInactiveCircuitCount:
@@ -9521,25 +8113,16 @@ counters:
     Intro3MultiHopClientInactiveCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3MultiHopClientInactiveCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidActiveSuccessCircuitCount:
@@ -9554,16 +8137,10 @@ counters:
     Intro2ServiceActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceActiveSuccessCircuitCount:
@@ -9572,16 +8149,10 @@ counters:
     Intro2SingleOnionServiceActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceActiveSuccessCircuitCount:
@@ -9590,16 +8161,10 @@ counters:
     Intro2MultiHopServiceActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginActiveSuccessCircuitCount:
@@ -9608,16 +8173,10 @@ counters:
     SingleHopActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientActiveSuccessCircuitCount:
@@ -9626,16 +8185,10 @@ counters:
     Intro3ClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientActiveSuccessCircuitCount:
@@ -9644,25 +8197,16 @@ counters:
     Intro3Tor2WebClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientActiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientActiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryActiveSuccessCircuitCount:
@@ -9674,16 +8218,10 @@ counters:
     Intro2InactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2InactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3InactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3InactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3InactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     MidInactiveSuccessCircuitCount:
@@ -9698,16 +8236,10 @@ counters:
     Intro2ServiceInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2ServiceInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3ServiceInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3ServiceInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3ServiceInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2SingleOnionServiceInactiveSuccessCircuitCount:
@@ -9716,16 +8248,10 @@ counters:
     Intro2SingleOnionServiceInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2SingleOnionServiceInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3SingleOnionServiceInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3SingleOnionServiceInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3SingleOnionServiceInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend2MultiHopServiceInactiveSuccessCircuitCount:
@@ -9734,16 +8260,10 @@ counters:
     Intro2MultiHopServiceInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopServiceInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopServiceInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopServiceInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopServiceInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     OriginInactiveSuccessCircuitCount:
@@ -9752,16 +8272,10 @@ counters:
     SingleHopInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    DirInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2ClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2ClientInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2ClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3ClientInactiveSuccessCircuitCount:
@@ -9770,16 +8284,10 @@ counters:
     Intro3ClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3ClientInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2Tor2WebClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2Tor2WebClientInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2Tor2WebClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Rend3Tor2WebClientInactiveSuccessCircuitCount:
@@ -9788,25 +8296,16 @@ counters:
     Intro3Tor2WebClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir3Tor2WebClientInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend2MultiHopClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2MultiHopClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2MultiHopClientInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     Rend3MultiHopClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro3MultiHopClientInactiveSuccessCircuitCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3MultiHopClientInactiveSuccessCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
     EntryInactiveSuccessCircuitCount:

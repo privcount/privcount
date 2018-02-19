@@ -63,20 +63,8 @@ counters:
         - [0.0, 3.0]
         - [3.0, 30.0]
         - [30.0, .inf]
-    # ENTRY - circuit times in seconds for all circuits
+    # EXIT - circuit times in seconds for all circuits
     ExitCircuitLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    # ENTRY - circuit times in seconds for active circuits
-    ExitActiveCircuitLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    # ENTRY - circuit times in seconds for inactive circuits
-    ExitInactiveCircuitLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
@@ -125,14 +113,6 @@ counters:
         - [-.inf, .inf]
     # EXIT - number of circuits
     ExitCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    # EXIT - number of circuits with at least one stream completed
-    ExitActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    # EXIT - number of circuits with no streams completed
-    ExitInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     # EXIT - number of circuits for IRC/SSH
@@ -6984,22 +6964,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7024,22 +6994,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7054,22 +7014,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7084,22 +7034,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7114,22 +7054,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7144,22 +7074,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7174,11 +7094,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -7189,22 +7104,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientActiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientActiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7224,22 +7129,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2InactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3InactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3InactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3InactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7264,22 +7159,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7294,22 +7179,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7324,22 +7199,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7354,22 +7219,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7384,22 +7239,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7414,11 +7259,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -7429,22 +7269,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientInactiveFailureCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7464,22 +7294,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7504,22 +7324,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7534,22 +7344,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7564,22 +7364,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7594,22 +7384,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7624,22 +7404,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7654,11 +7424,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -7669,22 +7434,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientActiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientActiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7704,22 +7459,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2InactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3InactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3InactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3InactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7744,22 +7489,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7774,22 +7509,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7804,22 +7529,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7834,22 +7549,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7864,22 +7569,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7894,11 +7589,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -7909,22 +7599,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientInactiveCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientInactiveCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7944,22 +7624,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -7984,22 +7654,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8014,22 +7674,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8044,22 +7694,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8074,22 +7714,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8104,22 +7734,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8134,11 +7754,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -8149,22 +7764,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientActiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8184,22 +7789,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2InactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3InactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3InactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3InactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8224,22 +7819,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8254,22 +7839,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8284,22 +7859,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8314,22 +7879,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8344,22 +7899,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8374,11 +7919,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -8389,22 +7929,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8424,22 +7954,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8464,22 +7984,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8494,22 +8004,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8524,22 +8024,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8554,22 +8044,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8584,22 +8064,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8614,11 +8084,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -8629,22 +8094,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientActiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8664,22 +8119,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2InactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3InactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3InactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3InactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8704,22 +8149,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8734,22 +8169,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8764,22 +8189,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8794,22 +8209,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8824,22 +8229,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8854,11 +8249,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -8869,22 +8259,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8904,22 +8284,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8944,22 +8314,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -8974,22 +8334,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9004,22 +8354,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9034,22 +8374,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9064,22 +8394,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9094,11 +8414,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -9109,22 +8424,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientActiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientActiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9144,22 +8449,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2InactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3InactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3InactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3InactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9184,22 +8479,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9214,22 +8499,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9244,22 +8519,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9274,22 +8539,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9304,22 +8559,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9334,11 +8579,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -9349,22 +8589,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientInactiveCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientInactiveCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9384,22 +8614,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9424,22 +8644,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9454,22 +8664,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9484,22 +8684,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9514,22 +8704,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9544,22 +8724,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9574,11 +8744,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -9589,22 +8754,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9624,22 +8779,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2InactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3InactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3InactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3InactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9664,22 +8809,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2ServiceInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3ServiceInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3ServiceInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3ServiceInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9694,22 +8829,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9724,22 +8849,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9754,22 +8869,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    DirInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2ClientInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2ClientInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2ClientInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9784,22 +8889,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3ClientInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro2Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir2Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9814,11 +8909,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir3Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend2MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
@@ -9829,22 +8919,12 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
-    HSDir2MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
     Rend3MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
         - [32.0, .inf]
     Intro3MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32.0]
-        - [32.0, .inf]
-    HSDir3MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32.0]
@@ -9866,12 +8946,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2ActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3ActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -9879,12 +8953,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3ActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3ActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -9914,12 +8982,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2ServiceActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3ServiceActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -9927,12 +8989,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3ServiceActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3ServiceActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -9950,12 +9006,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2SingleOnionServiceActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3SingleOnionServiceActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -9963,12 +9013,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3SingleOnionServiceActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3SingleOnionServiceActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -9986,12 +9030,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2MultiHopServiceActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3MultiHopServiceActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -9999,12 +9037,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3MultiHopServiceActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3MultiHopServiceActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10022,12 +9054,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    DirActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2ClientActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10035,12 +9061,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro2ClientActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir2ClientActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10058,12 +9078,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir3ClientActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2Tor2WebClientActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10071,12 +9085,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro2Tor2WebClientActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir2Tor2WebClientActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10094,12 +9102,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir3Tor2WebClientActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2MultiHopClientActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10112,12 +9114,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2MultiHopClientActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3MultiHopClientActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10125,12 +9121,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3MultiHopClientActiveFailureCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3MultiHopClientActiveFailureCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10154,12 +9144,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2ActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3ActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10167,12 +9151,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3ActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3ActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10202,12 +9180,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2ServiceActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3ServiceActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10215,12 +9187,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3ServiceActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3ServiceActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10238,12 +9204,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2SingleOnionServiceActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3SingleOnionServiceActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10251,12 +9211,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3SingleOnionServiceActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3SingleOnionServiceActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10274,12 +9228,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2MultiHopServiceActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3MultiHopServiceActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10287,12 +9235,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3MultiHopServiceActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3MultiHopServiceActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10310,12 +9252,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    DirActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2ClientActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10323,12 +9259,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro2ClientActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir2ClientActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10346,12 +9276,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir3ClientActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2Tor2WebClientActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10359,12 +9283,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro2Tor2WebClientActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir2Tor2WebClientActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10382,12 +9300,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir3Tor2WebClientActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2MultiHopClientActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10395,12 +9307,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro2MultiHopClientActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir2MultiHopClientActiveCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10418,12 +9324,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir3MultiHopClientActiveCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2ActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10436,12 +9336,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2ActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3ActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10449,12 +9343,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3ActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3ActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10484,12 +9372,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2ServiceActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3ServiceActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10497,12 +9379,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3ServiceActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3ServiceActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10520,12 +9396,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2SingleOnionServiceActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3SingleOnionServiceActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10533,12 +9403,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3SingleOnionServiceActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3SingleOnionServiceActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10556,12 +9420,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir2MultiHopServiceActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend3MultiHopServiceActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10569,12 +9427,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro3MultiHopServiceActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir3MultiHopServiceActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10592,12 +9444,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    DirActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2ClientActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10605,12 +9451,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro2ClientActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir2ClientActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10628,12 +9468,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir3ClientActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2Tor2WebClientActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10641,12 +9475,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro2Tor2WebClientActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir2Tor2WebClientActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10664,12 +9492,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir3Tor2WebClientActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     Rend2MultiHopClientActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10677,12 +9499,6 @@ counters:
         - [0.0, 1.0]
         - [1.0, .inf]
     Intro2MultiHopClientActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
-    HSDir2MultiHopClientActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
         - [-1.0, 0.0]
@@ -10700,12 +9516,6 @@ counters:
         - [-1.0, 0.0]
         - [0.0, 1.0]
         - [1.0, .inf]
-    HSDir3MultiHopClientActiveSuccessCircuitCellRatio:
-        bins:
-        - [-.inf, -1.0]
-        - [-1.0, 0.0]
-        - [0.0, 1.0]
-        - [1.0, .inf]
     EntryActiveSuccessCircuitCellRatio:
         bins:
         - [-.inf, -1.0]
@@ -10718,16 +9528,10 @@ counters:
     Intro2ActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     MidActiveFailureCircuitInboundCellCount:
@@ -10742,16 +9546,10 @@ counters:
     Intro2ServiceActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceActiveFailureCircuitInboundCellCount:
@@ -10760,16 +9558,10 @@ counters:
     Intro2SingleOnionServiceActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceActiveFailureCircuitInboundCellCount:
@@ -10778,16 +9570,10 @@ counters:
     Intro2MultiHopServiceActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginActiveFailureCircuitInboundCellCount:
@@ -10796,16 +9582,10 @@ counters:
     SingleHopActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientActiveFailureCircuitInboundCellCount:
@@ -10814,16 +9594,10 @@ counters:
     Intro3ClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientActiveFailureCircuitInboundCellCount:
@@ -10832,25 +9606,16 @@ counters:
     Intro3Tor2WebClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientActiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientActiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryActiveFailureCircuitInboundCellCount:
@@ -10862,16 +9627,10 @@ counters:
     Intro2InactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2InactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3InactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3InactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3InactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     MidInactiveFailureCircuitInboundCellCount:
@@ -10886,16 +9645,10 @@ counters:
     Intro2ServiceInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceInactiveFailureCircuitInboundCellCount:
@@ -10904,16 +9657,10 @@ counters:
     Intro2SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceInactiveFailureCircuitInboundCellCount:
@@ -10922,16 +9669,10 @@ counters:
     Intro2MultiHopServiceInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginInactiveFailureCircuitInboundCellCount:
@@ -10940,16 +9681,10 @@ counters:
     SingleHopInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientInactiveFailureCircuitInboundCellCount:
@@ -10958,16 +9693,10 @@ counters:
     Intro3ClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientInactiveFailureCircuitInboundCellCount:
@@ -10976,25 +9705,16 @@ counters:
     Intro3Tor2WebClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientInactiveFailureCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientInactiveFailureCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryInactiveFailureCircuitInboundCellCount:
@@ -11006,16 +9726,10 @@ counters:
     Intro2ActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     MidActiveCircuitInboundCellCount:
@@ -11030,16 +9744,10 @@ counters:
     Intro2ServiceActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceActiveCircuitInboundCellCount:
@@ -11048,16 +9756,10 @@ counters:
     Intro2SingleOnionServiceActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceActiveCircuitInboundCellCount:
@@ -11066,16 +9768,10 @@ counters:
     Intro2MultiHopServiceActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginActiveCircuitInboundCellCount:
@@ -11084,16 +9780,10 @@ counters:
     SingleHopActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientActiveCircuitInboundCellCount:
@@ -11102,16 +9792,10 @@ counters:
     Intro3ClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientActiveCircuitInboundCellCount:
@@ -11120,25 +9804,16 @@ counters:
     Intro3Tor2WebClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientActiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientActiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryActiveCircuitInboundCellCount:
@@ -11150,16 +9825,10 @@ counters:
     Intro2InactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2InactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3InactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3InactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3InactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     MidInactiveCircuitInboundCellCount:
@@ -11174,16 +9843,10 @@ counters:
     Intro2ServiceInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceInactiveCircuitInboundCellCount:
@@ -11192,16 +9855,10 @@ counters:
     Intro2SingleOnionServiceInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceInactiveCircuitInboundCellCount:
@@ -11210,16 +9867,10 @@ counters:
     Intro2MultiHopServiceInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginInactiveCircuitInboundCellCount:
@@ -11228,16 +9879,10 @@ counters:
     SingleHopInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientInactiveCircuitInboundCellCount:
@@ -11246,16 +9891,10 @@ counters:
     Intro3ClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientInactiveCircuitInboundCellCount:
@@ -11264,25 +9903,16 @@ counters:
     Intro3Tor2WebClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientInactiveCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientInactiveCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryInactiveCircuitInboundCellCount:
@@ -11294,16 +9924,10 @@ counters:
     Intro2ActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     MidActiveSuccessCircuitInboundCellCount:
@@ -11318,16 +9942,10 @@ counters:
     Intro2ServiceActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceActiveSuccessCircuitInboundCellCount:
@@ -11336,16 +9954,10 @@ counters:
     Intro2SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceActiveSuccessCircuitInboundCellCount:
@@ -11354,16 +9966,10 @@ counters:
     Intro2MultiHopServiceActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginActiveSuccessCircuitInboundCellCount:
@@ -11372,16 +9978,10 @@ counters:
     SingleHopActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientActiveSuccessCircuitInboundCellCount:
@@ -11390,16 +9990,10 @@ counters:
     Intro3ClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientActiveSuccessCircuitInboundCellCount:
@@ -11408,25 +10002,16 @@ counters:
     Intro3Tor2WebClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientActiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientActiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryActiveSuccessCircuitInboundCellCount:
@@ -11438,16 +10023,10 @@ counters:
     Intro2InactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2InactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3InactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3InactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3InactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     MidInactiveSuccessCircuitInboundCellCount:
@@ -11462,16 +10041,10 @@ counters:
     Intro2ServiceInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
@@ -11480,16 +10053,10 @@ counters:
     Intro2SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceInactiveSuccessCircuitInboundCellCount:
@@ -11498,16 +10065,10 @@ counters:
     Intro2MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginInactiveSuccessCircuitInboundCellCount:
@@ -11516,16 +10077,10 @@ counters:
     SingleHopInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientInactiveSuccessCircuitInboundCellCount:
@@ -11534,16 +10089,10 @@ counters:
     Intro3ClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientInactiveSuccessCircuitInboundCellCount:
@@ -11552,25 +10101,16 @@ counters:
     Intro3Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientInactiveSuccessCircuitInboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientInactiveSuccessCircuitInboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryInactiveSuccessCircuitInboundCellCount:
@@ -11582,16 +10122,10 @@ counters:
     Intro2ActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     MidActiveFailureCircuitOutboundCellCount:
@@ -11606,16 +10140,10 @@ counters:
     Intro2ServiceActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceActiveFailureCircuitOutboundCellCount:
@@ -11624,16 +10152,10 @@ counters:
     Intro2SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceActiveFailureCircuitOutboundCellCount:
@@ -11642,16 +10164,10 @@ counters:
     Intro2MultiHopServiceActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginActiveFailureCircuitOutboundCellCount:
@@ -11660,16 +10176,10 @@ counters:
     SingleHopActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientActiveFailureCircuitOutboundCellCount:
@@ -11678,16 +10188,10 @@ counters:
     Intro3ClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientActiveFailureCircuitOutboundCellCount:
@@ -11696,25 +10200,16 @@ counters:
     Intro3Tor2WebClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientActiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientActiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryActiveFailureCircuitOutboundCellCount:
@@ -11726,16 +10221,10 @@ counters:
     Intro2InactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2InactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3InactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3InactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3InactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     MidInactiveFailureCircuitOutboundCellCount:
@@ -11750,16 +10239,10 @@ counters:
     Intro2ServiceInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
@@ -11768,16 +10251,10 @@ counters:
     Intro2SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceInactiveFailureCircuitOutboundCellCount:
@@ -11786,16 +10263,10 @@ counters:
     Intro2MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginInactiveFailureCircuitOutboundCellCount:
@@ -11804,16 +10275,10 @@ counters:
     SingleHopInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientInactiveFailureCircuitOutboundCellCount:
@@ -11822,16 +10287,10 @@ counters:
     Intro3ClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientInactiveFailureCircuitOutboundCellCount:
@@ -11840,25 +10299,16 @@ counters:
     Intro3Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientInactiveFailureCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientInactiveFailureCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryInactiveFailureCircuitOutboundCellCount:
@@ -11870,16 +10320,10 @@ counters:
     Intro2ActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     MidActiveCircuitOutboundCellCount:
@@ -11894,16 +10338,10 @@ counters:
     Intro2ServiceActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceActiveCircuitOutboundCellCount:
@@ -11912,16 +10350,10 @@ counters:
     Intro2SingleOnionServiceActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceActiveCircuitOutboundCellCount:
@@ -11930,16 +10362,10 @@ counters:
     Intro2MultiHopServiceActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginActiveCircuitOutboundCellCount:
@@ -11948,16 +10374,10 @@ counters:
     SingleHopActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientActiveCircuitOutboundCellCount:
@@ -11966,16 +10386,10 @@ counters:
     Intro3ClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientActiveCircuitOutboundCellCount:
@@ -11984,25 +10398,16 @@ counters:
     Intro3Tor2WebClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientActiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientActiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryActiveCircuitOutboundCellCount:
@@ -12014,16 +10419,10 @@ counters:
     Intro2InactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2InactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3InactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3InactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3InactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     MidInactiveCircuitOutboundCellCount:
@@ -12038,16 +10437,10 @@ counters:
     Intro2ServiceInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceInactiveCircuitOutboundCellCount:
@@ -12056,16 +10449,10 @@ counters:
     Intro2SingleOnionServiceInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceInactiveCircuitOutboundCellCount:
@@ -12074,16 +10461,10 @@ counters:
     Intro2MultiHopServiceInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginInactiveCircuitOutboundCellCount:
@@ -12092,16 +10473,10 @@ counters:
     SingleHopInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientInactiveCircuitOutboundCellCount:
@@ -12110,16 +10485,10 @@ counters:
     Intro3ClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientInactiveCircuitOutboundCellCount:
@@ -12128,25 +10497,16 @@ counters:
     Intro3Tor2WebClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientInactiveCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientInactiveCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryInactiveCircuitOutboundCellCount:
@@ -12158,16 +10518,10 @@ counters:
     Intro2ActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     MidActiveSuccessCircuitOutboundCellCount:
@@ -12182,16 +10536,10 @@ counters:
     Intro2ServiceActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
@@ -12200,16 +10548,10 @@ counters:
     Intro2SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceActiveSuccessCircuitOutboundCellCount:
@@ -12218,16 +10560,10 @@ counters:
     Intro2MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginActiveSuccessCircuitOutboundCellCount:
@@ -12236,16 +10572,10 @@ counters:
     SingleHopActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientActiveSuccessCircuitOutboundCellCount:
@@ -12254,16 +10584,10 @@ counters:
     Intro3ClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientActiveSuccessCircuitOutboundCellCount:
@@ -12272,25 +10596,16 @@ counters:
     Intro3Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientActiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientActiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryActiveSuccessCircuitOutboundCellCount:
@@ -12302,16 +10617,10 @@ counters:
     Intro2InactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2InactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3InactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3InactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3InactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     MidInactiveSuccessCircuitOutboundCellCount:
@@ -12326,16 +10635,10 @@ counters:
     Intro2ServiceInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
@@ -12344,16 +10647,10 @@ counters:
     Intro2SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
@@ -12362,16 +10659,10 @@ counters:
     Intro2MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     OriginInactiveSuccessCircuitOutboundCellCount:
@@ -12380,16 +10671,10 @@ counters:
     SingleHopInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    DirInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientInactiveSuccessCircuitOutboundCellCount:
@@ -12398,16 +10683,10 @@ counters:
     Intro3ClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
@@ -12416,25 +10695,16 @@ counters:
     Intro3Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientInactiveSuccessCircuitOutboundCellCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         bins:
         - [-.inf, .inf]
     EntryInactiveSuccessCircuitOutboundCellCount:
@@ -12446,16 +10716,10 @@ counters:
     Intro2ActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3ActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     MidActiveFailureCircuitCount:
@@ -12470,16 +10734,10 @@ counters:
     Intro2ServiceActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceActiveFailureCircuitCount:
@@ -12488,16 +10746,10 @@ counters:
     Intro2SingleOnionServiceActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceActiveFailureCircuitCount:
@@ -12506,16 +10758,10 @@ counters:
     Intro2MultiHopServiceActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     OriginActiveFailureCircuitCount:
@@ -12524,16 +10770,10 @@ counters:
     SingleHopActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    DirActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientActiveFailureCircuitCount:
@@ -12542,16 +10782,10 @@ counters:
     Intro3ClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientActiveFailureCircuitCount:
@@ -12560,25 +10794,16 @@ counters:
     Intro3Tor2WebClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientActiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientActiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     EntryActiveFailureCircuitCount:
@@ -12590,16 +10815,10 @@ counters:
     Intro2InactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2InactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3InactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3InactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3InactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     MidInactiveFailureCircuitCount:
@@ -12614,16 +10833,10 @@ counters:
     Intro2ServiceInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceInactiveFailureCircuitCount:
@@ -12632,16 +10845,10 @@ counters:
     Intro2SingleOnionServiceInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceInactiveFailureCircuitCount:
@@ -12650,16 +10857,10 @@ counters:
     Intro2MultiHopServiceInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     OriginInactiveFailureCircuitCount:
@@ -12668,16 +10869,10 @@ counters:
     SingleHopInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    DirInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientInactiveFailureCircuitCount:
@@ -12686,16 +10881,10 @@ counters:
     Intro3ClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientInactiveFailureCircuitCount:
@@ -12704,25 +10893,16 @@ counters:
     Intro3Tor2WebClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientInactiveFailureCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientInactiveFailureCircuitCount:
         bins:
         - [-.inf, .inf]
     EntryInactiveFailureCircuitCount:
@@ -12734,16 +10914,10 @@ counters:
     Intro2ActiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3ActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     MidActiveCircuitCount:
@@ -12758,16 +10932,10 @@ counters:
     Intro2ServiceActiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceActiveCircuitCount:
@@ -12776,16 +10944,10 @@ counters:
     Intro2SingleOnionServiceActiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceActiveCircuitCount:
@@ -12794,16 +10956,10 @@ counters:
     Intro2MultiHopServiceActiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     OriginActiveCircuitCount:
@@ -12812,16 +10968,10 @@ counters:
     SingleHopActiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    DirActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientActiveCircuitCount:
@@ -12830,16 +10980,10 @@ counters:
     Intro3ClientActiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientActiveCircuitCount:
@@ -12848,16 +10992,10 @@ counters:
     Intro3Tor2WebClientActiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2MultiHopClientActiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3MultiHopClientActiveCircuitCount:
@@ -12866,25 +11004,16 @@ counters:
     Intro3MultiHopClientActiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3MultiHopClientActiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2InactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2InactiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2InactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3InactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3InactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3InactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     MidInactiveCircuitCount:
@@ -12899,16 +11028,10 @@ counters:
     Intro2ServiceInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceInactiveCircuitCount:
@@ -12917,16 +11040,10 @@ counters:
     Intro2SingleOnionServiceInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceInactiveCircuitCount:
@@ -12935,16 +11052,10 @@ counters:
     Intro2MultiHopServiceInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     OriginInactiveCircuitCount:
@@ -12953,16 +11064,10 @@ counters:
     SingleHopInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    DirInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientInactiveCircuitCount:
@@ -12971,16 +11076,10 @@ counters:
     Intro3ClientInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientInactiveCircuitCount:
@@ -12989,16 +11088,10 @@ counters:
     Intro3Tor2WebClientInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2MultiHopClientInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3MultiHopClientInactiveCircuitCount:
@@ -13007,25 +11100,16 @@ counters:
     Intro3MultiHopClientInactiveCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3MultiHopClientInactiveCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2ActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3ActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     MidActiveSuccessCircuitCount:
@@ -13040,16 +11124,10 @@ counters:
     Intro2ServiceActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceActiveSuccessCircuitCount:
@@ -13058,16 +11136,10 @@ counters:
     Intro2SingleOnionServiceActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceActiveSuccessCircuitCount:
@@ -13076,16 +11148,10 @@ counters:
     Intro2MultiHopServiceActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     OriginActiveSuccessCircuitCount:
@@ -13094,16 +11160,10 @@ counters:
     SingleHopActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    DirActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientActiveSuccessCircuitCount:
@@ -13112,16 +11172,10 @@ counters:
     Intro3ClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientActiveSuccessCircuitCount:
@@ -13130,25 +11184,16 @@ counters:
     Intro3Tor2WebClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientActiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientActiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     EntryActiveSuccessCircuitCount:
@@ -13160,16 +11205,10 @@ counters:
     Intro2InactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2InactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3InactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3InactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3InactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     MidInactiveSuccessCircuitCount:
@@ -13184,16 +11223,10 @@ counters:
     Intro2ServiceInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2ServiceInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3ServiceInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3ServiceInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3ServiceInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2SingleOnionServiceInactiveSuccessCircuitCount:
@@ -13202,16 +11235,10 @@ counters:
     Intro2SingleOnionServiceInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2SingleOnionServiceInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3SingleOnionServiceInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3SingleOnionServiceInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3SingleOnionServiceInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend2MultiHopServiceInactiveSuccessCircuitCount:
@@ -13220,16 +11247,10 @@ counters:
     Intro2MultiHopServiceInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopServiceInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopServiceInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopServiceInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopServiceInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     OriginInactiveSuccessCircuitCount:
@@ -13238,16 +11259,10 @@ counters:
     SingleHopInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    DirInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2ClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2ClientInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2ClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3ClientInactiveSuccessCircuitCount:
@@ -13256,16 +11271,10 @@ counters:
     Intro3ClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3ClientInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2Tor2WebClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2Tor2WebClientInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2Tor2WebClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Rend3Tor2WebClientInactiveSuccessCircuitCount:
@@ -13274,25 +11283,16 @@ counters:
     Intro3Tor2WebClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir3Tor2WebClientInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend2MultiHopClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro2MultiHopClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
-    HSDir2MultiHopClientInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
     Rend3MultiHopClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     Intro3MultiHopClientInactiveSuccessCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3MultiHopClientInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
     EntryInactiveSuccessCircuitCount:

@@ -111,21 +111,35 @@ This section describes how some counters are split or filtered.
 
 ### Relay Position
 
-Connections: Entry/NonEntry
-Circuits and Streams: Origin/Entry/Mid/End/SingleHop/Exit/Dir/HSDir/Intro/Rend
-HSDir, Intro, and Rend can also be onion service version 2 or 3.
-
 This counter is only collected when the relay is in this position in the
 Connection or Circuit.
 
-For example:
+Connections: Entry/NonEntry
 * When Tor clients connect to the Tor network, they make an Entry Connection.
 * When Tor relays connect to another relay, they make a NonEntry Connection.
   (The ends of the connection may be in the Entry, Mid or End position on
   different circuits.)
+
+Circuits: Origin/Entry/Mid/End/SingleHop/Intro/Rend
+* When Tor clients build a preemtive circuit, the client is in the Origin position, and relays
+  are in the Entry, Mid, and End positions.
+* When Tor clients build a non-anonymous directory circuit, the directory mirror is in
+  the Entry, End, and SingleHop positions.
+* When Tor relays act as a rehdezvous point, they join an IntroClient and IntroService
+  circuit together, and relay cells between them.
+
+Circuits and Streams: Exit/Dir/HSDir
 * When Tor clients access a remote server, they make an Exit Stream.
-* When legacy Tor onion services upload a descriptor, they perform an HSDir2
-  Store.
+
+Stores and Fetches: HSDir
+* When Tor onion services upload a descriptor, they perform an HSDir Store.
+
+### /Tor2Web/SingleOnion/MultiHop Client/Service
+
+Each onion service circuit is being used by a Client or Service.
+
+SingleHop onion service circuits are labelled as Tor2Web or SingleOnion.
+MultiHop onion service circuits don't have special names.
 
 ### Active/Inactive
 
@@ -133,13 +147,24 @@ An Active Circuit is being used by a Tor client. Circuit Activity is only
 checked when a Circuit ends.
 
 The activity thresholds are:
-* Entry Circuits: 8 or more Cells were transmitted over the Circuit.
-                  Uses the sum of Inbound and Outbound Cells.
-* Entry ClientIPs: 1 or more active Entry Circuits closed in this rotation
+* Origin, Entry, Mid, End, and SingleHop Circuit positions: 8 or more Cells were
+                  transmitted over the Circuit. Uses the sum of Inbound and Outbound Cells.
+* Intro and Rend Circuit positions: The circuit meets the 8 cell threshold, and both the
+                  client and service are connected to the relay.
+* Exit, Dir, and HSDir Circuits: 1 or more Streams were opened on the Circuit. Relays
+                  can't distinguish between Exit and Dir circuits until a stream opens on the
+                  circuit. So all Exit, Dir, and HSDir Circuits are considered active. (Use the
+                  End position counters to find inactive, unused circuits.)
+* Entry ClientIP counters: 1 or more active Entry Circuits closed in this rotation
                    period. If a client does not close any circuits, it is
                    not counted. If a client only closes inactive circuits, it
                    is inactive.
-* Exit Circuits: 1 or more Streams ended on the Circuit.
+
+### Hidden Service Versions U/2/3
+
+Intro and Rend Circuits can have Hidden Service Version 2, 3, or U (unknown).
+
+The Hidden Service Version is always known for HSDir circuits.
 
 ### Stream Port
 

@@ -20,10 +20,6 @@ counters:
         sigma: 1.0e+12
     ExitCircuitLifeTime:
         sigma: 1.0e+12
-    ExitActiveCircuitLifeTime:
-        sigma: 1.0e+12
-    ExitInactiveCircuitLifeTime:
-        sigma: 1.0e+12
     ExitCircuitStreamHistogram:
         sigma: 1.0e+12
     ExitCircuitInteractiveStreamHistogram:
@@ -41,10 +37,6 @@ counters:
     EntryInactiveCircuitCount:
         sigma: 1.0e+12
     ExitCircuitCount:
-        sigma: 1.0e+12
-    ExitActiveCircuitCount:
-        sigma: 1.0e+12
-    ExitInactiveCircuitCount:
         sigma: 1.0e+12
     ExitInteractiveCircuitCount:
         sigma: 1.0e+12
@@ -3314,13 +3306,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     MidActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3330,79 +3318,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     OriginActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     SingleHopActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    DirActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     EntryActiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3410,13 +3372,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2InactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3InactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3InactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3InactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     MidInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3426,79 +3384,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     OriginInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     SingleHopInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    DirInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveFailureCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
     EntryInactiveFailureCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3506,13 +3438,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     MidActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3522,79 +3450,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     OriginActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     SingleHopActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    DirActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     EntryActiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3602,13 +3504,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2InactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3InactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3InactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3InactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     MidInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3618,79 +3516,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     OriginInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     SingleHopInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    DirInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
     EntryInactiveCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3698,13 +3570,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     MidActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3714,79 +3582,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     OriginActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     SingleHopActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    DirActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     EntryActiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3794,13 +3636,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2InactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3InactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3InactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3InactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     MidInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3810,79 +3648,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     OriginInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     SingleHopInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    DirInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
     EntryInactiveSuccessCircuitInboundCellHistogram:
         sigma: 1.0e+12
@@ -3890,13 +3702,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     MidActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -3906,79 +3714,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     OriginActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     SingleHopActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    DirActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     EntryActiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -3986,13 +3768,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2InactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3InactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3InactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3InactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     MidInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4002,79 +3780,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     OriginInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     SingleHopInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    DirInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     EntryInactiveFailureCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4082,13 +3834,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     MidActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4098,79 +3846,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     OriginActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     SingleHopActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    DirActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     EntryActiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4178,13 +3900,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2InactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3InactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3InactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3InactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     MidInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4194,79 +3912,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     OriginInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     SingleHopInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    DirInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     EntryInactiveCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4274,13 +3966,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     MidActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4290,79 +3978,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     OriginActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     SingleHopActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    DirActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     EntryActiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4370,13 +4032,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2InactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3InactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3InactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3InactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     MidInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4386,79 +4044,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3ServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ServiceInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     OriginInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     SingleHopInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    DirInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2ClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2ClientInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3ClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3ClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3ClientInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
     EntryInactiveSuccessCircuitOutboundCellHistogram:
         sigma: 1.0e+12
@@ -4466,13 +4098,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2ActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3ActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro3ActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3ActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     MidActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
@@ -4482,79 +4110,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2ServiceActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3ServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro3ServiceActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     OriginActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     SingleHopActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
-    DirActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2ClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro2ClientActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir2ClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Rend3ClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro3ClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir3ClientActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveFailureCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
     EntryActiveFailureCircuitCellRatio:
         sigma: 1.0e+12
@@ -4562,13 +4164,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2ActiveCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3ActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro3ActiveCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3ActiveCircuitCellRatio:
         sigma: 1.0e+12
     MidActiveCircuitCellRatio:
         sigma: 1.0e+12
@@ -4578,91 +4176,61 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2ServiceActiveCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3ServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro3ServiceActiveCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveCircuitCellRatio:
         sigma: 1.0e+12
     OriginActiveCircuitCellRatio:
         sigma: 1.0e+12
     SingleHopActiveCircuitCellRatio:
         sigma: 1.0e+12
-    DirActiveCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2ClientActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro2ClientActiveCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir2ClientActiveCircuitCellRatio:
         sigma: 1.0e+12
     Rend3ClientActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro3ClientActiveCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir3ClientActiveCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveCircuitCellRatio:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir2MultiHopClientActiveCircuitCellRatio:
         sigma: 1.0e+12
     Rend3MultiHopClientActiveCircuitCellRatio:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir3MultiHopClientActiveCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2ActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro2ActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2ActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3ActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro3ActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3ActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     MidActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
@@ -4672,79 +4240,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2ServiceActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3ServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro3ServiceActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     OriginActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     SingleHopActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
-    DirActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2ClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro2ClientActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir2ClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Rend3ClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro3ClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir3ClientActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveSuccessCircuitCellRatio:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
     EntryActiveSuccessCircuitCellRatio:
         sigma: 1.0e+12
@@ -4752,13 +4294,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2ActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3ActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     MidActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -4768,79 +4306,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     OriginActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     SingleHopActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    DirActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2ClientActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3ClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     EntryActiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -4848,13 +4360,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2InactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3InactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3InactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3InactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     MidInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -4864,79 +4372,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     OriginInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     SingleHopInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    DirInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2ClientInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3ClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveFailureCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
     EntryInactiveFailureCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -4944,13 +4426,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2ActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3ActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     MidActiveCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -4960,79 +4438,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     OriginActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     SingleHopActiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    DirActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2ClientActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3ClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveCircuitInboundCellCount:
         sigma: 1.0e+12
     EntryActiveCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -5040,13 +4492,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2InactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3InactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3InactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3InactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     MidInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -5056,79 +4504,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     OriginInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     SingleHopInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    DirInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2ClientInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3ClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
     EntryInactiveCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -5136,13 +4558,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2ActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3ActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     MidActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -5152,79 +4570,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     OriginActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     SingleHopActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    DirActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2ClientActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3ClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     EntryActiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -5232,13 +4624,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2InactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3InactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3InactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3InactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     MidInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -5248,79 +4636,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     OriginInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     SingleHopInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    DirInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2ClientInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3ClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3ClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveSuccessCircuitInboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
     EntryInactiveSuccessCircuitInboundCellCount:
         sigma: 1.0e+12
@@ -5328,13 +4690,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2ActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3ActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     MidActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5344,79 +4702,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     OriginActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     SingleHopActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    DirActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2ClientActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3ClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     EntryActiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5424,13 +4756,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2InactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3InactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3InactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3InactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     MidInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5440,79 +4768,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     OriginInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     SingleHopInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    DirInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2ClientInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3ClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveFailureCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
     EntryInactiveFailureCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5520,13 +4822,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2ActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3ActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     MidActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5536,79 +4834,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     OriginActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     SingleHopActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    DirActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2ClientActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3ClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     EntryActiveCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5616,13 +4888,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2InactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3InactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3InactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3InactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     MidInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5632,79 +4900,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     OriginInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     SingleHopInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    DirInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2ClientInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3ClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
     EntryInactiveCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5712,13 +4954,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2ActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3ActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     MidActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5728,79 +4966,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     OriginActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     SingleHopActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    DirActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2ClientActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3ClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     EntryActiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5808,13 +5020,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2InactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3InactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3InactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3InactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     MidInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5824,79 +5032,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3ServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ServiceInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     OriginInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     SingleHopInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    DirInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2ClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2ClientInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3ClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3ClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3ClientInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveSuccessCircuitOutboundCellCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
     EntryInactiveSuccessCircuitOutboundCellCount:
         sigma: 1.0e+12
@@ -5904,13 +5086,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2ActiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3ActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3ActiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3ActiveFailureCircuitCount:
         sigma: 1.0e+12
     MidActiveFailureCircuitCount:
         sigma: 1.0e+12
@@ -5920,79 +5098,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2ServiceActiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3ServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3ServiceActiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveFailureCircuitCount:
         sigma: 1.0e+12
     OriginActiveFailureCircuitCount:
         sigma: 1.0e+12
     SingleHopActiveFailureCircuitCount:
         sigma: 1.0e+12
-    DirActiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend2ClientActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2ClientActiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir2ClientActiveFailureCircuitCount:
         sigma: 1.0e+12
     Rend3ClientActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3ClientActiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir3ClientActiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveFailureCircuitCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveFailureCircuitCount:
         sigma: 1.0e+12
     EntryActiveFailureCircuitCount:
         sigma: 1.0e+12
@@ -6000,13 +5152,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2InactiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3InactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3InactiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3InactiveFailureCircuitCount:
         sigma: 1.0e+12
     MidInactiveFailureCircuitCount:
         sigma: 1.0e+12
@@ -6016,79 +5164,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3ServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3ServiceInactiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveFailureCircuitCount:
         sigma: 1.0e+12
     OriginInactiveFailureCircuitCount:
         sigma: 1.0e+12
     SingleHopInactiveFailureCircuitCount:
         sigma: 1.0e+12
-    DirInactiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend2ClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2ClientInactiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Rend3ClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3ClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir3ClientInactiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveFailureCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveFailureCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveFailureCircuitCount:
         sigma: 1.0e+12
     EntryInactiveFailureCircuitCount:
         sigma: 1.0e+12
@@ -6096,13 +5218,9 @@ counters:
         sigma: 1.0e+12
     Intro2ActiveCircuitCount:
         sigma: 1.0e+12
-    HSDir2ActiveCircuitCount:
-        sigma: 1.0e+12
     Rend3ActiveCircuitCount:
         sigma: 1.0e+12
     Intro3ActiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir3ActiveCircuitCount:
         sigma: 1.0e+12
     MidActiveCircuitCount:
         sigma: 1.0e+12
@@ -6112,91 +5230,61 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveCircuitCount:
         sigma: 1.0e+12
-    HSDir2ServiceActiveCircuitCount:
-        sigma: 1.0e+12
     Rend3ServiceActiveCircuitCount:
         sigma: 1.0e+12
     Intro3ServiceActiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveCircuitCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveCircuitCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveCircuitCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveCircuitCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveCircuitCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveCircuitCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveCircuitCount:
         sigma: 1.0e+12
     OriginActiveCircuitCount:
         sigma: 1.0e+12
     SingleHopActiveCircuitCount:
         sigma: 1.0e+12
-    DirActiveCircuitCount:
-        sigma: 1.0e+12
     Rend2ClientActiveCircuitCount:
         sigma: 1.0e+12
     Intro2ClientActiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir2ClientActiveCircuitCount:
         sigma: 1.0e+12
     Rend3ClientActiveCircuitCount:
         sigma: 1.0e+12
     Intro3ClientActiveCircuitCount:
         sigma: 1.0e+12
-    HSDir3ClientActiveCircuitCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveCircuitCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveCircuitCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveCircuitCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveCircuitCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveCircuitCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir2MultiHopClientActiveCircuitCount:
         sigma: 1.0e+12
     Rend3MultiHopClientActiveCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveCircuitCount:
         sigma: 1.0e+12
-    HSDir3MultiHopClientActiveCircuitCount:
-        sigma: 1.0e+12
     Rend2InactiveCircuitCount:
         sigma: 1.0e+12
     Intro2InactiveCircuitCount:
         sigma: 1.0e+12
-    HSDir2InactiveCircuitCount:
-        sigma: 1.0e+12
     Rend3InactiveCircuitCount:
         sigma: 1.0e+12
     Intro3InactiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir3InactiveCircuitCount:
         sigma: 1.0e+12
     MidInactiveCircuitCount:
         sigma: 1.0e+12
@@ -6206,91 +5294,61 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveCircuitCount:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveCircuitCount:
-        sigma: 1.0e+12
     Rend3ServiceInactiveCircuitCount:
         sigma: 1.0e+12
     Intro3ServiceInactiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveCircuitCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveCircuitCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveCircuitCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveCircuitCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveCircuitCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveCircuitCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveCircuitCount:
         sigma: 1.0e+12
     OriginInactiveCircuitCount:
         sigma: 1.0e+12
     SingleHopInactiveCircuitCount:
         sigma: 1.0e+12
-    DirInactiveCircuitCount:
-        sigma: 1.0e+12
     Rend2ClientInactiveCircuitCount:
         sigma: 1.0e+12
     Intro2ClientInactiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveCircuitCount:
         sigma: 1.0e+12
     Rend3ClientInactiveCircuitCount:
         sigma: 1.0e+12
     Intro3ClientInactiveCircuitCount:
         sigma: 1.0e+12
-    HSDir3ClientInactiveCircuitCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveCircuitCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveCircuitCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveCircuitCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveCircuitCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveCircuitCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveCircuitCount:
-        sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveCircuitCount:
         sigma: 1.0e+12
     Rend3MultiHopClientInactiveCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveCircuitCount:
         sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveCircuitCount:
-        sigma: 1.0e+12
     Rend2ActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2ActiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2ActiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3ActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3ActiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3ActiveSuccessCircuitCount:
         sigma: 1.0e+12
     MidActiveSuccessCircuitCount:
         sigma: 1.0e+12
@@ -6300,79 +5358,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2ServiceActiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3ServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3ServiceActiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3ServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceActiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceActiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceActiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceActiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceActiveSuccessCircuitCount:
         sigma: 1.0e+12
     OriginActiveSuccessCircuitCount:
         sigma: 1.0e+12
     SingleHopActiveSuccessCircuitCount:
         sigma: 1.0e+12
-    DirActiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend2ClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2ClientActiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir2ClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Rend3ClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3ClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir3ClientActiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientActiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientActiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientActiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopClientActiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientActiveSuccessCircuitCount:
         sigma: 1.0e+12
     EntryActiveSuccessCircuitCount:
         sigma: 1.0e+12
@@ -6380,13 +5412,9 @@ counters:
         sigma: 1.0e+12
     Intro2InactiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2InactiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3InactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3InactiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3InactiveSuccessCircuitCount:
         sigma: 1.0e+12
     MidInactiveSuccessCircuitCount:
         sigma: 1.0e+12
@@ -6396,79 +5424,53 @@ counters:
         sigma: 1.0e+12
     Intro2ServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2ServiceInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3ServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3ServiceInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3ServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Rend2SingleOnionServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2SingleOnionServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2SingleOnionServiceInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3SingleOnionServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3SingleOnionServiceInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3SingleOnionServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Rend2MultiHopServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopServiceInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopServiceInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopServiceInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     OriginInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     SingleHopInactiveSuccessCircuitCount:
         sigma: 1.0e+12
-    DirInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend2ClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2ClientInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir2ClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Rend3ClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3ClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir3ClientInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend2Tor2WebClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2Tor2WebClientInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir2Tor2WebClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Rend3Tor2WebClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3Tor2WebClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir3Tor2WebClientInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend2MultiHopClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro2MultiHopClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
-    HSDir2MultiHopClientInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
     Rend3MultiHopClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     Intro3MultiHopClientInactiveSuccessCircuitCount:
-        sigma: 1.0e+12
-    HSDir3MultiHopClientInactiveSuccessCircuitCount:
         sigma: 1.0e+12
     EntryInactiveSuccessCircuitCount:
         sigma: 1.0e+12

@@ -96,10 +96,6 @@ p2p_initial_stats_parameters = {\
 # initial statistics for basic data exploration (uses mostly extrainfo estimates but also some hard-to-estimate values from the P2P initial collection
 initial_stats_parameters = {\
     'ExitCircuitCount' : (sensitivity_circuits,
-        num_circuits_per_day * initial_epoch_days),
-    'ExitActiveCircuitCount' : (sensitivity_circuits,
-        0.5*num_circuits_per_day * initial_epoch_days),
-    'ExitInactiveCircuitCount' : (sensitivity_circuits,
         0.5*num_circuits_per_day * initial_epoch_days),
     'ExitInteractiveCircuitCount' : (sensitivity_interactive_circuits,
         (float(extrainfo_num_interactive_streams_per_day) / 2) * initial_epoch_days), # est 2 streams / interactive circuit
@@ -180,8 +176,7 @@ stats_parameters = {\
 
     ### exit statistics ###
     ## counts ##
-    'ExitActiveCircuitCount' : (sensitivity_circuits, num_active_circuits_per_day * epoch_days),
-    'ExitInactiveCircuitCount' : (sensitivity_circuits, num_inactive_circuits_per_day * epoch_days),
+    'ExitCircuitCount' : (sensitivity_circuits, num_active_circuits_per_day * epoch_days),
 # removing interactive stats due to low volume
 #    'ExitInteractiveCircuitCount' : (sensitivity_interactive_circuits,
 #        num_interactive_circuits_per_day * epoch_days),
@@ -209,9 +204,7 @@ stats_parameters = {\
     'ExitCircuitInterStreamCreationTime' : stream_histogram_parameters,
     'ExitCircuitOtherPortInterStreamCreationTime' : other_stream_histogram_parameters,
     'ExitCircuitWebInterStreamCreationTime' : web_stream_histogram_parameters,
-    'ExitCircuitLifeTime' : circuit_histogram_parameters,
-    'ExitActiveCircuitLifeTime' : (2*sensitivity_circuits, num_active_circuits_per_day * epoch_days),
-    'ExitInactiveCircuitLifeTime' : (2*sensitivity_circuits, num_inactive_circuits_per_day * epoch_days),
+    'ExitCircuitLifeTime' : (2*sensitivity_circuits, num_active_circuits_per_day * epoch_days),
     'ExitCircuitStreamHistogram' : circuit_histogram_parameters,
     'ExitCircuitOtherPortStreamHistogram' : (2 * sensitivity_other_circuits,
         num_other_circuits_per_day * epoch_days),
