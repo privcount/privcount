@@ -870,32 +870,22 @@ counters:
     # These connection histograms count the number of connections from the
     # same source IP address that overlap each connection that closes
     # Overlapping connections can be open, or marked for close.
-    Entry0RelayOnAddressConnectionOverlapHistogram:
+    EntryNoRelayOnAddressConnectionOverlapHistogram:
         bins:
         - [    0,    1]
         - [    1,    2]
         - [    2, .inf]
-    NonEntry0RelayOnAddressConnectionOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionOverlapHistogram:
         bins:
         - [    0,    1]
         - [    1,    2]
         - [    2, .inf]
-    Entry1RelayOnAddressConnectionOverlapHistogram:
+    EntryRelayOnAddressConnectionOverlapHistogram:
         bins:
         - [    0,    1]
         - [    1,    2]
         - [    2, .inf]
-    NonEntry1RelayOnAddressConnectionOverlapHistogram:
-        bins:
-        - [    0,    1]
-        - [    1,    2]
-        - [    2, .inf]
-    Entry2RelayOnAddressConnectionOverlapHistogram:
-        bins:
-        - [    0,    1]
-        - [    1,    2]
-        - [    2, .inf]
-    NonEntry2RelayOnAddressConnectionOverlapHistogram:
+    NonEntryRelayOnAddressConnectionOverlapHistogram:
         bins:
         - [    0,    1]
         - [    1,    2]
@@ -910,32 +900,22 @@ counters:
         - [    0,    1]
         - [    1,    2]
         - [    2, .inf]
-    Entry0RelayOnAddressConnectionLifeTime:
+    EntryNoRelayOnAddressConnectionLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry0RelayOnAddressConnectionLifeTime:
+    NonEntryNoRelayOnAddressConnectionLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry1RelayOnAddressConnectionLifeTime:
+    EntryRelayOnAddressConnectionLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry1RelayOnAddressConnectionLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    Entry2RelayOnAddressConnectionLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    NonEntry2RelayOnAddressConnectionLifeTime:
+    NonEntryRelayOnAddressConnectionLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
@@ -951,22 +931,16 @@ counters:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry0RelayOnAddressConnectionCount:
+    EntryNoRelayOnAddressConnectionCount:
         bins:
         - [-.inf, .inf]
-    NonEntry0RelayOnAddressConnectionCount:
+    NonEntryNoRelayOnAddressConnectionCount:
         bins:
         - [-.inf, .inf]
-    Entry1RelayOnAddressConnectionCount:
+    EntryRelayOnAddressConnectionCount:
         bins:
         - [-.inf, .inf]
-    NonEntry1RelayOnAddressConnectionCount:
-        bins:
-        - [-.inf, .inf]
-    Entry2RelayOnAddressConnectionCount:
-        bins:
-        - [-.inf, .inf]
-    NonEntry2RelayOnAddressConnectionCount:
+    NonEntryRelayOnAddressConnectionCount:
         bins:
         - [-.inf, .inf]
     # ENTRY - number of OR connections to clients
@@ -1751,32 +1725,22 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionInboundByteHistogram:
+    EntryRelayOnAddressConnectionInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -1791,32 +1755,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionOutboundByteHistogram:
+    EntryRelayOnAddressConnectionOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -1831,32 +1785,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionByteHistogram:
+    EntryNoRelayOnAddressConnectionByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionByteHistogram:
+    NonEntryNoRelayOnAddressConnectionByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionByteHistogram:
+    EntryRelayOnAddressConnectionByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionByteHistogram:
+    NonEntryRelayOnAddressConnectionByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -1871,22 +1815,16 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionInboundByteCount:
+    EntryNoRelayOnAddressConnectionInboundByteCount:
         bins:
         - [-.inf, .inf]
-    NonEntry0RelayOnAddressConnectionInboundByteCount:
+    NonEntryNoRelayOnAddressConnectionInboundByteCount:
         bins:
         - [-.inf, .inf]
-    Entry1RelayOnAddressConnectionInboundByteCount:
+    EntryRelayOnAddressConnectionInboundByteCount:
         bins:
         - [-.inf, .inf]
-    NonEntry1RelayOnAddressConnectionInboundByteCount:
-        bins:
-        - [-.inf, .inf]
-    Entry2RelayOnAddressConnectionInboundByteCount:
-        bins:
-        - [-.inf, .inf]
-    NonEntry2RelayOnAddressConnectionInboundByteCount:
+    NonEntryRelayOnAddressConnectionInboundByteCount:
         bins:
         - [-.inf, .inf]
     EntryConnectionInboundByteCount:
@@ -1895,22 +1833,16 @@ counters:
     NonEntryConnectionInboundByteCount:
         bins:
         - [-.inf, .inf]
-    Entry0RelayOnAddressConnectionOutboundByteCount:
+    EntryNoRelayOnAddressConnectionOutboundByteCount:
         bins:
         - [-.inf, .inf]
-    NonEntry0RelayOnAddressConnectionOutboundByteCount:
+    NonEntryNoRelayOnAddressConnectionOutboundByteCount:
         bins:
         - [-.inf, .inf]
-    Entry1RelayOnAddressConnectionOutboundByteCount:
+    EntryRelayOnAddressConnectionOutboundByteCount:
         bins:
         - [-.inf, .inf]
-    NonEntry1RelayOnAddressConnectionOutboundByteCount:
-        bins:
-        - [-.inf, .inf]
-    Entry2RelayOnAddressConnectionOutboundByteCount:
-        bins:
-        - [-.inf, .inf]
-    NonEntry2RelayOnAddressConnectionOutboundByteCount:
+    NonEntryRelayOnAddressConnectionOutboundByteCount:
         bins:
         - [-.inf, .inf]
     EntryConnectionOutboundByteCount:
@@ -1919,22 +1851,16 @@ counters:
     NonEntryConnectionOutboundByteCount:
         bins:
         - [-.inf, .inf]
-    Entry0RelayOnAddressConnectionByteCount:
+    EntryNoRelayOnAddressConnectionByteCount:
         bins:
         - [-.inf, .inf]
-    NonEntry0RelayOnAddressConnectionByteCount:
+    NonEntryNoRelayOnAddressConnectionByteCount:
         bins:
         - [-.inf, .inf]
-    Entry1RelayOnAddressConnectionByteCount:
+    EntryRelayOnAddressConnectionByteCount:
         bins:
         - [-.inf, .inf]
-    NonEntry1RelayOnAddressConnectionByteCount:
-        bins:
-        - [-.inf, .inf]
-    Entry2RelayOnAddressConnectionByteCount:
-        bins:
-        - [-.inf, .inf]
-    NonEntry2RelayOnAddressConnectionByteCount:
+    NonEntryRelayOnAddressConnectionByteCount:
         bins:
         - [-.inf, .inf]
     EntryConnectionByteCount:
@@ -1943,32 +1869,22 @@ counters:
     NonEntryConnectionByteCount:
         bins:
         - [-.inf, .inf]
-    Entry0RelayOnAddressConnectionInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -1983,32 +1899,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -2023,32 +1929,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionCircuitHistogram:
+    EntryRelayOnAddressConnectionCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -2063,22 +1959,16 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionInboundCircuitCount:
+    EntryNoRelayOnAddressConnectionInboundCircuitCount:
         bins:
         - [-.inf, .inf]
-    NonEntry0RelayOnAddressConnectionInboundCircuitCount:
+    NonEntryNoRelayOnAddressConnectionInboundCircuitCount:
         bins:
         - [-.inf, .inf]
-    Entry1RelayOnAddressConnectionInboundCircuitCount:
+    EntryRelayOnAddressConnectionInboundCircuitCount:
         bins:
         - [-.inf, .inf]
-    NonEntry1RelayOnAddressConnectionInboundCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    Entry2RelayOnAddressConnectionInboundCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    NonEntry2RelayOnAddressConnectionInboundCircuitCount:
+    NonEntryRelayOnAddressConnectionInboundCircuitCount:
         bins:
         - [-.inf, .inf]
     EntryConnectionInboundCircuitCount:
@@ -2087,22 +1977,16 @@ counters:
     NonEntryConnectionInboundCircuitCount:
         bins:
         - [-.inf, .inf]
-    Entry0RelayOnAddressConnectionOutboundCircuitCount:
+    EntryNoRelayOnAddressConnectionOutboundCircuitCount:
         bins:
         - [-.inf, .inf]
-    NonEntry0RelayOnAddressConnectionOutboundCircuitCount:
+    NonEntryNoRelayOnAddressConnectionOutboundCircuitCount:
         bins:
         - [-.inf, .inf]
-    Entry1RelayOnAddressConnectionOutboundCircuitCount:
+    EntryRelayOnAddressConnectionOutboundCircuitCount:
         bins:
         - [-.inf, .inf]
-    NonEntry1RelayOnAddressConnectionOutboundCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    Entry2RelayOnAddressConnectionOutboundCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    NonEntry2RelayOnAddressConnectionOutboundCircuitCount:
+    NonEntryRelayOnAddressConnectionOutboundCircuitCount:
         bins:
         - [-.inf, .inf]
     EntryConnectionOutboundCircuitCount:
@@ -2111,22 +1995,16 @@ counters:
     NonEntryConnectionOutboundCircuitCount:
         bins:
         - [-.inf, .inf]
-    Entry0RelayOnAddressConnectionCircuitCount:
+    EntryNoRelayOnAddressConnectionCircuitCount:
         bins:
         - [-.inf, .inf]
-    NonEntry0RelayOnAddressConnectionCircuitCount:
+    NonEntryNoRelayOnAddressConnectionCircuitCount:
         bins:
         - [-.inf, .inf]
-    Entry1RelayOnAddressConnectionCircuitCount:
+    EntryRelayOnAddressConnectionCircuitCount:
         bins:
         - [-.inf, .inf]
-    NonEntry1RelayOnAddressConnectionCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    Entry2RelayOnAddressConnectionCircuitCount:
-        bins:
-        - [-.inf, .inf]
-    NonEntry2RelayOnAddressConnectionCircuitCount:
+    NonEntryRelayOnAddressConnectionCircuitCount:
         bins:
         - [-.inf, .inf]
     EntryConnectionCircuitCount:
@@ -2135,32 +2013,22 @@ counters:
     NonEntryConnectionCircuitCount:
         bins:
         - [-.inf, .inf]
-    Entry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+    EntryNoRelayOnAddressConnectionCountryNoMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry1RelayOnAddressConnectionCountryNoMatchLifeTime:
+    EntryRelayOnAddressConnectionCountryNoMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryNoMatchLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    Entry2RelayOnAddressConnectionCountryNoMatchLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryNoMatchLifeTime:
+    NonEntryRelayOnAddressConnectionCountryNoMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
@@ -2175,32 +2043,22 @@ counters:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchLifeTime:
+    EntryNoRelayOnAddressConnectionCountryMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchLifeTime:
+    NonEntryNoRelayOnAddressConnectionCountryMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchLifeTime:
+    EntryRelayOnAddressConnectionCountryMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchLifeTime:
+    NonEntryRelayOnAddressConnectionCountryMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
@@ -2215,32 +2073,22 @@ counters:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -2255,32 +2103,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+    EntryRelayOnAddressConnectionCountryMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -2295,32 +2133,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -2335,32 +2163,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+    EntryRelayOnAddressConnectionCountryMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -2375,32 +2193,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -2415,32 +2223,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchByteHistogram:
+    EntryRelayOnAddressConnectionCountryMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -2455,32 +2253,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -2495,32 +2283,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
+    EntryRelayOnAddressConnectionCountryMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -2535,32 +2313,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -2575,32 +2343,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -2615,32 +2373,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -2655,32 +2403,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -2695,32 +2433,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -2735,32 +2463,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -2775,27 +2493,19 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
+    EntryRelayOnAddressConnectionCountryMatchInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -2807,27 +2517,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+    EntryRelayOnAddressConnectionCountryMatchOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -2839,27 +2541,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchByteCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchByteCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchByteCountList:
+    EntryRelayOnAddressConnectionCountryMatchByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchByteCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -2871,27 +2565,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchCountList:
+    EntryRelayOnAddressConnectionCountryMatchCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -2903,27 +2589,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchInboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchInboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+    EntryRelayOnAddressConnectionCountryMatchInboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchInboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -2935,27 +2613,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+    EntryRelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -2967,27 +2637,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionCountryMatchCircuitCountList:
+    EntryRelayOnAddressConnectionCountryMatchCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionCountryMatchCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionCountryMatchCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionCountryMatchCircuitCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -3227,32 +2889,22 @@ counters:
     ExitHostnameSubsequentStreamCount:
         bins:
         - [-.inf, .inf]
-    Entry0RelayOnAddressConnectionASNoMatchLifeTime:
+    EntryNoRelayOnAddressConnectionASNoMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry0RelayOnAddressConnectionASNoMatchLifeTime:
+    NonEntryNoRelayOnAddressConnectionASNoMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry1RelayOnAddressConnectionASNoMatchLifeTime:
+    EntryRelayOnAddressConnectionASNoMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry1RelayOnAddressConnectionASNoMatchLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    Entry2RelayOnAddressConnectionASNoMatchLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    NonEntry2RelayOnAddressConnectionASNoMatchLifeTime:
+    NonEntryRelayOnAddressConnectionASNoMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
@@ -3267,32 +2919,22 @@ counters:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry0RelayOnAddressConnectionASMatchLifeTime:
+    EntryNoRelayOnAddressConnectionASMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchLifeTime:
+    NonEntryNoRelayOnAddressConnectionASMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry1RelayOnAddressConnectionASMatchLifeTime:
+    EntryRelayOnAddressConnectionASMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    Entry2RelayOnAddressConnectionASMatchLifeTime:
-        bins:
-        - [0.0, 120.0]
-        - [120.0, 480.0]
-        - [480.0, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchLifeTime:
+    NonEntryRelayOnAddressConnectionASMatchLifeTime:
         bins:
         - [0.0, 120.0]
         - [120.0, 480.0]
@@ -3307,32 +2949,22 @@ counters:
         - [0.0, 120.0]
         - [120.0, 480.0]
         - [480.0, .inf]
-    Entry0RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+    EntryRelayOnAddressConnectionASNoMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionASNoMatchInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionASNoMatchInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -3347,32 +2979,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionASMatchInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionASMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionASMatchInboundByteHistogram:
+    EntryRelayOnAddressConnectionASMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionASMatchInboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionASMatchInboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -3387,32 +3009,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+    EntryRelayOnAddressConnectionASNoMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -3427,32 +3039,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionASMatchOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionASMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionASMatchOutboundByteHistogram:
+    EntryRelayOnAddressConnectionASMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionASMatchOutboundByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionASMatchOutboundByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -3467,32 +3069,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionASNoMatchByteHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionASNoMatchByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionASNoMatchByteHistogram:
+    EntryRelayOnAddressConnectionASNoMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionASNoMatchByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionASNoMatchByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionASNoMatchByteHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -3507,32 +3099,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionASMatchByteHistogram:
+    EntryNoRelayOnAddressConnectionASMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionASMatchByteHistogram:
+    EntryRelayOnAddressConnectionASMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionASMatchByteHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchByteHistogram:
+    NonEntryRelayOnAddressConnectionASMatchByteHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -3547,32 +3129,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionASNoMatchOverlapHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionASNoMatchOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionASNoMatchOverlapHistogram:
+    EntryRelayOnAddressConnectionASNoMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionASNoMatchOverlapHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionASNoMatchOverlapHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionASNoMatchOverlapHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -3587,32 +3159,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionASMatchOverlapHistogram:
+    EntryNoRelayOnAddressConnectionASMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry1RelayOnAddressConnectionASMatchOverlapHistogram:
+    EntryRelayOnAddressConnectionASMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchOverlapHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    Entry2RelayOnAddressConnectionASMatchOverlapHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 32768.0]
-        - [32768.0, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchOverlapHistogram:
+    NonEntryRelayOnAddressConnectionASMatchOverlapHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 32768.0]
@@ -3627,32 +3189,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 32768.0]
         - [32768.0, .inf]
-    Entry0RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -3667,32 +3219,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionASMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionASMatchInboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASMatchInboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -3707,32 +3249,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -3747,32 +3279,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionASMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASMatchOutboundCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -3787,32 +3309,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionASNoMatchCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionASNoMatchCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionASNoMatchCircuitHistogram:
+    EntryRelayOnAddressConnectionASNoMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionASNoMatchCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionASNoMatchCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionASNoMatchCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -3827,32 +3339,22 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionASMatchCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry1RelayOnAddressConnectionASMatchCircuitHistogram:
+    EntryRelayOnAddressConnectionASMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    Entry2RelayOnAddressConnectionASMatchCircuitHistogram:
-        bins:
-        - [0.0, 1.0]
-        - [1.0, 2.0]
-        - [2.0, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASMatchCircuitHistogram:
         bins:
         - [0.0, 1.0]
         - [1.0, 2.0]
@@ -3867,27 +3369,19 @@ counters:
         - [0.0, 1.0]
         - [1.0, 2.0]
         - [2.0, .inf]
-    Entry0RelayOnAddressConnectionASMatchInboundByteCountList:
+    EntryNoRelayOnAddressConnectionASMatchInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchInboundByteCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionASMatchInboundByteCountList:
+    EntryRelayOnAddressConnectionASMatchInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchInboundByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionASMatchInboundByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchInboundByteCountList:
+    NonEntryRelayOnAddressConnectionASMatchInboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -3899,27 +3393,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionASMatchOutboundByteCountList:
+    EntryNoRelayOnAddressConnectionASMatchOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchOutboundByteCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionASMatchOutboundByteCountList:
+    EntryRelayOnAddressConnectionASMatchOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchOutboundByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionASMatchOutboundByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchOutboundByteCountList:
+    NonEntryRelayOnAddressConnectionASMatchOutboundByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -3931,27 +3417,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionASMatchByteCountList:
+    EntryNoRelayOnAddressConnectionASMatchByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchByteCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionASMatchByteCountList:
+    EntryRelayOnAddressConnectionASMatchByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionASMatchByteCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchByteCountList:
+    NonEntryRelayOnAddressConnectionASMatchByteCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -3963,27 +3441,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionASMatchCountList:
+    EntryNoRelayOnAddressConnectionASMatchCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionASMatchCountList:
+    EntryRelayOnAddressConnectionASMatchCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionASMatchCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchCountList:
+    NonEntryRelayOnAddressConnectionASMatchCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -3995,27 +3465,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionASMatchInboundCircuitCountList:
+    EntryNoRelayOnAddressConnectionASMatchInboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchInboundCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchInboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionASMatchInboundCircuitCountList:
+    EntryRelayOnAddressConnectionASMatchInboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchInboundCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionASMatchInboundCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchInboundCircuitCountList:
+    NonEntryRelayOnAddressConnectionASMatchInboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -4027,27 +3489,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+    EntryNoRelayOnAddressConnectionASMatchOutboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchOutboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+    EntryRelayOnAddressConnectionASMatchOutboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchOutboundCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionASMatchOutboundCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+    NonEntryRelayOnAddressConnectionASMatchOutboundCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
@@ -4059,27 +3513,19 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry0RelayOnAddressConnectionASMatchCircuitCountList:
+    EntryNoRelayOnAddressConnectionASMatchCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry0RelayOnAddressConnectionASMatchCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    Entry1RelayOnAddressConnectionASMatchCircuitCountList:
+    EntryRelayOnAddressConnectionASMatchCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]
-    NonEntry1RelayOnAddressConnectionASMatchCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    Entry2RelayOnAddressConnectionASMatchCircuitCountList:
-        bins:
-        - [0, 1]
-        - [1, .inf]
-    NonEntry2RelayOnAddressConnectionASMatchCircuitCountList:
+    NonEntryRelayOnAddressConnectionASMatchCircuitCountList:
         bins:
         - [0, 1]
         - [1, .inf]

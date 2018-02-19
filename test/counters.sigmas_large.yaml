@@ -362,49 +362,37 @@ counters:
         sigma: 1.0e+12
     Rend2MultiHopClientCircuitCount:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionOverlapHistogram:
+    EntryNoRelayOnAddressConnectionOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionOverlapHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionOverlapHistogram:
+    EntryRelayOnAddressConnectionOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionOverlapHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionOverlapHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionOverlapHistogram:
+    NonEntryRelayOnAddressConnectionOverlapHistogram:
         sigma: 1.0e+12
     EntryConnectionOverlapHistogram:
         sigma: 1.0e+12
     NonEntryConnectionOverlapHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionLifeTime:
+    EntryNoRelayOnAddressConnectionLifeTime:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionLifeTime:
+    NonEntryNoRelayOnAddressConnectionLifeTime:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionLifeTime:
+    EntryRelayOnAddressConnectionLifeTime:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionLifeTime:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionLifeTime:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionLifeTime:
+    NonEntryRelayOnAddressConnectionLifeTime:
         sigma: 1.0e+12
     EntryConnectionLifeTime:
         sigma: 1.0e+12
     NonEntryConnectionLifeTime:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCount:
+    EntryNoRelayOnAddressConnectionCount:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCount:
+    NonEntryNoRelayOnAddressConnectionCount:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCount:
+    EntryRelayOnAddressConnectionCount:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCount:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCount:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCount:
+    NonEntryRelayOnAddressConnectionCount:
         sigma: 1.0e+12
     EntryConnectionCount:
         sigma: 1.0e+12
@@ -776,561 +764,421 @@ counters:
         sigma: 1.0e+12
     ExitDomainSuffixMatchWebInitialStreamCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionInboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionInboundByteHistogram:
+    EntryRelayOnAddressConnectionInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionInboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionInboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionInboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionInboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionInboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionOutboundByteHistogram:
+    EntryRelayOnAddressConnectionOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionOutboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionOutboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionOutboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionOutboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionByteHistogram:
+    EntryNoRelayOnAddressConnectionByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionByteHistogram:
+    NonEntryNoRelayOnAddressConnectionByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionByteHistogram:
+    EntryRelayOnAddressConnectionByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionByteHistogram:
+    NonEntryRelayOnAddressConnectionByteHistogram:
         sigma: 1.0e+12
     EntryConnectionByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionInboundByteCount:
+    EntryNoRelayOnAddressConnectionInboundByteCount:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionInboundByteCount:
+    NonEntryNoRelayOnAddressConnectionInboundByteCount:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionInboundByteCount:
+    EntryRelayOnAddressConnectionInboundByteCount:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionInboundByteCount:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionInboundByteCount:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionInboundByteCount:
+    NonEntryRelayOnAddressConnectionInboundByteCount:
         sigma: 1.0e+12
     EntryConnectionInboundByteCount:
         sigma: 1.0e+12
     NonEntryConnectionInboundByteCount:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionOutboundByteCount:
+    EntryNoRelayOnAddressConnectionOutboundByteCount:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionOutboundByteCount:
+    NonEntryNoRelayOnAddressConnectionOutboundByteCount:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionOutboundByteCount:
+    EntryRelayOnAddressConnectionOutboundByteCount:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionOutboundByteCount:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionOutboundByteCount:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionOutboundByteCount:
+    NonEntryRelayOnAddressConnectionOutboundByteCount:
         sigma: 1.0e+12
     EntryConnectionOutboundByteCount:
         sigma: 1.0e+12
     NonEntryConnectionOutboundByteCount:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionByteCount:
+    EntryNoRelayOnAddressConnectionByteCount:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionByteCount:
+    NonEntryNoRelayOnAddressConnectionByteCount:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionByteCount:
+    EntryRelayOnAddressConnectionByteCount:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionByteCount:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionByteCount:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionByteCount:
+    NonEntryRelayOnAddressConnectionByteCount:
         sigma: 1.0e+12
     EntryConnectionByteCount:
         sigma: 1.0e+12
     NonEntryConnectionByteCount:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionInboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionInboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionInboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionInboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionOutboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionOutboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCircuitHistogram:
+    EntryRelayOnAddressConnectionCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionInboundCircuitCount:
+    EntryNoRelayOnAddressConnectionInboundCircuitCount:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionInboundCircuitCount:
+    NonEntryNoRelayOnAddressConnectionInboundCircuitCount:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionInboundCircuitCount:
+    EntryRelayOnAddressConnectionInboundCircuitCount:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionInboundCircuitCount:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionInboundCircuitCount:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionInboundCircuitCount:
+    NonEntryRelayOnAddressConnectionInboundCircuitCount:
         sigma: 1.0e+12
     EntryConnectionInboundCircuitCount:
         sigma: 1.0e+12
     NonEntryConnectionInboundCircuitCount:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionOutboundCircuitCount:
+    EntryNoRelayOnAddressConnectionOutboundCircuitCount:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionOutboundCircuitCount:
+    NonEntryNoRelayOnAddressConnectionOutboundCircuitCount:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionOutboundCircuitCount:
+    EntryRelayOnAddressConnectionOutboundCircuitCount:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionOutboundCircuitCount:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionOutboundCircuitCount:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionOutboundCircuitCount:
+    NonEntryRelayOnAddressConnectionOutboundCircuitCount:
         sigma: 1.0e+12
     EntryConnectionOutboundCircuitCount:
         sigma: 1.0e+12
     NonEntryConnectionOutboundCircuitCount:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCircuitCount:
+    EntryNoRelayOnAddressConnectionCircuitCount:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCircuitCount:
+    NonEntryNoRelayOnAddressConnectionCircuitCount:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCircuitCount:
+    EntryRelayOnAddressConnectionCircuitCount:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCircuitCount:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCircuitCount:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCircuitCount:
+    NonEntryRelayOnAddressConnectionCircuitCount:
         sigma: 1.0e+12
     EntryConnectionCircuitCount:
         sigma: 1.0e+12
     NonEntryConnectionCircuitCount:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+    EntryNoRelayOnAddressConnectionCountryNoMatchLifeTime:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryNoMatchLifeTime:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchLifeTime:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryNoMatchLifeTime:
+    EntryRelayOnAddressConnectionCountryNoMatchLifeTime:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryNoMatchLifeTime:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryNoMatchLifeTime:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryNoMatchLifeTime:
+    NonEntryRelayOnAddressConnectionCountryNoMatchLifeTime:
         sigma: 1.0e+12
     EntryConnectionCountryNoMatchLifeTime:
         sigma: 1.0e+12
     NonEntryConnectionCountryNoMatchLifeTime:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchLifeTime:
+    EntryNoRelayOnAddressConnectionCountryMatchLifeTime:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchLifeTime:
+    NonEntryNoRelayOnAddressConnectionCountryMatchLifeTime:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchLifeTime:
+    EntryRelayOnAddressConnectionCountryMatchLifeTime:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchLifeTime:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchLifeTime:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchLifeTime:
+    NonEntryRelayOnAddressConnectionCountryMatchLifeTime:
         sigma: 1.0e+12
     EntryConnectionCountryMatchLifeTime:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchLifeTime:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchInboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryNoMatchInboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryNoMatchInboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchInboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+    EntryRelayOnAddressConnectionCountryMatchInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchInboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryMatchInboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchInboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+    EntryRelayOnAddressConnectionCountryMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchOutboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryMatchOutboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryNoMatchByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryNoMatchByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryNoMatchByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchByteHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryNoMatchByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryNoMatchByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchByteHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchByteHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchByteHistogram:
+    EntryRelayOnAddressConnectionCountryMatchByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchByteHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchByteHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryMatchByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchOverlapHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryNoMatchOverlapHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchOverlapHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryNoMatchOverlapHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryNoMatchOverlapHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOverlapHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
+    EntryRelayOnAddressConnectionCountryMatchOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchOverlapHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchOverlapHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchOverlapHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryMatchOverlapHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchOverlapHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchInboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryMatchInboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryNoMatchCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryNoMatchCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryNoMatchCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryNoMatchCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryNoMatchCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryNoMatchCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryNoMatchCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+    EntryNoRelayOnAddressConnectionCountryMatchCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionCountryMatchCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
+    EntryRelayOnAddressConnectionCountryMatchCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchCircuitHistogram:
+    NonEntryRelayOnAddressConnectionCountryMatchCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionCountryMatchCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchInboundByteCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchInboundByteCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchInboundByteCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
+    EntryRelayOnAddressConnectionCountryMatchInboundByteCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchInboundByteCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchInboundByteCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchInboundByteCountList:
         sigma: 1.0e+12
     EntryConnectionCountryMatchInboundByteCountList:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchInboundByteCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchOutboundByteCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOutboundByteCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+    EntryRelayOnAddressConnectionCountryMatchOutboundByteCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchOutboundByteCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchOutboundByteCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchOutboundByteCountList:
         sigma: 1.0e+12
     EntryConnectionCountryMatchOutboundByteCountList:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchOutboundByteCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchByteCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchByteCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchByteCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchByteCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchByteCountList:
+    EntryRelayOnAddressConnectionCountryMatchByteCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchByteCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchByteCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchByteCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchByteCountList:
         sigma: 1.0e+12
     EntryConnectionCountryMatchByteCountList:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchByteCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchCountList:
+    EntryRelayOnAddressConnectionCountryMatchCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchCountList:
         sigma: 1.0e+12
     EntryConnectionCountryMatchCountList:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchInboundCircuitCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchInboundCircuitCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+    EntryRelayOnAddressConnectionCountryMatchInboundCircuitCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchInboundCircuitCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchInboundCircuitCountList:
         sigma: 1.0e+12
     EntryConnectionCountryMatchInboundCircuitCountList:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchInboundCircuitCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+    EntryRelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchOutboundCircuitCountList:
         sigma: 1.0e+12
     EntryConnectionCountryMatchOutboundCircuitCountList:
         sigma: 1.0e+12
     NonEntryConnectionCountryMatchOutboundCircuitCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+    EntryNoRelayOnAddressConnectionCountryMatchCircuitCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionCountryMatchCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionCountryMatchCircuitCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionCountryMatchCircuitCountList:
+    EntryRelayOnAddressConnectionCountryMatchCircuitCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionCountryMatchCircuitCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionCountryMatchCircuitCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionCountryMatchCircuitCountList:
+    NonEntryRelayOnAddressConnectionCountryMatchCircuitCountList:
         sigma: 1.0e+12
     EntryConnectionCountryMatchCircuitCountList:
         sigma: 1.0e+12
@@ -1444,369 +1292,277 @@ counters:
         sigma: 1.0e+12
     ExitHostnameSubsequentStreamCount:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchLifeTime:
+    EntryNoRelayOnAddressConnectionASMatchLifeTime:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchLifeTime:
+    NonEntryNoRelayOnAddressConnectionASMatchLifeTime:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchLifeTime:
+    EntryRelayOnAddressConnectionASMatchLifeTime:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchLifeTime:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchLifeTime:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchLifeTime:
+    NonEntryRelayOnAddressConnectionASMatchLifeTime:
         sigma: 1.0e+12
     EntryConnectionASMatchLifeTime:
         sigma: 1.0e+12
     NonEntryConnectionASMatchLifeTime:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASNoMatchLifeTime:
+    EntryNoRelayOnAddressConnectionASNoMatchLifeTime:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASNoMatchLifeTime:
+    NonEntryNoRelayOnAddressConnectionASNoMatchLifeTime:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASNoMatchLifeTime:
+    EntryRelayOnAddressConnectionASNoMatchLifeTime:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASNoMatchLifeTime:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASNoMatchLifeTime:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASNoMatchLifeTime:
+    NonEntryRelayOnAddressConnectionASNoMatchLifeTime:
         sigma: 1.0e+12
     EntryConnectionASNoMatchLifeTime:
         sigma: 1.0e+12
     NonEntryConnectionASNoMatchLifeTime:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionASMatchInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchInboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchInboundByteHistogram:
+    EntryRelayOnAddressConnectionASMatchInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchInboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchInboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionASMatchInboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionASMatchInboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASMatchInboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchInboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+    EntryRelayOnAddressConnectionASNoMatchInboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASNoMatchInboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASNoMatchInboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASNoMatchInboundByteHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchInboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionASNoMatchInboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASNoMatchInboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionASMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchOutboundByteHistogram:
+    EntryRelayOnAddressConnectionASMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchOutboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchOutboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionASMatchOutboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionASMatchOutboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+    EntryRelayOnAddressConnectionASNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASNoMatchOutboundByteHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
     EntryConnectionASNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASNoMatchOutboundByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchByteHistogram:
+    EntryNoRelayOnAddressConnectionASMatchByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchByteHistogram:
+    EntryRelayOnAddressConnectionASMatchByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchByteHistogram:
+    NonEntryRelayOnAddressConnectionASMatchByteHistogram:
         sigma: 1.0e+12
     EntryConnectionASMatchByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASMatchByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASNoMatchByteHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchByteHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASNoMatchByteHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchByteHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASNoMatchByteHistogram:
+    EntryRelayOnAddressConnectionASNoMatchByteHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASNoMatchByteHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASNoMatchByteHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASNoMatchByteHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchByteHistogram:
         sigma: 1.0e+12
     EntryConnectionASNoMatchByteHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASNoMatchByteHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchOverlapHistogram:
+    EntryNoRelayOnAddressConnectionASMatchOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchOverlapHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchOverlapHistogram:
+    EntryRelayOnAddressConnectionASMatchOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchOverlapHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchOverlapHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchOverlapHistogram:
+    NonEntryRelayOnAddressConnectionASMatchOverlapHistogram:
         sigma: 1.0e+12
     EntryConnectionASMatchOverlapHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASMatchOverlapHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASNoMatchOverlapHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASNoMatchOverlapHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchOverlapHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASNoMatchOverlapHistogram:
+    EntryRelayOnAddressConnectionASNoMatchOverlapHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASNoMatchOverlapHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASNoMatchOverlapHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASNoMatchOverlapHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchOverlapHistogram:
         sigma: 1.0e+12
     EntryConnectionASNoMatchOverlapHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASNoMatchOverlapHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionASMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchInboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchInboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASMatchInboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionASMatchInboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+    EntryRelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionASNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASNoMatchInboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionASMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionASMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+    EntryRelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionASNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASNoMatchOutboundCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASMatchCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASMatchCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchCircuitHistogram:
+    EntryRelayOnAddressConnectionASMatchCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASMatchCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionASMatchCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASMatchCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASNoMatchCircuitHistogram:
+    EntryNoRelayOnAddressConnectionASNoMatchCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASNoMatchCircuitHistogram:
+    NonEntryNoRelayOnAddressConnectionASNoMatchCircuitHistogram:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASNoMatchCircuitHistogram:
+    EntryRelayOnAddressConnectionASNoMatchCircuitHistogram:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASNoMatchCircuitHistogram:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASNoMatchCircuitHistogram:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASNoMatchCircuitHistogram:
+    NonEntryRelayOnAddressConnectionASNoMatchCircuitHistogram:
         sigma: 1.0e+12
     EntryConnectionASNoMatchCircuitHistogram:
         sigma: 1.0e+12
     NonEntryConnectionASNoMatchCircuitHistogram:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchInboundByteCountList:
+    EntryNoRelayOnAddressConnectionASMatchInboundByteCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchInboundByteCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchInboundByteCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchInboundByteCountList:
+    EntryRelayOnAddressConnectionASMatchInboundByteCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchInboundByteCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchInboundByteCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchInboundByteCountList:
+    NonEntryRelayOnAddressConnectionASMatchInboundByteCountList:
         sigma: 1.0e+12
     EntryConnectionASMatchInboundByteCountList:
         sigma: 1.0e+12
     NonEntryConnectionASMatchInboundByteCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchOutboundByteCountList:
+    EntryNoRelayOnAddressConnectionASMatchOutboundByteCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchOutboundByteCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchOutboundByteCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchOutboundByteCountList:
+    EntryRelayOnAddressConnectionASMatchOutboundByteCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchOutboundByteCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchOutboundByteCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchOutboundByteCountList:
+    NonEntryRelayOnAddressConnectionASMatchOutboundByteCountList:
         sigma: 1.0e+12
     EntryConnectionASMatchOutboundByteCountList:
         sigma: 1.0e+12
     NonEntryConnectionASMatchOutboundByteCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchByteCountList:
+    EntryNoRelayOnAddressConnectionASMatchByteCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchByteCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchByteCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchByteCountList:
+    EntryRelayOnAddressConnectionASMatchByteCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchByteCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchByteCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchByteCountList:
+    NonEntryRelayOnAddressConnectionASMatchByteCountList:
         sigma: 1.0e+12
     EntryConnectionASMatchByteCountList:
         sigma: 1.0e+12
     NonEntryConnectionASMatchByteCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchCountList:
+    EntryNoRelayOnAddressConnectionASMatchCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchCountList:
+    EntryRelayOnAddressConnectionASMatchCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchCountList:
+    NonEntryRelayOnAddressConnectionASMatchCountList:
         sigma: 1.0e+12
     EntryConnectionASMatchCountList:
         sigma: 1.0e+12
     NonEntryConnectionASMatchCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchInboundCircuitCountList:
+    EntryNoRelayOnAddressConnectionASMatchInboundCircuitCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchInboundCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchInboundCircuitCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchInboundCircuitCountList:
+    EntryRelayOnAddressConnectionASMatchInboundCircuitCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchInboundCircuitCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchInboundCircuitCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchInboundCircuitCountList:
+    NonEntryRelayOnAddressConnectionASMatchInboundCircuitCountList:
         sigma: 1.0e+12
     EntryConnectionASMatchInboundCircuitCountList:
         sigma: 1.0e+12
     NonEntryConnectionASMatchInboundCircuitCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+    EntryNoRelayOnAddressConnectionASMatchOutboundCircuitCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchOutboundCircuitCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+    EntryRelayOnAddressConnectionASMatchOutboundCircuitCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchOutboundCircuitCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchOutboundCircuitCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchOutboundCircuitCountList:
+    NonEntryRelayOnAddressConnectionASMatchOutboundCircuitCountList:
         sigma: 1.0e+12
     EntryConnectionASMatchOutboundCircuitCountList:
         sigma: 1.0e+12
     NonEntryConnectionASMatchOutboundCircuitCountList:
         sigma: 1.0e+12
-    Entry0RelayOnAddressConnectionASMatchCircuitCountList:
+    EntryNoRelayOnAddressConnectionASMatchCircuitCountList:
         sigma: 1.0e+12
-    NonEntry0RelayOnAddressConnectionASMatchCircuitCountList:
+    NonEntryNoRelayOnAddressConnectionASMatchCircuitCountList:
         sigma: 1.0e+12
-    Entry1RelayOnAddressConnectionASMatchCircuitCountList:
+    EntryRelayOnAddressConnectionASMatchCircuitCountList:
         sigma: 1.0e+12
-    NonEntry1RelayOnAddressConnectionASMatchCircuitCountList:
-        sigma: 1.0e+12
-    Entry2RelayOnAddressConnectionASMatchCircuitCountList:
-        sigma: 1.0e+12
-    NonEntry2RelayOnAddressConnectionASMatchCircuitCountList:
+    NonEntryRelayOnAddressConnectionASMatchCircuitCountList:
         sigma: 1.0e+12
     EntryConnectionASMatchCircuitCountList:
         sigma: 1.0e+12
