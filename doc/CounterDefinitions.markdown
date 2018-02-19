@@ -15,11 +15,16 @@ This section describes the types of counters that are collected.
 ### Count
 
 The number of Connections, Circuits, Streams, Cells, Bytes, or descriptor
-Stores seen by the relay.
+Stores or Fetches seen by the relay.
 
 Some overheads are excluded:
 * Streams with zero (total read and write) or negative byte counts are ignored.
 * Cell counts are not collected on Inactive Circuits.
+
+### Histogram
+
+The number of Connections, Circuits, Streams, Cells, or Bytes seen as part of some
+larger event by the relay.
 
 ### CountList
 
@@ -104,7 +109,11 @@ that one or more Share Keepers or Data Collectors failed to provide results.
 
 This section describes how some counters are split or filtered.
 
-### Entry/NonEntry/Exit/HSDir{2,3}
+### Relay Position
+
+Connections: Entry/NonEntry
+Circuits and Streams: Origin/Entry/Mid/End/SingleHop/Exit/Dir/HSDir/Intro/Rend
+HSDir, Intro, and Rend can also be onion service version 2 or 3.
 
 This counter is only collected when the relay is in this position in the
 Connection or Circuit.
