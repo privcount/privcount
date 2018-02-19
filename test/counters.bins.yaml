@@ -11298,3 +11298,6408 @@ counters:
     EntryInactiveSuccessCircuitCount:
         bins:
         - [-.inf, .inf]
+    Rend2CircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2CircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2CircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3CircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3CircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3CircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    MidCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EndCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2FailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2FailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3FailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3FailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    MidFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EndFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    MidActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EndActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    OriginActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    SingleHopActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EntryActiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2InactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2InactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3InactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3InactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    MidInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EndInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    OriginInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    SingleHopInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EntryInactiveFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    OriginFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    SingleHopFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    DirFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EntryFailureCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    MidActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EndActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    OriginActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    SingleHopActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EntryActiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2InactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2InactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3InactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3InactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    MidInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EndInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    OriginInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    SingleHopInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EntryInactiveCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    OriginCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    SingleHopCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    DirCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    MidSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EndSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    MidActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EndActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    OriginActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    SingleHopActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EntryActiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2InactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2InactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3InactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3InactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    MidInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EndInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    OriginInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    SingleHopInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EntryInactiveSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    OriginSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    SingleHopSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    DirSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    ExitSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientSuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EntrySuccessCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    EntryCircuitLifeTime:
+        bins:
+        - [-.inf, .inf]
+    RendUCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientFailureCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientSuccessCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientCircuitInboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientFailureCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientSuccessCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientCircuitOutboundCellHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2CircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3CircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    DirFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientFailureCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    DirCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    DirSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientSuccessCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    ExitCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientCircuitCellRatio:
+        bins:
+        - [-.inf, .inf]
+    RendUCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientFailureCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientSuccessCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientCircuitInboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientFailureCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientSuccessCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientCircuitOutboundCellCount:
+        bins:
+        - [-.inf, .inf]
+    RendUCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientFailureCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientSuccessCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientCircuitCount:
+        bins:
+        - [-.inf, .inf]
