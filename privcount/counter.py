@@ -4899,6 +4899,288 @@ PRIVCOUNT_COUNTER_EVENTS = {
 'Rend3MultiHopServiceInactiveSuccessCircuitOutboundCellHistogram' : { CIRCUIT_EVENT },
 'Rend3MultiHopServiceInactiveSuccessCircuitLifeTime' : { CIRCUIT_EVENT },
 
+# circuit failure reason count lists
+
+'OriginFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'OriginActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'OriginInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'EntryFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'EntryActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'EntryInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'MidFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'MidActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'MidInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'EndFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'EndActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'EndInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'SingleHopFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'SingleHopActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'SingleHopInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'ExitFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'DirFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'HSDirFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDirClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDirServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDirTor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDirSingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDirMultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDirMultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'HSDir2FailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir2ClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir2ServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir2Tor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir2SingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir2MultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir2MultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'HSDir3FailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir3ClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir3ServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir3Tor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir3SingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir3MultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'HSDir3MultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+
+'IntroFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroTor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroTor2WebClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroTor2WebClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroSingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroSingleOnionServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroSingleOnionServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroMultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroMultiHopClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroMultiHopClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroMultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroMultiHopServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroMultiHopServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+
+'IntroUFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroUClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroUServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroUTor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUTor2WebClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUTor2WebClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroUSingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUSingleOnionServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUSingleOnionServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroUMultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUMultiHopClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUMultiHopClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'IntroUMultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUMultiHopServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'IntroUMultiHopServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+
+'Intro2FailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2ActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2InactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro2ClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2ClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2ClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro2ServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2ServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2ServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro2Tor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2Tor2WebClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2Tor2WebClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro2SingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2SingleOnionServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2SingleOnionServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro2MultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2MultiHopClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2MultiHopClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro2MultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2MultiHopServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro2MultiHopServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+
+'Intro3FailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3ActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3InactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro3ClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3ClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3ClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro3ServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3ServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3ServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro3Tor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3Tor2WebClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3Tor2WebClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro3SingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3SingleOnionServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3SingleOnionServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro3MultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3MultiHopClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3MultiHopClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Intro3MultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3MultiHopServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Intro3MultiHopServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+
+'RendFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendTor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendTor2WebClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendTor2WebClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendSingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendSingleOnionServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendSingleOnionServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendMultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendMultiHopClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendMultiHopClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendMultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendMultiHopServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendMultiHopServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+
+'RendUFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendUClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendUServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendUTor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUTor2WebClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUTor2WebClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendUSingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUSingleOnionServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUSingleOnionServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendUMultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUMultiHopClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUMultiHopClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'RendUMultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUMultiHopServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'RendUMultiHopServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+
+'Rend2FailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2ActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2InactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend2ClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2ClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2ClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend2ServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2ServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2ServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend2Tor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2Tor2WebClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2Tor2WebClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend2SingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2SingleOnionServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2SingleOnionServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend2MultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2MultiHopClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2MultiHopClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend2MultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2MultiHopServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend2MultiHopServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+
+'Rend3FailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3ActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3InactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend3ClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3ClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3ClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend3ServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3ServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3ServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend3Tor2WebClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3Tor2WebClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3Tor2WebClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend3SingleOnionServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3SingleOnionServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3SingleOnionServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend3MultiHopClientFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3MultiHopClientActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3MultiHopClientInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
+'Rend3MultiHopServiceFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3MultiHopServiceActiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+'Rend3MultiHopServiceInactiveFailureCircuitReasonCountList' : { CIRCUIT_EVENT },
+
 # these counters depend on circuit end
 # they are updated in _do_rotate,
 # and use data updated in _handle_legacy_exit_circuit_event
