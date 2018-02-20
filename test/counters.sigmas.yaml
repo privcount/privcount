@@ -10301,3 +10301,415 @@ counters:
         sigma: 0.0
     HSDir2FetchNoClientAuthOnionAddressCountList:
         sigma: 0.0
+    Rend2FailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2FailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir2FailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3FailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3FailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir3FailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUFailureCircuitReasonCountList:
+        sigma: 0.0
+    MidFailureCircuitReasonCountList:
+        sigma: 0.0
+    EndFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2ServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2ServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir2ServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3ServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3ServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir3ServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2SingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2SingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir2SingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3SingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3SingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir3SingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUSingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUSingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendSingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroSingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDirSingleOnionServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2MultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2MultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir2MultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3MultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3MultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir3MultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUMultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUMultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendMultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroMultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDirMultiHopServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDirServiceFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2ActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2ActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3ActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3ActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    MidActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    EndActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2ServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2ServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3ServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3ServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2SingleOnionServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2SingleOnionServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3SingleOnionServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3SingleOnionServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUSingleOnionServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUSingleOnionServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendSingleOnionServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroSingleOnionServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2MultiHopServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2MultiHopServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3MultiHopServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3MultiHopServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUMultiHopServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUMultiHopServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendMultiHopServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroMultiHopServiceActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    OriginActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    SingleHopActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2ClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2ClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3ClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3ClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2Tor2WebClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2Tor2WebClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3Tor2WebClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3Tor2WebClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUTor2WebClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUTor2WebClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendTor2WebClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroTor2WebClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2MultiHopClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2MultiHopClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3MultiHopClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3MultiHopClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUMultiHopClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUMultiHopClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendMultiHopClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroMultiHopClientActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    EntryActiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2InactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2InactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3InactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3InactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    MidInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    EndInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2ServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2ServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3ServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3ServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2MultiHopServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2MultiHopServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3MultiHopServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3MultiHopServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUMultiHopServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUMultiHopServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendMultiHopServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroMultiHopServiceInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    OriginInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    SingleHopInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2ClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2ClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3ClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3ClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2Tor2WebClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2Tor2WebClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3Tor2WebClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3Tor2WebClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUTor2WebClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUTor2WebClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendTor2WebClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroTor2WebClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2MultiHopClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2MultiHopClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3MultiHopClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3MultiHopClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUMultiHopClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUMultiHopClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendMultiHopClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroMultiHopClientInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    EntryInactiveFailureCircuitReasonCountList:
+        sigma: 0.0
+    OriginFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroFailureCircuitReasonCountList:
+        sigma: 0.0
+    SingleHopFailureCircuitReasonCountList:
+        sigma: 0.0
+    DirFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDirFailureCircuitReasonCountList:
+        sigma: 0.0
+    ExitFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2ClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2ClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir2ClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3ClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3ClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir3ClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2Tor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2Tor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir2Tor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3Tor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3Tor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir3Tor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUTor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUTor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendTor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroTor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDirTor2WebClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend2MultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro2MultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir2MultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Rend3MultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    Intro3MultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDir3MultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendUMultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroUMultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    RendMultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    IntroMultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDirMultiHopClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    HSDirClientFailureCircuitReasonCountList:
+        sigma: 0.0
+    EntryFailureCircuitReasonCountList:
+        sigma: 0.0

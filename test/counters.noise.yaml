@@ -15424,3 +15424,621 @@ counters:
     HSDir2FetchNoClientAuthOnionAddressCountList:
         estimated_value: 0.0
         sensitivity: 0.0
+    Rend2FailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2FailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3FailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3FailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2SingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3SingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUSingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUSingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendSingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroSingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirSingleOnionServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUMultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUMultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendMultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroMultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirMultiHopServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirServiceFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUSingleOnionServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUSingleOnionServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendSingleOnionServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroSingleOnionServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUMultiHopServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUMultiHopServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendMultiHopServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroMultiHopServiceActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUTor2WebClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUTor2WebClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendTor2WebClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroTor2WebClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUMultiHopClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUMultiHopClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendMultiHopClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroMultiHopClientActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryActiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2InactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2InactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3InactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3InactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    MidInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EndInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUMultiHopServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUMultiHopServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendMultiHopServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroMultiHopServiceInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUTor2WebClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUTor2WebClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendTor2WebClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroTor2WebClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUMultiHopClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUMultiHopClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendMultiHopClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroMultiHopClientInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryInactiveFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    OriginFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    SingleHopFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    DirFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    ExitFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2ClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2ClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2ClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3ClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3ClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3ClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2Tor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2Tor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2Tor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3Tor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3Tor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3Tor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUTor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUTor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendTor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroTor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirTor2WebClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend2MultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro2MultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2MultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Rend3MultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    Intro3MultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3MultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendUMultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroUMultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    RendMultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    IntroMultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirMultiHopClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirClientFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    EntryFailureCircuitReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0

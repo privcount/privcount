@@ -21432,3 +21432,621 @@ counters:
         bins:
         - [0, 1]
         - [1, .inf]
+    Rend2FailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2FailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3FailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3FailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    MidFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    EndFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2SingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3SingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirSingleOnionServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirServiceFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2ActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2ActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3ActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3ActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    MidActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    EndActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    OriginActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    SingleHopActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    EntryActiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2InactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2InactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3InactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3InactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    MidInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    EndInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2ServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2ServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3ServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3ServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3SingleOnionServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroSingleOnionServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopServiceInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    OriginInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    SingleHopInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    EntryInactiveFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    OriginFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    SingleHopFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    DirFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    ExitFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2ClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2ClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2ClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3ClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3ClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3ClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2Tor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2Tor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2Tor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3Tor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3Tor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3Tor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUTor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUTor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendTor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroTor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirTor2WebClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend2MultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro2MultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2MultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Rend3MultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    Intro3MultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3MultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendUMultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroUMultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    RendMultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    IntroMultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirMultiHopClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirClientFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    EntryFailureCircuitReasonCountList:
+        bins:
+        - [-.inf, .inf]
