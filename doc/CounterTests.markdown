@@ -546,73 +546,37 @@ auth descriptor sizes, then the use of basic auth appears to be negligible.
 - HSDir3StoreCount
 - HSDir2StoreAddCount
 - HSDir3StoreAddCount
-- HSDir2StoreRejectExpiredCachedCount
-- HSDir2StoreRejectFutureCachedCount
-- HSDir2StoreRejectExpiredUncachedCount
-- HSDir2StoreRejectFutureUncachedCount
-- HSDir2StoreAddUpdatedCount
-- HSDir3StoreAddUpdatedCount
-- HSDir2StoreRejectUnparseableCount
-- HSDir3StoreRejectUnparseableCount
-- HSDir2StoreRejectDuplicateCount
-- HSDir2StoreRejectObsoleteCount
-- HSDir3StoreRejectObsoleteCount
 - HSDir2StoreAddClientAuthCount
-- HSDir2StoreRejectExpiredCachedClientAuthCount
-- HSDir2StoreRejectFutureCachedClientAuthCount
-- HSDir2StoreRejectExpiredUncachedClientAuthCount
-- HSDir2StoreRejectFutureUncachedClientAuthCount
-- HSDir2StoreAddUpdatedClientAuthCount
 - HSDir2StoreClientAuthCount
-- HSDir2StoreRejectDuplicateClientAuthCount
-- HSDir2StoreRejectObsoleteClientAuthCount
 - HSDir2StoreAddNoClientAuthCount
-- HSDir2StoreRejectExpiredCachedNoClientAuthCount
-- HSDir2StoreRejectFutureCachedNoClientAuthCount
-- HSDir2StoreRejectExpiredUncachedNoClientAuthCount
-- HSDir2StoreRejectFutureUncachedNoClientAuthCount
-- HSDir2StoreAddUpdatedNoClientAuthCount
 - HSDir2StoreNoClientAuthCount
-- HSDir2StoreRejectDuplicateNoClientAuthCount
-- HSDir2StoreRejectObsoleteNoClientAuthCount
 - HSDir2StoreRejectNoClientAuthCount
-- HSDir2StoreAddNewNoClientAuthCount
 - HSDir2StoreRejectClientAuthCount
-- HSDir2StoreAddNewClientAuthCount
 - HSDir2StoreRejectCount
 - HSDir3StoreRejectCount
-- HSDir2StoreAddNewCount
-- HSDir3StoreAddNewCount
 
 ### TODO: Category Name
 
 - HSDir2StoreAddUploadDelayTime
-- HSDir2StoreAddUpdatedUploadDelayTime
 - HSDir2StoreUploadDelayTime
 - HSDir2StoreRejectUploadDelayTime
-- HSDir2StoreAddNewUploadDelayTime
 
 ### TODO: Category Name
 
 - HSDir2StoreAddIntroPointHistogram
 - HSDir2StoreIntroPointHistogram
 - HSDir2StoreRejectIntroPointHistogram
-- HSDir2StoreAddNewIntroPointHistogram
 
 ### TODO: Category Name
 
 - HSDir2StoreAddIntroByteCount
 - HSDir3StoreAddIntroByteCount
-- HSDir2StoreAddUpdatedIntroByteCount
-- HSDir3StoreAddUpdatedIntroByteCount
 - HSDir2StoreIntroByteCount
 - HSDir3StoreIntroByteCount
 - HSDir2StoreClientAuthIntroByteCount
 - HSDir2StoreNoClientAuthIntroByteCount
 - HSDir2StoreRejectIntroByteCount
 - HSDir3StoreRejectIntroByteCount
-- HSDir2StoreAddNewIntroByteCount
-- HSDir3StoreAddNewIntroByteCount
 
 ### TODO: Category Name
 
@@ -624,27 +588,19 @@ auth descriptor sizes, then the use of basic auth appears to be negligible.
 - HSDir2StoreClientAuthIntroByteHistogram
 - HSDir2StoreAddNoClientAuthIntroByteHistogram
 - HSDir2StoreNoClientAuthIntroByteHistogram
-- HSDir2StoreAddNewNoClientAuthIntroByteHistogram
-- HSDir2StoreAddNewClientAuthIntroByteHistogram
 - HSDir2StoreRejectIntroByteHistogram
 - HSDir3StoreRejectIntroByteHistogram
-- HSDir2StoreAddNewIntroByteHistogram
-- HSDir3StoreAddNewIntroByteHistogram
 
 ### TODO: Category Name
 
 - HSDir2StoreAddDescriptorByteCount
 - HSDir3StoreAddDescriptorByteCount
-- HSDir2StoreAddUpdatedDescriptorByteCount
-- HSDir3StoreAddUpdatedDescriptorByteCount
 - HSDir2StoreDescriptorByteCount
 - HSDir3StoreDescriptorByteCount
 - HSDir2StoreClientAuthDescriptorByteCount
 - HSDir2StoreNoClientAuthDescriptorByteCount
 - HSDir2StoreRejectDescriptorByteCount
 - HSDir3StoreRejectDescriptorByteCount
-- HSDir2StoreAddNewDescriptorByteCount
-- HSDir3StoreAddNewDescriptorByteCount
 
 ### TODO: Category Name
 
@@ -656,20 +612,14 @@ auth descriptor sizes, then the use of basic auth appears to be negligible.
 - HSDir2StoreClientAuthDescriptorByteHistogram
 - HSDir2StoreAddNoClientAuthDescriptorByteHistogram
 - HSDir2StoreNoClientAuthDescriptorByteHistogram
-- HSDir2StoreAddNewNoClientAuthDescriptorByteHistogram
-- HSDir2StoreAddNewClientAuthDescriptorByteHistogram
 - HSDir2StoreRejectDescriptorByteHistogram
 - HSDir3StoreRejectDescriptorByteHistogram
-- HSDir2StoreAddNewDescriptorByteHistogram
-- HSDir3StoreAddNewDescriptorByteHistogram
 
 ### TODO: Category Name
 
 - HSDir3StoreAddRevisionHistogram
-- HSDir3StoreAddUpdatedRevisionHistogram
 - HSDir3StoreRevisionHistogram
 - HSDir3StoreRejectRevisionHistogram
-- HSDir3StoreAddNewRevisionHistogram
 
 ## Circuit Counter Tests
 

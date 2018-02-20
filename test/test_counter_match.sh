@@ -74,11 +74,13 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
     # data_collector source code
     if [ `basename "$code"` = 'data_collector.py' ]; then
         cat "$TEST_DIR/counters.bins.yaml.names" \
-            | grep -e "Circuit.*Count" \
+            | grep \
+               -e "Circuit.*Count" \
                -e "Circuit.*Histogram" \
                -e "Circuit.*Ratio" \
                -e "Circuit.*LifeTime" \
-            | grep -v -e "Connection" \
+            | grep -v \
+               -e "Connection" \
                -e "ClientIP" \
                -e "ExitAndRend" \
                -e "ExitInteractive" \
@@ -88,16 +90,21 @@ for code in "$TEST_DIR"/../privcount/{counter,data_collector}.py; do
                -e "Stream" \
             >> "$OUT_PATH.names.unsorted" || true
         cat "$TEST_DIR/counters.bins.yaml.names" \
-            | grep -e "^HSDir[23]" \
-            | grep -v -e "^HSDir[23].*Circuit" \
+            | grep \
+               -e "HSDir" \
+            | grep -v \
+               -e "Circuit" \
             >> "$OUT_PATH.names.unsorted" || true
         cat "$TEST_DIR/counters.bins.yaml.names" \
-            | grep -e "Entry.*Connection" \
+            | grep \
+               -e "Entry.*Connection" \
             >> "$OUT_PATH.names.unsorted" || true
         cat "$TEST_DIR/counters.bins.yaml.names" \
-            | grep -e "Exit.*Stream" \
-            | grep -v -e "^ExitStreamTrafficModel" \
-                -e "^ExitCircuit" \
+            | grep \
+               -e "Exit.*Stream" \
+            | grep -v \
+               -e "^ExitStreamTrafficModel" \
+               -e "Circuit" \
             >> "$OUT_PATH.names.unsorted" || true
     fi
     # Add the ZeroCount counter (it has no events and no increments)

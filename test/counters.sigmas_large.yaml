@@ -118,13 +118,9 @@ counters:
         sigma: 1.0e+12
     HSDir2StoreAddUploadDelayTime:
         sigma: 1.0e+12
-    HSDir2StoreAddUpdatedUploadDelayTime:
-        sigma: 1.0e+12
     HSDir2StoreUploadDelayTime:
         sigma: 1.0e+12
     HSDir2StoreRejectUploadDelayTime:
-        sigma: 1.0e+12
-    HSDir2StoreAddNewUploadDelayTime:
         sigma: 1.0e+12
     HSDir2StoreAddIntroByteHistogram:
         sigma: 1.0e+12
@@ -142,17 +138,9 @@ counters:
         sigma: 1.0e+12
     HSDir2StoreNoClientAuthIntroByteHistogram:
         sigma: 1.0e+12
-    HSDir2StoreAddNewNoClientAuthIntroByteHistogram:
-        sigma: 1.0e+12
-    HSDir2StoreAddNewClientAuthIntroByteHistogram:
-        sigma: 1.0e+12
     HSDir2StoreRejectIntroByteHistogram:
         sigma: 1.0e+12
     HSDir3StoreRejectIntroByteHistogram:
-        sigma: 1.0e+12
-    HSDir2StoreAddNewIntroByteHistogram:
-        sigma: 1.0e+12
-    HSDir3StoreAddNewIntroByteHistogram:
         sigma: 1.0e+12
     HSDir2StoreAddDescriptorByteHistogram:
         sigma: 1.0e+12
@@ -170,27 +158,15 @@ counters:
         sigma: 1.0e+12
     HSDir2StoreNoClientAuthDescriptorByteHistogram:
         sigma: 1.0e+12
-    HSDir2StoreAddNewNoClientAuthDescriptorByteHistogram:
-        sigma: 1.0e+12
-    HSDir2StoreAddNewClientAuthDescriptorByteHistogram:
-        sigma: 1.0e+12
     HSDir2StoreRejectDescriptorByteHistogram:
         sigma: 1.0e+12
     HSDir3StoreRejectDescriptorByteHistogram:
         sigma: 1.0e+12
-    HSDir2StoreAddNewDescriptorByteHistogram:
-        sigma: 1.0e+12
-    HSDir3StoreAddNewDescriptorByteHistogram:
-        sigma: 1.0e+12
     HSDir3StoreAddRevisionHistogram:
-        sigma: 1.0e+12
-    HSDir3StoreAddUpdatedRevisionHistogram:
         sigma: 1.0e+12
     HSDir3StoreRevisionHistogram:
         sigma: 1.0e+12
     HSDir3StoreRejectRevisionHistogram:
-        sigma: 1.0e+12
-    HSDir3StoreAddNewRevisionHistogram:
         sigma: 1.0e+12
     HSDir2StoreAddIntroPointHistogram:
         sigma: 1.0e+12
@@ -198,45 +174,17 @@ counters:
         sigma: 1.0e+12
     HSDir2StoreRejectIntroPointHistogram:
         sigma: 1.0e+12
-    HSDir2StoreAddNewIntroPointHistogram:
-        sigma: 1.0e+12
     HSDir2StoreAddCount:
         sigma: 1.0e+12
     HSDir3StoreAddCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectExpiredCachedCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectFutureCachedCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectExpiredUncachedCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectFutureUncachedCount:
-        sigma: 1.0e+12
-    HSDir2StoreAddUpdatedCount:
-        sigma: 1.0e+12
-    HSDir3StoreAddUpdatedCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectUnparseableCount:
-        sigma: 1.0e+12
-    HSDir3StoreRejectUnparseableCount:
         sigma: 1.0e+12
     HSDir2StoreCount:
         sigma: 1.0e+12
     HSDir3StoreCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectDuplicateCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectObsoleteCount:
-        sigma: 1.0e+12
-    HSDir3StoreRejectObsoleteCount:
-        sigma: 1.0e+12
     HSDir2StoreAddIntroByteCount:
         sigma: 1.0e+12
     HSDir3StoreAddIntroByteCount:
-        sigma: 1.0e+12
-    HSDir2StoreAddUpdatedIntroByteCount:
-        sigma: 1.0e+12
-    HSDir3StoreAddUpdatedIntroByteCount:
         sigma: 1.0e+12
     HSDir2StoreIntroByteCount:
         sigma: 1.0e+12
@@ -250,17 +198,9 @@ counters:
         sigma: 1.0e+12
     HSDir3StoreRejectIntroByteCount:
         sigma: 1.0e+12
-    HSDir2StoreAddNewIntroByteCount:
-        sigma: 1.0e+12
-    HSDir3StoreAddNewIntroByteCount:
-        sigma: 1.0e+12
     HSDir2StoreAddDescriptorByteCount:
         sigma: 1.0e+12
     HSDir3StoreAddDescriptorByteCount:
-        sigma: 1.0e+12
-    HSDir2StoreAddUpdatedDescriptorByteCount:
-        sigma: 1.0e+12
-    HSDir3StoreAddUpdatedDescriptorByteCount:
         sigma: 1.0e+12
     HSDir2StoreDescriptorByteCount:
         sigma: 1.0e+12
@@ -274,61 +214,21 @@ counters:
         sigma: 1.0e+12
     HSDir3StoreRejectDescriptorByteCount:
         sigma: 1.0e+12
-    HSDir2StoreAddNewDescriptorByteCount:
-        sigma: 1.0e+12
-    HSDir3StoreAddNewDescriptorByteCount:
-        sigma: 1.0e+12
     HSDir2StoreAddClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectExpiredCachedClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectFutureCachedClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectExpiredUncachedClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectFutureUncachedClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreAddUpdatedClientAuthCount:
         sigma: 1.0e+12
     HSDir2StoreClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectDuplicateClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectObsoleteClientAuthCount:
-        sigma: 1.0e+12
     HSDir2StoreAddNoClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectExpiredCachedNoClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectFutureCachedNoClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectExpiredUncachedNoClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectFutureUncachedNoClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreAddUpdatedNoClientAuthCount:
         sigma: 1.0e+12
     HSDir2StoreNoClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreRejectDuplicateNoClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreRejectObsoleteNoClientAuthCount:
-        sigma: 1.0e+12
     HSDir2StoreRejectNoClientAuthCount:
         sigma: 1.0e+12
-    HSDir2StoreAddNewNoClientAuthCount:
-        sigma: 1.0e+12
     HSDir2StoreRejectClientAuthCount:
-        sigma: 1.0e+12
-    HSDir2StoreAddNewClientAuthCount:
         sigma: 1.0e+12
     HSDir2StoreRejectCount:
         sigma: 1.0e+12
     HSDir3StoreRejectCount:
-        sigma: 1.0e+12
-    HSDir2StoreAddNewCount:
-        sigma: 1.0e+12
-    HSDir3StoreAddNewCount:
         sigma: 1.0e+12
     Intro2CircuitCount:
         sigma: 1.0e+12

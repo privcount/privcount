@@ -275,16 +275,10 @@ counters:
     HSDir2StoreAddUploadDelayTime:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreAddUpdatedUploadDelayTime:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreUploadDelayTime:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreRejectUploadDelayTime:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddNewUploadDelayTime:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreAddIntroByteHistogram:
@@ -311,22 +305,10 @@ counters:
     HSDir2StoreNoClientAuthIntroByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreAddNewNoClientAuthIntroByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddNewClientAuthIntroByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreRejectIntroByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir3StoreRejectIntroByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddNewIntroByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddNewIntroByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreAddDescriptorByteHistogram:
@@ -353,37 +335,19 @@ counters:
     HSDir2StoreNoClientAuthDescriptorByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreAddNewNoClientAuthDescriptorByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddNewClientAuthDescriptorByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreRejectDescriptorByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir3StoreRejectDescriptorByteHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreAddNewDescriptorByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddNewDescriptorByteHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir3StoreAddRevisionHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddUpdatedRevisionHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir3StoreRevisionHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir3StoreRejectRevisionHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddNewRevisionHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreAddIntroPointHistogram:
@@ -395,37 +359,10 @@ counters:
     HSDir2StoreRejectIntroPointHistogram:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreAddNewIntroPointHistogram:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreAddCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir3StoreAddCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectExpiredCachedCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectFutureCachedCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectExpiredUncachedCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectFutureUncachedCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddUpdatedCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddUpdatedCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectUnparseableCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreRejectUnparseableCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreCount:
@@ -434,25 +371,10 @@ counters:
     HSDir3StoreCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectDuplicateCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectObsoleteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreRejectObsoleteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreAddIntroByteCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir3StoreAddIntroByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddUpdatedIntroByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddUpdatedIntroByteCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreIntroByteCount:
@@ -473,22 +395,10 @@ counters:
     HSDir3StoreRejectIntroByteCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreAddNewIntroByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddNewIntroByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreAddDescriptorByteCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir3StoreAddDescriptorByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddUpdatedDescriptorByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddUpdatedDescriptorByteCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreDescriptorByteCount:
@@ -509,88 +419,28 @@ counters:
     HSDir3StoreRejectDescriptorByteCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreAddNewDescriptorByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddNewDescriptorByteCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreAddClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectExpiredCachedClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectFutureCachedClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectExpiredUncachedClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectFutureUncachedClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddUpdatedClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectDuplicateClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectObsoleteClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreAddNoClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectExpiredCachedNoClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectFutureCachedNoClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectExpiredUncachedNoClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectFutureUncachedNoClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddUpdatedNoClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreNoClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreRejectDuplicateNoClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreRejectObsoleteNoClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreRejectNoClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
-    HSDir2StoreAddNewNoClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
     HSDir2StoreRejectClientAuthCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddNewClientAuthCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir2StoreRejectCount:
         estimated_value: 0.0
         sensitivity: 0.0
     HSDir3StoreRejectCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir2StoreAddNewCount:
-        estimated_value: 0.0
-        sensitivity: 0.0
-    HSDir3StoreAddNewCount:
         estimated_value: 0.0
         sensitivity: 0.0
     Intro2CircuitCount:

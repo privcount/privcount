@@ -341,12 +341,6 @@ counters:
         - [-3600.0,     0.0]
         - [    0.0,  3600.0]
         - [ 3600.0,    .inf]
-    HSDir2StoreAddUpdatedUploadDelayTime:
-        bins:
-        - [-.inf,   -3600.0]
-        - [-3600.0,     0.0]
-        - [    0.0,  3600.0]
-        - [ 3600.0,    .inf]
     HSDir2StoreUploadDelayTime:
         bins:
         - [-.inf,   -3600.0]
@@ -354,12 +348,6 @@ counters:
         - [    0.0,  3600.0]
         - [ 3600.0,    .inf]
     HSDir2StoreRejectUploadDelayTime:
-        bins:
-        - [-.inf,   -3600.0]
-        - [-3600.0,     0.0]
-        - [    0.0,  3600.0]
-        - [ 3600.0,    .inf]
-    HSDir2StoreAddNewUploadDelayTime:
         bins:
         - [-.inf,   -3600.0]
         - [-3600.0,     0.0]
@@ -472,32 +460,12 @@ counters:
         - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
         - [    1,   307] # empty?
         - [  307,  .inf] # everything else, testing only
-    HSDir2StoreAddNewNoClientAuthIntroByteHistogram:
-        bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
-    HSDir2StoreAddNewClientAuthIntroByteHistogram:
-        bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
     HSDir2StoreRejectIntroByteHistogram:
         bins:
         - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
         - [    1,   307] # empty?
         - [  307,  .inf] # everything else, testing only
     HSDir3StoreRejectIntroByteHistogram:
-        bins:
-        - [    0,     1] # empty? (HSv3 always has padding)
-        - [    1, 10241]
-        - [10241,  .inf]
-    HSDir2StoreAddNewIntroByteHistogram:
-        bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
-    HSDir3StoreAddNewIntroByteHistogram:
         bins:
         - [    0,     1] # empty? (HSv3 always has padding)
         - [    1, 10241]
@@ -543,32 +511,12 @@ counters:
         - [    0,     1] # zero: empty descriptors: should be rejected
         - [    1,   340] # empty?
         - [  340,  .inf] # Testing only
-    HSDir2StoreAddNewNoClientAuthDescriptorByteHistogram:
-        bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
-    HSDir2StoreAddNewClientAuthDescriptorByteHistogram:
-        bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
     HSDir2StoreRejectDescriptorByteHistogram:
         bins:
         - [    0,     1] # zero: empty descriptors: should be rejected
         - [    1,   340] # empty?
         - [  340,  .inf] # Testing only
     HSDir3StoreRejectDescriptorByteHistogram:
-        bins:
-        - [    0,     1] # empty? (HSv3 always has padding)
-        - [    1, 10241]
-        - [10241,  .inf]
-    HSDir2StoreAddNewDescriptorByteHistogram:
-        bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
-    HSDir3StoreAddNewDescriptorByteHistogram:
         bins:
         - [    0,     1] # empty? (HSv3 always has padding)
         - [    1, 10241]
@@ -582,22 +530,12 @@ counters:
         - [ 0,  1] # Descriptors for new or restarted services
         - [ 1,  2]
         - [ 2,  .inf] # Testing only
-    HSDir3StoreAddUpdatedRevisionHistogram:
-        bins:
-        - [ 0,  1] # Descriptors for new or restarted services
-        - [ 1,  2]
-        - [ 2,  .inf] # Testing only
     HSDir3StoreRevisionHistogram:
         bins:
         - [ 0,  1] # Descriptors for new or restarted services
         - [ 1,  2]
         - [ 2,  .inf] # Testing only
     HSDir3StoreRejectRevisionHistogram:
-        bins:
-        - [ 0,  1] # Descriptors for new or restarted services
-        - [ 1,  2]
-        - [ 2,  .inf] # Testing only
-    HSDir3StoreAddNewRevisionHistogram:
         bins:
         - [ 0,  1] # Descriptors for new or restarted services
         - [ 1,  2]
@@ -619,39 +557,10 @@ counters:
         - [ 0,  1]
         - [ 1,  3]
         - [ 3,  10]
-    HSDir2StoreAddNewIntroPointHistogram:
-        bins:
-        - [ 0,  1]
-        - [ 1,  3]
-        - [ 3,  10]
     HSDir2StoreAddCount:
         bins:
         - [-.inf, .inf]
     HSDir3StoreAddCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectExpiredCachedCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectFutureCachedCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectExpiredUncachedCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectFutureUncachedCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreAddUpdatedCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3StoreAddUpdatedCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectUnparseableCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3StoreRejectUnparseableCount:
         bins:
         - [-.inf, .inf]
     HSDir2StoreCount:
@@ -660,25 +569,10 @@ counters:
     HSDir3StoreCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectDuplicateCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectObsoleteCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3StoreRejectObsoleteCount:
-        bins:
-        - [-.inf, .inf]
     HSDir2StoreAddIntroByteCount:
         bins:
         - [-.inf, .inf]
     HSDir3StoreAddIntroByteCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreAddUpdatedIntroByteCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3StoreAddUpdatedIntroByteCount:
         bins:
         - [-.inf, .inf]
     HSDir2StoreIntroByteCount:
@@ -699,22 +593,10 @@ counters:
     HSDir3StoreRejectIntroByteCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreAddNewIntroByteCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3StoreAddNewIntroByteCount:
-        bins:
-        - [-.inf, .inf]
     HSDir2StoreAddDescriptorByteCount:
         bins:
         - [-.inf, .inf]
     HSDir3StoreAddDescriptorByteCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreAddUpdatedDescriptorByteCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3StoreAddUpdatedDescriptorByteCount:
         bins:
         - [-.inf, .inf]
     HSDir2StoreDescriptorByteCount:
@@ -735,88 +617,28 @@ counters:
     HSDir3StoreRejectDescriptorByteCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreAddNewDescriptorByteCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3StoreAddNewDescriptorByteCount:
-        bins:
-        - [-.inf, .inf]
     HSDir2StoreAddClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectExpiredCachedClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectFutureCachedClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectExpiredUncachedClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectFutureUncachedClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreAddUpdatedClientAuthCount:
         bins:
         - [-.inf, .inf]
     HSDir2StoreClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectDuplicateClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectObsoleteClientAuthCount:
-        bins:
-        - [-.inf, .inf]
     HSDir2StoreAddNoClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectExpiredCachedNoClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectFutureCachedNoClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectExpiredUncachedNoClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectFutureUncachedNoClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreAddUpdatedNoClientAuthCount:
         bins:
         - [-.inf, .inf]
     HSDir2StoreNoClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreRejectDuplicateNoClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreRejectObsoleteNoClientAuthCount:
-        bins:
-        - [-.inf, .inf]
     HSDir2StoreRejectNoClientAuthCount:
         bins:
         - [-.inf, .inf]
-    HSDir2StoreAddNewNoClientAuthCount:
-        bins:
-        - [-.inf, .inf]
     HSDir2StoreRejectClientAuthCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreAddNewClientAuthCount:
         bins:
         - [-.inf, .inf]
     HSDir2StoreRejectCount:
         bins:
         - [-.inf, .inf]
     HSDir3StoreRejectCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir2StoreAddNewCount:
-        bins:
-        - [-.inf, .inf]
-    HSDir3StoreAddNewCount:
         bins:
         - [-.inf, .inf]
     Intro2CircuitCount:
