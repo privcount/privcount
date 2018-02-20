@@ -21011,130 +21011,214 @@ counters:
         - [-.inf, .inf]
     HSDir2FetchCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3FetchCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirFetchCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3FetchUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirFetchUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3FetchIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirFetchIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchCachedClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchUncachedClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchCachedNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchUncachedNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3FetchCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirFetchCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3FetchUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirFetchUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3FetchDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirFetchDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchCachedClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchUncachedClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchCachedNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchUncachedNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2FetchNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3FetchCachedRevisionHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir3FetchUncachedRevisionHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir3FetchRevisionHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir2FetchCachedIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2FetchUncachedIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2FetchIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2FetchCachedClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2FetchUncachedClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2FetchClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2FetchCachedNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2FetchUncachedNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2FetchNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDirFetchCachedCount:
         bins:
         - [-.inf, .inf]
@@ -21254,73 +21338,97 @@ counters:
         - [-.inf, .inf]
     HSDir2FetchCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3FetchCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirFetchCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3FetchUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirFetchUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3FetchReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirFetchReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchCachedClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchUncachedClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchCachedNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchUncachedNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchCachedOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchUncachedOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchCachedClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchUncachedClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchCachedNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchUncachedNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2FetchNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
