@@ -418,107 +418,107 @@ counters:
     # ...
     HSDir2StoreAddIntroByteHistogram:
         bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     # We haven't done any testing on HSv3, because there is no service
     # implementation available. So we just use 10kB blocks as a placeholder
     # The maximum HSv3 descriptor size is 50kB, or the HSV3MaxDescriptorSize
     # consensus parameter
     HSDir3StoreAddIntroByteHistogram:
         bins:
-        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    0,     1] # empty?
         - [    1, 10241]
         - [10241,  .inf]
     HSDir2StoreIntroByteHistogram:
         bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreIntroByteHistogram:
         bins:
-        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    0,     1] # empty?
         - [    1, 10241]
         - [10241,  .inf]
     HSDir2StoreAddClientAuthIntroByteHistogram:
         bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreClientAuthIntroByteHistogram:
         bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddNoClientAuthIntroByteHistogram:
         bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreNoClientAuthIntroByteHistogram:
         bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectIntroByteHistogram:
         bins:
-        - [    0,     1] # zero: plain(0) and stealth(0) and basic(0, n)
-        - [    1,   307] # empty?
-        - [  307,  .inf] # everything else, testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreRejectIntroByteHistogram:
         bins:
-        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    0,     1] # empty?
         - [    1, 10241]
         - [10241,  .inf]
     # Descriptor Bytes
     HSDir2StoreAddDescriptorByteHistogram:
         bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreAddDescriptorByteHistogram:
         bins:
-        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    0,     1] # empty?
         - [    1, 10241]
         - [10241,  .inf]
     HSDir2StoreDescriptorByteHistogram:
         bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreDescriptorByteHistogram:
         bins:
-        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    0,     1] # empty?
         - [    1, 10241]
         - [10241,  .inf]
     HSDir2StoreAddClientAuthDescriptorByteHistogram:
         bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreClientAuthDescriptorByteHistogram:
         bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddNoClientAuthDescriptorByteHistogram:
         bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreNoClientAuthDescriptorByteHistogram:
         bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectDescriptorByteHistogram:
         bins:
-        - [    0,     1] # zero: empty descriptors: should be rejected
-        - [    1,   340] # empty?
-        - [  340,  .inf] # Testing only
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreRejectDescriptorByteHistogram:
         bins:
-        - [    0,     1] # empty? (HSv3 always has padding)
+        - [    0,     1] # empty?
         - [    1, 10241]
         - [10241,  .inf]
     # Each HSv3 Descriptor is updated for up to 36 hours (each SRV expires 36
@@ -528,18 +528,18 @@ counters:
     HSDir3StoreAddRevisionHistogram:
         bins:
         - [ 0,  1] # Descriptors for new or restarted services
-        - [ 1,  2]
-        - [ 2,  .inf] # Testing only
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir3StoreRevisionHistogram:
         bins:
         - [ 0,  1] # Descriptors for new or restarted services
-        - [ 1,  2]
-        - [ 2,  .inf] # Testing only
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir3StoreRejectRevisionHistogram:
         bins:
         - [ 0,  1] # Descriptors for new or restarted services
-        - [ 1,  2]
-        - [ 2,  .inf] # Testing only
+        - [ 1,  10]
+        - [ 10, .inf]
     # HSv2 allows a maximum of 10 intro points
     # Data Collectors warn outside the [0, 10] range
     HSDir2StoreAddIntroPointHistogram:
@@ -19758,349 +19758,603 @@ counters:
         - [-.inf, .inf]
     HSDir2StoreAddCachedUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreCachedUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreRejectCachedUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreAddUncachedUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreUncachedUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreRejectUncachedUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreAddClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreAddCachedClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreCachedClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreRejectCachedClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreAddUncachedClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreUncachedClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreRejectUncachedClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreAddNoClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreAddCachedNoClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreCachedNoClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreRejectCachedNoClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreAddUncachedNoClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreUncachedNoClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreRejectUncachedNoClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreNoClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreRejectNoClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreRejectClientAuthUploadDelayTime:
         bins:
-        - [-.inf, .inf]
+        - [-.inf,   -3600.0]
+        - [-3600.0,     0.0]
+        - [    0.0,  3600.0]
+        - [ 3600.0,    .inf]
     HSDir2StoreAddCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreAddCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreRejectCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreAddUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreRejectUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddCachedClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreCachedClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectCachedClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddUncachedClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreUncachedClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectUncachedClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddCachedNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreCachedNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectCachedNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddUncachedNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreUncachedNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectUncachedNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectNoClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectClientAuthIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreAddDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreAddCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreAddCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreRejectCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreRejectCachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreAddUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreAddUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreRejectUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreRejectUncachedDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddCachedClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreCachedClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectCachedClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddUncachedClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreUncachedClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectUncachedClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddCachedNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreCachedNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectCachedNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreAddUncachedNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreUncachedNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectUncachedNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectNoClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir2StoreRejectClientAuthDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreRejectDescriptorByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDir3StoreAddCachedRevisionHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir3StoreCachedRevisionHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir3StoreRejectCachedRevisionHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir3StoreAddUncachedRevisionHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir3StoreUncachedRevisionHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir3StoreRejectUncachedRevisionHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1] # Descriptors for new or restarted services
+        - [ 1,  10]
+        - [ 10, .inf]
     HSDir2StoreAddCachedIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreCachedIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreRejectCachedIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreAddUncachedIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreUncachedIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreRejectUncachedIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreAddClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreAddCachedClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreCachedClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreRejectCachedClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreAddUncachedClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreUncachedClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreRejectUncachedClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreAddNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreAddCachedNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreCachedNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreRejectCachedNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreAddUncachedNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreUncachedNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreRejectUncachedNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreRejectNoClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDir2StoreRejectClientAuthIntroPointHistogram:
         bins:
-        - [-.inf, .inf]
+        - [ 0,  1]
+        - [ 1,  3]
+        - [ 3,  10]
     HSDirStoreAddCount:
         bins:
         - [-.inf, .inf]
@@ -20397,247 +20651,337 @@ counters:
         - [-.inf, .inf]
     HSDir2StoreAddReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3StoreAddReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreAddReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3StoreAddCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreAddCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3StoreCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3StoreRejectCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreRejectCachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3StoreAddUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreAddUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3StoreUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3StoreRejectUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreRejectUncachedReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3StoreReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddCachedClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreCachedClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectCachedClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddUncachedClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreUncachedClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectUncachedClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddCachedNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreCachedNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectCachedNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddUncachedNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreUncachedNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectUncachedNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectNoClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectClientAuthReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir3StoreRejectReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreRejectReasonCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddCachedOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreCachedOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectCachedOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddUncachedOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreUncachedOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectUncachedOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddCachedClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreCachedClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectCachedClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddUncachedClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreUncachedClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectUncachedClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddCachedNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreCachedNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectCachedNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreAddUncachedNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreUncachedNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectUncachedNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectNoClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectClientAuthOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDir2StoreRejectOnionAddressCountList:
         bins:
-        - [-.inf, .inf]
+        - [0, 1]
+        - [1, .inf]
     HSDirStoreAddIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreAddCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreRejectCachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreAddUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreRejectUncachedIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreRejectIntroByteHistogram:
         bins:
-        - [-.inf, .inf]
+        - [    0,     1] # empty?
+        - [    1, 10241]
+        - [10241,  .inf]
     HSDirStoreAddIntroByteCount:
         bins:
         - [-.inf, .inf]
@@ -20665,4 +21009,3 @@ counters:
     HSDirStoreRejectIntroByteCount:
         bins:
         - [-.inf, .inf]
->>>>>>> f16b40e... fixup! Run privcount/tools/add_counter.sh for updated HSDir Store counters
