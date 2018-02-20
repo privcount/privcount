@@ -9400,3 +9400,609 @@ counters:
         sigma: 1.0e+12
     HSDirClientCircuitCount:
         sigma: 1.0e+12
+    HSDir2StoreAddCachedUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreCachedUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreCachedClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddNoClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedNoClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreCachedNoClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedNoClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedNoClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedNoClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedNoClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreNoClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreRejectNoClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreRejectClientAuthUploadDelayTime:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRejectCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRejectUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreCachedClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreCachedNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreAddDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreAddCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRejectCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreRejectCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreAddUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRejectUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreRejectUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreCachedClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreCachedNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreRejectDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddCachedRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreCachedRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRejectCachedRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreAddUncachedRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreUncachedRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3StoreRejectUncachedRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreCachedIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreCachedClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreCachedNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2StoreRejectClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDirStoreAddCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddCachedCount:
+        sigma: 1.0e+12
+    HSDirStoreAddCachedCount:
+        sigma: 1.0e+12
+    HSDir2StoreCachedCount:
+        sigma: 1.0e+12
+    HSDir3StoreCachedCount:
+        sigma: 1.0e+12
+    HSDirStoreCachedCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectCachedCount:
+        sigma: 1.0e+12
+    HSDirStoreRejectCachedCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddUncachedCount:
+        sigma: 1.0e+12
+    HSDirStoreAddUncachedCount:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedCount:
+        sigma: 1.0e+12
+    HSDir3StoreUncachedCount:
+        sigma: 1.0e+12
+    HSDirStoreUncachedCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectUncachedCount:
+        sigma: 1.0e+12
+    HSDirStoreRejectUncachedCount:
+        sigma: 1.0e+12
+    HSDirStoreCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreCachedClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreCachedNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDirStoreAddDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirStoreAddCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirStoreCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirStoreRejectCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreAddUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirStoreAddUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirStoreUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3StoreRejectUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirStoreRejectUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirStoreDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreCachedClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreCachedNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirStoreRejectDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreCachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreCachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDirStoreRejectCount:
+        sigma: 1.0e+12
+    HSDir2StoreAddReasonCountList:
+        sigma: 1.0e+12
+    HSDir3StoreAddReasonCountList:
+        sigma: 1.0e+12
+    HSDirStoreAddReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir3StoreAddCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDirStoreAddCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir3StoreCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDirStoreCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir3StoreRejectCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDirStoreRejectCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir3StoreAddUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDirStoreAddUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir3StoreUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDirStoreUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir3StoreRejectUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDirStoreRejectUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreReasonCountList:
+        sigma: 1.0e+12
+    HSDir3StoreReasonCountList:
+        sigma: 1.0e+12
+    HSDirStoreReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreCachedClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreCachedNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectReasonCountList:
+        sigma: 1.0e+12
+    HSDir3StoreRejectReasonCountList:
+        sigma: 1.0e+12
+    HSDirStoreRejectReasonCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreCachedOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreCachedClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddCachedNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreCachedNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectCachedNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreAddUncachedNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreUncachedNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectUncachedNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2StoreRejectOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDirStoreAddIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreAddCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreRejectCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreAddUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreRejectUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreRejectIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirStoreAddIntroByteCount:
+        sigma: 1.0e+12
+    HSDirStoreAddCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDirStoreCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDirStoreRejectCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDirStoreAddUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDirStoreUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDirStoreRejectUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDirStoreIntroByteCount:
+        sigma: 1.0e+12
+    HSDirStoreRejectIntroByteCount:
+        sigma: 1.0e+12

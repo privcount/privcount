@@ -14200,3 +14200,912 @@ counters:
     HSDirClientCircuitCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    HSDir2StoreAddCachedUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddNoClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedNoClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedNoClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedNoClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedNoClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedNoClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedNoClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreNoClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectNoClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectClientAuthUploadDelayTime:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddCachedRevisionHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreCachedRevisionHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectCachedRevisionHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddUncachedRevisionHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreUncachedRevisionHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectUncachedRevisionHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedNoClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedNoClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedNoClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedNoClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedNoClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedNoClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreAddUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3StoreRejectReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddCachedNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreCachedNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectCachedNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreAddUncachedNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreUncachedNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectUncachedNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2StoreRejectOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreAddUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirStoreRejectIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
