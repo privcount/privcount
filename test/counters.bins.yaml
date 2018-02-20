@@ -21009,3 +21009,318 @@ counters:
     HSDirStoreRejectIntroByteCount:
         bins:
         - [-.inf, .inf]
+    HSDir2FetchCachedIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchCachedIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchCachedIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchUncachedIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchUncachedIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedClientAuthIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedClientAuthIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchClientAuthIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedNoClientAuthIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedNoClientAuthIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchNoClientAuthIntroByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchCachedDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchCachedDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchUncachedDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchUncachedDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedClientAuthDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedClientAuthDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchClientAuthDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedNoClientAuthDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedNoClientAuthDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchNoClientAuthDescriptorByteHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchCachedRevisionHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchUncachedRevisionHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchRevisionHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedIntroPointHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedIntroPointHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchIntroPointHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedClientAuthIntroPointHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedClientAuthIntroPointHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchClientAuthIntroPointHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedNoClientAuthIntroPointHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedNoClientAuthIntroPointHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchNoClientAuthIntroPointHistogram:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchCachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchUncachedCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchCachedIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchCachedIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchUncachedIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchUncachedIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedClientAuthIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedClientAuthIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchClientAuthIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedNoClientAuthIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedNoClientAuthIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchNoClientAuthIntroByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchCachedDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchCachedDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchUncachedDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchUncachedDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedClientAuthDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedClientAuthDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchClientAuthDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedNoClientAuthDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedNoClientAuthDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchNoClientAuthDescriptorByteCount:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchNoClientAuthCount:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchCachedReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchCachedReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchUncachedReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchUncachedReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir3FetchReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDirFetchReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedClientAuthReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedClientAuthReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchClientAuthReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedNoClientAuthReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedNoClientAuthReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchNoClientAuthReasonCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedOnionAddressCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedOnionAddressCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchOnionAddressCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedClientAuthOnionAddressCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedClientAuthOnionAddressCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchClientAuthOnionAddressCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchCachedNoClientAuthOnionAddressCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchUncachedNoClientAuthOnionAddressCountList:
+        bins:
+        - [-.inf, .inf]
+    HSDir2FetchNoClientAuthOnionAddressCountList:
+        bins:
+        - [-.inf, .inf]

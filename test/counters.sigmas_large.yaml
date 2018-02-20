@@ -10006,3 +10006,213 @@ counters:
         sigma: 1.0e+12
     HSDirStoreRejectIntroByteCount:
         sigma: 1.0e+12
+    HSDir2FetchCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3FetchCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirFetchCachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3FetchUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirFetchUncachedIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir3FetchIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDirFetchIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchCachedClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchCachedNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchNoClientAuthIntroByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3FetchCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirFetchCachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3FetchUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirFetchUncachedDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3FetchDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDirFetchDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchCachedClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchCachedNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchNoClientAuthDescriptorByteHistogram:
+        sigma: 1.0e+12
+    HSDir3FetchCachedRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3FetchUncachedRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir3FetchRevisionHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchCachedIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchCachedClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchCachedNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDir2FetchNoClientAuthIntroPointHistogram:
+        sigma: 1.0e+12
+    HSDirFetchCachedCount:
+        sigma: 1.0e+12
+    HSDirFetchUncachedCount:
+        sigma: 1.0e+12
+    HSDir2FetchCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3FetchCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDirFetchCachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3FetchUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDirFetchUncachedIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchIntroByteCount:
+        sigma: 1.0e+12
+    HSDir3FetchIntroByteCount:
+        sigma: 1.0e+12
+    HSDirFetchIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchCachedClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchCachedNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchNoClientAuthIntroByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3FetchCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirFetchCachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3FetchUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirFetchUncachedDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir3FetchDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirFetchDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchCachedClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchCachedNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDir2FetchNoClientAuthDescriptorByteCount:
+        sigma: 1.0e+12
+    HSDirFetchCount:
+        sigma: 1.0e+12
+    HSDir2FetchCachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2FetchClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2FetchCachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2FetchNoClientAuthCount:
+        sigma: 1.0e+12
+    HSDir2FetchCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir3FetchCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDirFetchCachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir3FetchUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDirFetchUncachedReasonCountList:
+        sigma: 1.0e+12
+    HSDir2FetchReasonCountList:
+        sigma: 1.0e+12
+    HSDir3FetchReasonCountList:
+        sigma: 1.0e+12
+    HSDirFetchReasonCountList:
+        sigma: 1.0e+12
+    HSDir2FetchCachedClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2FetchClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2FetchCachedNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2FetchNoClientAuthReasonCountList:
+        sigma: 1.0e+12
+    HSDir2FetchCachedOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2FetchOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2FetchCachedClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2FetchClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2FetchCachedNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2FetchUncachedNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12
+    HSDir2FetchNoClientAuthOnionAddressCountList:
+        sigma: 1.0e+12

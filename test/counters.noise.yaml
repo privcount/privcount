@@ -15109,3 +15109,318 @@ counters:
     HSDirStoreRejectIntroByteCount:
         estimated_value: 0.0
         sensitivity: 0.0
+    HSDir2FetchCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchCachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchUncachedIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchNoClientAuthIntroByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchCachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchUncachedDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchNoClientAuthDescriptorByteHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchCachedRevisionHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchUncachedRevisionHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchRevisionHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchNoClientAuthIntroPointHistogram:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchCachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchUncachedCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchCachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchUncachedIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchNoClientAuthIntroByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchCachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchUncachedDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchNoClientAuthDescriptorByteCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedNoClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedNoClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchNoClientAuthCount:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchCachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchUncachedReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir3FetchReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDirFetchReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchNoClientAuthReasonCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchCachedNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchUncachedNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
+    HSDir2FetchNoClientAuthOnionAddressCountList:
+        estimated_value: 0.0
+        sensitivity: 0.0
