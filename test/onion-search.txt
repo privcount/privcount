@@ -1,0 +1,18 @@
+# Search onion sites
+# https://en.wikipedia.org/wiki/List_of_Tor_hidden_services
+#
+# https://duckduckgo.com/ well-known, available as Tor Browser search option
+https://3g2upl4pq6kufc4m.onion/
+# https://ahmia.fi/
+http://msydqstlz2kzerdg.onion/
+# https://metager.de/en
+# https://forum.suma-ev.de/viewtopic.php?f=3&t=43
+http://b7cxf4dkdsko6ah2.onion/tor/
+# https://sci-hub.hk/
+# No link to onion address from main site
+# https://en.wikipedia.org/wiki/Sci-Hub
+# seems to be down
+#scihub22266oqcxt.onion
+# https://github.com/asciimoo/searx/wiki/Searx-instances
+# seems to be down
+#7jwxg5rakyfvikpi.onion

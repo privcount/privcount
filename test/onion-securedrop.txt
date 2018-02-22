@@ -1,0 +1,113 @@
+# SecureDrop onion sites directory
+# curl https://securedrop.org/directory | grep -e "<td" \
+# | sed 's!<td>\(.*\)</td>!# \1!' | sed 's/.*href="\([^"]*\)".*/# \1/' \
+# | sed 's/# \(.*\).onion/\1.onion/' > onion-securedrop.txt
+#
+# Apache
+# https://www.apache.be/securedrop
+zdf4nikyuswdzbt6.onion
+# Associated Press
+# https://www.ap.org/tips/
+3expgpdnrrzezf7r.onion
+# Bloomberg News
+# https://www.bloomberg.com/tips/
+m4hynbhhctdk27jr.onion
+# BuzzFeed
+# https://contact.buzzfeed.com
+ftugftwajmgsmoau.onion
+# CBC
+# https://securedrop.cbc.ca
+ad2ztmbv5vmbj7ic.onion
+# CPI
+# https://www.publicintegrity.org/securedrop
+v2d6nf2nsvvbgaqe.onion
+# CPJ
+# https://www.cpj.org/campaigns/assistance/how-to-get-help.php
+2x2hb5ykeu4qlxqe.onion
+# Dagbladet
+# https://securedrop.dagbladet.no
+mz33367mcdrcdi7s.onion
+# Espen Andersen
+# https://espenandersen.no/contact
+espenav2n45atpsj.onion
+# ExposeFacts
+# https://exposefacts.org
+znig4bc5rlwyj4mz.onion
+# Field of Vision
+# https://fieldofvision.org/securedrop
+fovisionunz7mtxw.onion
+# Forbes
+# https://www.forbes.com/fdc/securedrop.html
+t5pv5o4t6jyjilp6.onion
+# Gizmodo Media Group
+# https://specialprojectsdesk.com/securedrop/
+gmg7jl25ony5g7ws.onion
+# The Globe and Mail
+# https://sec.theglobeandmail.com/securedrop
+sml5wmpuq7ifq2mh.onion
+# Greenpeace New Zealand
+# https://securedrop.greenpeace.org.nz
+ll6edwtpfl3zdwoi.onion
+# The Guardian
+# https://securedrop.theguardian.com
+33y6fjyhs3phzfjj.onion
+# HuffPost
+# https://img.huffingtonpost.com/securedrop
+rbugf2rz5lmjbfun.onion
+# The Intercept
+# https://theintercept.com/source/#securedrop
+intrcept32ncblef.onion
+# Lucy Parsons Labs
+# https://lucyparsonslabs.com/securedrop
+qn4qfeeslglmwxgb.onion
+# Morgenbladet
+# https://morgenbladet.no/varsle
+g4wmrmqxpj5bnvml.onion
+# New Internationalist
+# https://digital.newint.com.au/securedrop
+axcdo2zaeyrpdc6z.onion
+# The New York Times
+# https://www.nytimes.com/tips
+nyttips4bmquxfzw.onion
+# NRK
+# https://www.nrk.no/varsle/
+nrkvarslekidu2uz.onion
+# Project On Gov't Oversight (POGO)
+# https://securedrop.pogo.org
+dqeasamlf3jld2kz.onion
+# ProPublica
+# https://securedrop.propublica.org
+pubdrop4dw6rk3aq.onion
+# Public Intelligence
+# https://publicintelligence.net/contribute/
+arujlhu2zjjhc3bw.onion
+# Radio24syv
+# https://securedrop.radio24syv.dk
+hpjw636qnt5avq62.onion
+# Radio-Canada
+# https://sourceanonyme.radio-canada.ca
+w5jfqhep2jbypkek.onion
+# San Francisco Chronicle
+# https://newstips.sfchronicle.com/
+nrwvazcz6figxpg5.onion
+# Barton Gellman
+# https://tcfmailvault.info
+mqddpn6yt4f5uqei.onion
+# The Washington Post
+# https://www.washingtonpost.com/securedrop
+jcw5q6uyjioupxcc.onion
+# USA TODAY
+# https://newstips.usatoday.com/securedrop.html
+usatodayw7vu5egc.onion
+# VICE Media
+# https://news.vice.com/securedrop/
+e3v3x57ykz25uvij.onion
+# Vox.com
+# https://apps.voxmedia.com/vox-tips/
+2cq26ys7wjhryrzw.onion
+# The Verge
+# https://apps.voxmedia.com/verge-tips/
+2xat73hlwcpwo2zy.onion
+# Wired's Kevin Poulsen
+# https://freedom.press/about/tech/kevin-poulsen
+poulsensqiv6ocq4.onion

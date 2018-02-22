@@ -301,6 +301,9 @@ TODO: expand documentation
           {Inbound,Outbound}Exit{Cell,Byte}Count,
           {Inbound,Outbound}DirByteCount
 
+See test/circuit-failure-reason.txt for FailureReasonStrings and their
+meanings.
+
 Limitations:
 
 We can't know anything about the purpose of a circuit if no cells have been
@@ -689,24 +692,44 @@ Hidden services are also known as onion services.
 This field is named after the HiddenServiceVersion torrc option.
 
 ### CacheReasonString
+
 An ASCII string that describes why the descriptor was added or rejected from
 the cache:
 
-Added to cache:
-* new: the descriptor is new in the cache,
-* updated: the descriptor replaced an existing descriptor in the cache,
+#### HSDir Store and HSDir Cache
 
-Not added to cache because:
-* obsolete: the DescriptorCreationTime was less than (v2) or
-            RevisionNumber (v3) was less than or equal to the corresponding
-            field in the descriptor that is already cached.
+Not added to or fetched from the cache because:
+* unencrypted: the request was made on the relay's DirPort (v2 and v3).
 * unparseable: the descriptor could not be parsed (v2 and v3). Empty uploads
-               are considered unparseable.
+are considered unparseable.
+
+#### HSDir Store
+
+Added to cache:
+* new: the descriptor is new in the cache (v2 and v3).
+* updated: the descriptor replaced an existing descriptor in the cache (v2 and v3).
+
+Not added to the cache because:
+* badrequest: the request is not to the "publish" URL (v3 only).
+* badversion: the request is not version 3 (v3 only).
+* duplicate: the encoded descriptor body is identical to the encoded body for
+             the currently cached descriptor (v2 only).
 * expired: the DescriptorCreationTime is more than 3 days old (v2 only).
 * future: the DescriptorCreationTime is more than 1 day into the future
           (v2 only).
-* duplicate: the encoded descriptor body is identical to the encoded body for
-             the currently cached descriptor (v2 only).
+* obsolete: the DescriptorCreationTime was less than (v2) or
+            RevisionNumber was less than or equal to (v3) the corresponding
+            field in the descriptor that is already cached.
+
+#### HSDir Fetch
+
+In cache:
+* cached: the descriptor is in the cache (v2 and v3).
+
+Not fetched from the cache because:
+* uncached: the descriptor is not in the cache (v2 and v3).
+
+#### Notes
 
 v2 descriptors are cache keyed by DescriptorId, v3 descriptors are cache keyed
 by BlindedEd25519PublicKey.

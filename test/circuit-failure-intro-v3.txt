@@ -1,0 +1,18 @@
+# Circuit Failure Reasons, PrivCount 3.0
+# Intro v3 only
+#
+# Source:
+# or_circuit_t.privcount_circuit_failure_reason field
+#
+#
+# Intro Establish, HSv3
+IntroEv3FailedCircuit
+IntroEv3InvalidCell
+IntroEv3TruncatedCell
+IntroEv3FailedVerifyCell
+#
+#
+# Introduce 1, HSv3
+Intro1v3FailedParseCell
+Intro1v3FailedValidateCell
+Intro1v3FailedLookupCircuit

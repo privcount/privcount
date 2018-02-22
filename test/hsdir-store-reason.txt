@@ -1,0 +1,16 @@
+# HSDir Store Reasons, PrivCount 3.0
+# Source:
+# cache_reason_string argument to control_event_privcount_hsdir_cache_store()
+#
+# success reasons
+new
+updated
+# failure reasons
+badrequest
+badversion
+duplicate
+expired
+future
+obsolete
+unencrypted
+unparseable

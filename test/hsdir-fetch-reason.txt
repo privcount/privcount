@@ -1,0 +1,10 @@
+# HSDir Fetch Reasons, PrivCount 3.0
+# Source:
+# cache_reason_string argument to control_event_privcount_hsdir_cache_fetch()
+#
+# success reasons
+cached
+# failure reasons
+uncached
+unencrypted
+unparseable

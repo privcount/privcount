@@ -1,0 +1,30 @@
+# Circuit Failure Reasons, PrivCount 3.0
+# Introduce general and legacy (v2 and v3)
+#
+# Source:
+# or_circuit_t.privcount_circuit_failure_reason field
+#
+#
+# Intro Establish from service
+IntroEEmptyCell
+IntroEUnrecognizedAuthKeyType
+#
+# Intro Establish, HSv2 or HSV3 using legacy intro points
+IntroEv2FailedCircuit
+IntroEv2FailedPublicKey
+IntroEv2InternalErrorDigest
+IntroEv2FailedDigest
+IntroEv2FailedSignature
+IntroEv2InternalErrorHash
+IntroEv2ReplaceOldCircuit
+IntroEv2TruncatedCell
+#
+#
+# Introduce 1 from client
+Intro1FailedCircuit
+Intro1MoreThanOneCell
+Intro1TruncatedCell
+Intro1ProtocolError
+# Introduce 1, HSv2 or HSV3 using legacy intro points
+Intro1v2TruncatedCell
+Intro1v2FailedLookupCircuit

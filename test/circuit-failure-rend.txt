@@ -1,0 +1,24 @@
+# Circuit Failure Reasons, PrivCount 3.0
+# Rendezvous Point only
+#
+# Source:
+# or_circuit_t.privcount_circuit_failure_reason field
+#
+#
+# The Rendezvous code is the same for HSv2 and HSv3
+# Rend Establish from client
+RendEFailedORCircuit
+RendEDoSRefuseSingleHopClientRendezvous
+RendEFailedEdgeCircuit
+RendEFailedCellLength
+RendEDuplicateCell
+#
+# Rend Rendezvous (Splice) from service
+RendRFailedCircuit
+RendRTruncatedCell
+RendRFailedLookupCircuit
+# Rend Stream from client, refused at service
+RendServiceUnknownPort
+# Rend Splice, cell relay failure
+RendSpliceRelaySend
+RendSpliceRelayReceive

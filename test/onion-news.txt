@@ -1,0 +1,9 @@
+# News onion sites
+# https://en.wikipedia.org/wiki/List_of_Tor_hidden_services
+#
+# https://www.propublica.org/ "Browse via Tor" link
+https://www.propub3r6espa33w.onion/
+# https://open.nytimes.com/https-open-nytimes-com-the-new-york-times-as-a-tor-onion-service-e0d0b67b7482
+https://www.nytimes3xbfgragh.onion/
+# https://en.wikipedia.org/wiki/DeepDotWeb
+http://deepdot35wvmeyd5.onion/

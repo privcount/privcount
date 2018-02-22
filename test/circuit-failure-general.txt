@@ -1,0 +1,39 @@
+# Circuit Failure Reasons, PrivCount 3.0
+# General circuit failures
+#
+# Circuit failure reasons cover Introduce and Rendezvous circuits in detail,
+# for relays in the Intro and Rend positions. General reasons are less
+# detailed.
+#
+# Source:
+# or_circuit_t.privcount_circuit_failure_reason field
+#
+#
+# General circuit failure reasons
+#
+# Cell Packaging Failure, can apply to any position and any type of circuit
+FailedPackageCell
+#
+# Create cells
+CircuitCreateBadCell
+CircuitCreateAssignOnionskin
+CircuitCreateFastKey
+CircuitCreateFastResponse
+#
+# Created cells
+CreatedFromClient
+CreatedUnparseable
+# Created cells at origin
+CreatedOriginHandshake
+CreatedOriginSendNextOnionSkin
+# Created cells at relay
+CreatedRelayFormatExtend
+#
+# Relay cells
+CircuitCreateWait
+CircuitInboundRelayEarly
+CircuitTooManyRelayEarly
+CircuitReceiveRelayCell
+#
+# Destroy cells
+# Destroy cells are normal, and are not considered failures

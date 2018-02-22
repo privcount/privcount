@@ -1,0 +1,6 @@
+# Facebook onion site
+# Manually collected
+# Facebook CDN onion are excluded because they would bias the results
+#
+# https://www.facebook.com/facebookcorewwwi
+https://www.facebookcorewwwi.onion/
