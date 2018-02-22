@@ -41,7 +41,7 @@ tally_server:
     checkin_period: 20
     delay_period: 86400
     # Ignore some circuits, so we test this feature
-    circuit_sample_rate: 0.5
+    circuit_sample_rate: 0.9
     # set a cell limit, so we test this feature
     max_cell_events_per_circuit: 25
     key: 'keys/ts.pem'
