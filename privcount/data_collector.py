@@ -1120,9 +1120,9 @@ class Aggregator(ReconnectingClientFactory):
         elif event_code == 'PRIVCOUNT_CONNECTION_CLOSE':
             return self._handle_connection_close_event(fields)
         elif event_code == 'PRIVCOUNT_HSDIR_CACHE_STORE':
-            return self._handle_hsdir_stored_event(fields)
+            return self._handle_hsdir_store_event(fields)
         elif event_code == 'PRIVCOUNT_HSDIR_CACHE_FETCH':
-            return self._handle_hsdir_fetched_event(fields)
+            return self._handle_hsdir_fetch_event(fields)
         else:
             logging.warning("Unexpected {} event when handling: '{}'"
                             .format(event_code, " ".join(items)))
@@ -3839,7 +3839,7 @@ class Aggregator(ReconnectingClientFactory):
         return True
 
     @staticmethod
-    def are_hsdir_stored_fields_valid(fields, event_desc):
+    def are_hsdir_store_fields_valid(fields, event_desc):
         '''
         Check if the PRIVCOUNT_HSDIR_CACHE_STORE fields are valid.
         Returns True if they are all valid, False if one or more are not.
@@ -3872,20 +3872,19 @@ class Aggregator(ReconnectingClientFactory):
         # if everything passed, we're ok
         return True
 
-    def _increment_hsdir_stored_version_counters(self,
-                                                 counter_prefix,
-                                                 counter_suffix,
-                                                 reason_str,
-                                                 was_added,
-                                                 has_existing,
-                                                 has_client_auth,
-                                                 event_desc,
-                                                 bin=SINGLE_BIN,
-                                                 inc=1,
-                                                 log_missing_counters=True):
+    def _increment_hsdir_store_version_counters(self,
+                                                counter_prefix,
+                                                counter_suffix,
+                                                was_added,
+                                                has_existing,
+                                                has_client_auth,
+                                                event_desc,
+                                                bin=SINGLE_BIN,
+                                                inc=1,
+                                                log_missing_counters=True):
         '''
         Increment bin by inc for the set of counters starting in
-        counter_prefix and ending in counter_suffix. Use reason_str, was_added,
+        counter_prefix and ending in counter_suffix. Use was_added,
         has_existing, and has_client_auth to create the counter names.
 
         If log_missing_counters, warn the operator when a requested counter
@@ -3913,7 +3912,7 @@ class Aggregator(ReconnectingClientFactory):
                                                       counter_suffix)
 
         if has_client_auth is not None:
-            # v2 only: we checked in are_hsdir_stored_fields_valid()
+            # v2 only: we checked in are_hsdir_store_fields_valid()
 
             auth_str = "ClientAuth" if has_client_auth else "NoClientAuth"
             auth_counter = "{}Store{}{}".format(counter_prefix,
@@ -3952,7 +3951,7 @@ class Aggregator(ReconnectingClientFactory):
                                             event_desc)
 
             if has_client_auth is not None:
-                # v2 only: we checked in are_hsdir_stored_fields_valid()
+                # v2 only: we checked in are_hsdir_store_fields_valid()
 
                 auth_origin = "RequiresClientAuthFlag and {} and {}".format(counter_prefix, counter_suffix)
                 Aggregator.warn_unknown_counter(auth_counter,
@@ -3986,7 +3985,7 @@ class Aggregator(ReconnectingClientFactory):
                                        inc=inc)
 
         if has_client_auth is not None:
-            # v2 only: we checked in are_hsdir_stored_fields_valid()
+            # v2 only: we checked in are_hsdir_store_fields_valid()
 
             self.secure_counters.increment(auth_counter,
                                            bin=bin,
@@ -4001,21 +4000,20 @@ class Aggregator(ReconnectingClientFactory):
                                            bin=bin,
                                            inc=inc)
 
-    def _increment_hsdir_stored_counters(self,
-                                         counter_suffix,
-                                         hs_version,
-                                         reason_str,
-                                         was_added,
-                                         has_existing,
-                                         has_client_auth,
-                                         event_desc,
-                                         bin=SINGLE_BIN,
-                                         inc=1,
-                                         log_missing_counters=True):
+    def _increment_hsdir_store_counters(self,
+                                        counter_suffix,
+                                        hs_version,
+                                        was_added,
+                                        has_existing,
+                                        has_client_auth,
+                                        event_desc,
+                                        bin=SINGLE_BIN,
+                                        inc=1,
+                                        log_missing_counters=True):
         '''
         Increment bin by inc for the set of counters ending in
-        counter_suffix, using hs_version, reason_str, was_added,
-        has_existing, and has_client_auth to create the counter names.
+        counter_suffix, using hs_version, was_added, has_existing, and
+        has_client_auth to create the counter names.
 
         If log_missing_counters, warn the operator when a requested counter
         is not in the table in counters.py. Otherwise, unknown names are
@@ -4025,32 +4023,30 @@ class Aggregator(ReconnectingClientFactory):
         assert hs_version == 2 or hs_version == 3
 
         # HSDir ...
-        self._increment_hsdir_stored_version_counters("HSDir",
-                                                      counter_suffix,
-                                                      reason_str,
-                                                      was_added,
-                                                      has_existing,
-                                                      # Only use shared counters
-                                                      None,
-                                                      event_desc,
-                                                      bin=bin,
-                                                      inc=inc,
-                                                      log_missing_counters=log_missing_counters)
+        self._increment_hsdir_store_version_counters("HSDir",
+                                                     counter_suffix,
+                                                     was_added,
+                                                     has_existing,
+                                                     # Only use shared counters
+                                                     None,
+                                                     event_desc,
+                                                     bin=bin,
+                                                     inc=inc,
+                                                     log_missing_counters=log_missing_counters)
 
         # HSDir 2/3 ...
-        self._increment_hsdir_stored_version_counters("HSDir{}"
-                                                      .format(hs_version),
-                                                      counter_suffix,
-                                                      reason_str,
-                                                      was_added,
-                                                      has_existing,
-                                                      has_client_auth,
-                                                      event_desc,
-                                                      bin=bin,
-                                                      inc=inc,
-                                                      log_missing_counters=log_missing_counters)
+        self._increment_hsdir_store_version_counters("HSDir{}"
+                                                     .format(hs_version),
+                                                     counter_suffix,
+                                                     was_added,
+                                                     has_existing,
+                                                     has_client_auth,
+                                                     event_desc,
+                                                     bin=bin,
+                                                     inc=inc,
+                                                     log_missing_counters=log_missing_counters)
 
-    def _handle_hsdir_stored_event(self, fields):
+    def _handle_hsdir_store_event(self, fields):
         '''
         Process a PRIVCOUNT_HSDIR_CACHE_STORE event
         This is a tagged event: fields is a dictionary of Key=Value pairs.
@@ -4076,7 +4072,7 @@ class Aggregator(ReconnectingClientFactory):
         '''
         event_desc = "in PRIVCOUNT_HSDIR_CACHE_STORE event"
 
-        if not Aggregator.are_hsdir_stored_fields_valid(fields, event_desc):
+        if not Aggregator.are_hsdir_store_fields_valid(fields, event_desc):
             # handle the event by warning (in the validator) and ignoring it
             return True
 
@@ -4127,116 +4123,109 @@ class Aggregator(ReconnectingClientFactory):
 
         # Increment counters for mandatory fields
         # These are the base counters that cover all the upload cases
-        self._increment_hsdir_stored_counters("Count",
-                                              hs_version,
-                                              reason_str,
-                                              was_added,
-                                              has_existing,
-                                              has_client_auth,
-                                              event_desc,
-                                              bin=SINGLE_BIN,
-                                              inc=1,
-                                              log_missing_counters=True)
+        self._increment_hsdir_store_counters("Count",
+                                             hs_version,
+                                             was_added,
+                                             has_existing,
+                                             has_client_auth,
+                                             event_desc,
+                                             bin=SINGLE_BIN,
+                                             inc=1,
+                                             log_missing_counters=True)
 
         # Increment counters for common optional fields
 
         if intro_bytes is not None:
-            self._increment_hsdir_stored_counters("IntroByteCount",
-                                                  hs_version,
-                                                  reason_str,
-                                                  was_added,
-                                                  has_existing,
-                                                  has_client_auth,
-                                                  event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=intro_bytes,
-                                                  log_missing_counters=True)
-            self._increment_hsdir_stored_counters("IntroByteHistogram",
-                                                  hs_version,
-                                                  reason_str,
-                                                  was_added,
-                                                  has_existing,
-                                                  has_client_auth,
-                                                  event_desc,
-                                                  bin=intro_bytes,
-                                                  inc=1,
-                                                  log_missing_counters=True)
+            self._increment_hsdir_store_counters("IntroByteCount",
+                                                 hs_version,
+                                                 was_added,
+                                                 has_existing,
+                                                 has_client_auth,
+                                                 event_desc,
+                                                 bin=SINGLE_BIN,
+                                                 inc=intro_bytes,
+                                                 log_missing_counters=True)
+            self._increment_hsdir_store_counters("IntroByteHistogram",
+                                                 hs_version,
+                                                 was_added,
+                                                 has_existing,
+                                                 has_client_auth,
+                                                 event_desc,
+                                                 bin=intro_bytes,
+                                                 inc=1,
+                                                 log_missing_counters=True)
         if desc_bytes is not None:
-            self._increment_hsdir_stored_counters("DescriptorByteCount",
-                                                  hs_version,
-                                                  reason_str,
-                                                  was_added,
-                                                  has_existing,
-                                                  has_client_auth,
-                                                  event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=desc_bytes,
-                                                  log_missing_counters=True)
-            self._increment_hsdir_stored_counters("DescriptorByteHistogram",
-                                                  hs_version,
-                                                  reason_str,
-                                                  was_added,
-                                                  has_existing,
-                                                  has_client_auth,
-                                                  event_desc,
-                                                  bin=desc_bytes,
-                                                  inc=1,
-                                                  log_missing_counters=True)
+            self._increment_hsdir_store_counters("DescriptorByteCount",
+                                                 hs_version,
+                                                 was_added,
+                                                 has_existing,
+                                                 has_client_auth,
+                                                 event_desc,
+                                                 bin=SINGLE_BIN,
+                                                 inc=desc_bytes,
+                                                 log_missing_counters=True)
+            self._increment_hsdir_store_counters("DescriptorByteHistogram",
+                                                 hs_version,
+                                                 was_added,
+                                                 has_existing,
+                                                 has_client_auth,
+                                                 event_desc,
+                                                 bin=desc_bytes,
+                                                 inc=1,
+                                                 log_missing_counters=True)
 
         # Increment counters for v2 optional fields
 
         if intro_count is not None:
-            # we checked in are_hsdir_stored_fields_valid()
+            # we checked in are_hsdir_store_fields_valid()
             assert hs_version == 2
             # we don't bother collecting detailed rejection subcategories
             # to add rejection counters, their names to the list in counter.py
-            self._increment_hsdir_stored_version_counters("HSDir2",
-                                                          "IntroPointHistogram",
-                                                          reason_str,
-                                                          was_added,
-                                                          has_existing,
-                                                          has_client_auth,
-                                                          event_desc,
-                                                          bin=intro_count,
-                                                          inc=1,
-                                                          log_missing_counters=True)
+            self._increment_hsdir_store_version_counters("HSDir2",
+                                                         "IntroPointHistogram",
+                                                         was_added,
+                                                         has_existing,
+                                                         has_client_auth,
+                                                         event_desc,
+                                                         bin=intro_count,
+                                                         inc=1,
+                                                         log_missing_counters=True)
 
         if create_time is not None:
-            # we checked in are_hsdir_stored_fields_valid()
+            # we checked in are_hsdir_store_fields_valid()
             assert hs_version == 2
             # create_time is truncated to the nearest hour
             delay_time = event_ts - create_time
-            self._increment_hsdir_stored_version_counters("HSDir2",
-                                                          "UploadDelayTime",
-                                                          reason_str,
-                                                          was_added,
-                                                          has_existing,
-                                                          has_client_auth,
-                                                          event_desc,
-                                                          bin=delay_time,
-                                                          inc=1,
-                                                          log_missing_counters=True)
+            self._increment_hsdir_store_version_counters("HSDir2",
+                                                         "UploadDelayTime",
+                                                         was_added,
+                                                         has_existing,
+                                                         has_client_auth,
+                                                         event_desc,
+                                                         bin=delay_time,
+                                                         inc=1,
+                                                         log_missing_counters=True)
 
         # Increment counters for v3 optional fields
 
         if revision_num is not None:
-            # we checked in are_hsdir_stored_fields_valid()
+            # we checked in are_hsdir_store_fields_valid()
             assert hs_version == 3
-            self._increment_hsdir_stored_version_counters("HSDir3",
-                                                          "RevisionHistogram",
-                                                          reason_str,
-                                                          was_added,
-                                                          has_existing,
-                                                          has_client_auth,
-                                                          event_desc,
-                                                          bin=revision_num,
-                                                          inc=1,
-                                                          log_missing_counters=True)
+            self._increment_hsdir_store_version_counters("HSDir3",
+                                                         "RevisionHistogram",
+                                                         was_added,
+                                                         has_existing,
+                                                         has_client_auth,
+                                                         event_desc,
+                                                         bin=revision_num,
+                                                         inc=1,
+                                                         log_missing_counters=True)
+
         # we processed and handled the event
         return True
 
     @staticmethod
-    def are_hsdir_fetched_fields_valid(fields, event_desc):
+    def are_hsdir_fetch_fields_valid(fields, event_desc):
         '''
         Check if the PRIVCOUNT_HSDIR_CACHE_FETCH fields are valid.
         Returns True if they are all valid, False if one or more are not.
@@ -4288,20 +4277,19 @@ class Aggregator(ReconnectingClientFactory):
         # if everything passed, we're ok
         return True
 
-    def _increment_hsdir_fetched_version_counters(self,
-                                                  counter_prefix,
-                                                  counter_suffix,
-                                                  reason_str,
-                                                  has_cache,
-                                                  has_client_auth,
-                                                  event_desc,
-                                                  bin=SINGLE_BIN,
-                                                  inc=1,
-                                                  log_missing_counters=True):
+    def _increment_hsdir_fetch_version_counters(self,
+                                                counter_prefix,
+                                                counter_suffix,
+                                                has_cache,
+                                                has_client_auth,
+                                                event_desc,
+                                                bin=SINGLE_BIN,
+                                                inc=1,
+                                                log_missing_counters=True):
         '''
         Increment bin by inc for the set of counters starting in
-        counter_prefix and ending in counter_suffix. Use reason_str,
-        has_cache, and has_client_auth to create the counter names.
+        counter_prefix and ending in counter_suffix. Use has_cache and
+        has_client_auth to create the counter names.
 
         If log_missing_counters, warn the operator when a requested counter
         is not in the table in counters.py. Otherwise, unknown names are
@@ -4320,7 +4308,7 @@ class Aggregator(ReconnectingClientFactory):
                                               counter_suffix)
 
         if has_client_auth is not None:
-            # v2 only: we checked in are_hsdir_fetched_fields_valid()
+            # v2 only: we checked in are_hsdir_fetch_fields_valid()
 
             auth_str = "ClientAuth" if has_client_auth else "NoClientAuth"
             auth_counter = "{}Fetch{}{}".format(counter_prefix,
@@ -4342,7 +4330,7 @@ class Aggregator(ReconnectingClientFactory):
                                             event_desc)
 
             if has_client_auth is not None:
-                # v2 only: we checked in are_hsdir_fetched_fields_valid()
+                # v2 only: we checked in are_hsdir_fetch_fields_valid()
 
                 auth_origin = "RequiresClientAuthFlag and {} and {}".format(counter_prefix, counter_suffix)
                 Aggregator.warn_unknown_counter(auth_counter,
@@ -4362,7 +4350,7 @@ class Aggregator(ReconnectingClientFactory):
                                        inc=inc)
 
         if has_client_auth is not None:
-            # v2 only: we checked in are_hsdir_fetched_fields_valid()
+            # v2 only: we checked in are_hsdir_fetch_fields_valid()
 
             self.secure_counters.increment(auth_counter,
                                            bin=bin,
@@ -4371,20 +4359,19 @@ class Aggregator(ReconnectingClientFactory):
                                            bin=bin,
                                            inc=inc)
 
-    def _increment_hsdir_fetched_counters(self,
-                                          counter_suffix,
-                                          hs_version,
-                                          reason_str,
-                                          has_cached,
-                                          has_client_auth,
-                                          event_desc,
-                                          bin=SINGLE_BIN,
-                                          inc=1,
-                                          log_missing_counters=True):
+    def _increment_hsdir_fetch_counters(self,
+                                        counter_suffix,
+                                        hs_version,
+                                        has_cached,
+                                        has_client_auth,
+                                        event_desc,
+                                        bin=SINGLE_BIN,
+                                        inc=1,
+                                        log_missing_counters=True):
         '''
         Increment bin by inc for the set of counters ending in
-        counter_suffix, using hs_version, reason_str, has_cached, and
-        has_client_auth to create the counter names.
+        counter_suffix, using hs_version, has_cached, and has_client_auth to
+        create the counter names.
 
         If log_missing_counters, warn the operator when a requested counter
         is not in the table in counters.py. Otherwise, unknown names are
@@ -4394,30 +4381,28 @@ class Aggregator(ReconnectingClientFactory):
         assert hs_version == 2 or hs_version == 3
 
         # HSDir ...
-        self._increment_hsdir_fetched_version_counters("HSDir",
-                                                       counter_suffix,
-                                                       reason_str,
-                                                       has_cached,
-                                                       # Only use shared counters
-                                                       None,
-                                                       event_desc,
-                                                       bin=bin,
-                                                       inc=inc,
-                                                       log_missing_counters=log_missing_counters)
+        self._increment_hsdir_fetch_version_counters("HSDir",
+                                                     counter_suffix,
+                                                     has_cached,
+                                                     # Only use shared counters
+                                                     None,
+                                                     event_desc,
+                                                     bin=bin,
+                                                     inc=inc,
+                                                     log_missing_counters=log_missing_counters)
 
         # HSDir 2/3 ...
-        self._increment_hsdir_fetched_version_counters("HSDir{}"
-                                                       .format(hs_version),
-                                                       counter_suffix,
-                                                       reason_str,
-                                                       has_cached,
-                                                       has_client_auth,
-                                                       event_desc,
-                                                       bin=bin,
-                                                       inc=inc,
-                                                       log_missing_counters=log_missing_counters)
+        self._increment_hsdir_fetch_version_counters("HSDir{}"
+                                                     .format(hs_version),
+                                                     counter_suffix,
+                                                     has_cached,
+                                                     has_client_auth,
+                                                     event_desc,
+                                                     bin=bin,
+                                                     inc=inc,
+                                                     log_missing_counters=log_missing_counters)
 
-    def _handle_hsdir_fetched_event(self, fields):
+    def _handle_hsdir_fetch_event(self, fields):
         '''
         Process a PRIVCOUNT_HSDIR_CACHE_FETCH event
         This is a tagged event: fields is a dictionary of Key=Value pairs.
@@ -4444,7 +4429,7 @@ class Aggregator(ReconnectingClientFactory):
         '''
         event_desc = "in PRIVCOUNT_HSDIR_CACHE_FETCH event"
 
-        if not Aggregator.are_hsdir_fetched_fields_valid(fields, event_desc):
+        if not Aggregator.are_hsdir_fetch_fields_valid(fields, event_desc):
             # handle the event by warning (in the validator) and ignoring it
             return True
 
@@ -4490,88 +4475,81 @@ class Aggregator(ReconnectingClientFactory):
 
         # Increment counters for mandatory fields
         # These are the base counters that cover all the upload cases
-        self._increment_hsdir_fetched_counters("Count",
-                                              hs_version,
-                                              reason_str,
-                                              has_cache,
-                                              has_client_auth,
-                                              event_desc,
-                                              bin=SINGLE_BIN,
-                                              inc=1,
-                                              log_missing_counters=True)
+        self._increment_hsdir_fetch_counters("Count",
+                                             hs_version,
+                                             has_cache,
+                                             has_client_auth,
+                                             event_desc,
+                                             bin=SINGLE_BIN,
+                                             inc=1,
+                                             log_missing_counters=True)
 
         # Increment counters for common optional fields
 
         if intro_bytes is not None:
-            self._increment_hsdir_fetched_counters("IntroByteCount",
-                                                   hs_version,
-                                                   reason_str,
-                                                   has_cache,
-                                                   has_client_auth,
-                                                   event_desc,
-                                                   bin=SINGLE_BIN,
-                                                   inc=intro_bytes,
-                                                   log_missing_counters=True)
-            self._increment_hsdir_fetched_counters("IntroByteHistogram",
-                                                   hs_version,
-                                                   reason_str,
-                                                   has_cache,
-                                                   has_client_auth,
-                                                   event_desc,
-                                                   bin=intro_bytes,
-                                                   inc=1,
-                                                   log_missing_counters=True)
+            self._increment_hsdir_fetch_counters("IntroByteCount",
+                                                 hs_version,
+                                                 has_cache,
+                                                 has_client_auth,
+                                                 event_desc,
+                                                 bin=SINGLE_BIN,
+                                                 inc=intro_bytes,
+                                                 log_missing_counters=True)
+            self._increment_hsdir_fetch_counters("IntroByteHistogram",
+                                                 hs_version,
+                                                 has_cache,
+                                                 has_client_auth,
+                                                 event_desc,
+                                                 bin=intro_bytes,
+                                                 inc=1,
+                                                 log_missing_counters=True)
         if desc_bytes is not None:
-            self._increment_hsdir_fetched_counters("DescriptorByteCount",
-                                                   hs_version,
-                                                   reason_str,
-                                                   has_cache,
-                                                   has_client_auth,
-                                                   event_desc,
-                                                   bin=SINGLE_BIN,
-                                                   inc=desc_bytes,
-                                                   log_missing_counters=True)
-            self._increment_hsdir_fetched_counters("DescriptorByteHistogram",
-                                                   hs_version,
-                                                   reason_str,
-                                                   has_cache,
-                                                   has_client_auth,
-                                                   event_desc,
-                                                   bin=desc_bytes,
-                                                   inc=1,
-                                                   log_missing_counters=True)
+            self._increment_hsdir_fetch_counters("DescriptorByteCount",
+                                                 hs_version,
+                                                 has_cache,
+                                                 has_client_auth,
+                                                 event_desc,
+                                                 bin=SINGLE_BIN,
+                                                 inc=desc_bytes,
+                                                 log_missing_counters=True)
+            self._increment_hsdir_fetch_counters("DescriptorByteHistogram",
+                                                 hs_version,
+                                                 has_cache,
+                                                 has_client_auth,
+                                                 event_desc,
+                                                 bin=desc_bytes,
+                                                 inc=1,
+                                                 log_missing_counters=True)
 
         # Increment counters for v2 optional fields
 
         if intro_count is not None:
-            # we checked in are_hsdir_fetched_fields_valid()
+            # we checked in are_hsdir_fetch_fields_valid()
             assert hs_version == 2
             # we don't bother collecting detailed rejection subcategories
             # to add rejection counters, their names to the list in counter.py
-            self._increment_hsdir_fetched_version_counters("HSDir2",
-                                                           "IntroPointHistogram",
-                                                           reason_str,
-                                                           has_cache,
-                                                           has_client_auth,
-                                                           event_desc,
-                                                           bin=intro_count,
-                                                           inc=1,
-                                                           log_missing_counters=True)
+            self._increment_hsdir_fetch_version_counters("HSDir2",
+                                                         "IntroPointHistogram",
+                                                         has_cache,
+                                                         has_client_auth,
+                                                         event_desc,
+                                                         bin=intro_count,
+                                                         inc=1,
+                                                         log_missing_counters=True)
 
         # Increment counters for v3 optional fields
 
         if revision_num is not None:
-            # we checked in are_hsdir_fetched_fields_valid()
+            # we checked in are_hsdir_fetch_fields_valid()
             assert hs_version == 3
-            self._increment_hsdir_fetched_version_counters("HSDir3",
-                                                           "RevisionHistogram",
-                                                           reason_str,
-                                                           has_cache,
-                                                           has_client_auth,
-                                                           event_desc,
-                                                           bin=revision_num,
-                                                           inc=1,
-                                                           log_missing_counters=True)
+            self._increment_hsdir_fetch_version_counters("HSDir3",
+                                                         "RevisionHistogram",
+                                                         has_cache,
+                                                         has_client_auth,
+                                                         event_desc,
+                                                         bin=revision_num,
+                                                         inc=1,
+                                                         log_missing_counters=True)
 
         # we processed and handled the event
         return True
