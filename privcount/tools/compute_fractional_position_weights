@@ -77,7 +77,11 @@ HSDIR_V2_SPREAD = 3
 HSDIR_V2_REPLICA = 2
 
 # These are the default v3 values
+# https://gitweb.torproject.org/torspec.git/tree/rend-spec-v3.txt#n775
 HSDIR_V3_SPREAD_STORE = 4
+# The spread fetch is only relevant for failures, because clients stop when
+# they successfully download a descriptor
+HSDIR_V3_SPREAD_FETCH = 3
 HSDIR_V3_REPLICA = 2
 
 # The entire hash ring of v2 HSDirs will see each onion address stored 6 times
@@ -88,7 +92,7 @@ HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE = HSDIR_V2_SPREAD * HSDIR_V2_REPLICA
 # per service access
 HSDIR_V2_ONION_ADDRESS_FETCH_PER_SERVICE = 1.0
 
-# The entire hash ring of v3 HSDirs will see each descriptor id stored 3 times
+# The entire hash ring of v3 HSDirs will see each descriptor id stored this many times
 # per service upload
 HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE = HSDIR_V3_SPREAD_STORE
 
@@ -109,31 +113,21 @@ def hsdir_v2_descriptor_store_overlap():
     return HSDIR_V2_STORE_OVERLAP_FRACTION
 
 # v3 hidden services publish a new descriptor every 24 hours. Periods start
-# when the service downloads a consensus with a new SRV, and finish 36 hours
-# later.
-HSDIR_V3_STORE_OVERLAP_FRACTION = 1.0 + 12.0/24.0
+# when the service downloads a consensus with a new SRV, and finish 48 hours
+# later. v3 descriptors always overlap across the current and previous HSDirs.
+# https://gitweb.torproject.org/torspec.git/tree/rend-spec-v3.txt#n882
+HSDIR_V3_STORE_OVERLAP_FRACTION = 2.0
 
 # Average client consensus download delay, based on 1-3 hour delay
 # This is approximate: a more precise figure can be calculated from:
 # https://gitweb.torproject.org/torspec.git/tree/dir-spec.txt#n3345
 CLIENT_CONSENSUS_DELAY_TIMEDELTA = datetime.timedelta(hours=2)
 
-# v3 overlaps occur in from 00:00 to 12:00 UTC
-# https://gitweb.torproject.org/torspec.git/tree/proposals/224-rend-spec-ng.txt#n757
-HSDIR_V3_STORE_OVERLAP_START_TIME = datetime.time(hour=00)
-HSDIR_V3_STORE_OVERLAP_END_TIME   = datetime.time(hour=12)
-
-def hsdir_v3_descriptor_store_overlap(valid_after):
+def hsdir_v3_descriptor_store_overlap():
     '''
-    Returns the v3 HSDir overlap proportion for valid_after.
+    Returns the v3 HSDir overlap proportion.
     '''
-    assert valid_after >= datetime.datetime.min
-    valid_after -= CLIENT_CONSENSUS_DELAY_TIMEDELTA
-    if (valid_after.time() > HSDIR_V3_STORE_OVERLAP_START_TIME and
-        valid_after.time() <= HSDIR_V3_STORE_OVERLAP_END_TIME):
-        return HSDIR_V3_STORE_OVERLAP_FRACTION
-    else:
-        return 1.0
+    return HSDIR_V3_STORE_OVERLAP_FRACTION
 
 ALL_FINGERPRINTS = ['-']
 
@@ -199,7 +193,7 @@ def main():
     print "{:.15f} : hsdir2 spread-weighted service onion address mean (6 stores per onion address, 1/24 overlap)".format(mean(hsdir2_svc_fracs)*HSDIR_V2_ONION_ADDRESS_STORE_PER_SERVICE)
     print "{:.15f} : hsdir2 spread-weighted client onion address mean (1 fetch per onion address)".format(mean(hsdir2_fracs)*HSDIR_V2_ONION_ADDRESS_FETCH_PER_SERVICE)
     print "{:.15f} : hsdir3 relay fraction mean".format(mean(hsdir3_fracs))
-    print "{:.15f} : hsdir3 approximate service descriptor id mean ({} stores per descriptor id, per onion address, 00:00 - 12:00 overlap)".format(mean(hsdir3_svc_fracs)*HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE, HSDIR_V3_SPREAD_STORE)
+    print "{:.15f} : hsdir3 approximate service descriptor id mean ({} stores per descriptor id, per onion address, per current/previous SRV)".format(mean(hsdir3_svc_fracs)*HSDIR_V3_DESCRIPTOR_ID_STORE_PER_SERVICE, HSDIR_V3_SPREAD_STORE)
     print "{:.15f} : hsdir3 approximate client descriptor id mean (0.5 fetches per descriptor id, per onion address)".format(mean(hsdir3_fracs)*HSDIR_V3_DESCRIPTOR_ID_FETCH_PER_SERVICE)
     print "{:.15f} : intro2,3 service establish mean (default 3 intro points per onion address, max 10)".format(mean(intro_fracs)*INTRO_ESTABLISH_PER_SERVICE)
     print "{:.15f} : intro2,3 client introduce mean (1 introduce per onion address)".format(mean(intro_fracs))
@@ -314,8 +308,7 @@ def get_fractional_weights(consensus_path, my_fingerprints):
 
     # scale HSDir service uploads to account for descriptor store overlaps
     my_hsdir2_svc = my_hsdir2*hsdir_v2_descriptor_store_overlap()
-    my_hsdir3_svc = my_hsdir3*hsdir_v3_descriptor_store_overlap(
-                                                       net_status.valid_after)
+    my_hsdir3_svc = my_hsdir3*hsdir_v3_descriptor_store_overlap()
 
     return safe_d(my_guard, total_guard), safe_d(my_middle, total_middle), safe_d(my_exit, total_exit), safe_d(my_hsdir2, total_hsdir2), safe_d(my_hsdir2_svc, total_hsdir2), safe_d(my_hsdir3, total_hsdir3), safe_d(my_hsdir3_svc, total_hsdir3), safe_d(my_intro, total_intro), safe_d(my_rend2, total_rend2), safe_d(my_rend3, total_rend3)
 
