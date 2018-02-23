@@ -32,7 +32,7 @@ tally_server:
         # The first domain list is used for the ExitDomain*MatchWebInitialStream Ratio, LifeTime, and Histogram counters
         # Their ExitDomainNo*MatchWebInitialStream* equivalents are used when there is no match in the first list
         # Each domain list corresponds to a bin in the ExitDomain*MatchWebInitialStream*CountList counters
-        # (Multiple matches are possible, the final bin is used for unmatched domains)
+        # (Multiple matches are rejected on the TS, the final bin is used for unmatched domains)
         #
         # See domain-top-1k.txt for the commands that create this list
         # It takes about 32 MB to transmit the exact and suffix lists
@@ -58,7 +58,7 @@ tally_server:
         # The first country list is used for the *CountryMatchConnection, LifeTime and *Histogram counters
         # Their *CountryNoMatchConnection equivalents are used when there is no match in the first list
         # Each country list corresponds to a bin in the *CountryMatchConnection*CountList counters
-        # (Multiple matches are possible, the final bin is used for unmatched countries)
+        # (Multiple matches are rejected on the TS, the final bin is used for unmatched countries)
         #- 'country-all.txt'
         - 'country-known.txt'
         #- 'country-rank.txt'
@@ -82,7 +82,7 @@ tally_server:
         # The first AS list is used for the *ASMatchConnection, LifeTime and *Histogram counters
         # Their *ASNoMatchConnection equivalents are used when there is no match in the first list
         # Each AS list corresponds to a bin in the *ASMatchConnection*CountList counters
-        # (Multiple matches are possible, the final bin is used for unmatched ASs)
+        # (Multiple matches are rejected on the TS, the final bin is used for unmatched ASs)
         - 'as-rank.txt'
         #- 'as-top-100.txt'
         #- 'as-ipv4-extra.txt'
