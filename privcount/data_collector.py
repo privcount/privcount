@@ -1229,9 +1229,10 @@ class Aggregator(ReconnectingClientFactory):
         #                      matching_bin,
         #                      totalbw, writebw, readbw))
 
+        # the suffix match code can return None
         if matching_bin is None:
             # the final bin always goes to inf
-             matching_bin = float('inf')
+            matching_bin = float('inf')
 
         # there will always be at least two bins in each counter:
         # the matching bin for the first list, and the unmatched bin
@@ -1252,6 +1253,28 @@ class Aggregator(ReconnectingClientFactory):
                                        .format(subcategory),
                                        bin=matching_bin,
                                        inc=readbw)
+
+    @staticmethod
+    def _exact_match_bin(exact_objs, search_string):
+        '''
+        Finds the bin number of search_string in exact_objs.
+
+        Return the position of the first object in exact_objs that matches
+        search_string, or +inf if no object matches. The return value is
+        always a float.
+        '''
+        for i in xrange(len(exact_objs)):
+            # check for an exact match
+            # this is O(N), but obviously correct
+            # assert exact_match(exact_objs[i], search_string) == any([search_string == s for s in exact_objs[i]])
+
+            # this is O(1), because set uses a hash table internally
+            if exact_match(exact_objs[i], search_string):
+                # The TS guarantees that the lists are disjoint
+                # If they aren't, then we return the first bin that matches
+                return float(i)
+        # the final bin always goes to inf
+        return float('inf')
 
     STREAM_ENDED_ITEMS = 11
 
@@ -1373,20 +1396,8 @@ class Aggregator(ReconnectingClientFactory):
         if host_ip_version == "Hostname" and stream_web == "Web" and stream_circ == "Initial":
 
             if self.needs_domain_exact_match:
-                domain_exact_match_bin = None
-                for i in xrange(len(self.domain_exact_objs)):
-                    domain_exact_obj = self.domain_exact_objs[i]
-
-                    # check for an exact match
-                    # this is O(N), but obviously correct
-                    # assert exact_match(domain_exact_obj, remote_host) == any([remote_host == domain for domain in domain_exact_obj])
-
-                    # this is O(1), because set uses a hash table internally
-                    if exact_match(domain_exact_obj, remote_host):
-                        domain_exact_match_bin = i
-                        # The TS guarantees that the lists are disjoint
-                        break
-
+                domain_exact_match_bin = Aggregator._exact_match_bin(self.domain_exact_objs,
+                                                                     remote_host)
                 if domain_exact_match_bin == 0:
                     exact_match_str = "DomainExactMatch"
                 else:
@@ -3273,7 +3284,7 @@ class Aggregator(ReconnectingClientFactory):
                                                   log_missing_counters=log_missing_counters)
 
     def _increment_connection_close_count_lists(self, subcategory,
-                                                matching_bin_list,
+                                                bin,
                                                 inbound_bytes, outbound_bytes,
                                                 inbound_circuits, outbound_circuits,
                                                 is_client, ip_relay_count,
@@ -3282,73 +3293,71 @@ class Aggregator(ReconnectingClientFactory):
         '''
         Call _increment_connection_close_variants() with the standard
         connection counter count list variants, using the fields provided.
-        If matching_bin_list is empty, increment the final bin in each counter.
+        If bin is None, increment the final bin in each counter.
         '''
         total_bytes = inbound_bytes + outbound_bytes
         total_circuits = inbound_circuits + outbound_circuits
 
-        if len(matching_bin_list) == 0:
-            # the final bin always goes to inf
-            matching_bin_list = [float('inf')]
+        # the exact match code never returns None, it's always +inf
+        assert bin is not None
 
-        for bin in matching_bin_list:
-            # there will always be at least two bins in each counter:
-            # the matching bin for the first list, and the unmatched bin
-            self._increment_connection_close_variants("{}CountList"
-                                                      .format(subcategory),
-                                                      is_client, ip_relay_count,
-                                                      event_desc,
-                                                      bin=bin,
-                                                      inc=1,
-                                                      log_missing_counters=log_missing_counters)
+        # there will always be at least two bins in each counter:
+        # the matching bin for the first list, and the unmatched bin
+        self._increment_connection_close_variants("{}CountList"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=bin,
+                                                  inc=1,
+                                                  log_missing_counters=log_missing_counters)
 
-            self._increment_connection_close_variants("{}ByteCountList"
-                                                      .format(subcategory),
-                                                      is_client, ip_relay_count,
-                                                      event_desc,
-                                                      bin=bin,
-                                                      inc=total_bytes,
-                                                      log_missing_counters=log_missing_counters)
+        self._increment_connection_close_variants("{}ByteCountList"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=bin,
+                                                  inc=total_bytes,
+                                                  log_missing_counters=log_missing_counters)
 
-            self._increment_connection_close_variants("{}InboundByteCountList"
-                                                      .format(subcategory),
-                                                      is_client, ip_relay_count,
-                                                      event_desc,
-                                                      bin=bin,
-                                                      inc=inbound_bytes,
-                                                      log_missing_counters=log_missing_counters)
+        self._increment_connection_close_variants("{}InboundByteCountList"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=bin,
+                                                  inc=inbound_bytes,
+                                                  log_missing_counters=log_missing_counters)
 
-            self._increment_connection_close_variants("{}OutboundByteCountList"
-                                                      .format(subcategory),
-                                                      is_client, ip_relay_count,
-                                                      event_desc,
-                                                      bin=bin,
-                                                      inc=outbound_bytes,
-                                                      log_missing_counters=log_missing_counters)
+        self._increment_connection_close_variants("{}OutboundByteCountList"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=bin,
+                                                  inc=outbound_bytes,
+                                                  log_missing_counters=log_missing_counters)
 
-            self._increment_connection_close_variants("{}CircuitCountList"
-                                                      .format(subcategory),
-                                                      is_client, ip_relay_count,
-                                                      event_desc,
-                                                      bin=bin,
-                                                      inc=total_circuits,
-                                                      log_missing_counters=log_missing_counters)
+        self._increment_connection_close_variants("{}CircuitCountList"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=bin,
+                                                  inc=total_circuits,
+                                                  log_missing_counters=log_missing_counters)
 
-            self._increment_connection_close_variants("{}InboundCircuitCountList"
-                                                      .format(subcategory),
-                                                      is_client, ip_relay_count,
-                                                      event_desc,
-                                                      bin=bin,
-                                                      inc=inbound_circuits,
-                                                      log_missing_counters=log_missing_counters)
+        self._increment_connection_close_variants("{}InboundCircuitCountList"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=bin,
+                                                  inc=inbound_circuits,
+                                                  log_missing_counters=log_missing_counters)
 
-            self._increment_connection_close_variants("{}OutboundCircuitCountList"
-                                                      .format(subcategory),
-                                                      is_client, ip_relay_count,
-                                                      event_desc,
-                                                      bin=bin,
-                                                      inc=outbound_circuits,
-                                                      log_missing_counters=log_missing_counters)
+        self._increment_connection_close_variants("{}OutboundCircuitCountList"
+                                                  .format(subcategory),
+                                                  is_client, ip_relay_count,
+                                                  event_desc,
+                                                  bin=bin,
+                                                  inc=outbound_circuits,
+                                                  log_missing_counters=log_missing_counters)
 
     def _increment_connection_close_counters(self, subcategory,
                                              inbound_bytes, outbound_bytes,
@@ -3483,34 +3492,29 @@ class Aggregator(ReconnectingClientFactory):
 
 
         # Increment counters for country code matches
-        country_exact_match_bin_list = []
-        for i in xrange(len(self.country_exact_objs)):
-            country_exact_obj = self.country_exact_objs[i]
+        country_exact_match_bin = Aggregator._exact_match_bin(self.country_exact_objs,
+                                                              country_code)
+        if country_exact_match_bin == 0:
+            exact_match_str = "CountryMatch"
+        else:
+            exact_match_str = "CountryNoMatch"
 
-            # this is O(1), because set uses a hash table internally
-            if exact_match(country_exact_obj, country_code):
-                exact_match_str = "CountryMatch"
-                country_exact_match_bin_list.append(i)
-            else:
-                exact_match_str = "CountryNoMatch"
+        # The first country list is used for the *CountryMatchConnection, LifeTime and *Histogram counters
+        # Their *CountryNoMatchConnection equivalents are used when there is no match in the first list
+        self._increment_connection_close_histograms(exact_match_str,
+                                                    inbound_bytes, outbound_bytes,
+                                                    inbound_circuits, outbound_circuits,
+                                                    elapsed_time,
+                                                    ip_connection_count,
+                                                    is_client, ip_relay_count,
+                                                    event_desc,
+                                                    log_missing_counters=True)
 
-            # The first country list is used for the *CountryMatchConnection, LifeTime and *Histogram counters
-            # Their *CountryNoMatchConnection equivalents are used when there is no match in the first list
-            if i == 0:
-                self._increment_connection_close_histograms(exact_match_str,
-                                                            inbound_bytes, outbound_bytes,
-                                                            inbound_circuits, outbound_circuits,
-                                                            elapsed_time,
-                                                            ip_connection_count,
-                                                            is_client, ip_relay_count,
-                                                            event_desc,
-                                                            log_missing_counters=True)
-
-        # Now that we know which lists matched, increment their CountList
+        # Now that we know which list matched, increment its CountList
         # counters. Instead of using NoMatch counters, we increment the
         # final bin if none of the lists match
         self._increment_connection_close_count_lists("CountryMatch",
-                                                     country_exact_match_bin_list,
+                                                     country_exact_match_bin,
                                                      inbound_bytes, outbound_bytes,
                                                      inbound_circuits, outbound_circuits,
                                                      is_client, ip_relay_count,
@@ -3519,34 +3523,29 @@ class Aggregator(ReconnectingClientFactory):
 
 
         # Increment counters for AS number matches
-        as_exact_match_bin_list = []
-        for i in xrange(len(self.as_exact_objs)):
-            as_exact_obj = self.as_exact_objs[i]
+        as_exact_match_bin = Aggregator._exact_match_bin(self.as_exact_objs,
+                                                         remote_as)
+        if as_exact_match_bin == 0:
+            exact_match_str = "ASMatch"
+        else:
+            exact_match_str = "ASNoMatch"
 
-            # this is O(1), because set uses a hash table internally
-            if exact_match(as_exact_obj, remote_as):
-                exact_match_str = "ASMatch"
-                as_exact_match_bin_list.append(i)
-            else:
-                exact_match_str = "ASNoMatch"
+        # The first AS list is used for the *ASMatchConnection, LifeTime and *Histogram counters
+        # Their *ASNoMatchConnection equivalents are used when there is no match in the first list
+        self._increment_connection_close_histograms(exact_match_str,
+                                                    inbound_bytes, outbound_bytes,
+                                                    inbound_circuits, outbound_circuits,
+                                                    elapsed_time,
+                                                    ip_connection_count,
+                                                    is_client, ip_relay_count,
+                                                    event_desc,
+                                                    log_missing_counters=True)
 
-            # The first AS list is used for the *ASMatchConnection, LifeTime and *Histogram counters
-            # Their *ASNoMatchConnection equivalents are used when there is no match in the first list
-            if i == 0:
-                self._increment_connection_close_histograms(exact_match_str,
-                                                            inbound_bytes, outbound_bytes,
-                                                            inbound_circuits, outbound_circuits,
-                                                            elapsed_time,
-                                                            ip_connection_count,
-                                                            is_client, ip_relay_count,
-                                                            event_desc,
-                                                            log_missing_counters=True)
-
-        # Now that we know which lists matched, increment their CountList
+        # Now that we know which list matched, increment its CountList
         # counters. Instead of using NoMatch counters, we increment the
         # final bin if none of the lists match
         self._increment_connection_close_count_lists("ASMatch",
-                                                     as_exact_match_bin_list,
+                                                     as_exact_match_bin,
                                                      inbound_bytes, outbound_bytes,
                                                      inbound_circuits, outbound_circuits,
                                                      is_client, ip_relay_count,
