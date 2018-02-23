@@ -148,7 +148,7 @@ tally_server:
     # the collect, event, and checkin periods
     # The elapsed test time is approximately:
     #     (collect_period + 2*event_period + delay_period) * rounds
-    collect_period: 60 # (no default, 1 week = 604800 seconds) the safe time frame of stats collection for all stats
+    collect_period: 80 # (no default, 1 week = 604800 seconds) the safe time frame of stats collection for all stats
     # There should be at least two event periods in each collect period
     event_period: 20 # (default: 10 minutes) how often the TS event loop runs
     # There should be at least two checkin periods in each collect period

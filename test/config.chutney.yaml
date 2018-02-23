@@ -52,7 +52,7 @@ tally_server:
     # Template values, replaced by run_test.sh
     sk_threshold: PRIVCOUNT_SHARE_KEEPERS
     dc_threshold: DATA_COLLECTOR_COUNT
-    collect_period: 60
+    collect_period: 80
     event_period: 20
     checkin_period: 20
     delay_period: 86400
