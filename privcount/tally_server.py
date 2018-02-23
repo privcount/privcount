@@ -1961,27 +1961,11 @@ class CollectionPhase(object):
             result_context['TallyServer']['Config']['counters'] = "(counter bins, no counts)"
         # but we want the noise, because it's not in Tally
 
-        # we don't want the full list of domains or countries or ASs
+        # we don't want the full list of domains or countries or ASs or ...
         # (the DCs summarise their domains before sending back their
         # start configs, to save bandwidth)
         # The config has already been deepcopied
-        PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
-                                            'domain_lists')
-        PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
-                                            'domain_exacts')
-        PrivCountNode.summarise_match_suffixes(result_context['TallyServer']['Config'],
-                                               'domain_suffixes')
-        PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
-                                            'country_lists')
-        PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
-                                            'country_exacts')
-        PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'],
-                                            'as_raw_lists')
-        PrivCountNode.summarise_match_maps(result_context['TallyServer']['Config'].get('as_data', {}),
-                                           'prefix_maps')
-        PrivCountNode.summarise_match_lists(result_context['TallyServer']['Config'].get('as_data', {}),
-                                            'lists')
-
+        PrivCountNode.summarise_config_lists(result_context['TallyServer']['Config'])
         return result_context
 
     def get_updated_traffic_model(self, tallied_counts):

@@ -279,6 +279,31 @@ class PrivCountNode(object):
             deepcopied_start_config[match_map_key][k] = short_string
 
     @staticmethod
+    def summarise_config_lists(deepcopied_config):
+        '''
+        If deepcopied_config contains any match lists, suffixes, or maps,
+        summarise them.
+        You must deep-copy config before calling this function.
+        '''
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'domain_lists')
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'domain_exacts')
+        PrivCountNode.summarise_match_suffixes(deepcopied_config,
+                                               'domain_suffixes')
+
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'country_lists')
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'country_exacts')
+
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'as_raw_lists')
+        PrivCountNode.summarise_match_maps(deepcopied_config.get('as_data', {}),
+                                           'prefix_maps')
+        PrivCountNode.summarise_match_lists(deepcopied_config.get('as_data', {}),
+                                            'lists')
+    @staticmethod
     def log_config_key_changed(key_name,
                                old_val_str="(absent)",
                                new_val_str="(absent)"):
@@ -479,22 +504,7 @@ class PrivCountClient(PrivCountNode):
         # and include the config sent by the tally server in do_start
         if self.start_config is not None:
             response['Config']['Start'] = deepcopy(self.start_config)
-            PrivCountNode.summarise_match_lists(response['Config']['Start'],
-                                                'domain_lists')
-            PrivCountNode.summarise_match_lists(response['Config']['Start'],
-                                                'domain_exacts')
-            PrivCountNode.summarise_match_suffixes(response['Config']['Start'],
-                                                   'domain_suffixes')
-            PrivCountNode.summarise_match_lists(response['Config']['Start'],
-                                                'country_lists')
-            PrivCountNode.summarise_match_lists(response['Config']['Start'],
-                                                'country_exacts')
-            PrivCountNode.summarise_match_lists(response['Config']['Start'],
-                                                'as_raw_lists')
-            PrivCountNode.summarise_match_maps(response['Config']['Start'].get('as_data', {}),
-                                               'prefix_maps')
-            PrivCountNode.summarise_match_lists(response['Config']['Start'].get('as_data', {}),
-                                                'lists')
+            PrivCountNode.summarise_config_lists(response['Config']['Start'])
 
         # and include the config sent by the tally server to stop
         if stop_config is not None:
