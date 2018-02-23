@@ -56,7 +56,7 @@ import logging
 import os
 import pyasn
 
-from privcount.config import normalise_path, check_domain_name, check_country_code, check_as_number
+from privcount.config import normalise_path, check_domain_name, check_country_code, check_as_number, check_reason_str, strip_onion_str, check_onion_address
 from privcount.crypto import json_serialise
 from privcount.log import summarise_string, format_bytes, summarise_list
 
@@ -70,7 +70,11 @@ def line_is_comment(line):
             or line.startswith(';'))
 
 def load_match_list(file_path,
-                    check_domain=False, check_country=False, check_as=False):
+                    check_domain=False,
+                    check_country=False,
+                    check_as=False,
+                    check_reason=False,
+                    check_onion=False):
     '''
     Load a match list from file_path, checking the format based on check_*.
     Return a tuple with the normalised file path, and the match list.
@@ -101,6 +105,15 @@ def load_match_list(file_path,
                 # Now convert the AS number to an integer
                 line = int(line)
                 assert check_as_number(line)
+            if check_reason:
+                assert check_reason_str(line)
+                # Always lowercase matches, don't depend on case matches
+                line = line.lower()
+            if check_onion:
+                # Strip irrelevant URL and domain components, and lowercase
+                line = strip_onion_str(line)
+                # And then check: this makes checking easier to implement
+                assert check_onion_address(line)
             match_list.append(line)
 
     return (file_path, match_list)

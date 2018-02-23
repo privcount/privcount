@@ -29,6 +29,22 @@ tally_server:
         - 'as-top-100.txt'
         - 'as-ipv4-extra.txt'
         - 'as-ipv6-extra.txt'
+    hsdir_store_files:
+        - 'hsdir-store-reason.txt'
+    hsdir_fetch_files:
+        - 'hsdir-fetch-reason.txt'
+    circuit_failure_files:
+        - 'circuit-failure-general.txt'
+        - 'circuit-failure-intro-legacy.txt'
+        - 'circuit-failure-intro-v3.txt'
+        - 'circuit-failure-rend.txt'
+    onion_address_files:
+        - 'onion-debian.txt'
+        - 'onion-facebook.txt'
+        - 'onion-news.txt'
+        - 'onion-search.txt'
+        - 'onion-securedrop.txt'
+        - 'onion-torproject.txt'
     allocation: 'counters.allocation.yaml'
     noise_weight:
         '*': 1.0

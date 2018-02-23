@@ -90,6 +90,39 @@ tally_server:
         # You can create this file by concatenating rank, ipv4-extra, and ipv6-extra, and using sort -u to remove duplicates
         #- 'as-all.txt'
 
+    # a list of paths to files of newline-separated HSDir Store Reasons
+    hsdir_store_files:
+        # Each list corresponds to a bin in the HSDir*Store*ReasonCountList counters
+        # (Multiple matches are rejected on the TS, the final bin is used for unmatched countries)
+        - 'hsdir-store-reason.txt'
+
+    # a list of paths to files of newline-separated HSDir Fetch Reasons
+    hsdir_fetch_files:
+        # Each list corresponds to a bin in the HSDir*Fetch*ReasonCountList counters
+        # (Multiple matches are rejected on the TS, the final bin is used for unmatched countries)
+        - 'hsdir-fetch-reason.txt'
+
+    # a list of paths to files of newline-separated Circuit Failure Reasons
+    circuit_failure_files:
+        # Each list corresponds to a bin in the *FailureCircuitReasonCountList counters
+        # (Multiple matches are rejected on the TS, the final bin is used for unmatched countries)
+        - 'circuit-failure-general.txt'
+        - 'circuit-failure-intro-legacy.txt'
+        - 'circuit-failure-intro-v3.txt'
+        - 'circuit-failure-rend.txt'
+
+    # a list of paths to files of newline-separated Onion addresses
+    # URLs, domains, and onion addresses are all accepted
+    onion_address_files:
+        # Each list corresponds to a bin in the HSDir*Store/Fetch*OnionAddressCountList counters
+        # (Multiple matches are rejected on the TS, the final bin is used for unmatched countries)
+        - 'onion-debian.txt'
+        - 'onion-facebook.txt'
+        - 'onion-news.txt'
+        - 'onion-search.txt'
+        - 'onion-securedrop.txt'
+        - 'onion-torproject.txt'
+
     # path to a yaml file where the noise allocation is written immediately after calculation. The noise allocation also forms part of the results context.
     allocation: 'counters.allocation.yaml'
     noise_weight: # distribute noise among all machines / data collectors

@@ -159,20 +159,28 @@ class TallyServer(ServerFactory, PrivCountServer):
                         new_match_lists=None,
                         check_domain=False,
                         check_country=False,
-                        check_as=False):
+                        check_as=False,
+                        check_reason=False,
+                        check_onion=False):
         '''
         Load a match file from file_path.
 
         If new_match_lists is not none, append the file's contents to that
         list as an array.
 
-        If check_domain, then check that each line in the file is a valid
-        domain name, and lowecase the string.
-        If check_country, then check that each line in the file is a valid
-        MaxMind Country Code, and lowercase the string.
-        If check_as, then check that each line in the file is a valid
-        CAIDA AS Number, and load the first AS number in each AS set or
+        If check_domain, then check that each line in the file is a
+        potentially valid domain name, and lowecase the string.
+        If check_country, then check that each line in the file is a
+        potentially valid MaxMind Country Code, and lowercase the string.
+        If check_as, then check that each line in the file is a potentially
+        valid CAIDA AS Number, and load the first AS number in each AS set or
         multi-origin AS.
+        If check_reason, then check that each line in the file is a
+        potentially valid HSDir Fetch, HSDir Store, or Circuit Failure reason,
+        and lowercase the string.
+        If check_onion, then check that each line in the file is a
+        potentially valid onion address, after stripping non-onion address
+        components from URLs or domains, and lowercasing the resulting string.
 
         If config is None, or the file is not in old_match_files, or the
         contents do not match old_match_lists, then mark the list as changed.
@@ -184,7 +192,9 @@ class TallyServer(ServerFactory, PrivCountServer):
         (file_path, match_list) = load_match_list(file_path,
                                                   check_domain=check_domain,
                                                   check_country=check_country,
-                                                  check_as=check_as)
+                                                  check_as=check_as,
+                                                  check_reason=check_reason,
+                                                  check_onion=check_onion)
 
         # lists must have at least one entry
         assert len(match_list) > 0
@@ -337,6 +347,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                           check_domain=False,
                           check_country=False,
                           check_as=False,
+                          check_reason=False,
+                          check_onion=False,
                           counters_key='counters',
                           counter_filter=None,
                           old_processed_config=None,
@@ -405,7 +417,9 @@ class TallyServer(ServerFactory, PrivCountServer):
                                          new_match_lists=new_config[lists_key],
                                          check_domain=check_domain,
                                          check_country=check_country,
-                                         check_as=check_as)
+                                         check_as=check_as,
+                                         check_reason=check_reason,
+                                         check_onion=check_onion)
                 new_config[files_key][i] = file_path
                 if has_list_changed:
                     has_any_previous_list_changed = True
@@ -740,6 +754,60 @@ class TallyServer(ServerFactory, PrivCountServer):
             # do some additional checks on the AS lists
             # you must have both prefix mappings and AS lists, or neither
             assert (len(ts_conf['as_data']['prefix_maps']) > 0) == (len(ts_conf['as_data']['lists']) > 0)
+
+            # optional lists of HSDir Store reasons
+            TallyServer.load_match_config(
+                self.config,
+                ts_conf,
+                'hsdir_store_files',
+                'hsdir_store_lists',
+                check_reason=True,
+                # Store reason counters match HSDir*Store*ReasonCountList
+                counter_filter=(lambda counter_name: counter_name.startswith("HSDir") and
+                                                     "Store" in counter_name and
+                                                     counter_name.endswith("ReasonCountList")),
+                exacts_key='hsdir_store_exacts',
+                reject_overlapping_lists=ts_conf['reject_overlapping_lists'])
+
+            # optional lists of HSDir Fetch reasons
+            TallyServer.load_match_config(
+                self.config,
+                ts_conf,
+                'hsdir_fetch_files',
+                'hsdir_fetch_lists',
+                check_reason=True,
+                # Fetch reason counters match HSDir*Fetch*ReasonCountList
+                counter_filter=(lambda counter_name: counter_name.startswith("HSDir") and
+                                                     "Fetch" in counter_name and
+                                                     counter_name.endswith("ReasonCountList")),
+                exacts_key='hsdir_fetch_exacts',
+                reject_overlapping_lists=ts_conf['reject_overlapping_lists'])
+
+            # optional lists of Circuit Failure reasons
+            TallyServer.load_match_config(
+                self.config,
+                ts_conf,
+                'circuit_failure_files',
+                'circuit_failure_lists',
+                check_reason=True,
+                # Circuit Failure reason counters match *FailureCircuitReasonCountList
+                counter_filter=(lambda counter_name: counter_name.endswith("FailureCircuitReasonCountList")),
+                exacts_key='circuit_failure_exacts',
+                reject_overlapping_lists=ts_conf['reject_overlapping_lists'])
+
+            # optional lists of onion addresses for HSDir Store and Fetch events
+            TallyServer.load_match_config(
+                self.config,
+                ts_conf,
+                'onion_address_files',
+                'onion_address_lists',
+                check_onion=True,
+                # Onion Address counters match HSDir*Store/Fetch*OnionAddressCountList
+                counter_filter=(lambda counter_name: counter_name.startswith("HSDir") and
+                                                     ("Store" in counter_name or "Fetch" in counter_name) and
+                                                     counter_name.endswith("OnionAddressCountList")),
+                exacts_key='onion_address_exacts',
+                reject_overlapping_lists=ts_conf['reject_overlapping_lists'])
 
 
             # an optional noise allocation results file
@@ -1401,6 +1469,10 @@ class TallyServer(ServerFactory, PrivCountServer):
                                                 self.config['domain_suffixes'],
                                                 [list(c) for c in self.config['country_exacts']],
                                                 as_data,
+                                                [list(c) for c in self.config['hsdir_store_exacts']],
+                                                [list(c) for c in self.config['hsdir_fetch_exacts']],
+                                                [list(c) for c in self.config['circuit_failure_exacts']],
+                                                [list(c) for c in self.config['onion_address_exacts']],
                                                 self.config)
         self.collection_phase.start()
 
@@ -1500,6 +1572,8 @@ class CollectionPhase(object):
                  sk_public_keys, dc_uids, modulus, clock_padding,
                  max_cell_events_per_circuit, circuit_sample_rate,
                  domain_lists, domain_suffixes, country_lists, as_data,
+                 hsdir_store_lists, hsdir_fetch_lists, circuit_failure_lists,
+                 onion_address_lists,
                  tally_server_config):
         # the counter bins and configs
         self.counters_config = counters_config
@@ -1525,6 +1599,11 @@ class CollectionPhase(object):
         self.domain_suffixes = domain_suffixes
         self.country_lists = country_lists
         self.as_data = as_data
+        self.hsdir_store_lists = hsdir_store_lists
+        self.hsdir_fetch_lists = hsdir_fetch_lists
+        self.circuit_failure_lists = circuit_failure_lists
+        self.onion_address_lists = onion_address_lists
+
         # make a deep copy, so we can delete unnecesary keys
         self.tally_server_config = deepcopy(tally_server_config)
         self.tally_server_status = None
@@ -1773,6 +1852,11 @@ class CollectionPhase(object):
             config['domain_suffixes'] = self.domain_suffixes
             config['country_lists'] = self.country_lists
             config['as_data'] = self.as_data
+            config['hsdir_store_lists'] = self.hsdir_store_lists
+            config['hsdir_fetch_lists'] = self.hsdir_fetch_lists
+            config['circuit_failure_lists'] = self.circuit_failure_lists
+            config['onion_address_lists'] = self.onion_address_lists
+
             logging.info("sending start comand with {} counters ({} bins) and requesting {} shares to data collector {}"
                          .format(len(config['counters']),
                                  count_bins(config['counters']),

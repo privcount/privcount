@@ -303,6 +303,27 @@ class PrivCountNode(object):
                                            'prefix_maps')
         PrivCountNode.summarise_match_lists(deepcopied_config.get('as_data', {}),
                                             'lists')
+
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'hsdir_store_lists')
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'hsdir_store_exacts')
+
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'hsdir_fetch_lists')
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'hsdir_fetch_exacts')
+
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'circuit_failure_lists')
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'circuit_failure_exacts')
+
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'onion_address_lists')
+        PrivCountNode.summarise_match_lists(deepcopied_config,
+                                            'onion_address_exacts')
+
     @staticmethod
     def log_config_key_changed(key_name,
                                old_val_str="(absent)",

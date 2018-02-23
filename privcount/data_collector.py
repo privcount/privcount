@@ -261,7 +261,11 @@ class DataCollector(ReconnectingClientFactory, PrivCountClient):
                                      config.get('domain_lists', []),
                                      config.get('domain_suffixes', {}),
                                      config.get('country_lists', []),
-                                     config.get('as_data', {}))
+                                     config.get('as_data', {}),
+                                     config.get('hsdir_store_lists', []),
+                                     config.get('hsdir_fetch_lists', []),
+                                     config.get('circuit_failure_lists', []),
+                                     config.get('onion_address_lists', []))
 
         defer_time = config['defer_time'] if 'defer_time' in config else 0.0
         logging.info("got start command from tally server, starting aggregator in {}".format(format_delay_time_wait(defer_time, 'at')))
@@ -415,7 +419,10 @@ class Aggregator(ReconnectingClientFactory):
     def __init__(self, counters, traffic_model_config, sk_uids,
                  noise_weight, modulus, tor_control_port, rotate_period,
                  use_setconf, max_cell_events_per_circuit, circuit_sample_rate,
-                 domain_lists, domain_suffixes, country_lists, as_data):
+                 domain_lists, domain_suffixes, country_lists, as_data,
+                 hsdir_store_lists, hsdir_fetch_lists, circuit_failure_lists,
+                 onion_address_lists):
+        # initialise counters
         self.secure_counters = SecureCounters(counters, modulus,
                                               require_generate_noise=True)
         self.collection_counters = counters
@@ -484,6 +491,36 @@ class Aggregator(ReconnectingClientFactory):
             logging.info('Preparing AS list {}'.format(i))
             exact_match_prepare_collection(as_data['lists'][i],
                                            existing_exacts=self.as_exact_objs)
+
+        # Prepare HSDir store match lists
+        self.hsdir_store_exact_objs = []
+        for i in xrange(len(hsdir_store_lists)):
+            logging.info('Preparing HSDir store list {}'.format(i))
+            exact_match_prepare_collection(hsdir_store_lists[i],
+                                           existing_exacts=self.hsdir_store_exact_objs)
+
+        # Prepare HSDir fetch match lists
+        self.hsdir_fetch_exact_objs = []
+        for i in xrange(len(hsdir_fetch_lists)):
+            logging.info('Preparing HSDir fetch list {}'.format(i))
+            exact_match_prepare_collection(hsdir_fetch_lists[i],
+                                           existing_exacts=self.hsdir_fetch_exact_objs)
+
+        # Prepare Circuit Failure match lists
+        self.circuit_failure_exact_objs = []
+        for i in xrange(len(circuit_failure_lists)):
+            logging.info('Preparing Circuit Failure list {}'.format(i))
+            exact_match_prepare_collection(circuit_failure_lists[i],
+                                           existing_exacts=self.circuit_failure_exact_objs)
+
+        # Prepare Onion Address match lists
+        self.onion_address_exact_objs = []
+        for i in xrange(len(onion_address_lists)):
+            logging.info('Preparing Onion Address list {}'.format(i))
+            exact_match_prepare_collection(onion_address_lists[i],
+                                           existing_exacts=self.onion_address_exact_objs)
+
+        # initialise state and local config
         self.connector = None
         self.connector_list = None
         self.protocol = None
@@ -2962,6 +2999,25 @@ class Aggregator(ReconnectingClientFactory):
                                                bin=(end_time - start_time),
                                                inc=1)
 
+        # Only increment Failure Reasons for failed circuits
+        if is_failure:
+
+            reason_exact_match_bin = Aggregator._exact_match_bin(self.circuit_failure_exact_objs,
+                                                                 failure_string)
+
+            # Now that we know which list matched, increment its CountList
+            # counters. Instead of using Match and NoMatch counters, we increment
+            # the final bin if none of the lists match
+            self._increment_circuit_close_counters("ReasonCountList",
+                                               is_active,
+                                               is_origin, is_entry, is_mid, is_end,
+                                               is_exit, is_dir,
+                                               is_hsdir, is_intro, is_rend,
+                                               is_failure, is_hs_client,
+                                               hs_version,
+                                               bin=reason_exact_match_bin,
+                                               inc=1)
+
         # we processed and handled the event
         return True
 
@@ -4112,6 +4168,9 @@ class Aggregator(ReconnectingClientFactory):
         intro_count = get_int_value("IntroPointCount",
                                     fields, event_desc,
                                     is_mandatory=False)
+        onion_address = get_string_value("OnionAddress",
+                                         fields, event_desc,
+                                         is_mandatory=False)
 
         # Descriptor v3
         revision_num = get_int_value("RevisionNumber",
@@ -4173,7 +4232,44 @@ class Aggregator(ReconnectingClientFactory):
                                                  inc=1,
                                                  log_missing_counters=True)
 
+        # Increment counters for Reason matches
+
+        reason_exact_match_bin = Aggregator._exact_match_bin(self.hsdir_store_exact_objs,
+                                                             reason_str)
+
+        # Now that we know which list matched, increment its CountList
+        # counters. Instead of using Match and NoMatch counters, we increment
+        # the final bin if none of the lists match
+        self._increment_hsdir_store_counters("ReasonCountList",
+                                             hs_version,
+                                             was_added,
+                                             has_existing,
+                                             has_client_auth,
+                                             event_desc,
+                                             bin=reason_exact_match_bin,
+                                             inc=1,
+                                             log_missing_counters=True)
+
         # Increment counters for v2 optional fields
+
+        if onion_address is not None:
+            # we checked in are_hsdir_store_fields_valid()
+            assert hs_version == 2
+            onion_exact_match_bin = Aggregator._exact_match_bin(self.onion_address_exact_objs,
+                                                                onion_address)
+
+            # Now that we know which list matched, increment its CountList
+            # counters. Instead of using Match and NoMatch counters, we increment
+            # the final bin if none of the lists match
+            self._increment_hsdir_store_version_counters("HSDir2",
+                                                         "OnionAddressCountList",
+                                                         was_added,
+                                                         has_existing,
+                                                         has_client_auth,
+                                                         event_desc,
+                                                         bin=onion_exact_match_bin,
+                                                         inc=1,
+                                                         log_missing_counters=True)
 
         if intro_count is not None:
             # we checked in are_hsdir_store_fields_valid()
@@ -4462,6 +4558,9 @@ class Aggregator(ReconnectingClientFactory):
         intro_count = get_int_value("IntroPointCount",
                                     fields, event_desc,
                                     is_mandatory=False)
+        onion_address = get_string_value("OnionAddress",
+                                         fields, event_desc,
+                                         is_mandatory=False)
 
         # Descriptor v3
         revision_num = get_int_value("RevisionNumber",
@@ -4520,7 +4619,42 @@ class Aggregator(ReconnectingClientFactory):
                                                  inc=1,
                                                  log_missing_counters=True)
 
+        # Increment counters for Reason matches
+
+        reason_exact_match_bin = Aggregator._exact_match_bin(self.hsdir_fetch_exact_objs,
+                                                             reason_str)
+
+        # Now that we know which list matched, increment its CountList
+        # counters. Instead of using Match and NoMatch counters, we increment
+        # the final bin if none of the lists match
+        self._increment_hsdir_fetch_counters("ReasonCountList",
+                                             hs_version,
+                                             has_cache,
+                                             has_client_auth,
+                                             event_desc,
+                                             bin=reason_exact_match_bin,
+                                             inc=1,
+                                             log_missing_counters=True)
+
         # Increment counters for v2 optional fields
+
+        if onion_address is not None:
+            # we checked in are_hsdir_fetch_fields_valid()
+            assert hs_version == 2
+            onion_exact_match_bin = Aggregator._exact_match_bin(self.onion_address_exact_objs,
+                                                                onion_address)
+
+            # Now that we know which list matched, increment its CountList
+            # counters. Instead of using Match and NoMatch counters, we increment
+            # the final bin if none of the lists match
+            self._increment_hsdir_fetch_version_counters("HSDir2",
+                                                         "OnionAddressCountList",
+                                                         has_cache,
+                                                         has_client_auth,
+                                                         event_desc,
+                                                         bin=onion_exact_match_bin,
+                                                         inc=1,
+                                                         log_missing_counters=True)
 
         if intro_count is not None:
             # we checked in are_hsdir_fetch_fields_valid()
