@@ -428,11 +428,15 @@ class Aggregator(ReconnectingClientFactory):
         if traffic_model_config is not None:
             self.traffic_model = TrafficModel(traffic_model_config)
 
+        # initialise parameters
         self.noise_weight_config = noise_weight
         self.noise_weight_value = None
         self.max_cell_events_per_circuit = int(max_cell_events_per_circuit)
         self.circuit_sample_rate = float(circuit_sample_rate)
-        # Check whether we need to collect exact or suffix match counters
+
+        # Prepare or check match lists
+
+        # Check whether we need to collect exact or suffix match domain counters
         self.needs_domain_exact_match = False
         for k in self.collection_counters:
             if "DomainExactMatch" in k or "DomainNoExactMatch" in k:
@@ -457,11 +461,14 @@ class Aggregator(ReconnectingClientFactory):
             self.domain_suffix_obj = domain_suffixes
         else:
             logging.info('No domain suffix counters, skipping domain suffix object')
+
+        # Prepare country match lists
         self.country_exact_objs = []
         for i in xrange(len(country_lists)):
             logging.info('Preparing country list {}'.format(i))
             exact_match_prepare_collection(country_lists[i],
                                            existing_exacts=self.country_exact_objs)
+
         # IP addresses are prefix-matched against IP to AS maps,
         # then the ASs are exact-matched against AS lists
         self.as_prefix_map_objs = {}
@@ -1396,7 +1403,7 @@ class Aggregator(ReconnectingClientFactory):
                                                       ratio, lifetime)
 
                 # Now that we know which list matched, increment its CountList
-                # counters' bin. Instead of using No*Match counters, we
+                # counters. Instead of using No*Match counters, we
                 # increment the final bin if none of the lists match
 
                 # collect exact match counts per list
@@ -3461,6 +3468,7 @@ class Aggregator(ReconnectingClientFactory):
                                         is_mandatory=False,
                                         default="!!")
 
+
         # Increment counters for mandatory fields and optional fields that
         # have defaults
 
@@ -3472,6 +3480,7 @@ class Aggregator(ReconnectingClientFactory):
                                                   is_client, ip_relay_count,
                                                   event_desc,
                                                   log_missing_counters=True)
+
 
         # Increment counters for country code matches
         country_exact_match_bin_list = []
@@ -3507,6 +3516,7 @@ class Aggregator(ReconnectingClientFactory):
                                                      is_client, ip_relay_count,
                                                      event_desc,
                                                      log_missing_counters=True)
+
 
         # Increment counters for AS number matches
         as_exact_match_bin_list = []
@@ -4088,7 +4098,8 @@ class Aggregator(ReconnectingClientFactory):
         has_existing = get_flag_value("HasExistingCacheEntryFlag",
                                       fields, event_desc,
                                       is_mandatory=False)
-        # Intro / Descriptor common
+
+        # Descriptor common
         intro_bytes = get_int_value("EncodedIntroPointByteCount",
                                     fields, event_desc,
                                     is_mandatory=False)
@@ -4098,7 +4109,8 @@ class Aggregator(ReconnectingClientFactory):
         create_time = get_float_value("DescriptorCreationTime",
                                       fields, event_desc,
                                       is_mandatory=False)
-        # Intro / Descriptor v2
+
+        # Descriptor v2
         has_client_auth = get_flag_value("RequiresClientAuthFlag",
                                          fields, event_desc,
                                          is_mandatory=False)
@@ -4451,14 +4463,15 @@ class Aggregator(ReconnectingClientFactory):
         has_cache = get_flag_value("HasCacheEntryFlag",
                                    fields, event_desc,
                                    is_mandatory=False)
-        # Intro / Descriptor common
+        # Descriptor common
         intro_bytes = get_int_value("EncodedIntroPointByteCount",
                                     fields, event_desc,
                                     is_mandatory=False)
         desc_bytes = get_int_value("EncodedDescriptorByteCount",
                                    fields, event_desc,
                                    is_mandatory=False)
-        # Intro / Descriptor v2
+
+        # Descriptor v2
         has_client_auth = get_flag_value("RequiresClientAuthFlag",
                                          fields, event_desc,
                                          is_mandatory=False)

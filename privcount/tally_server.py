@@ -1501,21 +1501,26 @@ class CollectionPhase(object):
                  max_cell_events_per_circuit, circuit_sample_rate,
                  domain_lists, domain_suffixes, country_lists, as_data,
                  tally_server_config):
-        # store configs
-        self.period = period
-        # the counter bins
+        # the counter bins and configs
         self.counters_config = counters_config
         self.traffic_model_config = traffic_model_config
         self.noise_config = noise_config
         self.noise_weight_config = noise_weight_config
         self.dc_threshold_config = dc_threshold_config
+
+        # the participants
         self.sk_uids = sk_uids
         self.sk_public_keys = sk_public_keys
         self.dc_uids = dc_uids
+
+        # the parameters
+        self.period = period
         self.modulus = modulus
         self.clock_padding = clock_padding
         self.max_cell_events_per_circuit = max_cell_events_per_circuit
         self.circuit_sample_rate = circuit_sample_rate
+
+        # the count lists
         self.domain_lists = domain_lists
         self.domain_suffixes = domain_suffixes
         self.country_lists = country_lists
@@ -1744,19 +1749,26 @@ class CollectionPhase(object):
         config = {}
 
         if self.state == 'starting_dcs' and client_uid in self.dc_uids:
+            # the participants
             config['sharekeepers'] = {}
             for sk_uid in self.sk_public_keys:
                 config['sharekeepers'][sk_uid] = b64encode(self.sk_public_keys[sk_uid])
+
+            # the counter configs
             config['counters'] = self.counters_config
             if self.traffic_model_config is not None:
                 config['traffic_model'] = self.traffic_model_config
             config['noise'] = self.noise_config
             config['noise_weight'] = self.noise_weight_config
+
+            # the parameters
             config['dc_threshold'] = self.dc_threshold_config
             config['defer_time'] = self.clock_padding
             config['collect_period'] = self.period
             config['max_cell_events_per_circuit'] = self.max_cell_events_per_circuit
             config['circuit_sample_rate'] = self.circuit_sample_rate
+
+            # the count lists
             config['domain_lists'] = self.domain_lists
             config['domain_suffixes'] = self.domain_suffixes
             config['country_lists'] = self.country_lists
@@ -1769,14 +1781,20 @@ class CollectionPhase(object):
             logging.debug("full data collector start config {}".format(config))
 
         elif self.state == 'starting_sks' and client_uid in self.sk_uids:
+            # the participants
             config['shares'] = self.encrypted_shares[client_uid]
+
+            # the counter configs
             config['counters'] = self.counters_config
             if self.traffic_model_config is not None:
                 config['traffic_model'] = self.traffic_model_config
+
+            # the parameters
             config['noise'] = self.noise_config
             config['noise_weight'] = self.noise_weight_config
             config['dc_threshold'] = self.dc_threshold_config
             config['collect_period'] = self.period
+
             logging.info("sending start command with {} counters ({} bins) and {} shares to share keeper {}"
                          .format(len(config['counters']),
                                  count_bins(config['counters']),
