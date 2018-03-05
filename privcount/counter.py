@@ -6496,7 +6496,7 @@ def extra_counters(first, second, first_name, second_name, action_name):
     extra_keys = _extra_keys(first, second)
     # Log missing keys
     if len(extra_keys) > 0:
-        logging.info("{} counters '{}' because they have a {}, but no {}"
+        logging.info("{} counters {} because they have {}, but no {}"
                      .format(action_name, summarise_list(extra_keys),
                              first_name, second_name))
 

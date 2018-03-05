@@ -244,7 +244,7 @@ class TallyServer(ServerFactory, PrivCountServer):
         assert len(match_list) > 0
 
         if prepare_exact or prepare_suffix:
-            logging.info("Checking matches for '{}'"
+            logging.info("Checking matches for {}"
                          .format(summarise_list(match_list,
                                                 sort_output=False)))
         # make sure the DCs will be able to process the lists
