@@ -1,6 +1,8 @@
 # TS & SK config for chutney single-round, multi-DC, multi-SK integration test
 
 tally_server:
+    # Stop collecting so many Exit counters
+    counter_name_reject: '^Exit'
     counters: 'counters.bins.yaml'
     noise: 'counters.noise.yaml'
     traffic_model: 'traffic.model.json'

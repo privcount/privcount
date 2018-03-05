@@ -9,6 +9,7 @@ import os
 import json
 import logging
 import cPickle as pickle
+import re
 import yaml
 
 from time import time
@@ -19,7 +20,7 @@ from twisted.internet import reactor, task, ssl
 from twisted.internet.protocol import ServerFactory
 
 from privcount.config import normalise_path, choose_secret_handshake_path, _extra_keys, _common_keys
-from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected
+from privcount.counter import SecureCounters, counter_modulus, min_blinded_counter_value, max_blinded_counter_value, min_tally_counter_value, max_tally_counter_value, add_counter_limits_to_config, check_noise_weight_config, check_counters_config, CollectionDelay, float_accuracy, count_bins, are_events_expected, _common_keys
 from privcount.crypto import generate_keypair, generate_cert
 from privcount.log import log_error, format_elapsed_time_since, format_elapsed_time_wait, format_delay_time_until, format_interval_time_between, format_last_event_time_since, errorCallback, summarise_string, summarise_list
 from privcount.match import exact_match_prepare_collection, suffix_match_prepare_collection, ipasn_prefix_match_prepare_string, load_match_list, load_as_prefix_map, exact_match, suffix_match, suffix_match_validate_item, exact_match_validate_item
@@ -627,6 +628,35 @@ class TallyServer(ServerFactory, PrivCountServer):
             else:
                 ts_conf['noise'] = {}
                 ts_conf['noise']['counters'] = conf['counters']
+
+            bins = ts_conf['counters']
+            noise = ts_conf['noise']['counters']
+            logging.debug("Counters before counter_name_accept/reject: bins: {} noise: {}"
+                          .format(summarise_list(bins.keys()),
+                                  summarise_list(noise.keys())))
+
+            # filter counters using counter_name_accept/reject
+            accept_str = ts_conf.get('counter_name_accept', '')
+            accept_re = None
+            if accept_str != '':
+                accept_re = re.compile(accept_str)
+
+            reject_str = ts_conf.get('counter_name_reject', '')
+            reject_re = None
+            if reject_str != '':
+                reject_re = re.compile(reject_str)
+
+
+            for counter_name in _common_keys(bins, noise):
+                # if accept does not match, or reject matches
+                if ((accept_re is not None and accept_re.search(counter_name) is None) or
+                    (reject_re is not None and reject_re.search(counter_name) is not None)):
+                    bins.pop(counter_name, None)
+                    noise.pop(counter_name, None)
+
+            logging.debug("Counters after counter_name_accept/reject: bins: {} noise: {}"
+                          .format(summarise_list(bins.keys()),
+                                  summarise_list(noise.keys())))
 
             # if we are counting a traffic model
             if 'traffic_model' in ts_conf:

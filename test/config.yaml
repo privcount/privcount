@@ -2,6 +2,16 @@
 
 # only the tally server needs these
 tally_server:
+    # Counter Regexes (perl-style)
+    # The tally server collects counters that match counter_name_accept, and
+    # that don't match counter_name_reject.
+    # The zero counter and the traffic model counters are never filtered out.
+    # Intro: https://docs.python.org/2/howto/regex.html
+    # Reference: https://docs.python.org/2/library/re.html
+    # Empty strings are ignored.
+    counter_name_accept: '.+'
+    counter_name_reject: ''
+
     counters: 'counters.bins.yaml' # path to a yaml file containing our counter bin configurations
     # Either noise or sigmas must be provided (if noise is present, sigmas is ignored)
     noise: 'counters.noise.yaml' # path to a yaml file containing noise allocation parameters
