@@ -622,7 +622,7 @@ class TallyServer(ServerFactory, PrivCountServer):
                 ts_conf['noise'] = {}
                 ts_conf['noise']['counters'] = sigmas_conf['counters']
                 # we've packed it into ts_conf['noise'], so remove it
-                del ts_conf['sigmas']
+                ts_conf.pop('sigmas', None)
             # sigmas config in the same file
             else:
                 ts_conf['noise'] = {}
