@@ -15,7 +15,7 @@ def satisfies_dp(sensitivity, epsilon, delta, std):
     lower_x = -(float(epsilon) * (std**2.0) / sensitivity) + sensitivity/2.0
     # determine lower tail probability of normal distribution w/ mean of zero
     lower_tail_prob = (1.0 + math.erf(lower_x / std / math.sqrt(2.0))) / 2.0
-    # explicitly return Boolean value
+    # explicitly return Boolean value to avoid returning numpy type
     if (lower_tail_prob <= delta):
         return True
     else:
