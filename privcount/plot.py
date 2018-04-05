@@ -148,6 +148,10 @@ def run_plot(args):
             histograms = data['Tally']
         else: # this is a tallies file
             histograms = data
+        if 'Context' in data: # this is an outcomes file that has sigma values
+            sigmas = data['Context']['TallyServer']['Config']['noise']['counters']
+        else: # this is a tallies file that *might* have sigma values
+            sigmas = histograms
         fin.close()
 
         for name in histograms.keys():
@@ -170,9 +174,9 @@ def run_plot(args):
                 dataset.append(val)
             plot_info[name]['datasets'].append(dataset)
 
-            if 'sigma' in histograms[name]:
-                sigma = float(histograms[name]['sigma'])
-                error = int(round(2 * sqrt(3) * sigma)) %  1000000000000000
+            if 'sigma' in sigmas[name]:
+                sigma = float(sigmas[name]['sigma'])
+                error = int(round(2 * sqrt(3) * sigma)) % 1000000000000000
                 plot_info[name]['errors'].append(error)
             else:
                 plot_info[name]['errors'].append(None)
