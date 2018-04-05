@@ -144,18 +144,18 @@ def run_plot(args):
         dataset_label = label
         fin = open(path, 'r')
         data = json.load(fin)
-        if 'Tally' in data: # this is an outcomes file
+        if 'Tally' in data: # this is an outcome file
             histograms = data['Tally']
         else: # this is a tallies file
             histograms = data
-        if 'Context' in data: # this is an outcomes file that has sigma values
+        if 'Context' in data: # this is an outcome file that has sigma values
             sigmas = data['Context']['TallyServer']['Config']['noise']['counters']
         else: # this is a tallies file that *might* have sigma values
             sigmas = histograms
         fin.close()
 
         fprefix = args.prefix + '.' if args.prefix is not None else ''
-        fouttxt = open("{0}privcount.results.txt".format(fprefix), 'w')
+        fout_txt = open("{0}privcount.results.txt".format(fprefix), 'w')
 
         for name in histograms.keys():
             plot_info.setdefault(name, {'datasets':[], 'errors':[], 'dataset_colors':[], 'dataset_labels':[], 'bin_labels':[]})
@@ -193,16 +193,14 @@ def run_plot(args):
                 else:
                     status.append("positive")
                 if error is not None:
-                    bintxt = ("{} [{},{}) = {:.0f} +- {:.0f} ({:.03f}%) ({})\n"
-                              .format(name, left, right,
-                                      val, error, error_perc,
-                                      ", ".join(status)))
+                    error_str = " +- {:.0f} ({:.03f}%)".format(error, error_perc)
                 else:
-                    bintxt = ("{} [{},{}) = {:.0f} ({})\n"
-                              .format(name, left, right,
-                                      val,
-                                      ", ".join(status)))
-                fouttxt.write(bintxt)
+                    error_str = ""
+                bin_txt = ("{} [{},{}) = {:.0f}{} ({})\n"
+                           .format(name, left, right,
+                                   val, error_str,
+                                   ", ".join(status)))
+                fout_txt.write(bin_txt)
                 if right == float('inf'):
                     right = '{}'.format(r'$\infty$')
                 elif 'Ratio' not in name:
@@ -218,7 +216,7 @@ def run_plot(args):
             if len(plot_info[name]['bin_labels']) == 0:
                 plot_info[name]['bin_labels'] = bin_labels
 
-    fouttxt.close()
+    fout_txt.close()
 
     page = PdfPages("{0}privcount.results.pdf".format(fprefix))
 
