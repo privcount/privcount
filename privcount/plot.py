@@ -174,6 +174,8 @@ def run_plot(args):
                 sigma = float(histograms[name]['sigma'])
                 error = int(round(2 * sqrt(3) * sigma)) %  1000000000000000
                 plot_info[name]['errors'].append(error)
+            else:
+                plot_info[name]['errors'].append(None)
 
             if len(plot_info[name]['bin_labels']) == 0:
                 plot_info[name]['bin_labels'] = bin_labels
@@ -192,8 +194,10 @@ def run_plot(args):
         plot_bar_chart(page, dat['datasets'], dat['dataset_labels'], dat['dataset_colors'], dat['bin_labels'], err=dat['errors'], title=name)
     page.close()
 
-def plot_bar_chart(page, datasets, dataset_labels, dataset_colors, x_group_labels, err=0, title=None, xlabel='Bins', ylabel='Counts'):
-    assert len(datasets) == len(dataset_colors) == len(dataset_labels)
+def plot_bar_chart(page, datasets, dataset_labels, dataset_colors, x_group_labels, err, title=None, xlabel='Bins', ylabel='Counts'):
+    assert len(datasets) == len(err)
+    assert len(datasets) == len(dataset_colors)
+    assert len(datasets) == len(dataset_labels)
     for dataset in datasets:
         assert len(dataset) == len(datasets[0])
         assert len(dataset) == len(x_group_labels)
