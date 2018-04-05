@@ -190,7 +190,7 @@ def run_plot(args):
             # add the unmatched bin label
             if len(bin_labels_txt) > 0:
                 if len(bin_labels_txt) < len(histograms[name]['bins']):
-                    bin_labels_txt.append('unmatched')
+                    bin_labels_txt.append('(unmatched)')
                 assert len(bin_labels_txt) == len(histograms[name]['bins'])
             label_index = 0
             for (left, right, val) in histograms[name]['bins']:
@@ -212,7 +212,8 @@ def run_plot(args):
                 else:
                     status.append('positive')
                 if error is not None:
-                    error_str = " +- {:.0f} ({:.03f}%)".format(error, error_perc)
+                    error_str = (" +- {:.0f} ({:7.1f}%)"
+                                 .format(error, error_perc))
                 else:
                     error_str = ''
                 if len(bin_labels_txt) > label_index:
@@ -224,9 +225,16 @@ def run_plot(args):
                     label_str = " {}".format(label_str)
                 else:
                     label_str = ''
-                bin_txt = ("{} [{},{}){} = {:.0f}{} ({})\n"
+                if  error is not None:
+                    # justify up to the error length, plus one digit and a negative
+                    val_just = len(str(error)) + 2
+                else:
+                    # justify long
+                    val_just = 14
+                val_str = str(val).rjust(val_just)
+                bin_txt = ("{} [{:5.1f},{:5.1f}){} = {}{} ({})\n"
                            .format(name, left, right, label_str,
-                                   val, error_str,
+                                   val_str, error_str,
                                    ", ".join(status)))
                 fout_txt.write(bin_txt)
                 if right == float('inf'):
