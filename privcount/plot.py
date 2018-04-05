@@ -154,14 +154,55 @@ def run_plot(args):
             sigmas = histograms
         fin.close()
 
+        fprefix = args.prefix + '.' if args.prefix is not None else ''
+        fouttxt = open("{0}privcount.results.txt".format(fprefix), 'w')
+
         for name in histograms.keys():
             plot_info.setdefault(name, {'datasets':[], 'errors':[], 'dataset_colors':[], 'dataset_labels':[], 'bin_labels':[]})
             plot_info[name]['dataset_colors'].append(dataset_color)
             plot_info[name]['dataset_labels'].append(dataset_label)
 
+            if 'sigma' in sigmas[name]:
+                sigma = float(sigmas[name]['sigma'])
+                # use the 95% confidence interval for the noise
+                error = int(round(2 * sqrt(3) * sigma))
+                # we don't expect any noise larger than 10**15
+                error = min(error, 1000000000000000)
+            else:
+                error = None
+            plot_info[name]['errors'].append(error)
+
             dataset = []
             bin_labels = []
             for (left, right, val) in histograms[name]['bins']:
+                # log the raw error bounds, and note when the result is useful
+                status = []
+                if error is not None:
+                    if abs(val) != 0:
+                        error_perc = error / abs(float(val)) * 100.0
+                    else:
+                        error_perc = 0.0
+                    # is the result too noisy, or is it visible?
+                    if error_perc >= 100.0:
+                        status.append("obscured")
+                    else:
+                        status.append("visible")
+                # could the result be zero, or is it positive?
+                if val - (error if error is not None else 0) <= 0:
+                    status.append("zero")
+                else:
+                    status.append("positive")
+                if error is not None:
+                    bintxt = ("{} [{},{}) = {:.0f} +- {:.0f} ({:.03f}%) ({})\n"
+                              .format(name, left, right,
+                                      val, error, error_perc,
+                                      ", ".join(status)))
+                else:
+                    bintxt = ("{} [{},{}) = {:.0f} ({})\n"
+                              .format(name, left, right,
+                                      val,
+                                      ", ".join(status)))
+                fouttxt.write(bintxt)
                 if right == float('inf'):
                     right = '{}'.format(r'$\infty$')
                 elif 'Ratio' not in name:
@@ -174,25 +215,13 @@ def run_plot(args):
                 dataset.append(val)
             plot_info[name]['datasets'].append(dataset)
 
-            if 'sigma' in sigmas[name]:
-                sigma = float(sigmas[name]['sigma'])
-                error = int(round(2 * sqrt(3) * sigma)) % 1000000000000000
-                plot_info[name]['errors'].append(error)
-            else:
-                plot_info[name]['errors'].append(None)
-
             if len(plot_info[name]['bin_labels']) == 0:
                 plot_info[name]['bin_labels'] = bin_labels
 
-    page = PdfPages("{0}privcount.results.pdf".format(args.prefix+'.' if args.prefix is not None else ''))
-    # test data
-    '''
-    datasets = [[5, 10, 12, 7, 4], [3, 4, 5, 6, 7]]
-    dataset_labels = ["tor", "shadow"]
-    dataset_colors = ["red", "green"]
-    bar_xlabels = ['[0,128)', '[128,256)', '[256,512)', '[512,1024)', '[1024,\n2048)']
-    plot_bar_chart(page, datasets, dataset_labels, dataset_colors, bar_xlabels, title="test", xlabel="test_x", ylabel="test_y")
-    '''
+    fouttxt.close()
+
+    page = PdfPages("{0}privcount.results.pdf".format(fprefix))
+
     for name in sorted(plot_info.keys()):
         dat = plot_info[name]
         plot_bar_chart(page, dat['datasets'], dat['dataset_labels'], dat['dataset_colors'], dat['bin_labels'], err=dat['errors'], title=name)
