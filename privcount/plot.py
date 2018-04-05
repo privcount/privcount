@@ -152,6 +152,10 @@ def run_plot(args):
             sigmas = data['Context']['TallyServer']['Config']['noise']['counters']
         else: # this is a tallies file that *might* have sigma values
             sigmas = histograms
+        if 'Context' in data: # this is an outcome file that *might* have labels
+            labels = data['Context']['TallyServer']['Config']
+        else: # this is a tallies file that has no labels
+            labels = {}
         fin.close()
 
         fprefix = args.prefix + '.' if args.prefix is not None else ''
@@ -174,6 +178,21 @@ def run_plot(args):
 
             dataset = []
             bin_labels = []
+            bin_labels_txt = []
+            # add the match list bin labels
+            if 'Match' in name:
+                if 'AS' in name:
+                    bin_labels_txt = labels.get('as_lists', [])
+                if 'Country' in name:
+                    bin_labels_txt = labels.get('country_lists', [])
+                if 'Domain' in name:
+                    bin_labels_txt = labels.get('domain_lists', [])
+            # add the unmatched bin label
+            if len(bin_labels_txt) > 0:
+                if len(bin_labels_txt) < len(histograms[name]['bins']):
+                    bin_labels_txt.append('unmatched')
+                assert len(bin_labels_txt) == len(histograms[name]['bins'])
+            label_index = 0
             for (left, right, val) in histograms[name]['bins']:
                 # log the raw error bounds, and note when the result is useful
                 status = []
@@ -184,20 +203,29 @@ def run_plot(args):
                         error_perc = 0.0
                     # is the result too noisy, or is it visible?
                     if error_perc >= 100.0:
-                        status.append("obscured")
+                        status.append('obscured')
                     else:
-                        status.append("visible")
+                        status.append('visible')
                 # could the result be zero, or is it positive?
                 if val - (error if error is not None else 0) <= 0:
-                    status.append("zero")
+                    status.append('zero')
                 else:
-                    status.append("positive")
+                    status.append('positive')
                 if error is not None:
                     error_str = " +- {:.0f} ({:.03f}%)".format(error, error_perc)
                 else:
-                    error_str = ""
-                bin_txt = ("{} [{},{}) = {:.0f}{} ({})\n"
-                           .format(name, left, right,
+                    error_str = ''
+                if len(bin_labels_txt) > label_index:
+                    label_str = bin_labels_txt[label_index]
+                    # remove redundant string components for 1-element lists
+                    if label_str.endswith(' (1)'):
+                        label_str, _, _ = label_str.rpartition(' ')
+                        label_str = label_str.strip("'")
+                    label_str = " {}".format(label_str)
+                else:
+                    label_str = ''
+                bin_txt = ("{} [{},{}){} = {:.0f}{} ({})\n"
+                           .format(name, left, right, label_str,
                                    val, error_str,
                                    ", ".join(status)))
                 fout_txt.write(bin_txt)
@@ -211,6 +239,10 @@ def run_plot(args):
                     left = int(left)
                 bin_labels.append("[{},{})".format(left, right))
                 dataset.append(val)
+                label_index += 1
+            if len(bin_labels_txt) > 0:
+                assert len(bin_labels_txt) == len(bin_labels)
+                bin_labels = bin_labels_txt
             plot_info[name]['datasets'].append(dataset)
 
             if len(plot_info[name]['bin_labels']) == 0:
