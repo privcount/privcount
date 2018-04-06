@@ -109,7 +109,7 @@ def log_tally_server_status(status):
         next_start_reason = status.get('delay_reason', "clients are ready")
         next_round_delay_str = ""
         if next_start_time > time():
-            next_round_delay_str = "in {}".format(format_delay_time_until(next_start_time, 'at'))
+            next_round_delay_str = " in {}".format(format_delay_time_until(next_start_time, 'at'))
         next_round_str = "next round{} after {}".format(next_round_delay_str, next_start_reason)
     else:
         continue_str = "stop collecting"
