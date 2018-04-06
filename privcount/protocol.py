@@ -217,20 +217,20 @@ class PrivCountProtocol(LineOnlyReceiver):
             # that should terminate the connection. Otherwise, a client
             # failing due to an exception can cause an infinite retry loop.
             logging.error(
-                "Exception {} while processing event type: {} payload: {}"
+                "Exception {} while processing event type: {} payload: '{}'"
                 .format(e, event_type, summarise_string(event_payload)))
             logging.debug(
-                "Exception {} while processing event type: {} payload: (full) {}"
+                "Exception {} while processing event type: {} payload: (full) '{}'"
                 .format(e, event_type, event_payload))
             log_error()
 
             try:
                 self.protocol_failed()
             except BaseException as e:
-                logging.error("Exception {} in protocol failure after event type: {} payload: {}"
+                logging.error("Exception {} in protocol failure after event type: {} payload: '{}'"
                               .format(e, event_type,
                                       summarise_string(event_payload)))
-                logging.debug("Exception {} in protocol failure after event type: {} payload: (full) {}"
+                logging.debug("Exception {} in protocol failure after event type: {} payload: (full) '{}'"
                               .format(e, event_type, event_payload))
 
                 log_error()
@@ -1660,7 +1660,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                     self.collection_events.add(upper_event)
                 else:
                     logging.warning("Ignored unknown event: {}".format(event))
-        logging.info("Starting PrivCount collection with {} events: {} from {} counters: {} and {} events: {}"
+        logging.info("Starting PrivCount collection with {} events: {} from {} counters: {} and {} extra events: {}"
                      .format(len(self.collection_events),
                              " ".join(self.collection_events),
                              0 if counter_list is None else len(counter_list),
@@ -1669,7 +1669,7 @@ class TorControlClientProtocol(LineOnlyReceiver, TorControlProtocol):
                              0 if event_list is None else len(event_list),
                              "(none)" if event_list is None else
                              " ".join(event_list)))
-        logging.debug("Starting PrivCount collection with {} events: {} from {} counters (full list): {} and {} events: {}"
+        logging.debug("Starting PrivCount collection with {} events: '{}' from {} counters (full list): '{}' and {} extra events: '{}'"
                       .format(len(self.collection_events),
                               " ".join(self.collection_events),
                               0 if counter_list is None else len(counter_list),

@@ -335,11 +335,11 @@ class PrivCountNode(object):
 
         Logs an info-level summary, and a full debug log.
         '''
-        logging.info("updated config for key {} from {} to {}"
+        logging.info("updated config for key '{}' from '{}' to '{}'"
                      .format(key_name,
                              summarise_string(old_val_str),
                              summarise_string(new_val_str)))
-        logging.debug("updated config for key {} (full values) from {} to {}"
+        logging.debug("updated config for key '{}' (full values) from '{}' to '{}'"
                       .format(key_name, old_val_str, new_val_str))
 
 class PrivCountServer(PrivCountNode):

@@ -948,9 +948,9 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert -min_tally_counter_value() < counter_modulus()
 
             if self.config == None:
-                logging.info("using initial config = %s",
+                logging.info("using initial config = '%s'",
                              summarise_string(str(ts_conf)))
-                logging.debug("using config (full value) = %s",
+                logging.debug("using config (full value) = '%s'",
                               str(ts_conf))
             else:
                 changed = False
