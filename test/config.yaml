@@ -154,8 +154,13 @@ tally_server:
     #sk_threshold: 1
     dc_threshold: 1 # number of data collector nodes required before starting
 
+    # UTC datetime in ISO 8601 extended format
+    # to generate this format, use:
+    # date -u +%Y-%m-%dT%H:%M:%SZ
+    start_after: "2018-01-01T00:00:00Z"
+
     # If you add a significant number of new counters, you may need to increase
-    # the collect, event, and checkin periods
+    # the collect, event, and checkin periods for testing purposes
     # The elapsed test time is approximately:
     #     (collect_period + 2*event_period + delay_period) * rounds
     collect_period: 80 # (no default, 1 week = 604800 seconds) the safe time frame of stats collection for all stats

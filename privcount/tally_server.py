@@ -13,6 +13,7 @@ import re
 import yaml
 
 from time import time
+from datetime import datetime
 from copy import copy, deepcopy
 from base64 import b64encode
 
@@ -132,10 +133,11 @@ class TallyServer(ServerFactory, PrivCountServer):
                             max_client_rtt=self.get_max_all_client_rtt(),
                             always_delay=self.config['always_delay'],
                             tolerance=self.config['sigma_decrease_tolerance']):
-                        # we've passed all the checks, start the collection
-                        num_phases = self.num_completed_collection_phases
-                        logging.info("starting collection phase {} with {} DataCollectors and {} ShareKeepers".format((num_phases+1), len(dcs), len(sks)))
-                        self.start_new_collection_phase(dcs, sks)
+                        if time() >= self.config['start_after_time']:
+                            # we've passed all the checks, start the collection
+                            num_phases = self.num_completed_collection_phases
+                            logging.info("starting collection phase {} with {} DataCollectors and {} ShareKeepers".format((num_phases+1), len(dcs), len(sks)))
+                            self.start_new_collection_phase(dcs, sks)
 
         # check if we should stop a running collection phase
         else:
@@ -930,6 +932,14 @@ class TallyServer(ServerFactory, PrivCountServer):
             assert ts_conf.has_key('noise_weight')
             assert check_noise_weight_config(ts_conf['noise_weight'],
                                              ts_conf['dc_threshold'])
+
+            if 'start_after' in ts_conf:
+                # ISO 8601 extended UTC datetime
+                start_after_datetime = datetime.strptime(ts_conf['start_after'], "%Y-%m-%dT%H:%M:%SZ")
+                ts_conf['start_after_time'] = (start_after_datetime - datetime(1970, 1, 1)).total_seconds()
+            else:
+                ts_conf['start_after_time'] = 0
+
             assert ts_conf['collect_period'] > 0
             assert ts_conf['event_period'] > 0
             assert ts_conf['checkin_period'] > 0
@@ -937,6 +947,7 @@ class TallyServer(ServerFactory, PrivCountServer):
             ts_conf.setdefault('continue', False)
             assert (isinstance(ts_conf['continue'], bool) or
                     ts_conf['continue'] >= 0)
+
             # check the hard-coded counter values are sane
             assert counter_modulus() > 0
             assert min_blinded_counter_value() == 0
@@ -1195,6 +1206,23 @@ class TallyServer(ServerFactory, PrivCountServer):
     def get_status(self): # called by protocol
         dc_idle, dc_active, sk_idle, sk_active = self.count_client_states()
 
+        collection_delay_start_time = self.collection_delay.get_next_round_start_time(
+                            self.config['noise'],
+                            self.config['delay_period'],
+                            max_client_rtt=self.get_max_all_client_rtt(),
+                            always_delay=self.config['always_delay'],
+                            tolerance=self.config['sigma_decrease_tolerance'])
+        configured_start_time = self.config['start_after_time']
+
+        delay_until = max(collection_delay_start_time, configured_start_time)
+        # the status log message is is "next round after..."
+        delay_reason = "clients are ready"
+        if delay_until > time():
+            if collection_delay_start_time > configured_start_time:
+                delay_reason = "noise change delay"
+            else:
+                delay_reason = "configured start time"
+
         status = {
             'state' : 'idle' if self.collection_phase is None else 'active',
             'time' : self.idle_time if self.collection_phase is None else self.collection_phase.get_start_ts(),
@@ -1210,12 +1238,8 @@ class TallyServer(ServerFactory, PrivCountServer):
             'sks_required' : self.config['sk_threshold'],
             'completed_phases' : self.num_completed_collection_phases,
             'continue' : self.config['continue'],
-            'delay_until' : self.collection_delay.get_next_round_start_time(
-                self.config['noise'],
-                self.config['delay_period'],
-                max_client_rtt=self.get_max_all_client_rtt(),
-                always_delay=self.config['always_delay'],
-                tolerance=self.config['sigma_decrease_tolerance']),
+            'delay_until' : delay_until,
+            'delay_reason' : delay_reason,
             'privcount_version' : get_privcount_version(),
         }
 
