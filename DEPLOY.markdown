@@ -222,14 +222,16 @@ configure your tor relays using a --defaults-torrc file for common settings:
 
 #### Automatic Configuration
 
-PrivCount sets ```EnablePrivCount 1``` when it starts a collection round, and
-turns it off at the end of the round. This makes sure that all the totals it
-collects are consistent. You MUST NOT set EnablePrivCount in the torrc: this
-biases the results towards long-running connections.
+By default, PrivCount sets ```EnablePrivCount 1``` when it starts a collection round,
+and turns it off at the end of the round. When PrivCount is collecting data, it sets
+```__ReloadTorrcOnSIGHUP 0``` to prevent the PrivCount option being turned off by a
+HUP. This means that you can't change any torrc options during a collection.
 
-When PrivCount is collecting data, it sets ```__ReloadTorrcOnSIGHUP 0``` to
-prevent the PrivCount option being turned off by a HUP. This means that you
-can't change any torrc options during a collection.
+If the data collectors are configured with ```use_sertconf: false```, you must set
+ ```EnablePrivCount 1``` in the torrc for each relay. This allows multiple simultaneous
+ collections by different projects, using the same relays. Having EnablePrivCount on all
+ the time might cause some bias towards long-running connections, circuits, or
+ streams. But we think these biases are small.
 
 #### Name
 
