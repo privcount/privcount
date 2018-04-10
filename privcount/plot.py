@@ -161,7 +161,7 @@ def run_plot(args):
         fprefix = args.prefix + '.' if args.prefix is not None else ''
         fout_txt = open("{0}privcount.results.txt".format(fprefix), 'w')
 
-        for name in histograms.keys():
+        for name in sorted(histograms.keys()):
             plot_info.setdefault(name, {'datasets':[], 'errors':[], 'dataset_colors':[], 'dataset_labels':[], 'bin_labels':[]})
             plot_info[name]['dataset_colors'].append(dataset_color)
             plot_info[name]['dataset_labels'].append(dataset_label)
