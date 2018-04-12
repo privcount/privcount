@@ -2,6 +2,12 @@
 .pydevproject
 *.pyc
 venv
+local
+pyenv
+pypyenv
+*.tar.gz
+openssl-*
+cryptowheels
 
 # counter renames
 *.bak

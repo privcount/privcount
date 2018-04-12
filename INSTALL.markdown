@@ -26,7 +26,7 @@ To update your chosen branch from remote "origin":
 
 ### Install PrivCount
 
-    source venv/bin/activate
+    source pyenv/bin/activate
     pip install -I .
     # relaunch privcount
 
@@ -77,7 +77,7 @@ Some environments (macOS) might need help locating headers and libraries. If
 so, use:
 
     'CFLAGS="-I/opt/local/include" LDFLAGS="-L/opt/local/lib"'
-    
+
 (substituting your package manager's path) before pip install.
 
 ### PrivCount Plot (Optional):
@@ -100,8 +100,8 @@ avoid conflicts. Run the following from the privcount base directory (the
 directory that contains these instructions):
 
     pip install virtualenv
-    virtualenv venv
-    source venv/bin/activate
+    virtualenv pyenv
+    source pyenv/bin/activate
     pip install -r requirements.txt
     # if you want to use the optional privcount plot command
     pip install -r requirements-plot.txt
@@ -109,6 +109,18 @@ directory that contains these instructions):
     pip install -r requirements-weights.txt
     pip install -I .
     deactivate
+    # make run_privcount.sh and test/run_tests.sh use pyenv
+    # only works if venv is a symlink
+    ln -sf pyenv venv
+
+Optionally, use INSTALL.PyPy.markdown to install a pypy environment under
+pypyenv, so that privcount uses less CPU. You can switch the default
+environments for run_privcount.sh and run_test.sh using:
+
+    # python
+    ln -sf pyenv venv
+    # pypy
+    ln -sf pypyenv venv
 
 If 'pip install virtualenv' fails due to permissions errors, install as root.
 Using 'sudo -H' before 'pip install' should work.
@@ -263,7 +275,7 @@ Start an unpublished relay:
 
 Check an existing relay:
 
-    source venv/bin/activate
+    source pyenv/bin/activate
     test/test_tor_ctl_event.py <control-port-or-control-socket-path>
     deactivate
 
