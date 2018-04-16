@@ -28,6 +28,7 @@ test/old
 
 # these are dumped in the working directory
 privcount.results.pdf
+privcount.results.txt
 privcount.*.log
 tor.pid
 

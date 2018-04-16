@@ -43,6 +43,15 @@ def main():
 
 def add_plot_args(parser):
 
+    parser.add_argument('-o', '--outcome',
+        help="""Append a PATH to a privcount outcome.json file,
+                and the LABEL we should use for the graph legend for this
+                set of experimental results""",
+        metavar=("PATH", "LABEL"),
+        nargs=2,
+        required=False,
+        action=PlotDataAction, dest="data_outcome", default=[])
+
     parser.add_argument('-t', '--tallies',
         help="""Append a PATH to a privcount tallies.json file,
                 and the LABEL we should use for the graph legend for this
@@ -53,14 +62,13 @@ def add_plot_args(parser):
         required=False,
         action=PlotDataAction, dest="data_tallies", default=[])
 
-    parser.add_argument('-o', '--outcome',
-        help="""Append a PATH to a privcount outcome.json file,
-                and the LABEL we should use for the graph legend for this
-                set of experimental results""",
+    # deprecated and hidden, use --outcome instead
+    parser.add_argument('-d', '--data',
+        help=argparse.SUPPRESS,
         metavar=("PATH", "LABEL"),
         nargs=2,
         required=False,
-        action=PlotDataAction, dest="data_outcome", default=[])
+        action=PlotDataAction, dest="experiments", default=[])
 
     parser.add_argument('-p', '--prefix',
         help="a STRING filename prefix for graphs we generate",
@@ -75,13 +83,7 @@ def add_plot_args(parser):
         action="store", dest="lineformats",
         default=LINEFORMATS)
 
-    parser.add_argument('-d', '--data',
-        help="""This option is deprecated (it was replaced with '-t' and
-                '--tallies').""",
-        metavar=("PATH", "LABEL"),
-        nargs=2,
-        required=False,
-        action=PlotDataAction, dest="experiments", default=[])
+MAX_LABEL_LEN = 15
 
 def import_plotting():
     global matplotlib
@@ -134,9 +136,16 @@ def run_plot(args):
     import_plotting()
 
     args.experiments = args.experiments + args.data_tallies + args.data_outcome
+    if len(args.experiments) == 0:
+        print("You must provide at least one input file using --outcome or --tallies")
+        print("For more details, use --help")
+        sys.exit(1)
 
     lflist = args.lineformats.strip().split(",")
     lfcycle = cycle(lflist)
+
+    fprefix = args.prefix + '.' if args.prefix is not None else ''
+    fout_txt = open("{0}privcount.results.txt".format(fprefix), 'w')
 
     plot_info = {}
     for (path, label) in args.experiments:
@@ -158,9 +167,7 @@ def run_plot(args):
             labels = {}
         fin.close()
 
-        fprefix = args.prefix + '.' if args.prefix is not None else ''
-        fout_txt = open("{0}privcount.results.txt".format(fprefix), 'w')
-
+        fout_txt.write("Label: {}\n".format(label))
         for name in sorted(histograms.keys()):
             plot_info.setdefault(name, {'datasets':[], 'errors':[], 'dataset_colors':[], 'dataset_labels':[], 'bin_labels':[]})
             plot_info[name]['dataset_colors'].append(dataset_color)
@@ -179,14 +186,35 @@ def run_plot(args):
             dataset = []
             bin_labels = []
             bin_labels_txt = []
-            # add the match list bin labels
-            if 'Match' in name:
-                if 'AS' in name:
-                    bin_labels_txt = labels.get('as_lists', [])
-                if 'Country' in name:
-                    bin_labels_txt = labels.get('country_lists', [])
-                if 'Domain' in name:
+
+            # CountLists
+            # These plot lookups should be kept synchronised with the
+            # corresponding TallyServer config options
+
+            # add the match list bin labels for count lists
+            # match histograms etc. use the first bin to match, and we don't
+            # modify their labels
+            if name.endswith('CountList'):
+                if name.startswith("ExitDomain"):
                     bin_labels_txt = labels.get('domain_lists', [])
+                if "CountryMatch" in name:
+                    bin_labels_txt = labels.get('country_lists', [])
+                if "ASMatch" in name:
+                    bin_labels_txt = labels.get('as_lists', [])
+                if (name.startswith("HSDir") and
+                    "Store" in name and
+                    name.endswith("ReasonCountList")):
+                    bin_labels_txt = labels.get('hsdir_store_lists', [])
+                if (name.startswith("HSDir") and
+                    "Fetch" in name and
+                    name.endswith("ReasonCountList")):
+                    bin_labels_txt = labels.get('hsdir_fetch_lists', [])
+                if name.endswith("FailureCircuitReasonCountList"):
+                    bin_labels_txt = labels.get('circuit_failure_lists', [])
+                if (name.startswith("HSDir") and
+                    ("Store" in name or "Fetch" in name) and
+                    name.endswith("OnionAddressCountList")):
+                    bin_labels_txt = labels.get('onion_address_lists', [])
             # add the unmatched bin label
             if len(bin_labels_txt) > 0:
                 if len(bin_labels_txt) < len(histograms[name]['bins']):
@@ -250,12 +278,11 @@ def run_plot(args):
                 label_index += 1
             if len(bin_labels_txt) > 0:
                 assert len(bin_labels_txt) == len(bin_labels)
-                bin_labels = bin_labels_txt
+                bin_labels = [bin_label.strip("'")[0:(MAX_LABEL_LEN-3)] + '...' if len(bin_label) > MAX_LABEL_LEN else bin_label for bin_label in bin_labels_txt]
             plot_info[name]['datasets'].append(dataset)
 
             if len(plot_info[name]['bin_labels']) == 0:
                 plot_info[name]['bin_labels'] = bin_labels
-
     fout_txt.close()
 
     page = PdfPages("{0}privcount.results.pdf".format(fprefix))
