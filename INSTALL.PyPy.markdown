@@ -69,7 +69,7 @@ cd cryptowheels
 
 # openssl paths reference openssl build from above
 ```bash
-CFLAGS="-I/home/rjansen/local/openssl-privcount/include" LDFLAGS="-L/home/rjansen/local/openssl-privcount/lib" pip wheel --no-use-wheel cryptography==1.5.2
+CFLAGS="-I/home/rjansen/local/openssl-privcount/include" LDFLAGS="-L/home/rjansen/local/openssl-privcount/lib" pip wheel --no-binary :all: cryptography==1.5.2
 pip install *whl
 cd ..
 ```
