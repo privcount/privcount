@@ -47,6 +47,7 @@ tally_server:
         - 'onion-search.txt'
         - 'onion-securedrop.txt'
         - 'onion-torproject.txt'
+        - 'onion-md5-mixed-non-unique.txt'
     allocation: 'counters.allocation.yaml'
     noise_weight:
         '*': 1.0

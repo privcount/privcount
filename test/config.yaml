@@ -132,6 +132,8 @@ tally_server:
         - 'onion-search.txt'
         - 'onion-securedrop.txt'
         - 'onion-torproject.txt'
+        - 'onion-md5-example.txt'
+        - 'onion-md5-mixed-unique.txt'
 
     # path to a yaml file where the noise allocation is written immediately after calculation. The noise allocation also forms part of the results context.
     allocation: 'counters.allocation.yaml'

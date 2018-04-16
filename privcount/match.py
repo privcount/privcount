@@ -52,11 +52,12 @@ See LICENSE for licensing information
 '''
 
 import bisect
+import hashlib
 import logging
 import os
 import pyasn
 
-from privcount.config import normalise_path, check_domain_name, check_country_code, check_as_number, check_reason_str, strip_onion_str, check_onion_address
+from privcount.config import normalise_path, check_domain_name, check_country_code, check_as_number, check_reason_str, strip_onion_str, check_onion_string
 from privcount.crypto import json_serialise
 from privcount.log import summarise_string, format_bytes, summarise_list
 
@@ -113,7 +114,7 @@ def load_match_list(file_path,
                 # Strip irrelevant URL and domain components, and lowercase
                 line = strip_onion_str(line)
                 # And then check: this makes checking easier to implement
-                assert check_onion_address(line)
+                assert check_onion_string(line)
             match_list.append(line)
 
     return (file_path, match_list)
@@ -146,29 +147,38 @@ def lower_if_hasattr(obj):
     return obj.lower() if hasattr(obj, 'lower') else obj
 
 def exact_match_validate_item(exact_obj, search_string,
-                              original_list):
+                              original_list, match_onion_md5=False):
     '''
     Search exact_obj for search_string.
+
+    If match_onion_md5 is True, also try to match:
+        hashlib.md5(search_obj + '.onion').hexdigest()
+    If search_obj is a string, it is lowercased before hashing.
 
     If the search fails, log a warning using original_list, and raise an
     exception.
     '''
     try:
-        assert exact_match(exact_obj, search_string)
+        assert exact_match(exact_obj, search_string,
+                           match_onion_md5=match_onion_md5)
     except:
-        logging.warning("Validating exact {} failed:\nOriginal:\n{}\nSet:\n{}"
+        onion_match = " (and onion md5)" if match_onion_md5 else ""
+        logging.warning("Validating exact {}{} failed:\nOriginal:\n{}\nSet:\n{}"
                         .format(search_string,
+                                onion_match,
                                 summarise_list(original_list),
                                 summarise_list(exact_obj)))
-        logging.debug("Validating exact {} failed:\nOriginal (full):\n{}\nSet (full):\n{}"
+        logging.debug("Validating exact {}{} failed:\nOriginal (full):\n{}\nSet (full):\n{}"
                       .format(search_string,
+                              onion_match,
                               original_list,
                               exact_obj))
         raise
 
 def exact_match_prepare_collection(exact_collection,
                                    existing_exacts=None,
-                                   validate=True):
+                                   validate=True,
+                                   match_onion_md5=False):
     '''
     Prepare a hashable object collection for efficient exact matching.
     If the objects in the collection are strings, lowercases them.
@@ -186,10 +196,15 @@ def exact_match_prepare_collection(exact_collection,
     If validate is True, checks that exact_match() returns True for each
     item in exact_collection.
 
+    If match_onion_md5 is True, also try to validate matches for:
+        hashlib.md5(item + '.onion').hexdigest()
+    If item is a string, it is lowercased before hashing.
+
     Returns an object that can be passed to exact_match().
     This object must be treated as opaque and read-only.
     '''
     assert exact_collection is not None
+    onion_match = " (and onion md5)" if match_onion_md5 else ""
     # Set matching uses a hash table, so it's more efficient
     exact_collection_lower = [lower_if_hasattr(obj) for obj in exact_collection]
     exact_set = frozenset(exact_collection_lower)
@@ -198,34 +213,81 @@ def exact_match_prepare_collection(exact_collection,
     if len(exact_collection) != len(exact_set):
       dups = [obj for obj in exact_set
               if exact_collection_lower.count(lower_if_hasattr(obj)) > 1]
-      logging.warning("Removing {} duplicates within this collection"
-                      .format(summarise_list(dups)))
+      logging.warning("Removing {} duplicates{} within this collection"
+                      .format(summarise_list(dups), onion_match))
     # the encoded json measures transmission size, not RAM size
-    logging.info("Exact match prepared {} items ({})"
-                 .format(len(exact_set),
+    logging.info("Exact match prepared {}{} items ({})"
+                 .format(len(exact_set), onion_match,
                          format_bytes(len(json_serialise(list(exact_set))))))
 
     # Check that each item actually matches the list
     if validate:
         for item in exact_collection:
-            exact_match_validate_item(exact_set, item, exact_collection)
+            exact_match_validate_item(exact_set, item, exact_collection,
+                                      match_onion_md5=match_onion_md5)
 
     if existing_exacts is None:
         return exact_set
     else:
         # Remove any items that appear in earlier lists
+        #
+        # If an onion address is in a different format in an earlier list,
+        # this code won't remove it.
+        #
+        # Depending on the exact configuration:
+        # - the tally server will fail to validate the lists, or
+        # - the data collectors will count events for the duplicate onion
+        #   address against the first list that contains the address
+        #   (in any format).
         disjoint_exact_set = exact_set.difference(*existing_exacts)
         duplicate_exact_set = exact_set.difference(disjoint_exact_set)
         if len(duplicate_exact_set) > 0:
-            logging.warning("Removing {} duplicates that are also in an earlier collection"
-                            .format(summarise_list(duplicate_exact_set)))
+            logging.warning("Removing {} duplicates{} that are also in an earlier collection"
+                            .format(summarise_list(duplicate_exact_set),
+                                    onion_match))
         existing_exacts.append(disjoint_exact_set)
         return disjoint_exact_set
 
-def exact_match(exact_obj, search_obj):
+
+def exact_match(exact_obj, search_obj, match_onion_md5=False):
     '''
     Performs an efficient O(1) exact match for search_obj in exact_obj.
     If search_obj is a string, performs a case-insensitive match.
+
+    If match_onion_md5 is True, also try to match:
+        hashlib.md5(search_obj + '.onion').hexdigest()
+    If search_obj is a string, it is lowercased before hashing.
+
+    exact_obj must have been created by exact_match_prepare_collection().
+    '''
+    if exact_obj is None:
+        return False
+    elif exact_match_plain(exact_obj, search_obj):
+        return True
+    elif match_onion_md5 and exact_match_onion_md5(exact_obj, search_obj):
+        return True
+    else:
+        return False
+
+def exact_match_onion_md5(exact_obj, search_obj):
+    '''
+    Performs an efficient O(1) exact match in exact_obj for:
+        hashlib.md5(search_obj + '.onion').hexdigest()
+    If search_obj is a string, it is lowercased before hashing.
+
+    exact_obj must have been created by exact_match_prepare_collection().
+    '''
+    if exact_obj is None:
+        return False
+    md5_search_obj = lower_if_hasattr(search_obj)
+    md5_search_obj = hashlib.md5(md5_search_obj + '.onion').hexdigest()
+    return exact_match_plain(exact_obj, md5_search_obj)
+
+def exact_match_plain(exact_obj, search_obj):
+    '''
+    Performs an efficient O(1) exact match for search_obj in exact_obj.
+    If search_obj is a string, performs a case-insensitive match.
+
     exact_obj must have been created by exact_match_prepare_collection().
     '''
     if exact_obj is None:

@@ -1,0 +1,6 @@
+# Ahmia's banned site test vector
+# Source:
+# https://ahmia.fi/blacklist/
+# Output of:
+# echo -e "abcdefghijklmnop.onion\c" | (md5sum 2> /dev/null || md5)
+c50b9578b6357a561909ff29331ad7ad

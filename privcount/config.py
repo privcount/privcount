@@ -141,9 +141,28 @@ def strip_onion_str(onion_str):
     # if there is nothing left, return an empty string
     return ""
 
+def check_onion_string(onion_str):
+    '''
+    Check if onion_str is a potentially valid onion address. Accepts plain
+    and md5-obfuscated onion addresses.
+
+    Assumes that the string has already been stripped of leading and trailing
+    whitespace, all non-domain URL components, and all non-onion-address
+    domain components.
+
+    Returns True if it is valid, and False if it is not.
+    '''
+    if len(onion_str) == 16:
+        return check_onion_address(onion_str)
+    elif len(onion_str) == 32:
+        return check_onion_md5(onion_str)
+    else:
+        return False
+
 def check_onion_address(onion_str):
     '''
     Check if onion_str is a potentially valid onion address.
+
     Assumes that the string has already been stripped of leading and trailing
     whitespace, all non-domain URL components, and all non-onion-address
     domain components.
@@ -159,6 +178,24 @@ def check_onion_address(onion_str):
     # We only support v2 onion addresses, because HSDirs don't know v3 onion
     # addresses
     return len(bad_chars) == 0 and len(onion_str) == 16
+
+def check_onion_md5(onion_str):
+    '''
+    Check if onion_str is a potentially valid onion address, obfuscated using
+    md5 (or any other 128-bit hash).
+
+    Assumes that the string has already been stripped of leading and trailing
+    whitespace.
+
+    That is, onion_str should be a 32-character hexadecimal string.
+
+    Returns True if it is valid, and False if it is not.
+    '''
+    # We check character sets and length
+    onion_str = onion_str.lower()
+    # Hexadecimal
+    bad_chars = onion_str.strip("0123456789abcdef")
+    return len(bad_chars) == 0 and len(onion_str) == 32
 
 def validate_ip_address(address):
     '''

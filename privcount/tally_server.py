@@ -227,7 +227,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                            suffix_separator=None,
                            existing_exacts=None,
                            existing_suffixes=None,
-                           collection_tag=-1):
+                           collection_tag=-1,
+                           match_onion_md5=False):
         '''
         Process a match list from match_list.
 
@@ -238,6 +239,10 @@ class TallyServer(ServerFactory, PrivCountServer):
         exact matching. If existing_exacts is not None, add the exacts
         to existing_exacts.
 
+        If match_onion_md5 is True, also prepare exact matches for:
+            hashlib.md5(item + '.onion').hexdigest()
+        If item is a string, it is lowercased before hashing.
+
         If prepare_suffix is True, check that the list can be prepared for
         suffix matching. If existing_suffixes is not None, add the suffixes
         to existing_suffixes with tag collection_tag.
@@ -247,13 +252,16 @@ class TallyServer(ServerFactory, PrivCountServer):
         assert len(match_list) > 0
 
         if prepare_exact or prepare_suffix:
-            logging.info("Checking matches for {}"
+            onion_match = " (and onion md5)" if match_onion_md5 else ""
+            logging.info("Checking matches for {}{}"
                          .format(summarise_list(match_list,
-                                                sort_output=False)))
+                                                sort_output=False),
+                                 onion_match))
         # make sure the DCs will be able to process the lists
         if prepare_exact:
             exact_match_prepare_collection(match_list,
-                                           existing_exacts=existing_exacts)
+                                           existing_exacts=existing_exacts,
+                                           match_onion_md5=match_onion_md5)
         if prepare_suffix:
             suffix_match_prepare_collection(match_list,
                                             separator=suffix_separator,
@@ -440,7 +448,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                       TallyServer.process_match_list(
                           new_config[lists_key][i],
                           prepare_exact=True,
-                          existing_exacts=new_processed_config[exacts_key])
+                          existing_exacts=new_processed_config[exacts_key],
+                          match_onion_md5=check_onion)
                   if suffixes_key is not None:
                       TallyServer.process_match_list(
                           new_config[lists_key][i],
@@ -463,7 +472,8 @@ class TallyServer(ServerFactory, PrivCountServer):
                             if reject_overlapping_lists or i == 0:
                                 exact_match_validate_item(new_processed_config[exacts_key][i],
                                                           item,
-                                                          new_config[lists_key][i])
+                                                          new_config[lists_key][i],
+                                                          match_onion_md5=check_onion)
                         if suffixes_key is not None:
                             suffix_match_validate_item(new_processed_config[suffixes_key],
                                                        item,
@@ -719,6 +729,10 @@ class TallyServer(ServerFactory, PrivCountServer):
             # Do we reject overlapping lists, or warn and remove overlaps?
             ts_conf.setdefault('reject_overlapping_lists', True)
             assert isinstance(ts_conf['reject_overlapping_lists'], bool)
+
+            # CountLists
+            # These config options should be kept synchronised with the
+            # corresponding plot lookups
 
             # optional lists and processed suffixes of DNS domain names
             TallyServer.load_match_config(

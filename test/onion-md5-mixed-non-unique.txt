@@ -1,0 +1,5 @@
+# Test mixed plain and md5 onions with a duplicate
+# Output of:
+# echo -e "aaaaaaaaaaaaaaaa.onion\c" | (md5sum 2> /dev/null || md5)
+d8993195077014f71bac0f46a20d80c1
+aaaaaaaaaaaaaaaa.onion

@@ -492,17 +492,17 @@ class Aggregator(ReconnectingClientFactory):
             exact_match_prepare_collection(as_data['lists'][i],
                                            existing_exacts=self.as_exact_objs)
 
-        # Prepare HSDir store match lists
+        # Prepare HSDir store failure match lists
         self.hsdir_store_exact_objs = []
         for i in xrange(len(hsdir_store_lists)):
-            logging.info('Preparing HSDir store list {}'.format(i))
+            logging.info('Preparing HSDir store failure list {}'.format(i))
             exact_match_prepare_collection(hsdir_store_lists[i],
                                            existing_exacts=self.hsdir_store_exact_objs)
 
-        # Prepare HSDir fetch match lists
+        # Prepare HSDir fetch failure match lists
         self.hsdir_fetch_exact_objs = []
         for i in xrange(len(hsdir_fetch_lists)):
-            logging.info('Preparing HSDir fetch list {}'.format(i))
+            logging.info('Preparing HSDir fetch failure list {}'.format(i))
             exact_match_prepare_collection(hsdir_fetch_lists[i],
                                            existing_exacts=self.hsdir_fetch_exact_objs)
 
@@ -514,6 +514,7 @@ class Aggregator(ReconnectingClientFactory):
                                            existing_exacts=self.circuit_failure_exact_objs)
 
         # Prepare Onion Address match lists
+        # These lists are used for both stores and fetches
         self.onion_address_exact_objs = []
         for i in xrange(len(onion_address_lists)):
             logging.info('Preparing Onion Address list {}'.format(i))
@@ -1292,9 +1293,13 @@ class Aggregator(ReconnectingClientFactory):
                                        inc=readbw)
 
     @staticmethod
-    def _exact_match_bin(exact_objs, search_string):
+    def _exact_match_bin(exact_objs, search_string, match_onion_md5=False):
         '''
         Finds the bin number of search_string in exact_objs.
+
+        If match_onion_md5 is True, also try to match:
+            hashlib.md5(search_string + '.onion').hexdigest()
+        search_string is lowercased before hashing.
 
         Return the position of the first object in exact_objs that matches
         search_string, or +inf if no object matches. The return value is
@@ -1303,10 +1308,11 @@ class Aggregator(ReconnectingClientFactory):
         for i in xrange(len(exact_objs)):
             # check for an exact match
             # this is O(N), but obviously correct
-            # assert exact_match(exact_objs[i], search_string) == any([search_string == s for s in exact_objs[i]])
+            # assert exact_match(exact_objs[i], search_string, match_onion_md5=False) == any([search_string == s for s in exact_objs[i]])
 
             # this is O(1), because set uses a hash table internally
-            if exact_match(exact_objs[i], search_string):
+            if exact_match(exact_objs[i], search_string,
+                           match_onion_md5=match_onion_md5):
                 # The TS guarantees that the lists are disjoint
                 # If they aren't, then we return the first bin that matches
                 return float(i)
@@ -4256,7 +4262,8 @@ class Aggregator(ReconnectingClientFactory):
             # we checked in are_hsdir_store_fields_valid()
             assert hs_version == 2
             onion_exact_match_bin = Aggregator._exact_match_bin(self.onion_address_exact_objs,
-                                                                onion_address)
+                                                                onion_address,
+                                                                match_onion_md5=True)
 
             # Now that we know which list matched, increment its CountList
             # counters. Instead of using Match and NoMatch counters, we increment
@@ -4642,7 +4649,8 @@ class Aggregator(ReconnectingClientFactory):
             # we checked in are_hsdir_fetch_fields_valid()
             assert hs_version == 2
             onion_exact_match_bin = Aggregator._exact_match_bin(self.onion_address_exact_objs,
-                                                                onion_address)
+                                                                onion_address,
+                                                                match_onion_md5=True)
 
             # Now that we know which list matched, increment its CountList
             # counters. Instead of using Match and NoMatch counters, we increment
