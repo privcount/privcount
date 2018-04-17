@@ -1,12 +1,14 @@
-## pypy virtual environment setup, for various systems (ymmv)
-## running PrivCount in a pypyenv dramatically improves efficiency
+# pypy virtual environment setup
 
-# install pypy
+Running PrivCount in a pypyenv dramatically improves efficiency.
+These instructions have been tested on a few different systems (ymmv).
 
-## Debian / Ubuntu
+## install pypy
+
+### Debian / Ubuntu
 
 You can't install pypy for privcount on Debian jessie. You need Debian stretch
-or later, because python cryptography requires pypy 2.6.1 (cryptography 1.5.3)
+or later, because python cryptography requires pypy 2.6.1 (cryptography 1.5.2)
 or pypy 5.3.0 (cryptography 1.9).
 
 As root (Debian), or using sudo (Ubuntu):
@@ -19,19 +21,19 @@ alias pip_pypy=/usr/local/bin/pip
 alias pip=/usr/bin/pip2
 ```
 
-## CentOS 7
+### CentOS 7
 
 ```bash
 sudo yum install pypy pypy-devel
 ```
 
-## macOS / Homebrew
+### macOS / Homebrew
 
 ```bash
 brew install pypy openssl
 ```
 
-## All Systems (optional)
+## upgrade tools (optional)
 
 As root, or using sudo:
 
@@ -39,18 +41,17 @@ As root, or using sudo:
 pip_pypy install --upgrade pip setuptools wheel virtualenv
 ```
 
-# create a pypy virtual environment
+## Create a Local Build Directory (optional, required on CentOS 7)
 
-## CentOS 7 / Local Build Directory
+### CentOS 7
 
-# optional commands: use a local prefix for openssl build
 ```bash
 cd ~
 mkdir -p local/pypyenv
 cd local
 ```
 
-## All Systems, including CentOS 7
+## create a pypy virtual environment
 
 # install pypy environment, update environment
 ```bash
@@ -59,11 +60,16 @@ source pypyenv/bin/activate
 pip install --upgrade pip setuptools wheel
 ```
 
-## Centos 7
+## Build Dependencies (required for CentOS 7, optional otherwise)
 
-# On my machine, I need openssl-1.0.2k.tar.gz for the python cryptography library
-# And I need a custom build as described here:
-# https://cryptography.io/en/latest/installation/#static-wheels
+### Centos 7
+
+#### OpenSSL
+
+On my machine, I need openssl-1.0.2k.tar.gz for the python cryptography library
+And I need a custom build as described here:
+https://cryptography.io/en/latest/installation/#static-wheels
+
 ```bash
 wget https://www.openssl.org/source/old/1.0.2/openssl-1.0.2k.tar.gz
 tar xaf openssl-1.0.2k.tar.gz
@@ -74,26 +80,25 @@ make -j8
 make install
 ```
 
-## Centos 7
+#### Python cryptography
 
-# build python cryptography lib (custom build needed for cent os 7)
+Build python cryptography lib.
+
 ```bash
 mkdir cryptowheels
 cd cryptowheels
 ```
 
-## Centos 7
+OpenSSL paths reference openssl build from above.
 
-# openssl paths reference openssl build from above
 ```bash
 CFLAGS="-I/home/rjansen/local/openssl-privcount/include" LDFLAGS="-L/home/rjansen/local/openssl-privcount/lib" pip wheel --no-binary :all: cryptography==1.5.2
 pip install *whl
 cd ..
 ```
 
-## All Systems
+## Install PrivCount
 
-# install privcount
 ```bash
 git clone https://github.com/privcount/privcount.git
 cd privcount
@@ -103,10 +108,14 @@ cd privcount
 ln -s ../local/pypyenv .
 ```
 
-## Centos 7
+## Pin Python cryptography requirement (CentOS 7 only)
 
-# apply the following diff, to force cryptography version 1.5.2, which is compatible with pypy
-# (This may not be necessary if you already installed cryptography==1.5.2 as specified above.)
+### Centos 7
+
+Apply the following diff, to force cryptography version 1.5.2, which is
+compatible with pypy. (This may not be necessary if you already installed
+cryptography==1.5.2 as specified above.)
+
 ```
 diff --git a/requirements.txt b/requirements.txt
 index 576109e..ae02848 100644
@@ -123,32 +132,32 @@ index 576109e..ae02848 100644
  ipaddress>=1.0.16
  ```
 
-## Debian / Ubuntu / CentOS 7
+## Install PrivCount requirements
 
-# install deps
+### Debian / Ubuntu / CentOS 7
+
 ```bash
 pip install -r requirements.txt
 ```
 
-## macOS / Homebrew
+### macOS / Homebrew
 
-# install deps
 ```bash
 # tell cryptography where to find openssl
 CPPFLAGS=-I/usr/local/opt/openssl/include LDFLAGS=-L/usr/local/opt/openssl/lib pip install -r requirements.txt
 ```
 
-## All Systems
+## Install PrivCount
 
-# install PrivCount
 ```bash
 pip install -I .
 ```
 
-## All Systems
+## Test PrivCount
 
-# now you should be able to run privcount like usual
-# except it will run much faster with pypy
+Now you should be able to run privcount like usual, except it will run much
+faster with pypy.
+
 ```bash
 privcount -h
 # optionally, remove the old venv so that run_privcount.sh and run_test.sh use
@@ -157,11 +166,11 @@ rm -rf venv
 ln -s pypyenv venv
 ```
 
-## All Systems
+## Create Python and PyPy virtualenvs
 
-# You can use INSTALL.markdown to install a python environment under pyenv for
-# privcount plot and compute_fractional_position_weights. Then you can switch
-# the default environments for run_privcount.sh and run_test.sh using:
+You can use INSTALL.markdown to install a python environment under pyenv for
+privcount plot and compute_fractional_position_weights. Then you can switch
+the default environments for run_privcount.sh and run_test.sh using:
 
 ```bash
 # python
