@@ -99,9 +99,10 @@ I recommend using virtual environments to isolate the python environment and
 avoid conflicts. Run the following from the privcount base directory (the
 directory that contains these instructions):
 
-    pip install virtualenv
-    virtualenv pyenv
+    pip install --upgrade pip setuptools wheel virtualenv
+    virtualenv --no-site-packages pyenv
     source pyenv/bin/activate
+    pip install --upgrade pip setuptools wheel
     pip install -r requirements.txt
     # if you want to use the optional privcount plot command
     pip install -r requirements-plot.txt

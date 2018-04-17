@@ -3,24 +3,41 @@
 
 # install pypy
 
+## Debian / Ubuntu
+
+You can't install pypy for privcount on Debian jessie. You need Debian stretch
+or later, because python cryptography requires pypy 2.6.1 (cryptography 1.5.3)
+or pypy 5.3.0 (cryptography 1.9).
+
+As root (Debian), or using sudo (Ubuntu):
+
+```bash
+apt-get install pypy pypy-setuptools curl
+curl -fsSL https://bootstrap.pypa.io/get-pip.py | pypy
+# On Debian, pypy overrides the standard python pip
+alias pip_pypy=/usr/local/bin/pip
+alias pip=/usr/bin/pip2
+```
+
 ## CentOS 7
 
 ```bash
 sudo yum install pypy pypy-devel
-# optional
-sudo pip_pypy install --upgrade pip setuptools
 ```
 
 ## macOS / Homebrew
 
 ```bash
 brew install pypy openssl
-pip_pypy install --upgrade pip setuptools
 ```
 
-## Other Systems
+## All Systems (optional)
 
-Install dependencies, see above for hints
+As root, or using sudo:
+
+```bash
+pip_pypy install --upgrade pip setuptools wheel virtualenv
+```
 
 # create a pypy virtual environment
 
@@ -39,7 +56,7 @@ cd local
 ```bash
 virtualenv -p pypy --no-site-packages pypyenv
 source pypyenv/bin/activate
-pip install --upgrade pip setuptools
+pip install --upgrade pip setuptools wheel
 ```
 
 ## Centos 7
@@ -106,7 +123,7 @@ index 576109e..ae02848 100644
  ipaddress>=1.0.16
  ```
 
-## Centos 7 / Other Systems
+## Debian / Ubuntu / CentOS 7
 
 # install deps
 ```bash
