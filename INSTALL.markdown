@@ -18,15 +18,22 @@ For the latest version:
 
 ### Upgrade PrivCount from a previous version
 
+#### Update From Git
+
 To update your chosen branch from remote "origin":
 
     cd privcount
     git fetch origin
     git checkout origin/<chosen-branch> # privcount or master
 
-### Install PrivCount
+#### Update PrivCount
 
     source pyenv/bin/activate
+    pip install --upgrde -r requirements.txt
+    # optional: privcount plot
+    pip install --upgrade -r requirements-plot.txt
+    # optional: position weights
+    pip install --upgrade -r requirements-weights.txt
     pip install -I .
     # relaunch privcount
 
@@ -103,15 +110,15 @@ directory that contains these instructions):
     virtualenv --no-site-packages pyenv
     source pyenv/bin/activate
     pip install --upgrade pip setuptools wheel
-    pip install -r requirements.txt
+    pip install --upgrade -r requirements.txt
     # if you want to use the optional privcount plot command
-    pip install -r requirements-plot.txt
+    pip install --upgrade -r requirements-plot.txt
     # if you want to use the optional compute_fractional_position_weights tool
-    pip install -r requirements-weights.txt
+    pip install --upgrade -r requirements-weights.txt
     pip install -I .
     deactivate
     # make run_privcount.sh and test/run_tests.sh use pyenv
-    # only works if venv is a symlink
+    # if venv is an old virtualenv directory, delete it first
     ln -sf pyenv venv
 
 Optionally, use INSTALL.PyPy.markdown to install a pypy environment under

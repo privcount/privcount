@@ -1,9 +1,9 @@
-# pypy virtual environment setup
+# PyPy Install and Virtual Environment Setup
 
 Running PrivCount in a pypyenv dramatically improves efficiency.
 These instructions have been tested on a few different systems (ymmv).
 
-## install pypy
+## Install PyPy
 
 ### Debian / Ubuntu
 
@@ -33,7 +33,7 @@ sudo yum install pypy pypy-devel
 brew install pypy openssl
 ```
 
-## upgrade tools (optional)
+## Upgrade Tools (optional)
 
 As root, or using sudo:
 
@@ -108,7 +108,7 @@ cd privcount
 ln -s ../local/pypyenv .
 ```
 
-## Pin Python cryptography requirement (CentOS 7 only)
+## Pin Python cryptography Requirement (CentOS 7 only)
 
 ### Centos 7
 
@@ -132,12 +132,12 @@ index 576109e..ae02848 100644
  ipaddress>=1.0.16
  ```
 
-## Install PrivCount requirements
+## Install PrivCount Requirements
 
 ### Debian / Ubuntu / CentOS 7
 
 ```bash
-pip install -r requirements.txt
+pip install --upgrade -r requirements.txt
 ```
 
 ### macOS / Homebrew
@@ -166,7 +166,7 @@ rm -rf venv
 ln -s pypyenv venv
 ```
 
-## Create Python and PyPy virtualenvs
+## Create Python and PyPy Virtual Environments
 
 You can use INSTALL.markdown to install a python environment under pyenv for
 privcount plot and compute_fractional_position_weights. Then you can switch
