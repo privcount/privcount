@@ -35,6 +35,8 @@ To update your chosen branch from remote "origin":
     # optional: position weights
     pip install --upgrade -r requirements-weights.txt
     pip install -I .
+    # check you installed the right version
+    privcount version
     # relaunch privcount
 
 ### Install PrivCount Depencencies
