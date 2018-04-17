@@ -81,6 +81,10 @@ def main():
     plot_parser.set_defaults(mode='plot', func=plot, formatter_class=help_formatter)
     add_plot_args(plot_parser)
 
+    # version
+    version_parser = sub_parser.add_parser('version', help="print the PrivCount version and exit", formatter_class=help_formatter)
+    version_parser.set_defaults(mode='version', func=version, formatter_class=help_formatter)
+
     # get args and call the command handler for the chosen mode
     args = main_parser.parse_args()
 
@@ -107,8 +111,9 @@ def main():
 
     if 'configpath' in args:
         logging.info("using config file at '%s'", args.configpath)
-    logging.info("running {} privcount version {}"
-                 .format(args.mode, get_privcount_version()))
+    logging.info("{}privcount version {}"
+                 .format("" if args.mode == 'version' else "running {} ".format(args.mode),
+                         get_privcount_version()))
     args.func(args)
 
 def data_collector(args):
@@ -130,6 +135,9 @@ def inject(args):
 def plot(args):
     from privcount.plot import run_plot
     run_plot(args)
+
+def version(args):
+    pass
 
 def type_str_path_out(value):
     val_str = str(value)
