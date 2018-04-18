@@ -12,10 +12,12 @@ from math import sqrt
 # NOTE see plotting imports below in import_plotting()
 
 """
-python plot.py --help
+python privcount/plot.py --help
 
-compare output from multiple privcount results files. run like:
-python privcount/plot.py -d results1.txt test1 -d results2.txt test2 ...
+compare output from multiple privcount results files.
+
+Usage:
+    python privcount/plot.py -o results1.txt test1 -o results2.txt test2 ...
 """
 
 LINEFORMATS="k,r,b,g,c,m,y"
@@ -48,53 +50,60 @@ def main():
 
 def add_plot_args(parser):
 
-    parser.add_argument('-o', '--outcome',
-        help="""Append a PATH to a privcount outcome.json file,
-                and the LABEL we should use for the graph legend for this
-                set of experimental results""",
-        metavar=("PATH", "LABEL"),
-        nargs=2,
-        required=False,
-        action=PlotDataAction, dest="data_outcome", default=[])
+   # Input file arguments
 
-    parser.add_argument('-t', '--tallies',
-        help="""Append a PATH to a privcount tallies.json file,
+    parser.add_argument('-o', '--outcome',
+        help="""Append a PATH to a privcount outcome.json or tallies.json file,
                 and the LABEL we should use for the graph legend for this
-                set of experimental results. Using '-o', '--outcome' is the
-                prefered way to plot results in order to include error bars.""",
+                set of experimental results.""",
         metavar=("PATH", "LABEL"),
         nargs=2,
-        required=False,
-        action=PlotDataAction, dest="data_tallies", default=[])
+        action=PlotDataAction,
+        dest="data_outcome",
+        default=[])
+
+    # deprecated and hidden, use --outcome instead
+    parser.add_argument('-t', '--tallies',
+        help=argparse.SUPPRESS,
+        metavar=("PATH", "LABEL"),
+        nargs=2,
+        action=PlotDataAction,
+        dest="data_tallies",
+        default=[])
 
     # deprecated and hidden, use --outcome instead
     parser.add_argument('-d', '--data',
         help=argparse.SUPPRESS,
         metavar=("PATH", "LABEL"),
         nargs=2,
-        required=False,
-        action=PlotDataAction, dest="experiments", default=[])
+        action=PlotDataAction,
+        dest="experiments",
+        default=[])
 
     parser.add_argument('-p', '--prefix',
-        help="a STRING filename prefix for graphs we generate",
+        help="A STRING filename prefix for graphs we generate",
         metavar="STRING",
-        action="store", dest="prefix",
+        action="store",
+        dest="prefix",
         default=None)
 
     parser.add_argument('-f', '--format',
         help="""A comma-separated LIST of color/line format strings to cycle to
-                matplotlib's plot command (see matplotlib.pyplot.plot)""",
+                matplotlib's plot command (see matplotlib.pyplot.plot).""",
         metavar="LIST",
-        action="store", dest="lineformats",
+        action="store",
+        dest="lineformats",
         default=LINEFORMATS)
 
     parser.add_argument('-w', '--skip-pdf',
-        help="""Do not output a PDF file containing the results""",
-        action="store_true", dest="skip_pdf")
+        help="""Do not output a PDF file containing the results.""",
+        action="store_true",
+        dest="skip_pdf")
 
     parser.add_argument('-x', '--skip-txt', '--skip-text',
-        help="""Do not output a text file containing the results""",
-        action="store_true", dest="skip_text")
+        help="""Do not output a text file containing the results.""",
+        action="store_true",
+        dest="skip_text")
 
 MAX_LABEL_LEN = 15
 
@@ -150,7 +159,7 @@ def run_plot(args):
 
     args.experiments = args.experiments + args.data_tallies + args.data_outcome
     if len(args.experiments) == 0:
-        print("You must provide at least one input file using --outcome or --tallies")
+        print("You must provide at least one input file using --outcome")
         print("For more details, use --help")
         sys.exit(1)
 
@@ -220,7 +229,7 @@ def run_plot(args):
                 if "CountryMatch" in name:
                     bin_labels_txt = labels.get('country_lists', [])
                 if "ASMatch" in name:
-                    bin_labels_txt = labels.get('as_lists', [])
+                    bin_labels_txt = labels.get('as_raw_lists', []) # as_files
                 if (name.startswith("HSDir") and
                     "Store" in name and
                     name.endswith("ReasonCountList")):
@@ -274,7 +283,7 @@ def run_plot(args):
                       label_str = " {}".format(label_str)
                   else:
                       label_str = ''
-                  if  error is not None:
+                  if error is not None:
                       # justify up to the error length, plus one digit and a negative
                       val_just = len(str(error)) + 2
                   else:
@@ -313,11 +322,11 @@ def run_plot(args):
     fout_pdf_name = "{}privcount.results.pdf".format(fprefix)
     page = PdfPages(fout_pdf_name)
     logging.info("Writing results to PDF file '{}'"
-                 .format(label, fout_pdf_name))
+                 .format(fout_pdf_name))
 
     for name in sorted(plot_info.keys()):
         dat = plot_info[name]
-        plot_bar_chart(page, dat['datasets'], dat['dataset_labels'], dat['dataset_colors'], dat['bin_labels'], err=dat['errors'], title=name)
+        plot_bar_chart(page, dat['datasets'], dat['dataset_labels'], dat['dataset_colors'], dat['bin_labels'], dat['errors'], title=name)
     page.close()
 
 def plot_bar_chart(page, datasets, dataset_labels, dataset_colors, x_group_labels, err, title=None, xlabel='Bins', ylabel='Counts'):
