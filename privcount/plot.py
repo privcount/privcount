@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 # See LICENSE for licensing information
 
-import sys, os, argparse, json
+import argparse
+import json
+import logging
+import os
+import sys
+
 from itertools import cycle
 from math import sqrt
 # NOTE see plotting imports below in import_plotting()
@@ -83,6 +88,14 @@ def add_plot_args(parser):
         action="store", dest="lineformats",
         default=LINEFORMATS)
 
+    parser.add_argument('-w', '--skip-pdf',
+        help="""Do not output a PDF file containing the results""",
+        action="store_true", dest="skip_pdf")
+
+    parser.add_argument('-x', '--skip-txt', '--skip-text',
+        help="""Do not output a text file containing the results""",
+        action="store_true", dest="skip_text")
+
 MAX_LABEL_LEN = 15
 
 def import_plotting():
@@ -145,7 +158,11 @@ def run_plot(args):
     lfcycle = cycle(lflist)
 
     fprefix = args.prefix + '.' if args.prefix is not None else ''
-    fout_txt = open("{0}privcount.results.txt".format(fprefix), 'w')
+    fout_txt_name = None
+    fout_txt = None
+    if not args.skip_text:
+        fout_txt_name = "{}privcount.results.txt".format(fprefix)
+        fout_txt = open(fout_txt_name, 'w')
 
     plot_info = {}
     for (path, label) in args.experiments:
@@ -167,7 +184,10 @@ def run_plot(args):
             labels = {}
         fin.close()
 
-        fout_txt.write("Label: {}\n".format(label))
+        if fout_txt is not None:
+            logging.info("Writing results for '{}' to text file '{}'"
+                         .format(label, fout_txt_name))
+            fout_txt.write("Label: {}\n".format(label))
         for name in sorted(histograms.keys()):
             plot_info.setdefault(name, {'datasets':[], 'errors':[], 'dataset_colors':[], 'dataset_labels':[], 'bin_labels':[]})
             plot_info[name]['dataset_colors'].append(dataset_color)
@@ -224,47 +244,48 @@ def run_plot(args):
             for (left, right, val) in histograms[name]['bins']:
                 # log the raw error bounds, and note when the result is useful
                 status = []
-                if error is not None:
-                    if abs(val) != 0:
-                        error_perc = error / abs(float(val)) * 100.0
-                    else:
-                        error_perc = 0.0
-                    # is the result too noisy, or is it visible?
-                    if error_perc >= 100.0:
-                        status.append('obscured')
-                    else:
-                        status.append('visible')
-                # could the result be zero, or is it positive?
-                if val - (error if error is not None else 0) <= 0:
-                    status.append('zero')
-                else:
-                    status.append('positive')
-                if error is not None:
-                    error_str = (" +- {:.0f} ({:7.1f}%)"
-                                 .format(error, error_perc))
-                else:
-                    error_str = ''
-                if len(bin_labels_txt) > label_index:
-                    label_str = bin_labels_txt[label_index]
-                    # remove redundant string components for 1-element lists
-                    if label_str.endswith(' (1)'):
-                        label_str, _, _ = label_str.rpartition(' ')
-                        label_str = label_str.strip("'")
-                    label_str = " {}".format(label_str)
-                else:
-                    label_str = ''
-                if  error is not None:
-                    # justify up to the error length, plus one digit and a negative
-                    val_just = len(str(error)) + 2
-                else:
-                    # justify long
-                    val_just = 14
-                val_str = str(val).rjust(val_just)
-                bin_txt = ("{} [{:5.1f},{:5.1f}){} = {}{} ({})\n"
-                           .format(name, left, right, label_str,
-                                   val_str, error_str,
-                                   ", ".join(status)))
-                fout_txt.write(bin_txt)
+                if fout_txt is not None:
+                  if error is not None:
+                      if abs(val) != 0:
+                          error_perc = error / abs(float(val)) * 100.0
+                      else:
+                          error_perc = 0.0
+                      # is the result too noisy, or is it visible?
+                      if error_perc >= 100.0:
+                          status.append('obscured')
+                      else:
+                          status.append('visible')
+                  # could the result be zero, or is it positive?
+                  if val - (error if error is not None else 0) <= 0:
+                      status.append('zero')
+                  else:
+                      status.append('positive')
+                  if error is not None:
+                      error_str = (" +- {:.0f} ({:7.1f}%)"
+                                   .format(error, error_perc))
+                  else:
+                      error_str = ''
+                  if len(bin_labels_txt) > label_index:
+                      label_str = bin_labels_txt[label_index]
+                      # remove redundant string components for 1-element lists
+                      if label_str.endswith(' (1)'):
+                          label_str, _, _ = label_str.rpartition(' ')
+                          label_str = label_str.strip("'")
+                      label_str = " {}".format(label_str)
+                  else:
+                      label_str = ''
+                  if  error is not None:
+                      # justify up to the error length, plus one digit and a negative
+                      val_just = len(str(error)) + 2
+                  else:
+                      # justify long
+                      val_just = 14
+                  val_str = str(val).rjust(val_just)
+                  bin_txt = ("{} [{:5.1f},{:5.1f}){} = {}{} ({})\n"
+                             .format(name, left, right, label_str,
+                                     val_str, error_str,
+                                     ", ".join(status)))
+                  fout_txt.write(bin_txt)
                 if right == float('inf'):
                     right = '{}'.format(r'$\infty$')
                 elif 'Ratio' not in name:
@@ -283,9 +304,16 @@ def run_plot(args):
 
             if len(plot_info[name]['bin_labels']) == 0:
                 plot_info[name]['bin_labels'] = bin_labels
-    fout_txt.close()
+    if fout_txt is not None:
+        fout_txt.close()
 
-    page = PdfPages("{0}privcount.results.pdf".format(fprefix))
+    if args.skip_pdf:
+        return
+
+    fout_pdf_name = "{}privcount.results.pdf".format(fprefix)
+    page = PdfPages(fout_pdf_name)
+    logging.info("Writing results to PDF file '{}'"
+                 .format(label, fout_pdf_name))
 
     for name in sorted(plot_info.keys()):
         dat = plot_info[name]
