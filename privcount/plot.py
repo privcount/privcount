@@ -4,6 +4,7 @@
 import argparse
 import json
 import logging
+import math
 import os
 import sys
 
@@ -20,6 +21,9 @@ Usage:
     python privcount/plot.py -o results1.txt test1 -o results2.txt test2 ...
 """
 
+MAX_LABEL_LEN = 15
+# If we had 100% of the network, we would see 10**15 bytes every 24 hours
+MAX_GRAPH_VALUE = 10**20
 LINEFORMATS="k,r,b,g,c,m,y"
 
 class PlotDataAction(argparse.Action):
@@ -99,6 +103,12 @@ def add_plot_args(parser):
         # Default to a 95.4% confidence interval, or 2 standard deviations
         default="2")
 
+    parser.add_argument('-z', '--zero-bound',
+        help="""Assume that values and confidence intervals have a minimum
+                value of zero.""",
+        action="store_true",
+        dest="bound_zero")
+
     # Output format arguments
 
     parser.add_argument('-f', '--format',
@@ -127,8 +137,6 @@ def add_plot_args(parser):
         help="""Do not output a text file containing the results.""",
         action="store_true",
         dest="skip_text")
-
-MAX_LABEL_LEN = 15
 
 def import_plotting():
     global matplotlib
@@ -233,8 +241,6 @@ def run_plot(args):
                 sigma = float(sigmas[name]['sigma'])
                 # use the supplied confidence interval for the noise
                 error = int(round(float(args.noise_stddev) * sqrt(3) * sigma))
-                # we don't expect any noise larger than 10**15
-                error = min(error, 1000000000000000)
                 # axis.bar(yerr=) expects a 2xN array-like object
                 plot_info[name]['errors'].append([[],[]])
             else:
@@ -276,23 +282,52 @@ def run_plot(args):
                     ("Store" in name or "Fetch" in name) and
                     name.endswith("OnionAddressCountList")):
                     bin_labels_txt = labels.get('onion_address_lists', [])
+
             # add the unmatched bin label
             if len(bin_labels_txt) > 0:
                 if len(bin_labels_txt) < len(histograms[name]['bins']):
                     bin_labels_txt.append('(unmatched)')
                 assert len(bin_labels_txt) == len(histograms[name]['bins'])
+
+            # go through all the bins
             label_index = 0
             for (left, right, val) in histograms[name]['bins']:
+                raw_val = val
+                # calculate the error bounds
                 if error is not None:
+                    # calculate the error bounds
+                    error_bound_low = val - error
+                    error_bound_high = val + error
+                    # always bound above
+                    # we don't expect any noise or values larger than MAX_GRAPH_VALUE
+                    error_bound_low = min(error_bound_low, MAX_GRAPH_VALUE)
+                    error_bound_high = min(error_bound_high, MAX_GRAPH_VALUE)
+                    # conditionally bound below
+                    if args.bound_zero:
+                        error_bound_low = max(error_bound_low, 0)
+                        error_bound_high = max(error_bound_high, 0)
+                # now bound the value
+                val = min(val, MAX_GRAPH_VALUE)
+                if args.bound_zero:
+                    val = max(val, 0)
+                if error is not None:
+                    error_low = val - error_bound_low
+                    error_high = error_bound_high - val
                     # The +/- errors go in separate arrays
-                    plot_info[name]['errors'][-1][0].append(error)
-                    plot_info[name]['errors'][-1][1].append(error)
+                    plot_info[name]['errors'][-1][0].append(error_low)
+                    plot_info[name]['errors'][-1][1].append(error_high)
                 # log the raw error bounds, and note when the result is useful
                 status = []
                 if fout_txt is not None:
                   if error is not None:
-                      if abs(val) != 0:
-                          error_perc = error / abs(float(val)) * 100.0
+                      # justify up to the error/val length, plus two digits and a negative
+                      val_just = len(str(error)) + 3
+                  else:
+                      # justify long
+                      val_just = 14
+                  if error is not None:
+                      if abs(raw_val) != 0:
+                          error_perc = error / abs(float(raw_val)) * 100.0
                       else:
                           error_perc = 0.0
                       # is the result too noisy, or is it visible?
@@ -301,15 +336,31 @@ def run_plot(args):
                       else:
                           status.append('visible')
                   # could the result be zero, or is it positive?
-                  if val - (error if error is not None else 0) <= 0:
+                  if raw_val - (error if error is not None else 0) <= 0:
                       status.append('zero')
                   else:
                       status.append('positive')
+                  error_str = ''
+                  bound_str = ''
+                  bounded = []
+                  if val != raw_val:
+                      bounded.append('value')
                   if error is not None:
                       error_str = (" +- {:.0f} ({:7.1f}%)"
                                    .format(error, error_perc))
+                      if error_low != error:
+                          bounded.append('error low')
+                      if error_high != error:
+                          bounded.append('error high')
+                      bound_str = " bound: {} [{}, {}] ({})".format(
+                                        str(val).rjust(val_just),
+                                        str(error_bound_low).rjust(val_just),
+                                        str(error_bound_high).rjust(val_just),
+                                        ', '.join(bounded) if len(bounded) > 0 else 'no change')
                   else:
-                      error_str = ''
+                      bound_str = " bound: {} ({})".format(
+                                        val,
+                                        ', '.join(bounded) if len(bounded) > 0 else 'no change')
                   if len(bin_labels_txt) > label_index:
                       label_str = bin_labels_txt[label_index]
                       # remove redundant string components for 1-element lists
@@ -319,18 +370,14 @@ def run_plot(args):
                       label_str = " {}".format(label_str)
                   else:
                       label_str = ''
-                  if error is not None:
-                      # justify up to the error length, plus one digit and a negative
-                      val_just = len(str(error)) + 2
-                  else:
-                      # justify long
-                      val_just = 14
-                  val_str = str(val).rjust(val_just)
-                  bin_txt = ("{} [{:5.1f},{:5.1f}){} = {}{} ({})\n"
+                  bin_txt = ("{} [{:5.1f},{:5.1f}){} = {}{} ({}){}\n"
                              .format(name, left, right, label_str,
-                                     val_str, error_str,
-                                     ", ".join(status)))
+                                     str(raw_val).rjust(val_just),
+                                     error_str,
+                                     ", ".join([s.rjust(8) for s in status]),
+                                     bound_str))
                   fout_txt.write(bin_txt)
+                # format the graph output
                 if right == float('inf'):
                     right = '{}'.format(r'$\infty$')
                 elif 'Ratio' not in name:
