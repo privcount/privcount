@@ -80,12 +80,26 @@ def add_plot_args(parser):
         dest="experiments",
         default=[])
 
-    parser.add_argument('-p', '--prefix',
-        help="A STRING filename prefix for graphs we generate",
-        metavar="STRING",
+    # Output data arguments
+
+    # Determining Values and Confidence Intervals
+
+    parser.add_argument('-c', '--confidence',
+        help="""Graph a confidence interval of NUM standard deviations based
+                on the noise sigma for the counter. NUM can be 0.0 to disable
+                graphing confidence intervals.""",
+        # Use scipy.special.erfinv(FRACTION) * math.sqrt(2.0) to calculate
+        # the required number of standard deviations for a FRACTION confidence
+        # interval. For example:
+        # >>> scipy.special.erfinv(0.95) * math.sqrt(2.0)
+        # 1.959963984540054
+        metavar="NUM",
         action="store",
-        dest="prefix",
-        default=None)
+        dest="noise_stddev",
+        # Default to a 95.4% confidence interval, or 2 standard deviations
+        default="2")
+
+    # Output format arguments
 
     parser.add_argument('-f', '--format',
         help="""A comma-separated LIST of color/line format strings to cycle to
@@ -94,6 +108,15 @@ def add_plot_args(parser):
         action="store",
         dest="lineformats",
         default=LINEFORMATS)
+
+    # Output file arguments
+
+    parser.add_argument('-p', '--prefix',
+        help="A STRING filename prefix for graphs we generate.",
+        metavar="STRING",
+        action="store",
+        dest="prefix",
+        default=None)
 
     parser.add_argument('-w', '--skip-pdf',
         help="""Do not output a PDF file containing the results.""",
@@ -196,20 +219,27 @@ def run_plot(args):
         if fout_txt is not None:
             logging.info("Writing results for '{}' to text file '{}'"
                          .format(label, fout_txt_name))
+            text_label = label
+            if float(args.noise_stddev) > 0.0:
+                text_label = "{} ({} sigma)".format(label, args.noise_stddev)
             fout_txt.write("Label: {}\n".format(label))
         for name in sorted(histograms.keys()):
             plot_info.setdefault(name, {'datasets':[], 'errors':[], 'dataset_colors':[], 'dataset_labels':[], 'bin_labels':[]})
             plot_info[name]['dataset_colors'].append(dataset_color)
-            plot_info[name]['dataset_labels'].append(dataset_label)
 
-            if 'sigma' in sigmas[name]:
+            if ('sigma' in sigmas[name] and float(sigmas[name]['sigma']) > 0.0
+                and float(args.noise_stddev) > 0.0):
+                dataset_label = "{} ({}$\sigma$)".format(label, args.noise_stddev)
                 sigma = float(sigmas[name]['sigma'])
-                # use the 95% confidence interval for the noise
-                error = int(round(2 * sqrt(3) * sigma))
+                # use the supplied confidence interval for the noise
+                error = int(round(float(args.noise_stddev) * sqrt(3) * sigma))
                 # we don't expect any noise larger than 10**15
                 error = min(error, 1000000000000000)
             else:
+                dataset_label = label
                 error = None
+
+            plot_info[name]['dataset_labels'].append(dataset_label)
             plot_info[name]['errors'].append(error)
 
             dataset = []
