@@ -235,12 +235,14 @@ def run_plot(args):
                 error = int(round(float(args.noise_stddev) * sqrt(3) * sigma))
                 # we don't expect any noise larger than 10**15
                 error = min(error, 1000000000000000)
+                # axis.bar(yerr=) expects a 2xN array-like object
+                plot_info[name]['errors'].append([[],[]])
             else:
                 dataset_label = label
                 error = None
+                plot_info[name]['errors'].append(None)
 
             plot_info[name]['dataset_labels'].append(dataset_label)
-            plot_info[name]['errors'].append(error)
 
             dataset = []
             bin_labels = []
@@ -281,6 +283,10 @@ def run_plot(args):
                 assert len(bin_labels_txt) == len(histograms[name]['bins'])
             label_index = 0
             for (left, right, val) in histograms[name]['bins']:
+                if error is not None:
+                    # The +/- errors go in separate arrays
+                    plot_info[name]['errors'][-1][0].append(error)
+                    plot_info[name]['errors'][-1][1].append(error)
                 # log the raw error bounds, and note when the result is useful
                 status = []
                 if fout_txt is not None:
