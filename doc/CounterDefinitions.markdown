@@ -20,6 +20,8 @@ Stores or Fetches seen by the relay.
 Some overheads are excluded:
 * Streams with zero (total read and write) or negative byte counts are ignored.
 * Cell counts are not collected on Inactive Circuits.
+* Byte counts for Exits exclude Tor cell overheads. Byte counts for other
+  positions include Tor cell overheads, but exclude TLS, TCP, and IP overheads.
 
 ### Histogram
 
@@ -141,6 +143,17 @@ Each onion service circuit is being used by a Client or Service.
 SingleHop onion service circuits are labelled as Tor2Web or SingleOnion.
 MultiHop onion service circuits don't have special names.
 
+### RelayOnAddress
+
+An IP address can have clients (unauthenticated links) and relays
+(authenticated links) on it.
+
+EntryRelayOnAddressConnectionCount counts connections from clients that share
+an address with relays.
+
+EntryNoRelayOnAddressConnectionCount counts connections from clients that
+don't share an address with relays.
+
 ### Active/Inactive
 
 An Active Circuit is being used by a Tor client. Circuit Activity is only
@@ -190,6 +203,11 @@ as Outbound bytes to the Exit's edge connection.
 Inbound data is sent to the client, typically from an Exit.
 Inbound Bytes are read from the Exit's edge connection, and written to Inbound
 cells.
+
+An Inbound circuit has a previous hop, which goes back to a client
+(Entry/SingleHop) or relay (NonEntry/Middle/End).
+
+An Outbound circuit has a next hop, which goes to another relay.
 
 ### Initial/Subsequent
 
