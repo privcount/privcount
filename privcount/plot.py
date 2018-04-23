@@ -277,10 +277,13 @@ def run_plot(args):
 
             if ('sigma' in sigmas[name] and float(sigmas[name]['sigma']) > 0.0
                 and float(args.noise_stddev) > 0.0):
-                dataset_label = "{} ({}$\sigma$)".format(label, args.noise_stddev)
-                sigma = float(sigmas[name]['sigma'])
+                # label the graph with the sttdev and CI
+                dataset_label = "{} ({}$\sigma$ = {:.2f}% CI)".format(label,
+                                                                      args.noise_stddev,
+                                                                      100.0*stddev_to_ci_fraction(args.noise_stddev))
                 # use the supplied confidence interval for the noise
-                error = int(round(float(args.noise_stddev) * sqrt(3) * sigma))
+                error = int(round(sigma_to_ci_amount(args.noise_stddev,
+                                                     sigmas[name]['sigma'])))
                 # axis.bar(yerr=) expects a 2xN array-like object
                 plot_info[name]['errors'].append([[],[]])
             else:
