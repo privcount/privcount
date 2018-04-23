@@ -185,19 +185,73 @@ def import_plotting():
     try: pylab.rcParams.update({'legend.ncol':1.0})
     except: pass
 
+def get_experiments(args):
+    '''
+    Return the list of experiments from args.
+    Throws an exception if the list of experiments is invalid.
+    '''
+    experiments = args.experiments + args.data_tallies + args.data_outcome
+    if len(experiments) == 0:
+        raise ValueError("You must provide at least one input file using --outcome. For more details, use --help.")
+    return experiments
+
+def get_lineformats(args):
+    '''
+    Return a cycle of lineformats from args.
+    '''
+    lflist = args.lineformats.strip().split(",")
+    return cycle(lflist)
+
+def get_prefix(args):
+    '''
+    Return the prefix from args.
+    '''
+    return args.prefix + '.' if args.prefix is not None else ''
+
+def load_input_file(path):
+    '''
+    Load the input file at path, and return a tuple containing
+    (histograms, sigmas, labels).
+    '''
+    with open(path, 'r') as fin:
+        data = json.load(fin)
+
+        if 'Tally' in data: # this is an outcome file
+            histograms = data['Tally']
+        else: # this is a tallies file
+            histograms = data
+
+        if 'Context' in data: # this is an outcome file that has sigma values
+            sigmas = data['Context']['TallyServer']['Config']['noise']['counters']
+        else: # this is a tallies file that *might* have sigma values
+            sigmas = histograms
+
+        if 'Context' in data: # this is an outcome file that *might* have labels
+            labels = data['Context']['TallyServer']['Config']
+        else: # this is a tallies file that has no labels
+            labels = {}
+    return (histograms, sigmas, labels)
+
+def sigma_to_ci_amount(noise_stddev, sigma_value):
+    '''
+    Return the noise_stddev standard deviation confidence interval amount
+    for sigma_value.
+    '''
+    return float(noise_stddev) * sqrt(3.0) * float(sigma_value)
+
+def stddev_to_ci_fraction(noise_stddev):
+    '''
+    Return the noise_stddev standard deviation confidence interval fraction.
+    '''
+    return math.erf(float(noise_stddev) / sqrt(2.0))
+
 def run_plot(args):
     import_plotting()
 
-    args.experiments = args.experiments + args.data_tallies + args.data_outcome
-    if len(args.experiments) == 0:
-        print("You must provide at least one input file using --outcome")
-        print("For more details, use --help")
-        sys.exit(1)
+    experiments = get_experiments(args)
+    lfcycle = get_lineformats(args)
+    fprefix = get_prefix(args)
 
-    lflist = args.lineformats.strip().split(",")
-    lfcycle = cycle(lflist)
-
-    fprefix = args.prefix + '.' if args.prefix is not None else ''
     fout_txt_name = None
     fout_txt = None
     if not args.skip_text:
@@ -205,24 +259,10 @@ def run_plot(args):
         fout_txt = open(fout_txt_name, 'w')
 
     plot_info = {}
-    for (path, label) in args.experiments:
+    for (path, label) in experiments:
         dataset_color = lfcycle.next()
         dataset_label = label
-        fin = open(path, 'r')
-        data = json.load(fin)
-        if 'Tally' in data: # this is an outcome file
-            histograms = data['Tally']
-        else: # this is a tallies file
-            histograms = data
-        if 'Context' in data: # this is an outcome file that has sigma values
-            sigmas = data['Context']['TallyServer']['Config']['noise']['counters']
-        else: # this is a tallies file that *might* have sigma values
-            sigmas = histograms
-        if 'Context' in data: # this is an outcome file that *might* have labels
-            labels = data['Context']['TallyServer']['Config']
-        else: # this is a tallies file that has no labels
-            labels = {}
-        fin.close()
+        (histograms, sigmas, labels) = load_input_file(path)
 
         if fout_txt is not None:
             logging.info("Writing results for '{}' to text file '{}'"
@@ -399,9 +439,13 @@ def run_plot(args):
     if fout_txt is not None:
         fout_txt.close()
 
-    if args.skip_pdf:
-        return
+    if not args.skip_pdf:
+        plot_pdf(fprefix, plot_info)
 
+def plot_pdf(fprefix, plot_info):
+    '''
+    Plot a PDF file containing plot_info, to a PDF file prefixed by fprefix.
+    '''
     fout_pdf_name = "{}privcount.results.pdf".format(fprefix)
     page = PdfPages(fout_pdf_name)
     logging.info("Writing results to PDF file '{}'"
@@ -409,10 +453,23 @@ def run_plot(args):
 
     for name in sorted(plot_info.keys()):
         dat = plot_info[name]
-        plot_bar_chart(page, dat['datasets'], dat['dataset_labels'], dat['dataset_colors'], dat['bin_labels'], dat['errors'], title=name)
+        plot_page(page, dat, name)
     page.close()
 
-def plot_bar_chart(page, datasets, dataset_labels, dataset_colors, x_group_labels, err, title=None, xlabel='Bins', ylabel='Counts'):
+def plot_page(page, dat, name):
+    '''
+    Plot a page named name into page, using the chart data in dat.
+    '''
+    plot_bar_chart(page, dat['datasets'], dat['dataset_labels'],
+                   dat['dataset_colors'], dat['bin_labels'], dat['errors'],
+                   title=name)
+
+def plot_bar_chart(page, datasets, dataset_labels, dataset_colors,
+                   x_group_labels, err,
+                   title=None, xlabel='Bins', ylabel='Counts'):
+    '''
+    Plot a bar chart into page, using the supplied data.
+    '''
     assert len(datasets) == len(err)
     assert len(datasets) == len(dataset_colors)
     assert len(datasets) == len(dataset_labels)
