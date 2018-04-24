@@ -109,6 +109,19 @@ def add_plot_args(parser):
         action="store_true",
         dest="bound_zero")
 
+    # Bin Labels
+
+    parser.add_argument('-b', '--bin-labels',
+        help="""Label bins with the LABELS from each counter.
+                LABELS can be 'range' for bin range, 'file' for the name of
+                the CountList file for the bin, 'content' for the content of
+                the CountList for the bin, or a path to a file containing a
+                list of newline-separated bin labels.""",
+        metavar="LABELS",
+        action="store",
+        dest="bin_label_source",
+        default="range")
+
     # Output format arguments
 
     parser.add_argument('-f', '--format',
@@ -245,6 +258,82 @@ def stddev_to_ci_fraction(noise_stddev):
     '''
     return math.erf(float(noise_stddev) / sqrt(2.0))
 
+def get_bin_labels(counter, bin_count, bin_label_data, bin_label_source):
+    '''
+    Return an array of bin labels for counter from bin_label_data, selected
+    using bin_label_source. See args.bin_label_source for details.
+
+    Returns an empty array to indicate that the default range labels should
+    be used.
+
+    If the number of labels is one less than bin_count, adds an '(unmatched)'
+    label for the final bin.
+
+    Asserts if the final number of labels is not equal to bin_count.
+    '''
+    labels = []
+    if bin_label_source == 'range':
+        # we don't want to override the standard range labels
+        pass
+    elif bin_label_source in ['file', 'content']:
+        c = (bin_label_source == 'content')
+
+        # add the match list bin labels for count lists
+        # we don't have custom labels for any other counters
+        if counter.endswith('CountList'):
+            # These plot lookups should be kept synchronised with the
+            # corresponding TallyServer config options
+            if counter.startswith("ExitDomain"):
+                labels = bin_label_data.get('domain_lists' if c else 'domain_files', [])
+            if "CountryMatch" in counter:
+                labels = bin_label_data.get('country_lists' if c else 'country_files', [])
+            if "ASMatch" in counter:
+                # the AS data structure is slightly more complex than the others
+                labels = bin_label_data.get('as_raw_lists' if c else 'as_files', [])
+            if (counter.startswith("HSDir") and
+                "Store" in counter and
+                counter.endswith("ReasonCountList")):
+                labels = bin_label_data.get('hsdir_store_lists' if c else 'hsdir_store_files', [])
+            if (counter.startswith("HSDir") and
+                "Fetch" in counter and
+                counter.endswith("ReasonCountList")):
+                labels = bin_label_data.get('hsdir_fetch_lists' if c else 'hsdir_fetch_files', [])
+            if counter.endswith("FailureCircuitReasonCountList"):
+                labels = bin_label_data.get('circuit_failure_lists' if c else 'circuit_failure_files', [])
+            if (counter.startswith("HSDir") and
+                ("Store" in counter or "Fetch" in counter) and
+                counter.endswith("OnionAddressCountList")):
+                labels = bin_label_data.get('onion_address_lists' if c else 'onion_address_files', [])
+
+        # strip redundant information
+        stripped_labels = []
+        for label_str in labels:
+            # strip 1-element content summaries down to the actual content
+            if label_str.endswith(' (1)'):
+                label_str, _, _ = label_str.rpartition(' ')
+                label_str = label_str.strip("'")
+
+            # strip file paths down to the filename
+            if label_str.startswith('/'):
+                _, _, label_str = label_str.rpartition('/')
+                label_str, _, _ = label_str.rpartition('.')
+            stripped_labels.append(label_str)
+
+        labels = stripped_labels
+    else:
+        with open(bin_label_source, 'r') as fin:
+            labels = [line.strip() for line in fin.readlines()]
+
+    # a zero-length array means 'use the range'
+    if len(labels) > 0:
+        # add the unmatched bin label
+        if len(labels) < bin_count:
+            labels.append('(unmatched)')
+        # check we have the right number of labels
+        assert len(labels) == bin_count
+
+    return labels
+
 def run_plot(args):
     import_plotting()
 
@@ -297,40 +386,10 @@ def run_plot(args):
             bin_labels = []
             bin_labels_txt = []
 
-            # CountLists
-            # These plot lookups should be kept synchronised with the
-            # corresponding TallyServer config options
-
-            # add the match list bin labels for count lists
-            # match histograms etc. use the first bin to match, and we don't
-            # modify their labels
-            if name.endswith('CountList'):
-                if name.startswith("ExitDomain"):
-                    bin_labels_txt = labels.get('domain_lists', [])
-                if "CountryMatch" in name:
-                    bin_labels_txt = labels.get('country_lists', [])
-                if "ASMatch" in name:
-                    bin_labels_txt = labels.get('as_raw_lists', []) # as_files
-                if (name.startswith("HSDir") and
-                    "Store" in name and
-                    name.endswith("ReasonCountList")):
-                    bin_labels_txt = labels.get('hsdir_store_lists', [])
-                if (name.startswith("HSDir") and
-                    "Fetch" in name and
-                    name.endswith("ReasonCountList")):
-                    bin_labels_txt = labels.get('hsdir_fetch_lists', [])
-                if name.endswith("FailureCircuitReasonCountList"):
-                    bin_labels_txt = labels.get('circuit_failure_lists', [])
-                if (name.startswith("HSDir") and
-                    ("Store" in name or "Fetch" in name) and
-                    name.endswith("OnionAddressCountList")):
-                    bin_labels_txt = labels.get('onion_address_lists', [])
-
-            # add the unmatched bin label
-            if len(bin_labels_txt) > 0:
-                if len(bin_labels_txt) < len(histograms[name]['bins']):
-                    bin_labels_txt.append('(unmatched)')
-                assert len(bin_labels_txt) == len(histograms[name]['bins'])
+            bin_labels_txt = get_bin_labels(name,
+                                            len(histograms[name]['bins']),
+                                            labels,
+                                            args.bin_label_source)
 
             # go through all the bins
             label_index = 0
@@ -406,11 +465,7 @@ def run_plot(args):
                                         ', '.join(bounded) if len(bounded) > 0 else 'no change')
                   if len(bin_labels_txt) > label_index:
                       label_str = bin_labels_txt[label_index]
-                      # remove redundant string components for 1-element lists
-                      if label_str.endswith(' (1)'):
-                          label_str, _, _ = label_str.rpartition(' ')
-                          label_str = label_str.strip("'")
-                      label_str = " {}".format(label_str)
+                      label_str = " '{}'".format(label_str)
                   else:
                       label_str = ''
                   bin_txt = ("{} [{:5.1f},{:5.1f}){} = {}{} ({}){}\n"
@@ -434,7 +489,7 @@ def run_plot(args):
                 label_index += 1
             if len(bin_labels_txt) > 0:
                 assert len(bin_labels_txt) == len(bin_labels)
-                bin_labels = [bin_label.strip("'")[0:(MAX_LABEL_LEN-3)] + '...' if len(bin_label) > MAX_LABEL_LEN else bin_label for bin_label in bin_labels_txt]
+                bin_labels = [bin_label[0:(MAX_LABEL_LEN-3)] + '...' if len(bin_label) > MAX_LABEL_LEN else bin_label for bin_label in bin_labels_txt]
             plot_info[name]['datasets'].append(dataset)
 
             if len(plot_info[name]['bin_labels']) == 0:
