@@ -336,7 +336,7 @@ case "$PRIVCOUNT_LOG" in
   -q)
     # defaults to summarising unexpected warnings
     CHUTNEY_LOG_DURING="--quiet"
-    # don't duplicate the warnings at the end 
+    # don't duplicate the warnings at the end
     CHUTNEY_LOG_END="--quiet --no-warnings"
     ;;
   "")
@@ -411,18 +411,20 @@ if [ "$PRIVCOUNT_INSTALL" -eq 1 ]; then
 
   # Unintall any existing privcount versions
   # Due to the previous implementation of this script, multiple PrivCount
-  # versions may be installed. Let's uninstall all of them.
+  # versions may be installed. Let's try to uninstall all of them.
+  # pip 9 throws an error and exits 1 when it can't uninstall a package.
+  # pip 10 just warns, and exits 0.
+  # To be compatible with both, we simply try to uninstall twice.
+  # This will eventually get rid of any extra PrivCount installs.
   "$I" "Uninstalling all versions of privcount ..."
   if [ "$PRIVCOUNT_LOG" = "-q" ]; then
-    while pip $PRIVCOUNT_LOG --disable-pip-version-check \
-        uninstall -y PrivCount > /dev/null 2>&1; do
-      true
-    done
+    pip $PRIVCOUNT_LOG --disable-pip-version-check uninstall -y PrivCount \
+        > /dev/null 2>&1
+    pip $PRIVCOUNT_LOG --disable-pip-version-check uninstall -y PrivCount \
+        > /dev/null 2>&1
   else
-    while pip $PRIVCOUNT_LOG --disable-pip-version-check \
-        uninstall -y PrivCount; do
-      true
-    done
+    pip $PRIVCOUNT_LOG --disable-pip-version-check uninstall -y PrivCount
+    pip $PRIVCOUNT_LOG --disable-pip-version-check uninstall -y PrivCount
   fi
 
   # Install the latest privcount version
@@ -675,13 +677,13 @@ TEMPLATE_CONFIG=$CONFIG
 # Creates a file at $CONFIG
 function template_to_config() {
   cp "$TEMPLATE_CONFIG" "$CONFIG"
-  
+
   # This code must be kept in sync with the DC code
   # TS values
   sed -i"" -e "s/PRIVCOUNT_SHARE_KEEPERS/$PRIVCOUNT_SHARE_KEEPERS/g" \
       "$CONFIG"
   sed -i"" -e "s/DATA_COLLECTOR_COUNT/$DATA_COLLECTOR_COUNT/g" "$CONFIG"
-  
+
   # SK values
   sed -i"" -e "s/SK_NUM/$SK_NUM/g" "$CONFIG"
 
