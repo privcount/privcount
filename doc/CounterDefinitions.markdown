@@ -197,12 +197,13 @@ The sub-categories are:
 The direction of Cell or Byte traffic on the Circuit or Stream.
 
 Outbound data is sent away from the client, typically to an Exit.
-Outbound Cells are read from the Exit's circuit with the client, and written
-as Outbound bytes to the Exit's edge connection.
+Cells are read from the Exit's circuit with the client, and written as
+Outbound Bytes to the Exit's edge connection. There are no Outbound Cells at
+the End of a circuit.
 
 Inbound data is sent to the client, typically from an Exit.
-Inbound Bytes are read from the Exit's edge connection, and written to Inbound
-cells.
+Bytes are read from the Exit's edge connection, and written to Inbound Cells.
+There are no Inbound cells at the Origin of a circuit.
 
 An Inbound circuit has a previous hop, which goes back to a client
 (Entry/SingleHop) or relay (NonEntry/Middle/End).
