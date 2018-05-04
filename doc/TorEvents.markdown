@@ -767,8 +767,8 @@ A string containing the service id or onion address (without ".onion").
 This is a 16-character base32-encoded string, containing the first 10 bytes of
 the SHA1 hash of the service's RSA public key.
 
-The onion address is missing if the descriptor is unparseable, or the RSA
-public key is malformed.
+The onion address is missing if the descriptor is not cached, unparseable, or
+the RSA public key is malformed.
 
 ### DescriptorIdBase32String
 A string containing the base-32 encoded descriptor id, a unique identifier for
