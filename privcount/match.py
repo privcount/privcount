@@ -93,28 +93,32 @@ def load_match_list(file_path,
             # Ignore comments
             if line_is_comment(line):
                 continue
-            if check_domain:
-                assert check_domain_name(line)
-                # Always lowercase matches, IANA likes them uppercase
-                line = line.lower()
-                line = line.strip(".")
-            if check_country:
-                assert check_country_code(line)
-                # Always lowercase matches, MaxMind likes them uppercase
-                line = line.lower()
-            if check_as:
-                # Now convert the AS number to an integer
-                line = int(line)
-                assert check_as_number(line)
-            if check_reason:
-                assert check_reason_str(line)
-                # Always lowercase matches, don't depend on case matches
-                line = line.lower()
-            if check_onion:
-                # Strip irrelevant URL and domain components, and lowercase
-                line = strip_onion_str(line)
-                # And then check: this makes checking easier to implement
-                assert check_onion_string(line)
+            try:
+                if check_domain:
+                    assert check_domain_name(line)
+                    # Always lowercase matches, IANA likes them uppercase
+                    line = line.lower()
+                    line = line.strip(".")
+                if check_country:
+                    assert check_country_code(line)
+                    # Always lowercase matches, MaxMind likes them uppercase
+                    line = line.lower()
+                if check_as:
+                    # Now convert the AS number to an integer
+                    line = int(line)
+                    assert check_as_number(line)
+                if check_reason:
+                    assert check_reason_str(line)
+                    # Always lowercase matches, don't depend on case matches
+                    line = line.lower()
+                if check_onion:
+                    # Strip irrelevant URL and domain components, and lowercase
+                    line = strip_onion_str(line)
+                    # And then check: this makes checking easier to implement
+                    assert check_onion_string(line)
+            except Exception as e:
+                logging.warning("Line '{}' failed: {}".format(line, e))
+                raise e
             match_list.append(line)
 
     return (file_path, match_list)
