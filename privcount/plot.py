@@ -588,11 +588,11 @@ def calculate_bin_reliability(counters):
         # go through all the bins
         for bin in counter['bins']:
 
-            # could the result be zero (or negative), or is it most likely positive?
-            bin['is_possibly_zero'] = (bin.get('error_value_low', bin['value']) <= 0)
-
             # is the error proprotion too large?
             bin['is_noisy'] = (bin.get('error_proportion', 0.0) >= 1.0)
+
+            # could the result be zero (or negative), or is it most likely positive?
+            bin['is_possibly_zero'] = (bin.get('error_value_low', bin['value']) <= 0)
 
             # work out which values were bounded
             bin['is_value_bounded'] = (bin['value'] != bin['bound_value'])
