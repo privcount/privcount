@@ -29,6 +29,7 @@ To update your chosen branch from remote "origin":
 #### Update PrivCount
 
     source pyenv/bin/activate
+    pip install --upgrade pip setuptools wheel
     pip install --upgrde -r requirements.txt
     # optional: privcount plot
     pip install --upgrade -r requirements-plot.txt
