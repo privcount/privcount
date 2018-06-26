@@ -517,10 +517,21 @@ def calculate_error_values(counters, bound_zero, noise_stddev):
                                                         excess_noise_ratio,
                                                         sigma)))
             # describe the noise on the experiment label
-            counter['experiment_label_sigma'] = ("{} ({} sigma = {:.2f}% CI)"
+            # find the confidence interval fraction
+            ci_fraction = stddev_to_ci_fraction(noise_stddev)
+            # dynamically round the CI fraction to 0.9...9x
+            nines_dp = None
+            for dp in xrange(0,9):
+                rounded_ci_fraction = round(ci_fraction, dp)
+                nines_dp = dp
+                if rounded_ci_fraction <> 1.0:
+                    break
+            rounded_ci_fraction = round(ci_fraction, nines_dp + 1)
+            # format the label
+            counter['experiment_label_sigma'] = ("{} ({} sigma = {}% CI)"
                                                  .format(counter['experiment_label'],
                                                          noise_stddev,
-                                                         100.0*stddev_to_ci_fraction(noise_stddev)))
+                                                         100.0*rounded_ci_fraction))
 
             # go through all the bins
             for bin in counter['bins']:
