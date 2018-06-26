@@ -144,7 +144,7 @@ def add_plot_args(parser):
     # Output file arguments
 
     parser.add_argument('-p', '--prefix',
-        help="A STRING filename prefix for graphs we generate.",
+        help="A STRING filename prefix for the files that we generate.",
         metavar="STRING",
         action="store",
         dest="prefix",
