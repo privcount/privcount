@@ -117,6 +117,24 @@ def add_plot_args(parser):
         action="store_true",
         dest="bound_zero")
 
+    # Ignoring Insignificant Values
+
+    parser.add_argument('-n', '--ignore-noisy',
+        help="""Ignore results that are likely dominated by noise.
+                Bins with noise greater than or equal to 100%% of the bin
+                value are removed from the output.
+                Counters with no bins are removed from the output.""",
+        action="store_true",
+        dest="ignore_noisy")
+
+    parser.add_argument('-i', '--ignore-zero',
+        help="""Ignore results that are likely to be zero.
+                Bins where the lowest bound of the confidence interval is
+                zero or negative are removed from the output.
+                Counters with no bins are removed from the output.""",
+        action="store_true",
+        dest="ignore_zero")
+
     # Bin Labels
 
     parser.add_argument('-b', '--bin-labels',
@@ -172,6 +190,8 @@ def run_plot(args):
     calculate_bound_values(counters, args.bound_zero)
     calculate_error_values(counters, args.bound_zero, args.noise_stddev)
     calculate_bin_reliability(counters)
+
+    remove_ignored_items(counters, args.ignore_noisy, args.ignore_zero)
 
     # create the output file prefix
     output_prefix = get_output_prefix(args)
@@ -623,6 +643,68 @@ def calculate_bin_reliability(counters):
                 bin['bounded'].append('error low')
             if bin['is_error_high_bounded']:
                 bin['bounded'].append('error high')
+
+def remove_ignored_items(counters, ignore_noisy, ignore_zero):
+    '''
+    Remove bins and counters that need to be ignored due to ignore_noisy or
+    ignore_zero.
+    '''
+    # early exit
+    if not ignore_noisy and not ignore_zero:
+        return
+
+    mark_ignored_bins(counters, ignore_noisy, ignore_zero)
+    mark_ignored_counters(counters)
+    filter_ignored_items(counters)
+
+def mark_ignored_bins(counters, ignore_noisy, ignore_zero):
+    '''
+    Mark bins that need to be ignored due to ignore_noisy or ignore_zero.
+    '''
+
+    # go through all the counters
+    for counter in counters:
+
+        # go through all the bins
+        for bin in counter['bins']:
+
+            # mark the ignored status of the bin
+            if ignore_noisy and bin['is_noisy']:
+                bin['is_ignored'] = True
+            elif ignore_zero and bin['is_possibly_zero']:
+                bin['is_ignored'] = True
+            else:
+                bin['is_ignored'] = False
+
+def mark_ignored_counters(counters):
+    '''
+    Mark counters that need to be ignored because all their bins are ignored.
+    '''
+    # go through all the counters
+    for counter in counters:
+
+        # assume that the counter is ignored
+        counter['is_ignored'] = True
+
+        # go through all the bins
+        for bin in counter['bins']:
+
+            # if we find a bin that is not ignored, we don't want to ignore the counter
+            if not bin['is_ignored']:
+                counter['is_ignored'] = False
+
+def filter_ignored_items(counters):
+    '''
+    Filter out bins and counters that are ignored.
+    '''
+    # filter the ignored counters
+    counters = [counter for counter in counters if not counter['is_ignored']]
+
+    # go through all the counters
+    for counter in counters:
+
+        # filter the ignored bins
+        counter['bins'] = [bin for bin in counter['bins'] if not bin['is_ignored']]
 
 def get_output_prefix(args):
     '''
