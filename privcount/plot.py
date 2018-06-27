@@ -127,8 +127,8 @@ def add_plot_args(parser):
                 Bins with noise greater than or equal to 100%% of the bin
                 value are removed from the output.
                 Counters with no bins are removed from the output.
-                If there are multiple datasets, and a bin or counter is
-                shown in any dataset, it is shown in all datasets.""",
+                If there are multiple input files, and a bin or counter is
+                shown in any input file, it is shown in all input files.""",
         action="store_true",
         dest="ignore_noisy")
 
@@ -137,8 +137,8 @@ def add_plot_args(parser):
                 Bins where the lowest bound of the confidence interval is
                 zero or negative are removed from the output.
                 Counters with no bins are removed from the output.
-                If there are multiple datasets, and a bin or counter is
-                shown in any dataset, it is shown in all datasets.""",
+                If there are multiple input files, and a bin or counter is
+                shown in any input file, it is shown in all input files.""",
         action="store_true",
         dest="ignore_zero")
 
@@ -150,7 +150,9 @@ def add_plot_args(parser):
                 the CountList file for the bin, 'content' for the content of
                 the CountList for the bin, or a path to a file containing a
                 list of newline-separated custom bin labels. Custom bin labels
-                only work if each counter has the same number of bins.""",
+                only work if each counter has the same number of bins.
+                If there are multiple input files, their bin labels must
+                match.""",
         metavar="LABELS",
         action="store",
         dest="bin_label_source",
@@ -198,6 +200,7 @@ def run_plot(args):
     calculate_error_values(counters, args.bound_zero, args.noise_stddev)
     calculate_bin_reliability(counters)
 
+    # ignore items if requested
     counters = remove_ignored_items(counters, args.ignore_noisy,
                                     args.ignore_zero)
 
