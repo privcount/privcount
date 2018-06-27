@@ -302,13 +302,16 @@ def collect_counters(inputs, bin_label_source):
         for counter_name in sorted(histograms.keys()):
 
             sigma = get_sigma(counter_name, sigmas)
+            variance = sigma_to_variance(excess_noise_ratio, sigma)
+            bins = []
 
             counter = {
                 'experiment_label' : experiment_label,
-                'excess_noise_ratio' : excess_noise_ratio,
                 'name' : counter_name,
+                'excess_noise_ratio' : excess_noise_ratio,
                 'sigma' : sigma,
-                'bins' : [],
+                'variance' : variance,
+                'bins' : bins,
             }
 
             # go through all the bins
@@ -318,7 +321,7 @@ def collect_counters(inputs, bin_label_source):
                     'right' : right,
                     'value' : value,
                 }
-                counter['bins'].append(bin)
+                bins.append(bin)
 
             collect_bin_labels(counter, bin_labels, bin_label_source)
 
@@ -539,15 +542,12 @@ def calculate_error_values(counters, bound_zero, noise_stddev):
     for counter in counters:
 
         # calculate the noise for the counter
-        excess_noise_ratio = counter['excess_noise_ratio']
-        sigma = counter['sigma']
-        if (excess_noise_ratio is not None and sigma is not None and
-            float(noise_stddev) > 0.0):
+        variance = counter['variance']
+        if (variance is not None and float(noise_stddev) > 0.0):
             # use the supplied confidence interval for the noise
-            counter['error_difference'] = int(round(sigma_to_ci_amount(
+            counter['error_difference'] = int(round(variance_to_ci_amount(
                                                         noise_stddev,
-                                                        excess_noise_ratio,
-                                                        sigma)))
+                                                        variance)))
             # describe the noise on the experiment label
             # find the confidence interval fraction
             ci_fraction = stddev_to_ci_fraction(noise_stddev)
@@ -596,12 +596,32 @@ def calculate_error_values(counters, bound_zero, noise_stddev):
                 bin['bound_error_difference_low'] = bin['bound_value'] - bin['bound_error_value_low']
                 bin['bound_error_difference_high'] = bin['bound_error_value_high'] - bin['bound_value']
 
-def sigma_to_ci_amount(noise_stddev, excess_noise_ratio, sigma_value):
+def sigma_to_variance(excess_noise_ratio, sigma):
     '''
-    Return the noise_stddev standard deviation confidence interval amount
-    for sigma_value, based on excess_noise_ratio.
+    Return the variance amount for sigma, based on excess_noise_ratio.
+    If either input is None, returns None.
     '''
-    return float(noise_stddev) * sqrt(excess_noise_ratio) * float(sigma_value)
+    if excess_noise_ratio is None or sigma is None:
+        return None
+
+    return float(excess_noise_ratio) * float(sigma)**2
+
+def variance_to_sigma(excess_noise_ratio, variance):
+    '''
+    Return the sigma amount for variance, based on excess_noise_ratio.
+    If either input is None, returns None.
+    '''
+    if excess_noise_ratio is None or variance is None:
+        return None
+
+    return sqrt(float(variance) / float(excess_noise_ratio))
+
+def variance_to_ci_amount(noise_stddev, variance):
+    '''
+    Return the noise_stddev standard deviation confidence interval amount for
+    variance.
+    '''
+    return float(noise_stddev) * sqrt(variance)
 
 def stddev_to_ci_fraction(noise_stddev):
     '''
