@@ -8,6 +8,7 @@ import math
 import os
 import sys
 
+from copy import deepcopy
 from itertools import cycle
 from math import sqrt
 # NOTE see plotting imports below in import_plotting()
@@ -98,6 +99,12 @@ def add_plot_args(parser):
     # Output data arguments
 
     # Determining Values and Confidence Intervals
+
+    parser.add_argument('-a', '--totals',
+        help="""Create an extra "total" result containing the total of each
+                bin in each input file.""",
+        action="store_true",
+        dest="total_result")
 
     parser.add_argument('-c', '--confidence',
         help="""Graph a confidence interval of NUM standard deviations based
@@ -194,6 +201,12 @@ def run_plot(args):
 
     # extract the counter data
     counters = collect_counters(inputs, args.bin_label_source)
+    link_same_name_counters(counters)
+    # create totals
+    if args.total_result:
+        counters = append_total_counters(counters)
+        # and re-link all the counters
+        link_same_name_counters(counters)
 
     # calculate some additional values
     calculate_bound_values(counters, args.bound_zero)
@@ -509,6 +522,96 @@ def get_bin_labels(counter_name, bin_count, bin_labels, bin_label_source):
 
     return labels
 
+def link_same_name_counters(counters):
+    '''
+    Find all counters with the same name, and link them to each other.
+    '''
+    counter_links = {}
+
+    for counter in counters:
+        name = counter['name']
+        linked_counters = counter_links.setdefault(name, [])
+        linked_counters.append(counter)
+        counter['linked_counters'] = linked_counters
+
+def append_total_counters(counters):
+    '''
+    For each counter name, create an extra "total" result containing the
+    total of each bin in each counter with the same name.
+    '''
+    total_counters = []
+
+    experiment_label = "total"
+
+    # go through all the counters
+    counter_links_totalled = {}
+    for counter in counters:
+
+        # early exit
+        name = counter['name']
+        if counter_links_totalled.get(name, False):
+            continue
+
+        # calculate the total variance and excess noise ratio
+        total_variance = 0.0
+        total_excess_noise_ratio = 0.0
+
+        for linked_counter in counter['linked_counters']:
+
+            # the total variance is a simple sum
+            variance = linked_counter['variance']
+            if variance is None or total_variance is None:
+                total_variance = None
+            else:
+                total_variance += variance
+
+            # the total excess noise ratio is a simple sum
+            excess_noise_ratio = linked_counter['excess_noise_ratio']
+            if excess_noise_ratio is None or total_excess_noise_ratio is None:
+                total_excess_noise_ratio = None
+            else:
+                total_excess_noise_ratio += excess_noise_ratio
+
+        # the total sigma is calculated from the variance
+        total_sigma = variance_to_sigma(total_excess_noise_ratio,
+                                        total_variance)
+
+        if total_sigma != counter['sigma']:
+            logging.warning("Sigmas for {} are different in some input files. First sigma: {} Total sigma: {}"
+                            .format(name, sigma, total_sigma))
+
+        total_bins = []
+
+        total_counter = {
+            'experiment_label' : experiment_label,
+            'name' : name,
+            'excess_noise_ratio' : total_excess_noise_ratio,
+            'sigma' : total_sigma,
+            'variance' : total_variance,
+            'bins' : total_bins,
+        }
+
+        # go through all the bins
+        for i in xrange(len(counter['bins'])):
+
+            # copy the left, right, and labels
+            total_bin = deepcopy(counter['bins'][i])
+
+            # calculate the total value
+            total_value = 0
+
+            for linked_counter in counter['linked_counters']:
+                total_value += linked_counter['bins'][i]['value']
+
+            total_bin['value'] = total_value
+
+            total_bins.append(total_bin)
+
+        total_counters.append(total_counter)
+        counter_links_totalled[name] = True
+
+    return counters + total_counters
+
 def calculate_bound_values(counters, bound_zero):
     '''
     Calculated a bounded value for every bin in counter, and add it to that
@@ -685,22 +788,9 @@ def remove_ignored_items(counters, ignore_noisy, ignore_zero):
     if not ignore_noisy and not ignore_zero:
         return counters
 
-    link_same_counters(counters)
     mark_ignored_bins(counters, ignore_noisy, ignore_zero)
     mark_ignored_counters(counters)
     return filter_ignored_items(counters)
-
-def link_same_counters(counters):
-    '''
-    Find all counters with the same name, and link them to each other.
-    '''
-    counter_links = {}
-
-    for counter in counters:
-        name = counter['name']
-        linked_counters = counter_links.setdefault(name, [])
-        linked_counters.append(counter)
-        counter['linked_counters'] = linked_counters
 
 def mark_ignored_bins(counters, ignore_noisy, ignore_zero):
     '''
