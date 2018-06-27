@@ -43,7 +43,10 @@ class PlotDataAction(argparse.Action):
         datapath = os.path.abspath(os.path.expanduser(values[0]))
         label = values[1]
         # check the path exists
-        if not os.path.exists(datapath): raise argparse.ArgumentError(self, "The supplied path to the plot data does not exist: '{0}'".format(datapath))
+        if not os.path.exists(datapath):
+            raise argparse.ArgumentError(self,
+                                         "The supplied path to the plot data does not exist: '{0}'"
+                                         .format(datapath))
         # remove the default
         if "_didremovedefault" not in namespace:
             setattr(namespace, self.dest, [])
@@ -727,14 +730,18 @@ def output_text_file(text_output_name, counters, bound_zero):
         for counter in counters:
 
             # print the label for each new experiment
-            experiment_label = counter.get('experiment_label_sigma', counter['experiment_label'])
+            experiment_label = counter.get('experiment_label_sigma',
+                                           counter['experiment_label'])
             if previous_experiment_label != experiment_label:
-                text_output.write("Experiment Label: {}\n".format(experiment_label))
+                text_output.write("Experiment Label: {}\n"
+                                  .format(experiment_label))
                 previous_experiment_label = experiment_label
 
-            # adding formatting information to counter is an acceptable abstraction violation
+            # adding formatting information to counter is an acceptable
+            # abstraction violation
             if 'error_difference' in counter:
-                # justify up to the error length, plus a few digits and a negative
+                # justify up to the error length, plus a few digits and a
+                # negative
                 counter['value_justify'] = len(str(counter['error_difference'])) + 3
             else:
                 # justify long
@@ -745,7 +752,8 @@ def output_text_file(text_output_name, counters, bound_zero):
             for bin in counter['bins']:
 
                 if 'error_proportion' in bin:
-                    # assume all the other fields are present in counter and bin
+                    # assume all the other fields are present in counter and
+                    # bin
                     error_str = (" +- {:.0f} ({:7.1f}%)"
                                  .format(counter['error_difference'],
                                          bin['error_proportion']*100.0))
@@ -760,7 +768,8 @@ def output_text_file(text_output_name, counters, bound_zero):
                                       str(bin['bound_value']).rjust(counter['value_justify']),
                                       ', '.join(bin['bounded']) if len(bin['bounded']) > 0 else 'no change')
 
-                # only print non-default labels, because we already print the range
+                # only print non-default labels, because we already print the
+                # range
                 if bin['label'] != bin['range_label']:
                     label_str = " '{}'".format(bin['label'])
                 else:
@@ -796,13 +805,16 @@ def get_plot_info(counters, line_formats):
             previous_experiment_label = experiment_label
 
         # setup the plot_info for this counter
-        plot_info.setdefault(name, {'datasets':[], 'errors':[], 'dataset_colors':[], 'dataset_labels':[], 'bin_labels':[]})
+        plot_info.setdefault(name,
+                             {'datasets':[], 'errors':[], 'dataset_colors':[],
+                              'dataset_labels':[], 'bin_labels':[]})
         plot_info[name]['dataset_colors'].append(dataset_color)
 
         # work out the graph label
         if 'experiment_label_sigma' in counter:
             # label the graph with the sttdev and CI, and a pretty sigma
-            dataset_label = counter['experiment_label_sigma'].replace('sigma', r'$\sigma$')
+            dataset_label = counter['experiment_label_sigma'].replace('sigma',
+                                                                      r'$\sigma$')
         else:
             dataset_label = counter['experiment_label']
 
@@ -895,7 +907,8 @@ def import_plotting():
                           'legend.handlelength' : 1.6,
                           'legend.labelspacing' : .75,
                           'legend.markerscale' : 1.0,
-                          # turn on the following to embedd fonts; requires latex
+                          # turn on the following to embedd fonts; requires
+                          # latex
                           #'ps.useafm' : True,
                           #'pdf.use14corefonts' : True,
                           #'text.usetex' : True,
@@ -936,7 +949,10 @@ def plot_bar_chart(page, datasets, dataset_labels, dataset_colors,
     bars = []
 
     for i in xrange(len(datasets)):
-        bar = axis.bar(x_group_locations + (width*i), datasets[i], width, yerr=err[i], color=dataset_colors[i], error_kw=dict(ecolor='pink', lw=3, capsize=6, capthick=3))
+        bar = axis.bar(x_group_locations + (width*i), datasets[i], width,
+                       yerr=err[i], color=dataset_colors[i],
+                       error_kw=dict(ecolor='pink', lw=3, capsize=6,
+                                     capthick=3))
         bars.append(bar)
 
     if title is not None:
