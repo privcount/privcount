@@ -126,7 +126,9 @@ def add_plot_args(parser):
         help="""Ignore results that are likely dominated by noise.
                 Bins with noise greater than or equal to 100%% of the bin
                 value are removed from the output.
-                Counters with no bins are removed from the output.""",
+                Counters with no bins are removed from the output.
+                If there are multiple datasets, and a bin or counter is
+                shown in any dataset, it is shown in all datasets.""",
         action="store_true",
         dest="ignore_noisy")
 
@@ -134,7 +136,9 @@ def add_plot_args(parser):
         help="""Ignore results that are likely to be zero.
                 Bins where the lowest bound of the confidence interval is
                 zero or negative are removed from the output.
-                Counters with no bins are removed from the output.""",
+                Counters with no bins are removed from the output.
+                If there are multiple datasets, and a bin or counter is
+                shown in any dataset, it is shown in all datasets.""",
         action="store_true",
         dest="ignore_zero")
 
@@ -194,7 +198,8 @@ def run_plot(args):
     calculate_error_values(counters, args.bound_zero, args.noise_stddev)
     calculate_bin_reliability(counters)
 
-    remove_ignored_items(counters, args.ignore_noisy, args.ignore_zero)
+    counters = remove_ignored_items(counters, args.ignore_noisy,
+                                    args.ignore_zero)
 
     # create the output file prefix
     output_prefix = get_output_prefix(args)
@@ -649,20 +654,34 @@ def calculate_bin_reliability(counters):
 
 def remove_ignored_items(counters, ignore_noisy, ignore_zero):
     '''
-    Remove bins and counters that need to be ignored due to ignore_noisy or
-    ignore_zero.
+    Return counters, after removing bins and counters that need to be ignored
+    due to ignore_noisy or ignore_zero.
     '''
     # early exit
     if not ignore_noisy and not ignore_zero:
-        return
+        return counters
 
+    link_same_counters(counters)
     mark_ignored_bins(counters, ignore_noisy, ignore_zero)
     mark_ignored_counters(counters)
-    filter_ignored_items(counters)
+    return filter_ignored_items(counters)
+
+def link_same_counters(counters):
+    '''
+    Find all counters with the same name, and link them to each other.
+    '''
+    counter_links = {}
+
+    for counter in counters:
+        name = counter['name']
+        linked_counters = counter_links.setdefault(name, [])
+        linked_counters.append(counter)
+        counter['linked_counters'] = linked_counters
 
 def mark_ignored_bins(counters, ignore_noisy, ignore_zero):
     '''
     Mark bins that need to be ignored due to ignore_noisy or ignore_zero.
+    But if a bin is shown in any dataset, show it in all datasets.
     '''
 
     # go through all the counters
@@ -679,9 +698,34 @@ def mark_ignored_bins(counters, ignore_noisy, ignore_zero):
             else:
                 bin['is_ignored'] = False
 
+    # now mark linked bins
+    counter_links_marked = {}
+    for counter in counters:
+
+        # early exit
+        name = counter['name']
+        if counter_links_marked.get(name, False):
+            continue
+
+        # go through all the bins
+        for i in xrange(len(counter['bins'])):
+
+            # find out if any linked bin is not ignored
+            all_linked_bins_are_ignored = counter['bins'][i]['is_ignored']
+            for linked_counter in counter['linked_counters']:
+                if not linked_counter['bins'][i]['is_ignored']:
+                    all_linked_bins_are_ignored = False
+
+            # set the ignored status of all linked bins
+            for linked_counter in counter['linked_counters']:
+                linked_counter['bins'][i]['is_ignored'] = all_linked_bins_are_ignored
+
+        counter_links_marked[name] = True
+
 def mark_ignored_counters(counters):
     '''
     Mark counters that need to be ignored because all their bins are ignored.
+    But if a counter is shown in any dataset, show it in all datasets.
     '''
     # go through all the counters
     for counter in counters:
@@ -692,13 +736,35 @@ def mark_ignored_counters(counters):
         # go through all the bins
         for bin in counter['bins']:
 
-            # if we find a bin that is not ignored, we don't want to ignore the counter
+            # if we find a bin that is not ignored,
+            # we don't want to ignore the counter
             if not bin['is_ignored']:
                 counter['is_ignored'] = False
 
+    # now mark linked counters
+    counter_links_marked = {}
+    for counter in counters:
+
+        # early exit
+        name = counter['name']
+        if counter_links_marked.get(name, False):
+            continue
+
+        # find out if any linked counter is not ignored
+        all_linked_counters_are_ignored = counter['is_ignored']
+        for linked_counter in counter['linked_counters']:
+            if not linked_counter['is_ignored']:
+                all_linked_counters_are_ignored = False
+
+        # set the ignored status of all linked counters
+        for linked_counter in counter['linked_counters']:
+            linked_counter['is_ignored'] = all_linked_counters_are_ignored
+
+        counter_links_marked[name] = True
+
 def filter_ignored_items(counters):
     '''
-    Filter out bins and counters that are ignored.
+    Returns counters, after filtering out bins and counters that are ignored.
     '''
     # filter the ignored counters
     counters = [counter for counter in counters if not counter['is_ignored']]
@@ -708,6 +774,8 @@ def filter_ignored_items(counters):
 
         # filter the ignored bins
         counter['bins'] = [bin for bin in counter['bins'] if not bin['is_ignored']]
+
+    return counters
 
 def get_output_prefix(args):
     '''
@@ -828,6 +896,7 @@ def get_plot_info(counters, line_formats):
             plot_info[name]['errors'].append(None)
 
         dataset = []
+        bin_labels = []
 
         # go through all the bins
         for bin in counter['bins']:
@@ -840,7 +909,14 @@ def get_plot_info(counters, line_formats):
                 plot_info[name]['errors'][-1][0].append(bin['bound_error_difference_low'])
                 plot_info[name]['errors'][-1][1].append(bin['bound_error_difference_high'])
 
-            plot_info[name]['bin_labels'].append(bin['graph_label'])
+                bin_labels.append(bin['graph_label'])
+
+        # use the bin label from the first counter
+        # (they should all be the same)
+        if counter == counter['linked_counters'][0]:
+            plot_info[name]['bin_labels'] = bin_labels
+        else:
+            assert plot_info[name]['bin_labels'] == bin_labels
 
         plot_info[name]['datasets'].append(dataset)
 
