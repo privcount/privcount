@@ -334,9 +334,9 @@ def get_excess_noise_ratio(privacy):
     '''
     excess_noise_ratio = privacy.get('excess_noise_ratio',
                                      DEFAULT_EXCESS_NOISE_RATIO)
-
-     # a zero ratio means "no noise", so we don't show any error bars
-    if float(excess_noise_ratio) > 0.0:
+    excess_noise_ratio = float(excess_noise_ratio)
+    # a zero ratio means "no noise", so we don't show any error bars
+    if excess_noise_ratio > 0.0:
         return excess_noise_ratio
     else:
         return None
@@ -347,8 +347,9 @@ def get_sigma(counter_name, sigmas):
     Otherwise, return None.
     '''
     sigma = sigmas[counter_name].get('sigma', 0.0)
+    sigma = float(sigma)
     # a zero sigma means "no noise", so we don't show any error bars
-    if float(sigma) > 0.0:
+    if sigma > 0.0:
         return sigma
     else:
         return None
