@@ -1023,7 +1023,7 @@ def get_plot_info(counters, line_formats):
                 plot_info[name]['errors'][-1][0].append(bin['bound_error_difference_low'])
                 plot_info[name]['errors'][-1][1].append(bin['bound_error_difference_high'])
 
-                bin_labels.append(bin['graph_label'])
+            bin_labels.append(bin['graph_label'])
 
         # use the bin label from the first counter
         # (they should all be the same)
