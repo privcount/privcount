@@ -696,7 +696,7 @@ This field is named after the HiddenServiceVersion torrc option.
 An ASCII string that describes why the descriptor was added or rejected from
 the cache:
 
-#### HSDir Store and HSDir Cache
+#### HSDir Store and HSDir Fetch
 
 Not added to or fetched from the cache because:
 * unencrypted: the request was made on the relay's DirPort (v2 and v3).
