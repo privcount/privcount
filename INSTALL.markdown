@@ -30,7 +30,7 @@ To update your chosen branch from remote "origin":
 
     source pyenv/bin/activate
     pip install --upgrade pip setuptools wheel
-    pip install --upgrde -r requirements.txt
+    pip install --upgrade -r requirements.txt
     # optional: privcount plot
     pip install --upgrade -r requirements-plot.txt
     # optional: position weights
