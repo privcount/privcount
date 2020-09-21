@@ -305,8 +305,10 @@ def generate_cert(key_path, cert_out_path):
     builder = builder.issuer_name(x509.Name([
         x509.NameAttribute(x509.OID_COMMON_NAME, u'PrivCount Authority'),
     ]))
-    builder = builder.not_valid_before(datetime.datetime.today() - datetime.timedelta(days=1))
-    builder = builder.not_valid_after(datetime.datetime(2020, 1, 1))
+    valid_start = datetime.datetime.today() - datetime.timedelta(days=1)
+    valid_end = valid_start + datetime.timedelta(days=365)
+    builder = builder.not_valid_before(valid_start)
+    builder = builder.not_valid_after(valid_end)
     builder = builder.serial_number(int(uuid.uuid4()))
     builder = builder.public_key(public_key)
     builder = builder.add_extension(x509.BasicConstraints(ca=False, path_length=None), critical=True)
